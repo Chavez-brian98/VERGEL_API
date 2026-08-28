@@ -22,7 +22,8 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->date('hire_date')->nullable();
             $table->string('phone', 20)->nullable();
-            $table->string('email', 120)->nullable();
+            $table->string('email', 120)->unique();
+            $table->string('password', 255)->unique();
             $table->boolean('active')->default(true);
             $table->softDeletes();
             $table->timestamps();
