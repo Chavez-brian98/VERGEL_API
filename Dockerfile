@@ -1,8 +1,4 @@
-FROM php:8.4-fpm
-
-# Argumentos para crear un usuario de sistema (evita problemas de permisos)
-ARG user=laravel
-ARG uid=1000
+FROM php:8.4-apache
 
 # Instalar dependencias del sistema requeridas
 RUN apt-get update && apt-get install -y \
@@ -31,12 +27,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 
-# Crear usuario de sistema para ejecutar comandos de Artisan y Composer
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+# Configurar Apache para Laravel: mod_rewrite y sitio apuntando a public/
+RUN a2enmod rewrite
+COPY docker/apache/default.conf /etc/apache2/sites-available/000-default.conf
 
 # Configurar el directorio de trabajo
 WORKDIR /var/www
-
-USER $user
