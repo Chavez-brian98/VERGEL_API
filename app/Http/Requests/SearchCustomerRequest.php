@@ -19,6 +19,7 @@ class SearchCustomerRequest extends FormRequest
             'legal_name' => ['nullable', 'string', 'max:150'],
             'trade_name' => ['nullable', 'string', 'max:150'],
             'nrc' => ['nullable', 'string', 'max:20'],
+            'search' => ['nullable', 'string', 'max:150'],
             'desde' => ['nullable', 'date_format:Y-m-d'],
             'hasta' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:desde'],
         ];

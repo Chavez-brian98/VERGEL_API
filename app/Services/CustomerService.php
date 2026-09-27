@@ -59,14 +59,14 @@ class CustomerService
             ])
             // Si hay filtros, solo busca los activos; si $filters está vacío, no aplica este filtro y trae todos
             ->when(!empty($filters), fn($query) => $query->where('status', 'active'))
-            ->when($filters['name'] ?? null, function ($query, string $name) {
-                $name = mb_strtolower(trim($name));
+            ->when($filters['search'] ?? null, function ($query, string $search) {
+                $search = mb_strtolower(trim($search));
 
-                $query->where(function ($q) use ($name) {
-                    $q->whereRaw('LOWER(legal_name) LIKE ?', ["%{$name}%"])
-                        ->orWhereRaw('LOWER(trade_name) LIKE ?', ["%{$name}%"])
-                        ->orWhereRaw('LOWER(email) LIKE ?', ["%{$name}%"])
-                        ->orWhereRaw('LOWER(id) LIKE ?', ["%{$name}%"])
+                $query->where(function ($q) use ($search) {
+                    $q->whereRaw('LOWER(legal_name) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(trade_name) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(email) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(id) LIKE ?', ["%{$search}%"])
                     ;
                 });
             })
