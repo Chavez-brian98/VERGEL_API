@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 class SearchCustomerRequest extends FormRequest
 {
@@ -17,18 +16,12 @@ class SearchCustomerRequest extends FormRequest
         return [
             'name' => ['nullable', 'string', 'max:150'],
             'phone' => ['nullable', 'string', 'max:20'],
+            'legal_name' => ['nullable', 'string', 'max:150'],
+            'trade_name' => ['nullable', 'string', 'max:150'],
+            'nrc' => ['nullable', 'string', 'max:20'],
+            'desde' => ['nullable', 'date_format:Y-m-d'],
+            'hasta' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:desde'],
         ];
     }
 
-    public function withValidator(Validator $validator): void
-    {
-        $validator->after(function (Validator $validator) {
-            if (!$this->filled('name') && !$this->filled('phone')) {
-                $validator->errors()->add(
-                    'filters',
-                    'Debe enviar name o phone para realizar la búsqueda.'
-                );
-            }
-        });
-    }
 }

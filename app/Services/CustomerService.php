@@ -41,8 +41,13 @@ class CustomerService
         });
     }
 
-    public function search(array $filters): Collection
+
+
+    public function search(array $filters = []): Collection
     {
+        // Limpia elementos nulos o cadenas vacías
+        $filters = array_filter($filters, fn($value) => !is_null($value) && $value !== '');
+
         return Customer::query()
             ->select([
                 'id',
@@ -52,20 +57,26 @@ class CustomerService
                 'email',
                 'address',
             ])
+            // Si hay filtros, solo busca los activos; si $filters está vacío, no aplica este filtro y trae todos
+            ->when(!empty($filters), fn($query) => $query->where('status', 'active'))
             ->when($filters['name'] ?? null, function ($query, string $name) {
                 $name = mb_strtolower(trim($name));
 
-                $query->where(function ($query) use ($name) {
-                    $query->whereRaw('LOWER(legal_name) LIKE ?', ["%{$name}%"])
-                        ->orWhereRaw('LOWER(trade_name) LIKE ?', ["%{$name}%"]);
+                $query->where(function ($q) use ($name) {
+                    $q->whereRaw('LOWER(legal_name) LIKE ?', ["%{$name}%"])
+                        ->orWhereRaw('LOWER(trade_name) LIKE ?', ["%{$name}%"])
+                        ->orWhereRaw('LOWER(email) LIKE ?', ["%{$name}%"])
+                        ->orWhereRaw('LOWER(id) LIKE ?', ["%{$name}%"])
+                    ;
                 });
             })
             ->when($filters['phone'] ?? null, function ($query, string $phone) {
-                $query->where('phone', 'like', "%{$phone}%");
+                $query->where('phone', 'like', '%' . trim($phone) . '%');
             })
-            ->where('status', 'active')
+            ->when($filters['desde'] ?? null, fn($query, string $date) => $query->whereDate('created_at', '>=', $date))
+            ->when($filters['hasta'] ?? null, fn($query, string $date) => $query->whereDate('created_at', '<=', $date))
             ->orderBy('legal_name')
-            ->limit(20)
+            ->when(!empty($filters), fn($query) => $query->limit(20))
             ->get();
     }
 }
