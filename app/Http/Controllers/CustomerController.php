@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SearchCustomerRequest;
-use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\Customer\SearchCustomerRequest;
+use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Services\CustomerService;
 use Illuminate\Http\JsonResponse;
 
