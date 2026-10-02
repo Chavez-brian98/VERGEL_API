@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Customers;
 
 use App\Models\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,7 +21,7 @@ class CustomerSearchTest extends TestCase
             ]);
         }
 
-        $response = $this->getJson('/api/clientes');
+        $response = $this->getJson('/api/v1/customers?limit=21');
 
         $response->assertOk()
             ->assertJsonCount(21, 'data');
@@ -42,12 +42,12 @@ class CustomerSearchTest extends TestCase
             'phone' => '2222-2201',
         ]);
 
-        $response = $this->getJson('/api/clientes?name=Encontrado');
+        $response = $this->getJson('/api/v1/customers?search=Encontrado');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonFragment(['legal_name' => 'Cliente Encontrado'])
-            ->assertJsonMissing(['legal_name' => 'Otro Cliente']);
+            ->assertJsonFragment(['legalName' => 'Cliente Encontrado'])
+            ->assertJsonMissing(['legalName' => 'Otro Cliente']);
     }
 
     public function test_it_filters_customers_by_creation_date_range(): void
@@ -68,11 +68,11 @@ class CustomerSearchTest extends TestCase
         $customerInRange->forceFill(['created_at' => '2026-09-15 23:59:59'])->save();
         $customerOutsideRange->forceFill(['created_at' => '2026-09-16 00:00:00'])->save();
 
-        $response = $this->getJson('/api/clientes?desde=2026-09-15&hasta=2026-09-15');
+        $response = $this->getJson('/api/v1/customers?desde=2026-09-15&hasta=2026-09-15');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonFragment(['legal_name' => 'Cliente en rango'])
-            ->assertJsonMissing(['legal_name' => 'Cliente fuera de rango']);
+            ->assertJsonFragment(['legalName' => 'Cliente en rango'])
+            ->assertJsonMissing(['legalName' => 'Cliente fuera de rango']);
     }
 }

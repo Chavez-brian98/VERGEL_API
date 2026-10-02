@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Customers;
 
 use App\Models\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,16 +27,16 @@ class CustomerIndexTest extends TestCase
         ]);
         $deletedCustomer->delete();
 
-        $response = $this->getJson('/api/customers');
+        $response = $this->getJson('/api/v1/customers');
 
         $response->assertOk()
-            ->assertJsonCount(1)
+            ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
                 'id' => $customer->id,
-                'legal_name' => 'Cliente de prueba',
+                'legalName' => 'Cliente de prueba',
             ])
             ->assertJsonMissing([
-                'legal_name' => 'Cliente eliminado',
+                'legalName' => 'Cliente eliminado',
             ]);
     }
 }
