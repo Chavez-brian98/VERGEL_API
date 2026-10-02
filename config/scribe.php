@@ -63,7 +63,8 @@ return [
     'static' => [
         // HTML documentation, assets and Postman collection will be generated to this folder.
         // Source Markdown will still be in resources/docs.
-        'output_path' => 'public/docs',
+
+        'output_path' => 'docs',
     ],
 
     'laravel' => [
