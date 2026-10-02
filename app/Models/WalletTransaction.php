@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WalletTransaction extends Model
 {
-
     protected $fillable = [
         'wallet_id',
         'transaction_type',

@@ -22,4 +22,14 @@ class CustomerPlanHistory extends Model
             'end_date' => 'date',
         ];
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(SubscriptionPlan::class, 'plan_id');
+    }
 }

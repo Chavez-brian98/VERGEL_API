@@ -20,5 +20,4 @@ class Country_config extends Model
     {
         return $this->hasMany(Service::class, 'country_config_id');
     }
-
 }
