@@ -45,7 +45,7 @@ class StoreCustomerRequest extends FormRequest
             'current_plan_id' => [
                 'nullable',
                 'integer',
-                Rule::exists('subscription_plans', 'id')->withoutTrashed()
+                Rule::exists('subscription_plans', 'id')->withoutTrashed(),
             ],
         ];
     }

@@ -24,5 +24,4 @@ class SearchCustomerRequest extends FormRequest
             'hasta' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:desde'],
         ];
     }
-
 }
