@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/customers', [CustomerController::class, 'index']);
-    
+
 Route::middleware('auth')->group(function () {
 
     // Customer routes
