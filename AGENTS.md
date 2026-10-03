@@ -18,11 +18,13 @@ Laravel 12 (installed v12.68.0) REST API, PHP 8.4 (`composer.json` allows ^8.2),
 - **The committed local `.env` has no `APP_KEY`** → `php artisan key:generate` is required before app/tests will run.
 - Dev DB is MySQL (`DB_DATABASE=vergel_api`); **tests run against sqlite `:memory:`** (phpunit.xml). The full migration suite booted cleanly on sqlite, so you can develop against the default test DB without MySQL.
 - **Docker MySQL gotchas**: the official `mysql:8.0` image applies `MYSQL_*` env vars only on **first init of an empty volume** — changing `.env` later does nothing to an existing `db-data` volume (fix with `ALTER USER ... IDENTIFIED BY` inside the container, or `docker compose down -v`). Never set `MYSQL_USER=root` (entrypoint aborts and the container crash-loops); keep it decoupled from `.env` `DB_USERNAME`.
+- **Migrations were renamed in git history** (`2026_08_28_014400 quotes`, `014500 appointments`, `022000 wallets`, `040000 loyalty_points`) — an existing dev DB's `migrations` table may still hold the old names, making `migrate` try to re-create existing tables ("Table ... already exists"). If you hit that, UPDATE the `migrations` rows to the current filenames. Don't rename migrations that have already run.
 
 ## Commands
 
 - Tests: `composer test` (runs `artisan config:clear` then `artisan test`). Single test: `php artisan test --filter=<name>`; suites: `--testsuite=Unit|Feature`. Tests need an `APP_KEY` and the bootstrap/cache dir (see above).
 - Formatting: `laravel/pint` installed, default preset, no `pint.json`. Run `./vendor/bin/pint`.
+- **Scribe API docs** (`knuckleswtf/scribe`): annotated via docblocks (`@group`, `@subgroup`, `@queryParam`, `@bodyParam`, `@response`) in controllers; config in `config/scribe.php` (auth = Sanctum bearer). Regenerate with `php artisan scribe:generate` → served at `/docs`, `/docs.openapi`, `/docs.postman`. Requires the `bootstrap/cache` + `storage/framework/*` dirs (above).
 - `npm run build` / `npm run dev` for Vite/Tailwind; only needed for the default blade skeleton — the API itself has no frontend deps.
 - No CI workflows, no codegen, no other task runner.
 

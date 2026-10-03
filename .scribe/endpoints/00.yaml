@@ -1,26 +1,429 @@
-name: Endpoints
+name: Clientes
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/customers
+    uri: api/v1/customers
     metadata:
       custom: []
-      groupName: Endpoints
+      groupName: Clientes
       groupDescription: ''
-      subgroup: ''
+      subgroup: Consultas
       subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
+      title: 'Listar y filtrar clientes.'
+      description: 'Obtiene una lista paginada de clientes con opciones de búsqueda y filtros.'
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
+    queryParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Busca por nombre legal, nombre comercial, correo, teléfono, NIT o NRC.'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Filtrar por estado.'
+        required: false
+        example: active
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Filtrar por teléfono (coincidencia parcial).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'date Filtrar por fecha de creación desde (YYYY-MM-DD).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      hasta:
+        custom: []
+        name: hasta
+        description: 'date Filtrar por fecha de creación hasta (YYYY-MM-DD).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Cantidad de resultados por página.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      search: architecto
+      status: active
+      phone: architecto
+      desde: architecto
+      hasta: architecto
+      limit: 15
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "legalName": "Cliente Ejemplo S.A. de C.V.",
+                "tradeName": "Cliente Ejemplo",
+                "taxId": "0614-260290-101-1",
+                "nrc": "123456-7",
+                "phone": "7000-0000",
+                "status": "active",
+                "currentPlanName": "Plan Básico",
+                "cashBalance": 250.5,
+                "loyaltyPoints": 120,
+                "createdAt": "2026-09-23T06:00:00+00:00"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/customers?page=1",
+              "last": "http://localhost/api/v1/customers?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://localhost/api/v1/customers",
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/customers
+    metadata:
+      custom: []
+      groupName: Clientes
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Registrar un nuevo cliente.'
+      description: 'Crea un cliente y, como parte del proceso, inicializa su wallet y sus puntos de lealtad.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      legal_name:
+        custom: []
+        name: legal_name
+        description: 'Nombre legal del cliente.'
+        required: true
+        example: 'Cliente Ejemplo S.A. de C.V.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      trade_name:
+        custom: []
+        name: trade_name
+        description: 'Nombre comercial.'
+        required: false
+        example: 'Cliente Ejemplo'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      tax_id:
+        custom: []
+        name: tax_id
+        description: 'NIT del cliente (único).'
+        required: false
+        example: 0614-260290-101-1
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      nrc:
+        custom: []
+        name: nrc
+        description: 'NRC del cliente (único).'
+        required: false
+        example: 123456-7
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      economic_activity:
+        custom: []
+        name: economic_activity
+        description: 'Actividad económica.'
+        required: false
+        example: 'Venta de servicios'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: Dirección.
+        required: true
+        example: 'Colonia Centro, San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      department:
+        custom: []
+        name: department
+        description: Departamento.
+        required: false
+        example: 'San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      municipality:
+        custom: []
+        name: municipality
+        description: Municipio.
+        required: true
+        example: 'San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Teléfono (único).'
+        required: true
+        example: 7000-0000
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'Correo electrónico.'
+        required: false
+        example: cliente@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      visit_frequency_value:
+        custom: []
+        name: visit_frequency_value
+        description: 'Frecuencia de visita (valor numérico).'
+        required: false
+        example: 30
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      visit_frequency_unit:
+        custom: []
+        name: visit_frequency_unit
+        description: 'Unidad de frecuencia de visita.'
+        required: false
+        example: days
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      current_plan_id:
+        custom: []
+        name: current_plan_id
+        description: 'ID del plan de suscripción inicial.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      legal_name: 'Cliente Ejemplo S.A. de C.V.'
+      trade_name: 'Cliente Ejemplo'
+      tax_id: 0614-260290-101-1
+      nrc: 123456-7
+      economic_activity: 'Venta de servicios'
+      address: 'Colonia Centro, San Salvador'
+      department: 'San Salvador'
+      municipality: 'San Salvador'
+      phone: 7000-0000
+      email: cliente@example.com
+      visit_frequency_value: 30
+      visit_frequency_unit: days
+      current_plan_id: 1
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "legalName": "Cliente Ejemplo S.A. de C.V.",
+              "tradeName": "Cliente Ejemplo",
+              "taxId": "0614-260290-101-1",
+              "nrc": "123456-7",
+              "economicActivity": "Venta de servicios",
+              "address": "Colonia Centro, San Salvador",
+              "municipality": "San Salvador",
+              "department": "San Salvador",
+              "phone": "7000-0000",
+              "email": "cliente@example.com",
+              "status": "active",
+              "visitFrequency": null,
+              "currentPlan": null,
+              "wallet": {
+                "cashBalance": 0,
+                "reservedSubscriptionBalance": 0
+              },
+              "loyaltyPoints": null,
+              "createdAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The legal name field is required.",
+            "errors": {
+              "legal_name": ["The legal name field is required."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/customers/{id}'
+    metadata:
+      custom: []
+      groupName: Clientes
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Obtener detalle completo de un cliente.'
+      description: 'Incluye el plan actual, la wallet y los puntos de lealtad del cliente.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the customer.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      customer:
+        custom: []
+        name: customer
+        description: 'ID del cliente.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      customer: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -29,222 +432,437 @@ endpoints:
     responses:
       -
         custom: []
-        status: 500
+        status: 200
         content: |-
           {
-              "message": "Server Error"
+            "data": {
+              "id": 1,
+              "legalName": "Cliente Ejemplo S.A. de C.V.",
+              "tradeName": "Cliente Ejemplo",
+              "taxId": "0614-260290-101-1",
+              "nrc": "123456-7",
+              "economicActivity": "Venta de servicios",
+              "address": "Colonia Centro, San Salvador",
+              "municipality": "San Salvador",
+              "department": "San Salvador",
+              "phone": "7000-0000",
+              "email": "cliente@example.com",
+              "status": "active",
+              "visitFrequency": {
+                "value": 30,
+                "unit": "days"
+              },
+              "currentPlan": {
+                "id": 1,
+                "planCode": "BASICO",
+                "planName": "Plan Básico"
+              },
+              "wallet": {
+                "cashBalance": 250.5,
+                "reservedSubscriptionBalance": 0
+              },
+              "loyaltyPoints": {
+                "pointsBalance": 120
+              },
+              "createdAt": "2026-09-23T06:00:00+00:00"
+            }
           }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\Customer]"
+          }
+        headers: []
+        description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
   -
     custom: []
     httpMethods:
-      - POST
-    uri: api/clientes/crear
+      - PUT
+      - PATCH
+    uri: 'api/v1/customers/{id}'
     metadata:
       custom: []
-      groupName: Endpoints
+      groupName: Clientes
       groupDescription: ''
-      subgroup: ''
+      subgroup: Escritura
       subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
+      title: 'Actualizar información del cliente.'
+      description: 'Actualiza los datos editables de un cliente existente.'
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the customer.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      customer:
+        custom: []
+        name: customer
+        description: 'ID del cliente.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      customer: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       legal_name:
         custom: []
         name: legal_name
-        description: 'Must not be greater than 150 characters.'
+        description: 'Nombre legal del cliente.'
         required: true
-        example: b
+        example: 'Cliente Actualizado S.A. de C.V.'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       trade_name:
         custom: []
         name: trade_name
-        description: 'Must not be greater than 150 characters.'
+        description: 'Nombre comercial.'
         required: false
-        example: 'n'
+        example: 'Cliente Actualizado'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       tax_id:
         custom: []
         name: tax_id
-        description: 'Must not be greater than 20 characters.'
+        description: 'NIT del cliente (único).'
         required: false
-        example: gzmiyvdljnikhway
+        example: 0614-260290-101-1
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       nrc:
         custom: []
         name: nrc
-        description: 'Must not be greater than 20 characters.'
+        description: 'NRC del cliente (único).'
         required: false
-        example: kcmyuwpwlvqwrsit
+        example: 123456-7
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       economic_activity:
         custom: []
         name: economic_activity
-        description: 'Must not be greater than 150 characters.'
+        description: 'Actividad económica.'
         required: false
-        example: c
+        example: 'Venta de servicios'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       address:
         custom: []
         name: address
-        description: 'Must not be greater than 255 characters.'
+        description: Dirección.
         required: true
-        example: p
+        example: 'Colonia Centro, San Salvador'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       department:
         custom: []
         name: department
-        description: 'Must not be greater than 60 characters.'
+        description: Departamento.
         required: false
-        example: s
+        example: 'San Salvador'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       municipality:
         custom: []
         name: municipality
-        description: 'Must not be greater than 60 characters.'
+        description: Municipio.
         required: true
-        example: c
+        example: 'San Salvador'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       phone:
         custom: []
         name: phone
-        description: 'Must not be greater than 20 characters.'
+        description: 'Teléfono (único).'
         required: true
-        example: qldzsnrwtujwvlxj
+        example: 7000-0000
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       email:
         custom: []
         name: email
-        description: 'Must be a valid email address. Must not be greater than 120 characters.'
+        description: 'Correo electrónico.'
         required: false
-        example: daphne59@example.com
+        example: cliente@example.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: active
-        type: string
-        enumValues:
-          - active
-          - inactive
-        exampleWasSpecified: false
-        nullable: false
         deprecated: false
       visit_frequency_value:
         custom: []
         name: visit_frequency_value
-        description: 'This field is required when <code>visit_frequency_unit</code> is present. Must be at least 1.'
+        description: 'Frecuencia de visita (valor numérico).'
         required: false
-        example: 29
+        example: 30
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       visit_frequency_unit:
         custom: []
         name: visit_frequency_unit
-        description: 'This field is required when <code>visit_frequency_value</code> is present.'
+        description: 'Unidad de frecuencia de visita.'
         required: false
-        example: weeks
+        example: days
         type: string
-        enumValues:
-          - days
-          - weeks
-          - months
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      current_plan_id:
-        custom: []
-        name: current_plan_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      legal_name: b
-      trade_name: 'n'
-      tax_id: gzmiyvdljnikhway
-      nrc: kcmyuwpwlvqwrsit
-      economic_activity: c
-      address: p
-      department: s
-      municipality: c
-      phone: qldzsnrwtujwvlxj
-      email: daphne59@example.com
-      status: active
-      visit_frequency_value: 29
-      visit_frequency_unit: weeks
-      current_plan_id: 16
+      legal_name: 'Cliente Actualizado S.A. de C.V.'
+      trade_name: 'Cliente Actualizado'
+      tax_id: 0614-260290-101-1
+      nrc: 123456-7
+      economic_activity: 'Venta de servicios'
+      address: 'Colonia Centro, San Salvador'
+      department: 'San Salvador'
+      municipality: 'San Salvador'
+      phone: 7000-0000
+      email: cliente@example.com
+      visit_frequency_value: 30
+      visit_frequency_unit: days
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "legalName": "Cliente Actualizado S.A. de C.V.",
+              "status": "active",
+              "createdAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The phone has already been taken.",
+            "errors": {
+              "phone": ["The phone has already been taken."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/customers/{id}'
+    metadata:
+      custom: []
+      groupName: Clientes
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Eliminar un cliente (soft delete).'
+      description: 'Marca al cliente como eliminado. No se elimina físicamente de la base de datos.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the customer.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      customer:
+        custom: []
+        name: customer
+        description: 'ID del cliente.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      customer: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 204
+        content: ''
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/customers/{customer}/status'
+    metadata:
+      custom: []
+      groupName: Clientes
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Inactivar / cambiar estado de un cliente.'
+      description: 'Actualiza el estado de un cliente (activo o inactivo) mediante PATCH.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      customer:
+        custom: []
+        name: customer
+        description: 'ID del cliente.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      customer: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      status:
+        custom: []
+        name: status
+        description: 'Nuevo estado del cliente.'
+        required: true
+        example: inactive
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      status: inactive
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "legalName": "Cliente Ejemplo S.A. de C.V.",
+              "status": "inactive",
+              "createdAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The selected status is invalid.",
+            "errors": {
+              "status": ["The selected status is invalid."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -252,135 +870,176 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/clientes
+    uri: 'api/v1/customers/{customer}/plan-history'
     metadata:
       custom: []
-      groupName: Endpoints
+      groupName: Clientes
       groupDescription: ''
-      subgroup: ''
+      subgroup: Consultas
       subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
+      title: 'Obtener el historial de planes de un cliente.'
+      description: 'Devuelve los planes que ha tenido el cliente, ordenados por fecha de inicio (descendente).'
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
+    urlParameters:
+      customer:
+        custom: []
+        name: customer
+        description: 'ID del cliente.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      customer: 1
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters:
-      name:
-        custom: []
-        name: name
-        description: 'Must not be greater than 150 characters.'
-        required: false
-        example: b
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      phone:
-        custom: []
-        name: phone
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: ngzmiyvdljnikhwa
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      legal_name:
-        custom: []
-        name: legal_name
-        description: 'Must not be greater than 150 characters.'
-        required: false
-        example: 'y'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      trade_name:
-        custom: []
-        name: trade_name
-        description: 'Must not be greater than 150 characters.'
-        required: false
-        example: k
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      nrc:
-        custom: []
-        name: nrc
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: cmyuwpwlvqwrsitc
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      search:
-        custom: []
-        name: search
-        description: 'Must not be greater than 150 characters.'
-        required: false
-        example: p
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      desde:
-        custom: []
-        name: desde
-        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-        required: false
-        example: '2026-10-02'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      hasta:
-        custom: []
-        name: hasta
-        description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-        required: false
-        example: '2052-10-25'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      name: b
-      phone: ngzmiyvdljnikhwa
-      legal_name: 'y'
-      trade_name: k
-      nrc: cmyuwpwlvqwrsitc
-      search: p
-      desde: '2026-10-02'
-      hasta: '2052-10-25'
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
     responses:
       -
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 2,
+                "customer_id": 1,
+                "plan_id": 2,
+                "start_date": "2026-10-01",
+                "end_date": null,
+                "plan": {
+                  "id": 2,
+                  "plan_code": "PREMIUM",
+                  "plan_name": "Plan Premium"
+                }
+              }
+            ]
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\Customer]"
+          }
+        headers: []
+        description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/customers/{customer}/plan'
+    metadata:
+      custom: []
+      groupName: Clientes
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Cambiar el plan de suscripción de un cliente.'
+      description: 'Asigna un nuevo plan al cliente, cerrando el historial del plan anterior.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      customer:
+        custom: []
+        name: customer
+        description: 'ID del cliente.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      customer: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      plan_id:
+        custom: []
+        name: plan_id
+        description: 'ID del plan de suscripción a asignar.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      plan_id: 2
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "legalName": "Cliente Ejemplo S.A. de C.V.",
+              "status": "active",
+              "currentPlan": {
+                "id": 2,
+                "planCode": "PREMIUM",
+                "planName": "Plan Premium"
+              },
+              "createdAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "El cliente ya tiene asignado este plan"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The selected plan id is invalid.",
+            "errors": {
+              "plan_id": ["The selected plan id is invalid."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

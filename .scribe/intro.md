@@ -1,13 +1,14 @@
 # Introduction
 
-
+API REST de VERGEL para la gestión de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).
 
 <aside>
-    <strong>Base URL</strong>: <code>http://localhost:8000</code>
+    <strong>Base URL</strong>: <code>http://localhost</code>
 </aside>
 
-    This documentation aims to provide all the information you need to work with our API.
+Esta documentación describe los endpoints disponibles en la API de **VERGEL**.
 
-    <aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-    You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+<aside>Para consumir los endpoints protegidos necesitas un token de acceso. Envíalo como cabecera `Authorization: Bearer {token}`.</aside>
+
+Todos los endpoints requieren autenticación salvo que se indique lo contrario.
 
