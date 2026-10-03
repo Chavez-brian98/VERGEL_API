@@ -1,0 +1,459 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost"
+        }
+    ],
+    "info": {
+        "name": "VERGEL API Documentation",
+        "_postman_id": "4f2d8048-1bb5-4d99-8e9f-38f9c030b2d6",
+        "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Clientes",
+            "description": "",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar clientes.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "architecto",
+                                            "description": "Busca por nombre legal, nombre comercial, correo, tel\u00e9fono, NIT o NRC.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "active",
+                                            "description": "Filtrar por estado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "phone",
+                                            "value": "architecto",
+                                            "description": "Filtrar por tel\u00e9fono (coincidencia parcial).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "architecto",
+                                            "description": "date Filtrar por fecha de creaci\u00f3n desde (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "architecto",
+                                            "description": "date Filtrar por fecha de creaci\u00f3n hasta (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de resultados por p\u00e1gina.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers?search=architecto&status=active&phone=architecto&desde=architecto&hasta=architecto&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n      \"tradeName\": \"Cliente Ejemplo\",\n      \"taxId\": \"0614-260290-101-1\",\n      \"nrc\": \"123456-7\",\n      \"phone\": \"7000-0000\",\n      \"status\": \"active\",\n      \"currentPlanName\": \"Plan B\u00e1sico\",\n      \"cashBalance\": 250.5,\n      \"loyaltyPoints\": 120,\n      \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/customers?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/customers?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/localhost\/api\/v1\/customers\",\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener detalle completo de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the customer."
+                                        },
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 1,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Incluye el plan actual, la wallet y los puntos de lealtad del cliente."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n    \"tradeName\": \"Cliente Ejemplo\",\n    \"taxId\": \"0614-260290-101-1\",\n    \"nrc\": \"123456-7\",\n    \"economicActivity\": \"Venta de servicios\",\n    \"address\": \"Colonia Centro, San Salvador\",\n    \"municipality\": \"San Salvador\",\n    \"department\": \"San Salvador\",\n    \"phone\": \"7000-0000\",\n    \"email\": \"cliente@example.com\",\n    \"status\": \"active\",\n    \"visitFrequency\": {\n      \"value\": 30,\n      \"unit\": \"days\"\n    },\n    \"currentPlan\": {\n      \"id\": 1,\n      \"planCode\": \"BASICO\",\n      \"planName\": \"Plan B\u00e1sico\"\n    },\n    \"wallet\": {\n      \"cashBalance\": 250.5,\n      \"reservedSubscriptionBalance\": 0\n    },\n    \"loyaltyPoints\": {\n      \"pointsBalance\": 120\n    },\n    \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Customer]\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el historial de planes de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/plan-history",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/plan-history",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 1,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve los planes que ha tenido el cliente, ordenados por fecha de inicio (descendente)."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 2,\n      \"customer_id\": 1,\n      \"plan_id\": 2,\n      \"start_date\": \"2026-10-01\",\n      \"end_date\": null,\n      \"plan\": {\n        \"id\": 2,\n        \"plan_code\": \"PREMIUM\",\n        \"plan_name\": \"Plan Premium\"\n      }\n    }\n  ]\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Customer]\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar un nuevo cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"legal_name\":\"Cliente Ejemplo S.A. de C.V.\",\"trade_name\":\"Cliente Ejemplo\",\"tax_id\":\"0614-260290-101-1\",\"nrc\":\"123456-7\",\"economic_activity\":\"Venta de servicios\",\"address\":\"Colonia Centro, San Salvador\",\"department\":\"San Salvador\",\"municipality\":\"San Salvador\",\"phone\":\"7000-0000\",\"email\":\"cliente@example.com\",\"visit_frequency_value\":30,\"visit_frequency_unit\":\"days\",\"current_plan_id\":1}"
+                                },
+                                "description": "Crea un cliente y, como parte del proceso, inicializa su wallet y sus puntos de lealtad."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n    \"tradeName\": \"Cliente Ejemplo\",\n    \"taxId\": \"0614-260290-101-1\",\n    \"nrc\": \"123456-7\",\n    \"economicActivity\": \"Venta de servicios\",\n    \"address\": \"Colonia Centro, San Salvador\",\n    \"municipality\": \"San Salvador\",\n    \"department\": \"San Salvador\",\n    \"phone\": \"7000-0000\",\n    \"email\": \"cliente@example.com\",\n    \"status\": \"active\",\n    \"visitFrequency\": null,\n    \"currentPlan\": null,\n    \"wallet\": {\n      \"cashBalance\": 0,\n      \"reservedSubscriptionBalance\": 0\n    },\n    \"loyaltyPoints\": null,\n    \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The legal name field is required.\",\n  \"errors\": {\n    \"legal_name\": [\"The legal name field is required.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Actualizar informaci\u00f3n del cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the customer."
+                                        },
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 1,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"legal_name\":\"Cliente Actualizado S.A. de C.V.\",\"trade_name\":\"Cliente Actualizado\",\"tax_id\":\"0614-260290-101-1\",\"nrc\":\"123456-7\",\"economic_activity\":\"Venta de servicios\",\"address\":\"Colonia Centro, San Salvador\",\"department\":\"San Salvador\",\"municipality\":\"San Salvador\",\"phone\":\"7000-0000\",\"email\":\"cliente@example.com\",\"visit_frequency_value\":30,\"visit_frequency_unit\":\"days\"}"
+                                },
+                                "description": "Actualiza los datos editables de un cliente existente."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"legalName\": \"Cliente Actualizado S.A. de C.V.\",\n    \"status\": \"active\",\n    \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The phone has already been taken.\",\n  \"errors\": {\n    \"phone\": [\"The phone has already been taken.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Eliminar un cliente (soft delete).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the customer."
+                                        },
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 1,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Marca al cliente como eliminado. No se elimina f\u00edsicamente de la base de datos."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Inactivar \/ cambiar estado de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/status",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/status",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 1,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"status\":\"inactive\"}"
+                                },
+                                "description": "Actualiza el estado de un cliente (activo o inactivo) mediante PATCH."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n    \"status\": \"inactive\",\n    \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The selected status is invalid.\",\n  \"errors\": {\n    \"status\": [\"The selected status is invalid.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cambiar el plan de suscripci\u00f3n de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/plan",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/plan",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 1,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"plan_id\":2}"
+                                },
+                                "description": "Asigna un nuevo plan al cliente, cerrando el historial del plan anterior."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n    \"status\": \"active\",\n    \"currentPlan\": {\n      \"id\": 2,\n      \"planCode\": \"PREMIUM\",\n      \"planName\": \"Plan Premium\"\n    },\n    \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 400,
+                                    "body": "{\n  \"message\": \"El cliente ya tiene asignado este plan\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The selected plan id is invalid.\",\n  \"errors\": {\n    \"plan_id\": [\"The selected plan id is invalid.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}

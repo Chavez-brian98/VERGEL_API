@@ -24,7 +24,7 @@ Laravel 12 (installed v12.68.0) REST API, PHP 8.4 (`composer.json` allows ^8.2),
 
 - Tests: `composer test` (runs `artisan config:clear` then `artisan test`). Single test: `php artisan test --filter=<name>`; suites: `--testsuite=Unit|Feature`. Tests need an `APP_KEY` and the bootstrap/cache dir (see above).
 - Formatting: `laravel/pint` installed, default preset, no `pint.json`. Run `./vendor/bin/pint`.
-- **Scribe API docs** (`knuckleswtf/scribe`): annotated via docblocks (`@group`, `@subgroup`, `@queryParam`, `@bodyParam`, `@response`) in controllers; config in `config/scribe.php` (auth = Sanctum bearer). Regenerate with `php artisan scribe:generate` → served at `/docs`, `/docs.openapi`, `/docs.postman`. Requires the `bootstrap/cache` + `storage/framework/*` dirs (above).
+- **Scribe API docs** (`knuckleswtf/scribe`): annotated via docblocks (`@group`, `@subgroup`, `@queryParam`, `@bodyParam`, `@response`) in controllers; config in `config/scribe.php` (auth = Sanctum bearer, `type = static`). Regenerate with `php artisan scribe:generate` → writes static HTML to repo-root `docs/` (commit it; `.nojekyll` included so GitHub Pages serves it raw). No `/docs` web route in `static` mode. Requires the `bootstrap/cache` + `storage/framework/*` dirs (above).
 - `npm run build` / `npm run dev` for Vite/Tailwind; only needed for the default blade skeleton — the API itself has no frontend deps.
 - No CI workflows, no codegen, no other task runner.
 
