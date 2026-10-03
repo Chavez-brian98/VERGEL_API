@@ -59,9 +59,19 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+'options' => extension_loaded('pdo_mysql') ? array_filter([
+    (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => (function () {
+        $ca = env('MYSQL_ATTR_SSL_CA');
+
+        if (! $ca) {
+            return;
+        }
+
+        return (str_starts_with($ca, '/') || str_starts_with($ca, '\\') || preg_match('/^[A-Za-z]:[\/\\\\]/', $ca))
+            ? $ca
+            : base_path($ca);
+    })(),
+]) : [],
         ],
 
         'mariadb' => [
@@ -79,9 +89,19 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+'options' => extension_loaded('pdo_mysql') ? array_filter([
+    (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => (function () {
+        $ca = env('MYSQL_ATTR_SSL_CA');
+
+        if (! $ca) {
+            return;
+        }
+
+        return (str_starts_with($ca, '/') || str_starts_with($ca, '\\') || preg_match('/^[A-Za-z]:[\/\\\\]/', $ca))
+            ? $ca
+            : base_path($ca);
+    })(),
+]) : [],
         ],
 
         'pgsql' => [

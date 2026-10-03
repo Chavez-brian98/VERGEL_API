@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: vergel-api
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    branch: develop
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        sync: false
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: https://vergel-api.onrender.com
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: mysql-324f9ec9-vergel-3145.d.aivencloud.com
+      - key: DB_PORT
+        value: "27841"
+      - key: DB_DATABASE
+        value: defaultdb
+      - key: DB_USERNAME
+        value: avnadmin
+      - key: DB_PASSWORD
+        sync: false
+      - key: MYSQL_ATTR_SSL_CA
+        value: docker/certs/aiven-ca.pem
+      - key: SESSION_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: CACHE_STORE
+        value: database

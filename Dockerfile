@@ -1,6 +1,6 @@
 FROM php:8.4-apache
 
-# Instalar dependencias del sistema requeridas
+# Dependencias del sistema requeridas
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -9,27 +9,42 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    libzip-dev
+    libzip-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Limpiar caché de apt
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Instalar extensiones de PHP necesarias para Laravel
+# Extensiones PHP necesarias para Laravel
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Instalar la extensión de Redis para PHP
+# Extensión phpredis
 RUN pecl install redis && docker-php-ext-enable redis
 
-# Instalar Composer
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Instalar Node.js (versión 22 LTS) y npm
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-    && apt-get install -y nodejs
-
-# Configurar Apache para Laravel: mod_rewrite y sitio apuntando a public/
+# Apache: mod_rewrite y vhost apuntando a public/
 RUN a2enmod rewrite
 COPY docker/apache/default.conf /etc/apache2/sites-available/000-default.conf
 
-# Configurar el directorio de trabajo
+# Entrypoint: adapta Apache a $PORT (Render) o 80 (local)
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 WORKDIR /var/www
+
+# Copiar la aplicación y las dependencias
+COPY . /var/www
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Directorios que Laravel necesita en tiempo de ejecución
+RUN mkdir -p \
+    bootstrap/cache \
+    storage/framework/views \
+    storage/framework/cache/data \
+    storage/framework/sessions \
+    storage/framework/testing \
+    storage/logs \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["apache2-foreground"]

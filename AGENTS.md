@@ -28,6 +28,16 @@ Laravel 12 (installed v12.68.0) REST API, PHP 8.4 (`composer.json` allows ^8.2),
 - `npm run build` / `npm run dev` for Vite/Tailwind; only needed for the default blade skeleton — the API itself has no frontend deps.
 - No CI workflows, no codegen, no other task runner.
 
+## Deploy a Render.com
+
+- **Dockerfile** (`php:8.4-apache`): instala `pdo_mysql mbstring exif pcntl bcmath gd zip` + `redis` (pecl), `composer install --no-dev --optimize-autoloader`, vhost Apache apuntando a `/var/www/public` (`docker/apache/default.conf`).
+- **`docker/entrypoint.sh`**: renderiza `$PORT` de Render sobre `ports.conf`/vhost (`Listen`/`<VirtualHost *:PORT>`); con `PORT` sin setear usa `80` (docker-compose local). Entrada: `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]`, `CMD ["apache2-foreground"]`.
+- **`.dockerignore`**: excluye `.env`, `vendor/`, `docs/`, `storage/framework/*`, `bootstrap/cache/*`, etc.
+- **CA de Aiven** commiteada en `docker/certs/aiven-ca.pem` (certificado público, no es secreto). `MYSQL_ATTR_SSL_CA=docker/certs/aiven-ca.pem` se resuelve relativo a `base_path()` en `config/database.php`.
+- **Env vars vía `render.yaml`** (Blueprint, `runtime: docker`): `APP_KEY`/`DB_PASSWORD` como `sync: false` (se piden en el dashboard), `MYSQL_ATTR_SSL_CA=docker/certs/aiven-ca.pem`, drivers `database` para session/queue/cache, `LOG_CHANNEL=stderr`.
+- Health check: `healthCheckPath: /` (la ruta web raíz devuelve 200).
+- Storage efímero por defecto en Render; si se suben archivos, montar un Disk en `/var/www/storage`.
+
 ## Code conventions (already established)
 
 - Models consistently use `$fillable` + `$casts`; most use `SoftDeletes`; explicit `protected $table` only for non-plural names (`audit_log`, `customer_plan_history`, `country_config`).
