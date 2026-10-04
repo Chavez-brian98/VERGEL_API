@@ -1,3 +1,7 @@
+# Cambia esta fecha para invalidar el caché de capas de la imagen (Render reutiliza capas cacheadas).
+# Si alguna vez dudás de que esté corriendo una imagen vieja, bumpéala y redesplegá.
+ARG RENDER_CACHE_BUST=2026-10-04-3
+
 FROM php:8.4-apache
 
 # Dependencias del sistema requeridas
@@ -10,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && echo "cache_bust: ${RENDER_CACHE_BUST}"
 
 # Extensiones PHP necesarias para Laravel
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
@@ -52,4 +57,4 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD ["/bin/bash", "-c", "set -e; trap 'echo \"[cmd-vergel] saliendo, codigo=$?\" >&2' EXIT; PORT=\"${PORT:-80}\"; echo \"[cmd-vergel] CMD iniciado, PORT=${PORT}\" >&2; sed -i \"s/^Listen .*/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s@<VirtualHost \\*:[0-9]*>@<VirtualHost *:${PORT}>@\" /etc/apache2/sites-available/000-default.conf; apache2ctl -t; exec apache2-foreground"]

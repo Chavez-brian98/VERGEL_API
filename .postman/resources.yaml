@@ -1,0 +1,12 @@
+# Use this workspace to collaborate
+workspace:
+  id: 81c04f75-5ef6-427b-8309-2604c0bcca0b
+
+localResources:
+  collections:
+    - ../Customers_Postman_Collection.json
+    - ../docs/collection.json
+    - ../storage/app/private/scribe/collection.json
+  specs:
+    - ../docs/openapi.yaml
+    - ../storage/app/private/scribe/openapi.yaml
