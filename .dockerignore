@@ -1,0 +1,15 @@
+.git
+.gitignore
+vendor
+node_modules
+.env
+.env.*
+!.env.example
+docs
+.scribe
+.idea
+storage/certs
+storage/logs/*
+storage/framework/*
+bootstrap/cache/*
+*.md

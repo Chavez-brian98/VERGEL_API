@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: vergel-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    branch: master
+    autoDeploy: true
+    dockerCommand: >
+      sh -c 'PORT="${PORT:-80}"; echo "[dockerCommand] boot, PORT=${PORT}"; sed -i "s/^Listen .*/Listen ${PORT}/" /etc/apache2/ports.conf; sed -i "s@<VirtualHost \*:[0-9]*>@<VirtualHost *:${PORT}>@" /etc/apache2/sites-available/000-default.conf; apache2ctl -t; exec apache2-foreground'
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        sync: false
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: https://vergel-api.onrender.com
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: mysql-324f9ec9-vergel-3145.d.aivencloud.com
+      - key: DB_PORT
+        value: "27841"
+      - key: DB_DATABASE
+        value: defaultdb
+      - key: DB_USERNAME
+        value: avnadmin
+      - key: DB_PASSWORD
+        sync: false
+      - key: MYSQL_ATTR_SSL_CA
+        value: docker/certs/aiven-ca.pem
+      - key: SESSION_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: CACHE_STORE
+        value: database

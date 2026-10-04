@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
+    public function up(): void
     {
         Schema::create('loyalty_points_transactions', function (Blueprint $table) {
             $table->id();
@@ -20,7 +20,7 @@ public function up(): void
                 'redeemed',
                 'referral',
                 'promotional',
-                'special_bonus'
+                'special_bonus',
             ]);
             $table->integer('points');
             $table->string('description', 255)->nullable();
