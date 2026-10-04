@@ -1,6 +1,6 @@
 # Cambia esta fecha para invalidar el caché de capas de la imagen (Render reutiliza capas cacheadas).
 # Si alguna vez dudás de que esté corriendo una imagen vieja, bumpéala y redesplegá.
-ARG RENDER_CACHE_BUST=2026-10-04
+ARG RENDER_CACHE_BUST=2026-10-04-2
 
 FROM php:8.4-apache
 
@@ -57,4 +57,4 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD ["/bin/bash", "-c", "set -e; PORT=\"${PORT:-80}\"; echo \"[cmd-vergel] PORT=${PORT} aplicando sed\"; sed -i \"s/^Listen .*/Listen ${PORT}/\" /etc/apache2/ports.conf; sed -i \"s@<VirtualHost \\*:[0-9]*>@<VirtualHost *:${PORT}>@\" /etc/apache2/sites-available/000-default.conf; apache2ctl -t; exec apache2-foreground"]
