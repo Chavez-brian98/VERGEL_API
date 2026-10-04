@@ -2,7 +2,7 @@ services:
   - type: web
     name: vergel-api
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./Dockerfile
     branch: develop
     autoDeploy: true

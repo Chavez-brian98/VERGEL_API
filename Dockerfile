@@ -31,20 +31,22 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /var/www
 
-# Copiar la aplicación y las dependencias
+# Copiar la aplicación
 COPY . /var/www
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Directorios que Laravel necesita en tiempo de ejecución
+# Directorios que Laravel necesita para composer install y en tiempo de ejecución
 RUN mkdir -p \
     bootstrap/cache \
     storage/framework/views \
     storage/framework/cache/data \
     storage/framework/sessions \
     storage/framework/testing \
-    storage/logs \
-    && chown -R www-data:www-data storage bootstrap/cache
+    storage/logs
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Reutilizamos "www-data" los directorios que el proceso Apache escribe
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["apache2-foreground"]
