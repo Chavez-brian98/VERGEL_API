@@ -1,3 +1,7 @@
+# Cambia esta fecha para invalidar el caché de capas de la imagen (Render reutiliza capas cacheadas).
+# Si alguna vez dudás de que esté corriendo una imagen vieja, bumpéala y redesplegá.
+ARG RENDER_CACHE_BUST=2026-10-04
+
 FROM php:8.4-apache
 
 # Dependencias del sistema requeridas
@@ -10,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && echo "cache_bust: ${RENDER_CACHE_BUST}"
 
 # Extensiones PHP necesarias para Laravel
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip

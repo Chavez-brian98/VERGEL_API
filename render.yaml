@@ -4,7 +4,7 @@ services:
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
-    branch: develop
+    branch: feature-deployment
     autoDeploy: true
     healthCheckPath: /
     envVars:
