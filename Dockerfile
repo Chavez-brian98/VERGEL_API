@@ -43,6 +43,9 @@ RUN mkdir -p \
     storage/framework/testing \
     storage/logs
 
+# Defensa contra contexto incompleto: public/ debe haber llegado a la imagen
+RUN test -f /var/www/public/index.php
+
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Reutilizamos "www-data" los directorios que el proceso Apache escribe
