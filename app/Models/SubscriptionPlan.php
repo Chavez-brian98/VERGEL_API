@@ -22,6 +22,17 @@ class SubscriptionPlan extends Model
         'active',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'frequency_value' => 'integer',
+            'visit_count' => 'integer',
+            'discount_percentage' => 'decimal:2',
+            'loyalty_points_multiplier' => 'decimal:2',
+            'active' => 'boolean',
+        ];
+    }
+
     public function customers(): HasMany
     {
         return $this->hasMany(Customer::class, 'current_plan_id');

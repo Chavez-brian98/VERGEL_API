@@ -107,6 +107,44 @@
                                                                     </ul>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-planes-de-suscripcion" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="planes-de-suscripcion">
+                    <a href="#planes-de-suscripcion">Planes de Suscripción</a>
+                </li>
+                                    <ul id="tocify-subheader-planes-de-suscripcion" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="planes-de-suscripcion-consultas">
+                                <a href="#planes-de-suscripcion-consultas">Consultas</a>
+                            </li>
+                                                            <ul id="tocify-subheader-planes-de-suscripcion-consultas" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="planes-de-suscripcion-GETapi-v1-subscription-plans">
+                                            <a href="#planes-de-suscripcion-GETapi-v1-subscription-plans">Listar y filtrar planes de suscripción.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="planes-de-suscripcion-GETapi-v1-subscription-plans--id-">
+                                            <a href="#planes-de-suscripcion-GETapi-v1-subscription-plans--id-">Obtener detalle de un plan de suscripción.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="planes-de-suscripcion-GETapi-v1-subscription-plans--plan--subscribers">
+                                            <a href="#planes-de-suscripcion-GETapi-v1-subscription-plans--plan--subscribers">Listar los clientes suscritos a un plan.</a>
+                                        </li>
+                                                                    </ul>
+                                                                                <li class="tocify-item level-2" data-unique="planes-de-suscripcion-escritura">
+                                <a href="#planes-de-suscripcion-escritura">Escritura</a>
+                            </li>
+                                                            <ul id="tocify-subheader-planes-de-suscripcion-escritura" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="planes-de-suscripcion-POSTapi-v1-subscription-plans">
+                                            <a href="#planes-de-suscripcion-POSTapi-v1-subscription-plans">Crear un plan de suscripción.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="planes-de-suscripcion-PUTapi-v1-subscription-plans--id-">
+                                            <a href="#planes-de-suscripcion-PUTapi-v1-subscription-plans--id-">Actualizar un plan de suscripción.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="planes-de-suscripcion-DELETEapi-v1-subscription-plans--id-">
+                                            <a href="#planes-de-suscripcion-DELETEapi-v1-subscription-plans--id-">Eliminar un plan de suscripción (soft delete).</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="planes-de-suscripcion-PATCHapi-v1-subscription-plans--plan--status">
+                                            <a href="#planes-de-suscripcion-PATCHapi-v1-subscription-plans--plan--status">Activar o desactivar un plan.</a>
+                                        </li>
+                                                                    </ul>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-autenticacion" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="autenticacion">
                     <a href="#autenticacion">Autenticación</a>
@@ -2042,6 +2080,1680 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
+                <h1 id="planes-de-suscripcion">Planes de Suscripción</h1>
+
+    
+
+                        <h2 id="planes-de-suscripcion-consultas">Consultas</h2>
+                                                    <h2 id="planes-de-suscripcion-GETapi-v1-subscription-plans">Listar y filtrar planes de suscripción.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Obtiene una lista paginada de planes. Por defecto solo devuelve planes activos.</p>
+
+<span id="example-requests-GETapi-v1-subscription-plans">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/subscription-plans?active=1&amp;search=premium&amp;frequency_unit=days&amp;limit=15" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/subscription-plans"
+);
+
+const params = {
+    "active": "1",
+    "search": "premium",
+    "frequency_unit": "days",
+    "limit": "15",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-subscription-plans">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;planCode&quot;: &quot;PLAN-BASIC&quot;,
+            &quot;planName&quot;: &quot;Mantenimiento Mensual B&aacute;sico&quot;,
+            &quot;frequencyValue&quot;: 30,
+            &quot;frequencyUnit&quot;: &quot;days&quot;,
+            &quot;visitCount&quot;: 1,
+            &quot;maintenanceType&quot;: &quot;Jardiner&iacute;a&quot;,
+            &quot;discountPercentage&quot;: 5,
+            &quot;loyaltyPointsMultiplier&quot;: 1,
+            &quot;active&quot;: true,
+            &quot;activeSubscribersCount&quot;: 3,
+            &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/api/v1/subscription-plans?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/api/v1/subscription-plans?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;path&quot;: &quot;http://localhost/api/v1/subscription-plans&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-subscription-plans" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-subscription-plans"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-subscription-plans"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-subscription-plans" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-subscription-plans">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-subscription-plans" data-method="GET"
+      data-path="api/v1/subscription-plans"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-subscription-plans', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-subscription-plans"
+                    onclick="tryItOut('GETapi-v1-subscription-plans');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-subscription-plans"
+                    onclick="cancelTryOut('GETapi-v1-subscription-plans');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-subscription-plans"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/subscription-plans</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-v1-subscription-plans"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-subscription-plans"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-subscription-plans"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="GETapi-v1-subscription-plans" style="display: none">
+            <input type="radio" name="active"
+                   value="1"
+                   data-endpoint="GETapi-v1-subscription-plans"
+                   data-component="query"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETapi-v1-subscription-plans" style="display: none">
+            <input type="radio" name="active"
+                   value="0"
+                   data-endpoint="GETapi-v1-subscription-plans"
+                   data-component="query"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Filtrar por estado (true/activo o false/inactivo). Por defecto solo activos. Example: <code>true</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-subscription-plans"
+               value="premium"
+               data-component="query">
+    <br>
+<p>Busca por código o nombre del plan. Example: <code>premium</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>frequency_unit</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="frequency_unit"                data-endpoint="GETapi-v1-subscription-plans"
+               value="days"
+               data-component="query">
+    <br>
+<p>Filtrar por unidad de frecuencia. Example: <code>days</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-subscription-plans"
+               value="15"
+               data-component="query">
+    <br>
+<p>Cantidad de resultados por página. Example: <code>15</code></p>
+            </div>
+                </form>
+
+                    <h2 id="planes-de-suscripcion-GETapi-v1-subscription-plans--id-">Obtener detalle de un plan de suscripción.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Devuelve los datos del plan junto con la cantidad de clientes activos suscritos.</p>
+
+<span id="example-requests-GETapi-v1-subscription-plans--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/subscription-plans/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/subscription-plans/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-subscription-plans--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;planCode&quot;: &quot;PLAN-BASIC&quot;,
+        &quot;planName&quot;: &quot;Mantenimiento Mensual B&aacute;sico&quot;,
+        &quot;frequencyValue&quot;: 30,
+        &quot;frequencyUnit&quot;: &quot;days&quot;,
+        &quot;visitCount&quot;: 1,
+        &quot;maintenanceType&quot;: &quot;Jardiner&iacute;a&quot;,
+        &quot;discountPercentage&quot;: 5,
+        &quot;loyaltyPointsMultiplier&quot;: 1,
+        &quot;active&quot;: true,
+        &quot;activeSubscribersCount&quot;: 3,
+        &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [App\\Models\\SubscriptionPlan]&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-subscription-plans--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-subscription-plans--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-subscription-plans--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-subscription-plans--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-subscription-plans--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-subscription-plans--id-" data-method="GET"
+      data-path="api/v1/subscription-plans/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-subscription-plans--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-subscription-plans--id-"
+                    onclick="tryItOut('GETapi-v1-subscription-plans--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-subscription-plans--id-"
+                    onclick="cancelTryOut('GETapi-v1-subscription-plans--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-subscription-plans--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/subscription-plans/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-v1-subscription-plans--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-subscription-plans--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-subscription-plans--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-v1-subscription-plans--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the subscription plan. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>subscription_plan</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="subscription_plan"                data-endpoint="GETapi-v1-subscription-plans--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID del plan. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="planes-de-suscripcion-GETapi-v1-subscription-plans--plan--subscribers">Listar los clientes suscritos a un plan.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Devuelve los clientes cuyo plan actual es el indicado.</p>
+
+<span id="example-requests-GETapi-v1-subscription-plans--plan--subscribers">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/subscription-plans/1/subscribers?limit=15" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/subscription-plans/1/subscribers"
+);
+
+const params = {
+    "limit": "15",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-subscription-plans--plan--subscribers">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;,
+            &quot;tradeName&quot;: &quot;Cliente Ejemplo&quot;,
+            &quot;taxId&quot;: &quot;0614-260290-101-1&quot;,
+            &quot;nrc&quot;: &quot;123456-7&quot;,
+            &quot;phone&quot;: &quot;7000-0000&quot;,
+            &quot;status&quot;: &quot;active&quot;,
+            &quot;currentPlanName&quot;: &quot;Mantenimiento Mensual B&aacute;sico&quot;,
+            &quot;cashBalance&quot;: 0,
+            &quot;loyaltyPoints&quot;: 0,
+            &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/api/v1/subscription-plans/1/subscribers?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/api/v1/subscription-plans/1/subscribers?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;path&quot;: &quot;http://localhost/api/v1/subscription-plans/1/subscribers&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [App\\Models\\SubscriptionPlan]&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-subscription-plans--plan--subscribers" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-subscription-plans--plan--subscribers"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-subscription-plans--plan--subscribers"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-subscription-plans--plan--subscribers" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-subscription-plans--plan--subscribers">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-subscription-plans--plan--subscribers" data-method="GET"
+      data-path="api/v1/subscription-plans/{plan}/subscribers"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-subscription-plans--plan--subscribers', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-subscription-plans--plan--subscribers"
+                    onclick="tryItOut('GETapi-v1-subscription-plans--plan--subscribers');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-subscription-plans--plan--subscribers"
+                    onclick="cancelTryOut('GETapi-v1-subscription-plans--plan--subscribers');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-subscription-plans--plan--subscribers"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/subscription-plans/{plan}/subscribers</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-v1-subscription-plans--plan--subscribers"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-subscription-plans--plan--subscribers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-subscription-plans--plan--subscribers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>plan</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="plan"                data-endpoint="GETapi-v1-subscription-plans--plan--subscribers"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID del plan. Example: <code>1</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-subscription-plans--plan--subscribers"
+               value="15"
+               data-component="query">
+    <br>
+<p>Cantidad de resultados por página. Example: <code>15</code></p>
+            </div>
+                </form>
+
+                                <h2 id="planes-de-suscripcion-escritura">Escritura</h2>
+                                                    <h2 id="planes-de-suscripcion-POSTapi-v1-subscription-plans">Crear un plan de suscripción.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Registra un nuevo plan en el catálogo. El estado por defecto es activo.</p>
+
+<span id="example-requests-POSTapi-v1-subscription-plans">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/subscription-plans" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"plan_code\": \"PLAN-BASIC\",
+    \"plan_name\": \"Mantenimiento Mensual Básico\",
+    \"frequency_value\": 30,
+    \"frequency_unit\": \"days\",
+    \"visit_count\": 1,
+    \"maintenance_type\": \"Jardinería\",
+    \"discount_percentage\": \"5\",
+    \"loyalty_points_multiplier\": \"1\",
+    \"active\": true
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/subscription-plans"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "plan_code": "PLAN-BASIC",
+    "plan_name": "Mantenimiento Mensual Básico",
+    "frequency_value": 30,
+    "frequency_unit": "days",
+    "visit_count": 1,
+    "maintenance_type": "Jardinería",
+    "discount_percentage": "5",
+    "loyalty_points_multiplier": "1",
+    "active": true
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-subscription-plans">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;planCode&quot;: &quot;PLAN-BASIC&quot;,
+        &quot;planName&quot;: &quot;Mantenimiento Mensual B&aacute;sico&quot;,
+        &quot;frequencyValue&quot;: 30,
+        &quot;frequencyUnit&quot;: &quot;days&quot;,
+        &quot;visitCount&quot;: 1,
+        &quot;maintenanceType&quot;: &quot;Jardiner&iacute;a&quot;,
+        &quot;discountPercentage&quot;: 5,
+        &quot;loyaltyPointsMultiplier&quot;: 1,
+        &quot;active&quot;: true,
+        &quot;activeSubscribersCount&quot;: 0,
+        &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The plan code has already been taken.&quot;,
+    &quot;errors&quot;: {
+        &quot;plan_code&quot;: [
+            &quot;The plan code has already been taken.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-subscription-plans" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-subscription-plans"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-subscription-plans"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-subscription-plans" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-subscription-plans">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-subscription-plans" data-method="POST"
+      data-path="api/v1/subscription-plans"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-subscription-plans', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-subscription-plans"
+                    onclick="tryItOut('POSTapi-v1-subscription-plans');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-subscription-plans"
+                    onclick="cancelTryOut('POSTapi-v1-subscription-plans');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-subscription-plans"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/subscription-plans</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-subscription-plans"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>plan_code</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="plan_code"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="PLAN-BASIC"
+               data-component="body">
+    <br>
+<p>Código único del plan. Example: <code>PLAN-BASIC</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>plan_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="plan_name"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="Mantenimiento Mensual Básico"
+               data-component="body">
+    <br>
+<p>Nombre del plan. Example: <code>Mantenimiento Mensual Básico</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>frequency_value</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="frequency_value"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="30"
+               data-component="body">
+    <br>
+<p>Valor de la frecuencia. Example: <code>30</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>frequency_unit</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="frequency_unit"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="days"
+               data-component="body">
+    <br>
+<p>Unidad de frecuencia (days, weeks, months). Example: <code>days</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>visit_count</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="visit_count"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="1"
+               data-component="body">
+    <br>
+<p>Cantidad de visitas por ciclo. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>maintenance_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="maintenance_type"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="Jardinería"
+               data-component="body">
+    <br>
+<p>Tipo de mantenimiento. Example: <code>Jardinería</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>discount_percentage</code></b>&nbsp;&nbsp;
+<small>numeric</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="discount_percentage"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="5"
+               data-component="body">
+    <br>
+<p>Porcentaje de descuento (0-100). Example: <code>5</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>loyalty_points_multiplier</code></b>&nbsp;&nbsp;
+<small>numeric</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="loyalty_points_multiplier"                data-endpoint="POSTapi-v1-subscription-plans"
+               value="1"
+               data-component="body">
+    <br>
+<p>Multiplicador de puntos de lealtad (mínimo 1). Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="POSTapi-v1-subscription-plans" style="display: none">
+            <input type="radio" name="active"
+                   value="true"
+                   data-endpoint="POSTapi-v1-subscription-plans"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-v1-subscription-plans" style="display: none">
+            <input type="radio" name="active"
+                   value="false"
+                   data-endpoint="POSTapi-v1-subscription-plans"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Estado del plan. Example: <code>true</code></p>
+        </div>
+        </form>
+
+                    <h2 id="planes-de-suscripcion-PUTapi-v1-subscription-plans--id-">Actualizar un plan de suscripción.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Actualiza de forma parcial los datos editables del plan. Registra la operación en auditoría.</p>
+
+<span id="example-requests-PUTapi-v1-subscription-plans--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "http://localhost/api/v1/subscription-plans/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"plan_code\": \"PLAN-BASIC\",
+    \"plan_name\": \"Mantenimiento Mensual Básico v2\",
+    \"frequency_value\": 30,
+    \"frequency_unit\": \"days\",
+    \"visit_count\": 3,
+    \"maintenance_type\": \"Jardinería\",
+    \"discount_percentage\": \"12.5\",
+    \"loyalty_points_multiplier\": \"1\",
+    \"active\": true
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/subscription-plans/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "plan_code": "PLAN-BASIC",
+    "plan_name": "Mantenimiento Mensual Básico v2",
+    "frequency_value": 30,
+    "frequency_unit": "days",
+    "visit_count": 3,
+    "maintenance_type": "Jardinería",
+    "discount_percentage": "12.5",
+    "loyalty_points_multiplier": "1",
+    "active": true
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-v1-subscription-plans--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;planCode&quot;: &quot;PLAN-BASIC&quot;,
+        &quot;planName&quot;: &quot;Mantenimiento Mensual B&aacute;sico v2&quot;,
+        &quot;frequencyValue&quot;: 30,
+        &quot;frequencyUnit&quot;: &quot;days&quot;,
+        &quot;visitCount&quot;: 3,
+        &quot;maintenanceType&quot;: &quot;Jardiner&iacute;a&quot;,
+        &quot;discountPercentage&quot;: 12.5,
+        &quot;loyaltyPointsMultiplier&quot;: 1,
+        &quot;active&quot;: true,
+        &quot;activeSubscribersCount&quot;: 0,
+        &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Plan no encontrado&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The plan code has already been taken.&quot;,
+    &quot;errors&quot;: {
+        &quot;plan_code&quot;: [
+            &quot;The plan code has already been taken.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-v1-subscription-plans--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-v1-subscription-plans--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-v1-subscription-plans--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-v1-subscription-plans--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-v1-subscription-plans--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-v1-subscription-plans--id-" data-method="PUT"
+      data-path="api/v1/subscription-plans/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-subscription-plans--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-v1-subscription-plans--id-"
+                    onclick="tryItOut('PUTapi-v1-subscription-plans--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-v1-subscription-plans--id-"
+                    onclick="cancelTryOut('PUTapi-v1-subscription-plans--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-v1-subscription-plans--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/v1/subscription-plans/{id}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/subscription-plans/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the subscription plan. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>subscription_plan</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="subscription_plan"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID del plan. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>plan_code</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="plan_code"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="PLAN-BASIC"
+               data-component="body">
+    <br>
+<p>Código único del plan. Example: <code>PLAN-BASIC</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>plan_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="plan_name"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="Mantenimiento Mensual Básico v2"
+               data-component="body">
+    <br>
+<p>Nombre del plan. Example: <code>Mantenimiento Mensual Básico v2</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>frequency_value</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="frequency_value"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="30"
+               data-component="body">
+    <br>
+<p>Valor de la frecuencia. Example: <code>30</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>frequency_unit</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="frequency_unit"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="days"
+               data-component="body">
+    <br>
+<p>Unidad de frecuencia (days, weeks, months). Example: <code>days</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>visit_count</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="visit_count"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="3"
+               data-component="body">
+    <br>
+<p>Cantidad de visitas por ciclo. Example: <code>3</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>maintenance_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="maintenance_type"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="Jardinería"
+               data-component="body">
+    <br>
+<p>Tipo de mantenimiento. Example: <code>Jardinería</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>discount_percentage</code></b>&nbsp;&nbsp;
+<small>numeric</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="discount_percentage"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="12.5"
+               data-component="body">
+    <br>
+<p>Porcentaje de descuento (0-100). Example: <code>12.5</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>loyalty_points_multiplier</code></b>&nbsp;&nbsp;
+<small>numeric</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="loyalty_points_multiplier"                data-endpoint="PUTapi-v1-subscription-plans--id-"
+               value="1"
+               data-component="body">
+    <br>
+<p>Multiplicador de puntos de lealtad (mínimo 1). Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="PUTapi-v1-subscription-plans--id-" style="display: none">
+            <input type="radio" name="active"
+                   value="true"
+                   data-endpoint="PUTapi-v1-subscription-plans--id-"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PUTapi-v1-subscription-plans--id-" style="display: none">
+            <input type="radio" name="active"
+                   value="false"
+                   data-endpoint="PUTapi-v1-subscription-plans--id-"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Estado del plan. Example: <code>true</code></p>
+        </div>
+        </form>
+
+                    <h2 id="planes-de-suscripcion-DELETEapi-v1-subscription-plans--id-">Eliminar un plan de suscripción (soft delete).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Marca el plan como eliminado sin borrarlo físicamente. No se permite si el plan
+tiene clientes activos suscritos.</p>
+
+<span id="example-requests-DELETEapi-v1-subscription-plans--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request DELETE \
+    "http://localhost/api/v1/subscription-plans/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/subscription-plans/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-DELETEapi-v1-subscription-plans--id-">
+            <blockquote>
+            <p>Example response (204):</p>
+        </blockquote>
+                <pre>
+<code>Empty response</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Plan no encontrado&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (409):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No se puede eliminar el plan porque tiene 2 cliente(s) activo(s) suscrito(s). Migre dichos clientes a otro plan primero.&quot;,
+    &quot;errors&quot;: {
+        &quot;plan&quot;: [
+            &quot;No se puede eliminar el plan porque tiene 2 cliente(s) activo(s) suscrito(s). Migre dichos clientes a otro plan primero.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-DELETEapi-v1-subscription-plans--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-v1-subscription-plans--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-v1-subscription-plans--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-v1-subscription-plans--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-v1-subscription-plans--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-DELETEapi-v1-subscription-plans--id-" data-method="DELETE"
+      data-path="api/v1/subscription-plans/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-v1-subscription-plans--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-v1-subscription-plans--id-"
+                    onclick="tryItOut('DELETEapi-v1-subscription-plans--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-v1-subscription-plans--id-"
+                    onclick="cancelTryOut('DELETEapi-v1-subscription-plans--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-v1-subscription-plans--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/v1/subscription-plans/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="DELETEapi-v1-subscription-plans--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="DELETEapi-v1-subscription-plans--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="DELETEapi-v1-subscription-plans--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="DELETEapi-v1-subscription-plans--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the subscription plan. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>subscription_plan</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="subscription_plan"                data-endpoint="DELETEapi-v1-subscription-plans--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID del plan. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="planes-de-suscripcion-PATCHapi-v1-subscription-plans--plan--status">Activar o desactivar un plan.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Cambia el estado (activo/inactivo) de un plan existente.</p>
+
+<span id="example-requests-PATCHapi-v1-subscription-plans--plan--status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PATCH \
+    "http://localhost/api/v1/subscription-plans/1/status" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"active\": false
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/subscription-plans/1/status"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "active": false
+};
+
+fetch(url, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PATCHapi-v1-subscription-plans--plan--status">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;planCode&quot;: &quot;PLAN-BASIC&quot;,
+        &quot;planName&quot;: &quot;Mantenimiento Mensual B&aacute;sico&quot;,
+        &quot;frequencyValue&quot;: 30,
+        &quot;frequencyUnit&quot;: &quot;days&quot;,
+        &quot;visitCount&quot;: 1,
+        &quot;maintenanceType&quot;: &quot;Jardiner&iacute;a&quot;,
+        &quot;discountPercentage&quot;: 5,
+        &quot;loyaltyPointsMultiplier&quot;: 1,
+        &quot;active&quot;: false,
+        &quot;activeSubscribersCount&quot;: 0,
+        &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Plan no encontrado&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The active field is required.&quot;,
+    &quot;errors&quot;: {
+        &quot;active&quot;: [
+            &quot;The active field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PATCHapi-v1-subscription-plans--plan--status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PATCHapi-v1-subscription-plans--plan--status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-subscription-plans--plan--status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PATCHapi-v1-subscription-plans--plan--status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PATCHapi-v1-subscription-plans--plan--status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PATCHapi-v1-subscription-plans--plan--status" data-method="PATCH"
+      data-path="api/v1/subscription-plans/{plan}/status"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-subscription-plans--plan--status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PATCHapi-v1-subscription-plans--plan--status"
+                    onclick="tryItOut('PATCHapi-v1-subscription-plans--plan--status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PATCHapi-v1-subscription-plans--plan--status"
+                    onclick="cancelTryOut('PATCHapi-v1-subscription-plans--plan--status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PATCHapi-v1-subscription-plans--plan--status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/subscription-plans/{plan}/status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PATCHapi-v1-subscription-plans--plan--status"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-subscription-plans--plan--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PATCHapi-v1-subscription-plans--plan--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>plan</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="plan"                data-endpoint="PATCHapi-v1-subscription-plans--plan--status"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID del plan. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <label data-endpoint="PATCHapi-v1-subscription-plans--plan--status" style="display: none">
+            <input type="radio" name="active"
+                   value="true"
+                   data-endpoint="PATCHapi-v1-subscription-plans--plan--status"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PATCHapi-v1-subscription-plans--plan--status" style="display: none">
+            <input type="radio" name="active"
+                   value="false"
+                   data-endpoint="PATCHapi-v1-subscription-plans--plan--status"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Nuevo estado del plan. Example: <code>false</code></p>
+        </div>
+        </form>
+
                 <h1 id="autenticacion">Autenticación</h1>
 
     
@@ -2050,7 +3762,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                                     <h2 id="autenticacion-POSTapi-login">Iniciar sesión.</h2>
 
 <p>
-<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 <p>Autentica las credenciales del usuario y genera un token de acceso personal (Sanctum) para consumir los endpoints protegidos.</p>
@@ -2062,7 +3773,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost/api/login" \
-    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -2078,7 +3788,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -2174,7 +3883,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </span>
 <form id="form-POSTapi-login" data-method="POST"
       data-path="api/login"
-      data-authed="1"
+      data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
@@ -2204,18 +3913,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <b><code>api/login</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-login"
-               value="Bearer {YOUR_AUTH_TOKEN}"
-               data-component="header">
-    <br>
-<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
-            </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
 &nbsp;

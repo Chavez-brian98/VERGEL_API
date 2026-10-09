@@ -27,3 +27,7 @@ Thumbs.db
 /bootstrap/cache/
 /storage/app/
 /storage/framework/
+
+# Postman collections (solo local, no versionar)
+/postman/*.json
+/*_Postman_Collection.json

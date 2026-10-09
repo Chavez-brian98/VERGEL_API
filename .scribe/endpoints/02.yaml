@@ -1,0 +1,903 @@
+name: 'Planes de Suscripción'
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/subscription-plans
+    metadata:
+      custom: []
+      groupName: 'Planes de Suscripción'
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Listar y filtrar planes de suscripción.'
+      description: 'Obtiene una lista paginada de planes. Por defecto solo devuelve planes activos.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      active:
+        custom: []
+        name: active
+        description: 'Filtrar por estado (true/activo o false/inactivo). Por defecto solo activos.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Busca por código o nombre del plan.'
+        required: false
+        example: premium
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      frequency_unit:
+        custom: []
+        name: frequency_unit
+        description: 'Filtrar por unidad de frecuencia.'
+        required: false
+        example: days
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Cantidad de resultados por página.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      active: true
+      search: premium
+      frequency_unit: days
+      limit: 15
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "planCode": "PLAN-BASIC",
+                "planName": "Mantenimiento Mensual Básico",
+                "frequencyValue": 30,
+                "frequencyUnit": "days",
+                "visitCount": 1,
+                "maintenanceType": "Jardinería",
+                "discountPercentage": 5,
+                "loyaltyPointsMultiplier": 1,
+                "active": true,
+                "activeSubscribersCount": 3,
+                "createdAt": "2026-09-23T06:00:00+00:00"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/subscription-plans?page=1",
+              "last": "http://localhost/api/v1/subscription-plans?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://localhost/api/v1/subscription-plans",
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/subscription-plans
+    metadata:
+      custom: []
+      groupName: 'Planes de Suscripción'
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Crear un plan de suscripción.'
+      description: 'Registra un nuevo plan en el catálogo. El estado por defecto es activo.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      plan_code:
+        custom: []
+        name: plan_code
+        description: 'Código único del plan.'
+        required: true
+        example: PLAN-BASIC
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      plan_name:
+        custom: []
+        name: plan_name
+        description: 'Nombre del plan.'
+        required: true
+        example: 'Mantenimiento Mensual Básico'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      frequency_value:
+        custom: []
+        name: frequency_value
+        description: 'Valor de la frecuencia.'
+        required: true
+        example: 30
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      frequency_unit:
+        custom: []
+        name: frequency_unit
+        description: 'Unidad de frecuencia (days, weeks, months).'
+        required: true
+        example: days
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      visit_count:
+        custom: []
+        name: visit_count
+        description: 'Cantidad de visitas por ciclo.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      maintenance_type:
+        custom: []
+        name: maintenance_type
+        description: 'Tipo de mantenimiento.'
+        required: false
+        example: Jardinería
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      discount_percentage:
+        custom: []
+        name: discount_percentage
+        description: 'Porcentaje de descuento (0-100).'
+        required: false
+        example: '5'
+        type: numeric
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      loyalty_points_multiplier:
+        custom: []
+        name: loyalty_points_multiplier
+        description: 'Multiplicador de puntos de lealtad (mínimo 1).'
+        required: false
+        example: '1'
+        type: numeric
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Estado del plan.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      plan_code: PLAN-BASIC
+      plan_name: 'Mantenimiento Mensual Básico'
+      frequency_value: 30
+      frequency_unit: days
+      visit_count: 1
+      maintenance_type: Jardinería
+      discount_percentage: '5'
+      loyalty_points_multiplier: '1'
+      active: true
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "planCode": "PLAN-BASIC",
+              "planName": "Mantenimiento Mensual Básico",
+              "frequencyValue": 30,
+              "frequencyUnit": "days",
+              "visitCount": 1,
+              "maintenanceType": "Jardinería",
+              "discountPercentage": 5,
+              "loyaltyPointsMultiplier": 1,
+              "active": true,
+              "activeSubscribersCount": 0,
+              "createdAt": "2026-09-23T06:00:00+00:00",
+              "updatedAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The plan code has already been taken.",
+            "errors": {
+              "plan_code": ["The plan code has already been taken."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/subscription-plans/{id}'
+    metadata:
+      custom: []
+      groupName: 'Planes de Suscripción'
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Obtener detalle de un plan de suscripción.'
+      description: 'Devuelve los datos del plan junto con la cantidad de clientes activos suscritos.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the subscription plan.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      subscription_plan:
+        custom: []
+        name: subscription_plan
+        description: 'ID del plan.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      subscription_plan: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "planCode": "PLAN-BASIC",
+              "planName": "Mantenimiento Mensual Básico",
+              "frequencyValue": 30,
+              "frequencyUnit": "days",
+              "visitCount": 1,
+              "maintenanceType": "Jardinería",
+              "discountPercentage": 5,
+              "loyaltyPointsMultiplier": 1,
+              "active": true,
+              "activeSubscribersCount": 3,
+              "createdAt": "2026-09-23T06:00:00+00:00",
+              "updatedAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\SubscriptionPlan]"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/subscription-plans/{id}'
+    metadata:
+      custom: []
+      groupName: 'Planes de Suscripción'
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Actualizar un plan de suscripción.'
+      description: 'Actualiza de forma parcial los datos editables del plan. Registra la operación en auditoría.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the subscription plan.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      subscription_plan:
+        custom: []
+        name: subscription_plan
+        description: 'ID del plan.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      subscription_plan: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      plan_code:
+        custom: []
+        name: plan_code
+        description: 'Código único del plan.'
+        required: false
+        example: PLAN-BASIC
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      plan_name:
+        custom: []
+        name: plan_name
+        description: 'Nombre del plan.'
+        required: false
+        example: 'Mantenimiento Mensual Básico v2'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      frequency_value:
+        custom: []
+        name: frequency_value
+        description: 'Valor de la frecuencia.'
+        required: false
+        example: 30
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      frequency_unit:
+        custom: []
+        name: frequency_unit
+        description: 'Unidad de frecuencia (days, weeks, months).'
+        required: false
+        example: days
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      visit_count:
+        custom: []
+        name: visit_count
+        description: 'Cantidad de visitas por ciclo.'
+        required: false
+        example: 3
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      maintenance_type:
+        custom: []
+        name: maintenance_type
+        description: 'Tipo de mantenimiento.'
+        required: false
+        example: Jardinería
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      discount_percentage:
+        custom: []
+        name: discount_percentage
+        description: 'Porcentaje de descuento (0-100).'
+        required: false
+        example: '12.5'
+        type: numeric
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      loyalty_points_multiplier:
+        custom: []
+        name: loyalty_points_multiplier
+        description: 'Multiplicador de puntos de lealtad (mínimo 1).'
+        required: false
+        example: '1'
+        type: numeric
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Estado del plan.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      plan_code: PLAN-BASIC
+      plan_name: 'Mantenimiento Mensual Básico v2'
+      frequency_value: 30
+      frequency_unit: days
+      visit_count: 3
+      maintenance_type: Jardinería
+      discount_percentage: '12.5'
+      loyalty_points_multiplier: '1'
+      active: true
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "planCode": "PLAN-BASIC",
+              "planName": "Mantenimiento Mensual Básico v2",
+              "frequencyValue": 30,
+              "frequencyUnit": "days",
+              "visitCount": 3,
+              "maintenanceType": "Jardinería",
+              "discountPercentage": 12.5,
+              "loyaltyPointsMultiplier": 1,
+              "active": true,
+              "activeSubscribersCount": 0,
+              "createdAt": "2026-09-23T06:00:00+00:00",
+              "updatedAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Plan no encontrado"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The plan code has already been taken.",
+            "errors": {
+              "plan_code": ["The plan code has already been taken."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/subscription-plans/{id}'
+    metadata:
+      custom: []
+      groupName: 'Planes de Suscripción'
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Eliminar un plan de suscripción (soft delete).'
+      description: |-
+        Marca el plan como eliminado sin borrarlo físicamente. No se permite si el plan
+        tiene clientes activos suscritos.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the subscription plan.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      subscription_plan:
+        custom: []
+        name: subscription_plan
+        description: 'ID del plan.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      subscription_plan: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 204
+        content: ''
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Plan no encontrado"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 409
+        content: |-
+          {
+            "message": "No se puede eliminar el plan porque tiene 2 cliente(s) activo(s) suscrito(s). Migre dichos clientes a otro plan primero.",
+            "errors": {
+              "plan": ["No se puede eliminar el plan porque tiene 2 cliente(s) activo(s) suscrito(s). Migre dichos clientes a otro plan primero."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/subscription-plans/{plan}/status'
+    metadata:
+      custom: []
+      groupName: 'Planes de Suscripción'
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Activar o desactivar un plan.'
+      description: 'Cambia el estado (activo/inactivo) de un plan existente.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      plan:
+        custom: []
+        name: plan
+        description: 'ID del plan.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      plan: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      active:
+        custom: []
+        name: active
+        description: 'Nuevo estado del plan.'
+        required: true
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      active: false
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "planCode": "PLAN-BASIC",
+              "planName": "Mantenimiento Mensual Básico",
+              "frequencyValue": 30,
+              "frequencyUnit": "days",
+              "visitCount": 1,
+              "maintenanceType": "Jardinería",
+              "discountPercentage": 5,
+              "loyaltyPointsMultiplier": 1,
+              "active": false,
+              "activeSubscribersCount": 0,
+              "createdAt": "2026-09-23T06:00:00+00:00",
+              "updatedAt": "2026-09-23T06:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Plan no encontrado"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The active field is required.",
+            "errors": {
+              "active": ["The active field is required."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/subscription-plans/{plan}/subscribers'
+    metadata:
+      custom: []
+      groupName: 'Planes de Suscripción'
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Listar los clientes suscritos a un plan.'
+      description: 'Devuelve los clientes cuyo plan actual es el indicado.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      plan:
+        custom: []
+        name: plan
+        description: 'ID del plan.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      plan: 1
+    queryParameters:
+      limit:
+        custom: []
+        name: limit
+        description: 'Cantidad de resultados por página.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      limit: 15
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "legalName": "Cliente Ejemplo S.A. de C.V.",
+                "tradeName": "Cliente Ejemplo",
+                "taxId": "0614-260290-101-1",
+                "nrc": "123456-7",
+                "phone": "7000-0000",
+                "status": "active",
+                "currentPlanName": "Mantenimiento Mensual Básico",
+                "cashBalance": 0,
+                "loyaltyPoints": 0,
+                "createdAt": "2026-09-23T06:00:00+00:00"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/subscription-plans/1/subscribers?page=1",
+              "last": "http://localhost/api/v1/subscription-plans/1/subscribers?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://localhost/api/v1/subscription-plans/1/subscribers",
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\SubscriptionPlan]"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
