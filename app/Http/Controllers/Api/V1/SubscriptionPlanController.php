@@ -8,7 +8,7 @@ use App\Http\Requests\Plan\UpdatePlanRequest;
 use App\Http\Resources\Customers\CustomerListResource;
 use App\Http\Resources\Plans\SubscriptionPlanListResource;
 use App\Http\Resources\Plans\SubscriptionPlanResource;
-use App\Services\SubscriptionPlanService;
+use App\Services\Plans\SubscriptionPlanService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +21,7 @@ class SubscriptionPlanController extends Controller
     ) {}
 
     /**
-     * HU-02: Consultar y Filtrar Catálogo de Planes.
+     * Consultar y Filtrar Catálogo de Planes.
      */
     public function index(Request $request)
     {
@@ -32,7 +32,7 @@ class SubscriptionPlanController extends Controller
     }
 
     /**
-     * HU-01: Crear Plan de Suscripción.
+     * Crear Plan de Suscripción.
      */
     public function store(CreatePlanRequest $request)
     {
@@ -48,7 +48,7 @@ class SubscriptionPlanController extends Controller
     }
 
     /**
-     * HU-02: Obtener detalle de un plan con sus estadísticas de uso.
+     * Obtener detalle de un plan con sus estadísticas de uso.
      */
     public function show($id)
     {
@@ -76,7 +76,7 @@ class SubscriptionPlanController extends Controller
     }
 
     /**
-     * HU-04: Activar o desactivar un plan (PATCH /status).
+     * Activar o desactivar un plan (PATCH /status).
      */
     public function updateStatus(Request $request, $id)
     {

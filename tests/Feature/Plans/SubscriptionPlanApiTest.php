@@ -125,6 +125,23 @@ class SubscriptionPlanApiTest extends TestCase
         ]);
     }
 
+    public function test_it_updates_a_plan_keeping_its_own_code(): void
+    {
+        $plan = SubscriptionPlan::create($this->planData());
+
+        $response = $this->putJson("/api/v1/subscription-plans/{$plan->id}", [
+            'plan_code' => 'PLAN-BASIC',
+            'plan_name' => 'Mantenimiento Mensual Básico v2',
+        ]);
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                'id' => $plan->id,
+                'planCode' => 'PLAN-BASIC',
+                'planName' => 'Mantenimiento Mensual Básico v2',
+            ]);
+    }
+
     public function test_it_updates_plan_status(): void
     {
         $plan = SubscriptionPlan::create($this->planData());

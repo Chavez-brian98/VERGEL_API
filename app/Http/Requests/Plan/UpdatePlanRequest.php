@@ -13,7 +13,7 @@ class UpdatePlanRequest extends FormRequest
 
     public function rules(): array
     {
-        $planId = $this->route('plan') ?? $this->route('id');
+        $planId = $this->route('plan') ?? $this->route('subscription_plan') ?? $this->route('id');
 
         return [
             'plan_code' => 'sometimes|required|string|max:20|unique:subscription_plans,plan_code,'.$planId.',id,deleted_at,NULL',

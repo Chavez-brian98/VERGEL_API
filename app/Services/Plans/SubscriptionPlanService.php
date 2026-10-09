@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Plans;
 
 use App\Models\AuditLog;
 use App\Models\Customer;
@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class SubscriptionPlanService
 {
     /**
-     * HU-02: List plans with filters (active, search, frequency_unit).
+     * List plans with filters (active, search, frequency_unit).
      */
     public function search(array $filters = [], int $limit = 15): LengthAwarePaginator
     {
@@ -45,7 +45,7 @@ class SubscriptionPlanService
     }
 
     /**
-     * HU-02: Get a single plan with its usage statistics.
+     * Get a single plan with its usage statistics.
      */
     public function getById(int $id): SubscriptionPlan
     {
@@ -57,7 +57,7 @@ class SubscriptionPlanService
     }
 
     /**
-     * HU-01: Create a new subscription plan.
+     * Create a new subscription plan.
      */
     public function create(array $data): SubscriptionPlan
     {
@@ -72,7 +72,7 @@ class SubscriptionPlanService
     }
 
     /**
-     * HU-03: Update an existing subscription plan.
+     * Update an existing subscription plan.
      */
     public function update(int $id, array $data): SubscriptionPlan
     {
@@ -88,7 +88,7 @@ class SubscriptionPlanService
     }
 
     /**
-     * HU-04: Activate or deactivate a plan.
+     * Activate or deactivate a plan.
      */
     public function updateStatus(int $id, bool $active): SubscriptionPlan
     {
@@ -104,7 +104,7 @@ class SubscriptionPlanService
     }
 
     /**
-     * HU-04: Soft delete a plan, blocking it when there are active subscribers.
+     * Soft delete a plan, blocking it when there are active subscribers.
      */
     public function delete(int $id): void
     {
@@ -127,7 +127,7 @@ class SubscriptionPlanService
     }
 
     /**
-     * HU-05: Get the paginated list of customers subscribed to a plan.
+     * Get the paginated list of customers subscribed to a plan.
      */
     public function subscribers(int $id, int $limit = 15): LengthAwarePaginator
     {

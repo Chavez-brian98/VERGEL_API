@@ -4,7 +4,7 @@ namespace Tests\Feature\Plans;
 
 use App\Models\Customer;
 use App\Models\SubscriptionPlan;
-use App\Services\SubscriptionPlanService;
+use App\Services\Plans\SubscriptionPlanService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
