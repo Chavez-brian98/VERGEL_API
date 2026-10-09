@@ -29,8 +29,6 @@ class SubscriptionPlanServiceTest extends TestCase
         DB::table('employees')->insert([
             'full_name' => 'Empleado de pruebas',
             'role_id' => $roleId,
-            'email' => 'pruebas@example.com',
-            'password' => 'password',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
