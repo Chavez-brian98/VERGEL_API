@@ -1,0 +1,18 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 422
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "message": "The selected status is invalid.",
+        "errors": {
+          "status": ["The selected status is invalid."]
+        }
+      }
+order: 2000

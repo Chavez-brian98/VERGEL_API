@@ -1,0 +1,13 @@
+$kind: http-request
+name: Registrar un nuevo cliente.
+description: Crea un cliente y, como parte del proceso, inicializa su wallet y sus puntos de lealtad.
+url: "{{baseUrl}}/api/v1/customers"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: text
+  content: '{"legal_name":"Cliente Ejemplo S.A. de C.V.","trade_name":"Cliente Ejemplo","tax_id":"0614-260290-101-1","nrc":"123456-7","economic_activity":"Venta de servicios","address":"Colonia Centro, San Salvador","department":"San Salvador","municipality":"San Salvador","phone":"7000-0000","email":"cliente@example.com","visit_frequency_value":30,"visit_frequency_unit":"days","current_plan_id":1}'
+examples: ./.resources/Registrar un nuevo cliente-.resources/examples
+order: 1000

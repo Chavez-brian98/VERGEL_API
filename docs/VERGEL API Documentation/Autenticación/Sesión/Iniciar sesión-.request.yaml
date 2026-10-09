@@ -1,0 +1,13 @@
+$kind: http-request
+name: Iniciar sesión.
+description: Autentica las credenciales del usuario y genera un token de acceso personal (Sanctum) para consumir los endpoints protegidos.
+url: "{{baseUrl}}/api/login"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: text
+  content: '{"email":"admin@vergel.com","password":"password123"}'
+examples: ./.resources/Iniciar sesión-.resources/examples
+order: 1000

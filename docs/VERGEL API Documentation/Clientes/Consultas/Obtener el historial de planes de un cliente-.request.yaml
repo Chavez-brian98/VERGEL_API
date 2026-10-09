@@ -1,0 +1,14 @@
+$kind: http-request
+name: Obtener el historial de planes de un cliente.
+description: Devuelve los planes que ha tenido el cliente, ordenados por fecha de inicio (descendente).
+url: "{{baseUrl}}/api/v1/customers/:customer/plan-history"
+method: GET
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: customer
+    value: "1"
+    description: ID del cliente.
+examples: ./.resources/Obtener el historial de planes de un cliente-.resources/examples
+order: 3000

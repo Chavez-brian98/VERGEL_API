@@ -1,0 +1,20 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "data": {
+          "id": 1,
+          "legalName": "Cliente Actualizado S.A. de C.V.",
+          "status": "active",
+          "createdAt": "2026-09-23T06:00:00+00:00"
+        }
+      }
+order: 1000
