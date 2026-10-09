@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "d85c6b87-8f10-4879-95ec-2e045d98aa10",
+        "_postman_id": "c4cfb874-e699-495c-bb03-9025198e2721",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -478,7 +478,10 @@
                                     "mode": "raw",
                                     "raw": "{\"email\":\"admin@vergel.com\",\"password\":\"password123\"}"
                                 },
-                                "description": "Autentica las credenciales del usuario y genera un token de acceso personal (Sanctum) para consumir los endpoints protegidos."
+                                "description": "Autentica las credenciales del usuario y genera un token de acceso personal (Sanctum) para consumir los endpoints protegidos.",
+                                "auth": {
+                                    "type": "noauth"
+                                }
                             },
                             "response": [
                                 {
