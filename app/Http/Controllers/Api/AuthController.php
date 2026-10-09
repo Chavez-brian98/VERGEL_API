@@ -24,6 +24,8 @@ class AuthController extends Controller
      *
      * @subgroup Sesión
      *
+     * @unauthenticated
+     *
      * @bodyParam email string required Correo electrónico del usuario. Example: admin@vergel.com
      * @bodyParam password string required Contraseña de acceso. Example: password123
      *
