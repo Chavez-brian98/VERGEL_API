@@ -16,7 +16,7 @@ class UpdatePlanRequest extends FormRequest
         $planId = $this->route('plan') ?? $this->route('subscription_plan') ?? $this->route('id');
 
         return [
-            'plan_code' => 'sometimes|required|string|max:20|unique:subscription_plans,plan_code,'.$planId.',id,deleted_at,NULL',
+            'plan_code' => 'sometimes|required|string|max:20|unique:subscription_plans,plan_code,'.$planId.',id',
             'plan_name' => 'sometimes|required|string|max:100',
             'frequency_value' => 'sometimes|required|integer|min:1',
             'frequency_unit' => 'sometimes|required|in:days,weeks,months',

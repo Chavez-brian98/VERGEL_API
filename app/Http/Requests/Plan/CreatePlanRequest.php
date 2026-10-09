@@ -14,7 +14,7 @@ class CreatePlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'plan_code' => 'required|string|max:20|unique:subscription_plans,plan_code,NULL,id,deleted_at,NULL',
+            'plan_code' => 'required|string|max:20|unique:subscription_plans,plan_code',
             'plan_name' => 'required|string|max:100',
             'frequency_value' => 'required|integer|min:1',
             'frequency_unit' => 'required|in:days,weeks,months',

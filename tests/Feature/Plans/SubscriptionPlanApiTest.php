@@ -189,6 +189,131 @@ class SubscriptionPlanApiTest extends TestCase
             ]);
     }
 
+    public function test_it_filters_plans_by_search(): void
+    {
+        SubscriptionPlan::create($this->planData());
+        SubscriptionPlan::create($this->planData([
+            'plan_code' => 'PLAN-PREMIUM',
+            'plan_name' => 'Mantenimiento Quincenal Premium',
+            'frequency_unit' => 'weeks',
+        ]));
+
+        $response = $this->getJson('/api/v1/subscription-plans?search=premium');
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment(['planCode' => 'PLAN-PREMIUM']);
+    }
+
+    public function test_it_lists_inactive_plans_when_active_filter_is_false(): void
+    {
+        SubscriptionPlan::create($this->planData());
+        SubscriptionPlan::create($this->planData([
+            'plan_code' => 'PLAN-OFF',
+            'active' => false,
+        ]));
+
+        $response = $this->getJson('/api/v1/subscription-plans?active=0');
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment(['planCode' => 'PLAN-OFF', 'active' => false]);
+    }
+
+    public function test_it_paginates_plans_using_the_limit_parameter(): void
+    {
+        SubscriptionPlan::create($this->planData(['plan_code' => 'PLAN-1']));
+        SubscriptionPlan::create($this->planData(['plan_code' => 'PLAN-2']));
+        SubscriptionPlan::create($this->planData(['plan_code' => 'PLAN-3']));
+
+        $response = $this->getJson('/api/v1/subscription-plans?limit=2');
+
+        $response->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('meta.per_page', 2)
+            ->assertJsonPath('meta.total', 3);
+    }
+
+    public function test_it_returns_404_when_showing_a_missing_plan(): void
+    {
+        $this->getJson('/api/v1/subscription-plans/99999')->assertNotFound();
+    }
+
+    public function test_it_returns_404_when_updating_a_missing_plan(): void
+    {
+        $this->putJson('/api/v1/subscription-plans/99999', [
+            'visit_count' => 2,
+        ])->assertNotFound();
+    }
+
+    public function test_it_returns_404_when_deleting_a_missing_plan(): void
+    {
+        $this->deleteJson('/api/v1/subscription-plans/99999')->assertNotFound();
+    }
+
+    public function test_it_returns_404_when_listing_subscribers_of_a_missing_plan(): void
+    {
+        $this->getJson('/api/v1/subscription-plans/99999/subscribers')->assertNotFound();
+    }
+
+    public function test_it_rejects_duplicate_plan_code_on_update(): void
+    {
+        $plan = SubscriptionPlan::create($this->planData());
+        SubscriptionPlan::create($this->planData([
+            'plan_code' => 'PLAN-PREMIUM',
+            'plan_name' => 'Mantenimiento Quincenal Premium',
+        ]));
+
+        $response = $this->putJson("/api/v1/subscription-plans/{$plan->id}", [
+            'plan_code' => 'PLAN-PREMIUM',
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['plan_code']);
+    }
+
+    public function test_it_validates_frequency_unit_on_create(): void
+    {
+        $response = $this->postJson('/api/v1/subscription-plans', $this->planData([
+            'frequency_unit' => 'years',
+        ]));
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['frequency_unit']);
+    }
+
+    public function test_it_defaults_active_to_true_on_create(): void
+    {
+        $data = $this->planData();
+        unset($data['active']);
+
+        $response = $this->postJson('/api/v1/subscription-plans', $data);
+
+        $response->assertCreated()
+            ->assertJsonFragment(['active' => true]);
+    }
+
+    public function test_it_validates_status_payload(): void
+    {
+        $plan = SubscriptionPlan::create($this->planData());
+
+        $response = $this->patchJson("/api/v1/subscription-plans/{$plan->id}/status", []);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['active']);
+    }
+
+    public function test_it_rejects_reusing_a_code_from_a_soft_deleted_plan(): void
+    {
+        $plan = SubscriptionPlan::create($this->planData());
+        $plan->delete();
+
+        $response = $this->postJson('/api/v1/subscription-plans', $this->planData());
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['plan_code']);
+    }
+
     private function planData(array $overrides = []): array
     {
         return array_merge([

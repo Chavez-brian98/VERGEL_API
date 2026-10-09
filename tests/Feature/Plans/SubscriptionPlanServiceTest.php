@@ -5,6 +5,7 @@ namespace Tests\Feature\Plans;
 use App\Models\Customer;
 use App\Models\SubscriptionPlan;
 use App\Services\Plans\SubscriptionPlanService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -171,6 +172,104 @@ class SubscriptionPlanServiceTest extends TestCase
 
         $this->assertSame(1, $result->total());
         $this->assertSame($subscriber->id, $result->first()->id);
+    }
+
+    public function test_it_gets_a_plan_by_id_with_usage_stats(): void
+    {
+        $plan = SubscriptionPlan::create($this->planData());
+        Customer::create($this->customerData([
+            'current_plan_id' => $plan->id,
+            'status' => 'active',
+        ]));
+
+        $result = $this->planService->getById($plan->id);
+
+        $this->assertSame($plan->id, $result->id);
+        $this->assertSame(1, (int) $result->active_subscribers_count);
+    }
+
+    public function test_it_throws_when_getting_a_missing_plan(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->planService->getById(99999);
+    }
+
+    public function test_it_throws_when_updating_a_missing_plan(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->planService->update(99999, ['visit_count' => 2]);
+    }
+
+    public function test_it_throws_when_toggling_a_missing_plan(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->planService->updateStatus(99999, false);
+    }
+
+    public function test_it_throws_when_deleting_a_missing_plan(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->planService->delete(99999);
+    }
+
+    public function test_it_throws_when_listing_subscribers_of_a_missing_plan(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->planService->subscribers(99999, 15);
+    }
+
+    public function test_it_defaults_active_to_true_when_creating(): void
+    {
+        $data = $this->planData();
+        unset($data['active']);
+
+        $plan = $this->planService->create($data);
+
+        $this->assertTrue($plan->active);
+    }
+
+    public function test_it_creates_an_inactive_plan(): void
+    {
+        $plan = $this->planService->create($this->planData(['active' => false]));
+
+        $this->assertFalse($plan->active);
+        $this->assertDatabaseHas('subscription_plans', [
+            'id' => $plan->id,
+            'active' => false,
+        ]);
+    }
+
+    public function test_it_filters_inactive_plans(): void
+    {
+        SubscriptionPlan::create($this->planData());
+        SubscriptionPlan::create($this->planData([
+            'plan_code' => 'PLAN-OFF',
+            'active' => false,
+        ]));
+
+        $result = $this->planService->search(['active' => '0'], 15);
+
+        $this->assertSame(1, $result->total());
+        $this->assertSame('PLAN-OFF', $result->first()->plan_code);
+    }
+
+    public function test_it_does_not_block_deletion_for_soft_deleted_subscribers(): void
+    {
+        $plan = SubscriptionPlan::create($this->planData());
+        $customer = Customer::create($this->customerData([
+            'current_plan_id' => $plan->id,
+            'status' => 'active',
+        ]));
+        $customer->delete();
+
+        $this->planService->delete($plan->id);
+
+        $this->assertSoftDeleted('subscription_plans', ['id' => $plan->id]);
     }
 
     private function planData(array $overrides = []): array
