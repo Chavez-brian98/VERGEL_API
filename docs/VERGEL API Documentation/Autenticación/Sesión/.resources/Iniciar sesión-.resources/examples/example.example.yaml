@@ -1,0 +1,42 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "message": "Inicio de sesión exitoso.",
+        "data": {
+          "user": {
+            "id": 1,
+            "name": "Administrador Vergel",
+            "email": "admin@vergel.com",
+            "employee_id": 1,
+            "created_at": "2026-10-08T22:58:33.000000Z",
+            "updated_at": "2026-10-08T22:58:33.000000Z",
+            "employee": {
+              "id": 1,
+              "full_name": "Carlos Mendoza (Administración)",
+              "role_id": 1,
+              "dui": null,
+              "address": null,
+              "municipality": null,
+              "department": null,
+              "birth_date": null,
+              "hire_date": null,
+              "phone": null,
+              "active": true,
+              "created_at": "2026-10-08T22:58:33.000000Z",
+              "updated_at": "2026-10-08T22:58:33.000000Z"
+            }
+          },
+          "access_token": "1|hDBQYufM7...",
+          "token_type": "Bearer"
+        }
+      }
+order: 1000

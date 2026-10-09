@@ -184,6 +184,7 @@ return [
         'order' => [
             'Clientes',
             'Planes de Suscripción',
+            'Empleados',
         ],
     ],
 

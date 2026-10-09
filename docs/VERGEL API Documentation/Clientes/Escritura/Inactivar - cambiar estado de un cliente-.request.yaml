@@ -1,0 +1,17 @@
+$kind: http-request
+name: Inactivar / cambiar estado de un cliente.
+description: Actualiza el estado de un cliente (activo o inactivo) mediante PATCH.
+url: "{{baseUrl}}/api/v1/customers/:customer/status"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: customer
+    value: "1"
+    description: ID del cliente.
+body:
+  type: text
+  content: '{"status":"inactive"}'
+examples: ./.resources/Inactivar - cambiar estado de un cliente-.resources/examples
+order: 4000

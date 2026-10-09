@@ -1,0 +1,17 @@
+$kind: http-request
+name: Obtener detalle completo de un cliente.
+description: Incluye el plan actual, la wallet y los puntos de lealtad del cliente.
+url: "{{baseUrl}}/api/v1/customers/:id"
+method: GET
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: id
+    value: architecto
+    description: The ID of the customer.
+  - key: customer
+    value: "1"
+    description: ID del cliente.
+examples: ./.resources/Obtener detalle completo de un cliente-.resources/examples
+order: 2000

@@ -1,0 +1,35 @@
+$kind: http-request
+name: Listar y filtrar clientes.
+description: Obtiene una lista paginada de clientes con opciones de búsqueda y filtros.
+url: "{{baseUrl}}/api/v1/customers?search=architecto&status=active&phone=architecto&desde=architecto&hasta=architecto&limit=15"
+method: GET
+headers:
+  Content-Type: application/json
+  Accept: application/json
+queryParams:
+  - key: search
+    value: architecto
+    disabled: false
+    description: Busca por nombre legal, nombre comercial, correo, teléfono, NIT o NRC.
+  - key: status
+    value: active
+    disabled: false
+    description: Filtrar por estado.
+  - key: phone
+    value: architecto
+    disabled: false
+    description: Filtrar por teléfono (coincidencia parcial).
+  - key: desde
+    value: architecto
+    disabled: false
+    description: date Filtrar por fecha de creación desde (YYYY-MM-DD).
+  - key: hasta
+    value: architecto
+    disabled: false
+    description: date Filtrar por fecha de creación hasta (YYYY-MM-DD).
+  - key: limit
+    value: "15"
+    disabled: false
+    description: Cantidad de resultados por página.
+examples: ./.resources/Listar y filtrar clientes-.resources/examples
+order: 1000

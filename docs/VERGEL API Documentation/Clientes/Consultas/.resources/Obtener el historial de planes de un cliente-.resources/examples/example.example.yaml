@@ -1,0 +1,28 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "data": [
+          {
+            "id": 2,
+            "customer_id": 1,
+            "plan_id": 2,
+            "start_date": "2026-10-01",
+            "end_date": null,
+            "plan": {
+              "id": 2,
+              "plan_code": "PREMIUM",
+              "plan_name": "Plan Premium"
+            }
+          }
+        ]
+      }
+order: 1000

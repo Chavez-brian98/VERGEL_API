@@ -1,0 +1,20 @@
+$kind: http-request
+name: Actualizar información del cliente.
+description: Actualiza los datos editables de un cliente existente.
+url: "{{baseUrl}}/api/v1/customers/:id"
+method: PUT
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: id
+    value: architecto
+    description: The ID of the customer.
+  - key: customer
+    value: "1"
+    description: ID del cliente.
+body:
+  type: text
+  content: '{"legal_name":"Cliente Actualizado S.A. de C.V.","trade_name":"Cliente Actualizado","tax_id":"0614-260290-101-1","nrc":"123456-7","economic_activity":"Venta de servicios","address":"Colonia Centro, San Salvador","department":"San Salvador","municipality":"San Salvador","phone":"7000-0000","email":"cliente@example.com","visit_frequency_value":30,"visit_frequency_unit":"days"}'
+examples: ./.resources/Actualizar información del cliente-.resources/examples
+order: 2000

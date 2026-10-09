@@ -1,0 +1,792 @@
+name: Empleados
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/employees
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Listar y filtrar empleados.'
+      description: 'Obtiene una lista paginada de empleados con opciones de búsqueda y filtros.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Busca por nombre completo, DUI o teléfono.'
+        required: false
+        example: Carlos
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Filtrar por estado (true/activo o false/inactivo).'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      role_id:
+        custom: []
+        name: role_id
+        description: 'Filtrar por ID de rol.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Cantidad de resultados por página.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      search: Carlos
+      active: true
+      role_id: 1
+      limit: 15
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "fullName": "Carlos Mendoza",
+                "dui": "01234567-8",
+                "phone": "7000-0000",
+                "active": true,
+                "roleName": "Administrador",
+                "createdAt": "2026-10-08T22:58:33+00:00"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/employees?page=1",
+              "last": "http://localhost/api/v1/employees?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://localhost/api/v1/employees",
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/employees
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Registrar un nuevo empleado.'
+      description: 'Crea un empleado asociado a un rol existente. El estado por defecto es activo.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      full_name:
+        custom: []
+        name: full_name
+        description: 'Nombre completo del empleado.'
+        required: true
+        example: 'Carlos Mendoza'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      role_id:
+        custom: []
+        name: role_id
+        description: 'ID del rol asignado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      dui:
+        custom: []
+        name: dui
+        description: 'DUI del empleado (único).'
+        required: false
+        example: 01234567-8
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: Dirección.
+        required: false
+        example: 'Colonia Centro, San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      municipality:
+        custom: []
+        name: municipality
+        description: Municipio.
+        required: false
+        example: 'San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      department:
+        custom: []
+        name: department
+        description: Departamento.
+        required: false
+        example: 'San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      birth_date:
+        custom: []
+        name: birth_date
+        description: 'Fecha de nacimiento (YYYY-MM-DD).'
+        required: false
+        example: '1990-01-15'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      hire_date:
+        custom: []
+        name: hire_date
+        description: 'Fecha de contratación (YYYY-MM-DD).'
+        required: false
+        example: '2024-03-01'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: Teléfono.
+        required: false
+        example: 7000-0000
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Estado del empleado.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      full_name: 'Carlos Mendoza'
+      role_id: 1
+      dui: 01234567-8
+      address: 'Colonia Centro, San Salvador'
+      municipality: 'San Salvador'
+      department: 'San Salvador'
+      birth_date: '1990-01-15'
+      hire_date: '2024-03-01'
+      phone: 7000-0000
+      active: true
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza",
+              "dui": "01234567-8",
+              "address": "Colonia Centro, San Salvador",
+              "municipality": "San Salvador",
+              "department": "San Salvador",
+              "birthDate": "1990-01-15",
+              "hireDate": "2024-03-01",
+              "phone": "7000-0000",
+              "active": true,
+              "role": {
+                "id": 1,
+                "roleName": "Administrador"
+              },
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The full name field is required.",
+            "errors": {
+              "full_name": ["The full name field is required."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/employees/{id}'
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Obtener detalle de un empleado.'
+      description: 'Devuelve los datos completos del empleado junto con su rol.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the employee.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      employee:
+        custom: []
+        name: employee
+        description: 'ID del empleado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      employee: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza",
+              "dui": "01234567-8",
+              "address": "Colonia Centro, San Salvador",
+              "municipality": "San Salvador",
+              "department": "San Salvador",
+              "birthDate": "1990-01-15",
+              "hireDate": "2024-03-01",
+              "phone": "7000-0000",
+              "active": true,
+              "role": {
+                "id": 1,
+                "roleName": "Administrador"
+              },
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\Employee]"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/employees/{id}'
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Actualizar un empleado.'
+      description: 'Actualiza de forma parcial los datos editables del empleado. Registra la operación en auditoría.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the employee.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      employee:
+        custom: []
+        name: employee
+        description: 'ID del empleado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      employee: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      full_name:
+        custom: []
+        name: full_name
+        description: 'Nombre completo del empleado.'
+        required: false
+        example: 'Carlos Mendoza'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      role_id:
+        custom: []
+        name: role_id
+        description: 'ID del rol asignado.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      dui:
+        custom: []
+        name: dui
+        description: 'DUI del empleado (único).'
+        required: false
+        example: 01234567-8
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: Dirección.
+        required: false
+        example: 'Colonia Centro, San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      municipality:
+        custom: []
+        name: municipality
+        description: Municipio.
+        required: false
+        example: 'San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      department:
+        custom: []
+        name: department
+        description: Departamento.
+        required: false
+        example: 'San Salvador'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      birth_date:
+        custom: []
+        name: birth_date
+        description: 'Fecha de nacimiento (YYYY-MM-DD).'
+        required: false
+        example: '1990-01-15'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      hire_date:
+        custom: []
+        name: hire_date
+        description: 'Fecha de contratación (YYYY-MM-DD).'
+        required: false
+        example: '2024-03-01'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: Teléfono.
+        required: false
+        example: 7000-0000
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Estado del empleado.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      full_name: 'Carlos Mendoza'
+      role_id: 1
+      dui: 01234567-8
+      address: 'Colonia Centro, San Salvador'
+      municipality: 'San Salvador'
+      department: 'San Salvador'
+      birth_date: '1990-01-15'
+      hire_date: '2024-03-01'
+      phone: 7000-0000
+      active: true
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza Actualizado",
+              "dui": "01234567-8",
+              "active": true,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Empleado no encontrado"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The dui has already been taken.",
+            "errors": {
+              "dui": ["The dui has already been taken."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/employees/{id}'
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Eliminar un empleado (soft delete).'
+      description: 'Marca al empleado como eliminado sin borrarlo físicamente de la base de datos.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the employee.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      employee:
+        custom: []
+        name: employee
+        description: 'ID del empleado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      employee: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 204
+        content: ''
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Empleado no encontrado"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/employees/{employee}/status'
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Activar o desactivar un empleado.'
+      description: 'Cambia el estado (activo/inactivo) de un empleado existente.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      employee:
+        custom: []
+        name: employee
+        description: 'ID del empleado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      employee: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      active:
+        custom: []
+        name: active
+        description: 'Nuevo estado del empleado.'
+        required: true
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      active: false
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza",
+              "active": false,
+              "createdAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Empleado no encontrado"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The active field is required.",
+            "errors": {
+              "active": ["The active field is required."]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

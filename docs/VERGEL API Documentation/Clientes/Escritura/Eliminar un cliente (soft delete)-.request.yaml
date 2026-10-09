@@ -1,0 +1,17 @@
+$kind: http-request
+name: Eliminar un cliente (soft delete).
+description: Marca al cliente como eliminado. No se elimina físicamente de la base de datos.
+url: "{{baseUrl}}/api/v1/customers/:id"
+method: DELETE
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: id
+    value: architecto
+    description: The ID of the customer.
+  - key: customer
+    value: "1"
+    description: ID del cliente.
+examples: ./.resources/Eliminar un cliente (soft delete)-.resources/examples
+order: 3000
