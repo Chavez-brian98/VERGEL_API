@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('employees', EmployeeController::class);
         Route::patch('employees/{employee}/status', [EmployeeController::class, 'updateStatus']);
+
+        Route::apiResource('roles', RoleController::class);
     });
 });

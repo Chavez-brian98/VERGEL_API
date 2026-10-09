@@ -395,7 +395,8 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "No query results for model [App\\Models\\Employee]"
+            "message": "Empleado no encontrado",
+            "codigo": 404
           }
         headers: []
         description: ''
@@ -600,7 +601,8 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "Empleado no encontrado"
+            "message": "Empleado no encontrado",
+            "codigo": 404
           }
         headers: []
         description: ''
@@ -686,7 +688,8 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "Empleado no encontrado"
+            "message": "Empleado no encontrado",
+            "codigo": 404
           }
         headers: []
         description: ''
@@ -768,7 +771,8 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "Empleado no encontrado"
+            "message": "Empleado no encontrado",
+            "codigo": 404
           }
         headers: []
         description: ''
