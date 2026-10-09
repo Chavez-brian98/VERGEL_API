@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "4f2d8048-1bb5-4d99-8e9f-38f9c030b2d6",
+        "_postman_id": "d85c6b87-8f10-4879-95ec-2e045d98aa10",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -438,6 +438,109 @@
                                     "header": [],
                                     "code": 422,
                                     "body": "{\n  \"message\": \"The selected plan id is invalid.\",\n  \"errors\": {\n    \"plan_id\": [\"The selected plan id is invalid.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Autenticaci\u00f3n",
+            "description": "",
+            "item": [
+                {
+                    "name": "Sesi\u00f3n",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Iniciar sesi\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/login",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/login"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"email\":\"admin@vergel.com\",\"password\":\"password123\"}"
+                                },
+                                "description": "Autentica las credenciales del usuario y genera un token de acceso personal (Sanctum) para consumir los endpoints protegidos."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"message\": \"Inicio de sesi\u00f3n exitoso.\",\n  \"data\": {\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"Administrador Vergel\",\n      \"email\": \"admin@vergel.com\",\n      \"employee_id\": 1,\n      \"created_at\": \"2026-10-08T22:58:33.000000Z\",\n      \"updated_at\": \"2026-10-08T22:58:33.000000Z\",\n      \"employee\": {\n        \"id\": 1,\n        \"full_name\": \"Carlos Mendoza (Administraci\u00f3n)\",\n        \"role_id\": 1,\n        \"dui\": null,\n        \"address\": null,\n        \"municipality\": null,\n        \"department\": null,\n        \"birth_date\": null,\n        \"hire_date\": null,\n        \"phone\": null,\n        \"active\": true,\n        \"created_at\": \"2026-10-08T22:58:33.000000Z\",\n        \"updated_at\": \"2026-10-08T22:58:33.000000Z\"\n      }\n    },\n    \"access_token\": \"1|hDBQYufM7...\",\n    \"token_type\": \"Bearer\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Las credenciales proporcionadas son incorrectas.\",\n  \"errors\": {\n    \"email\": [\n      \"Las credenciales proporcionadas son incorrectas.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno del servidor\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cerrar sesi\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/logout",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/logout"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Invalida y elimina el token de acceso actual del usuario autenticado."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"message\": \"Sesi\u00f3n cerrada exitosamente.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"No autenticado\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al cerrar sesi\u00f3n\"\n}",
                                     "name": ""
                                 }
                             ]

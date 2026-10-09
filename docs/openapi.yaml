@@ -10,6 +10,9 @@ tags:
   -
     name: Clientes
     description: ''
+  -
+    name: Autenticación
+    description: ''
 components:
   securitySchemes:
     default:
@@ -991,3 +994,226 @@ paths:
         required: true
         schema:
           type: integer
+  /api/login:
+    post:
+      summary: 'Iniciar sesión.'
+      operationId: iniciarSesin
+      description: 'Autentica las credenciales del usuario y genera un token de acceso personal (Sanctum) para consumir los endpoints protegidos.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Inicio de sesión exitoso.'
+                  data:
+                    user:
+                      id: 1
+                      name: 'Administrador Vergel'
+                      email: admin@vergel.com
+                      employee_id: 1
+                      created_at: '2026-10-08T22:58:33.000000Z'
+                      updated_at: '2026-10-08T22:58:33.000000Z'
+                      employee:
+                        id: 1
+                        full_name: 'Carlos Mendoza (Administración)'
+                        role_id: 1
+                        dui: null
+                        address: null
+                        municipality: null
+                        department: null
+                        birth_date: null
+                        hire_date: null
+                        phone: null
+                        active: true
+                        created_at: '2026-10-08T22:58:33.000000Z'
+                        updated_at: '2026-10-08T22:58:33.000000Z'
+                    access_token: 1|hDBQYufM7...
+                    token_type: Bearer
+                properties:
+                  message:
+                    type: string
+                    example: 'Inicio de sesión exitoso.'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Administrador Vergel'
+                          email:
+                            type: string
+                            example: admin@vergel.com
+                          employee_id:
+                            type: integer
+                            example: 1
+                          created_at:
+                            type: string
+                            example: '2026-10-08T22:58:33.000000Z'
+                          updated_at:
+                            type: string
+                            example: '2026-10-08T22:58:33.000000Z'
+                          employee:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              full_name:
+                                type: string
+                                example: 'Carlos Mendoza (Administración)'
+                              role_id:
+                                type: integer
+                                example: 1
+                              dui:
+                                type: string
+                                example: null
+                                nullable: true
+                              address:
+                                type: string
+                                example: null
+                                nullable: true
+                              municipality:
+                                type: string
+                                example: null
+                                nullable: true
+                              department:
+                                type: string
+                                example: null
+                                nullable: true
+                              birth_date:
+                                type: string
+                                example: null
+                                nullable: true
+                              hire_date:
+                                type: string
+                                example: null
+                                nullable: true
+                              phone:
+                                type: string
+                                example: null
+                                nullable: true
+                              active:
+                                type: boolean
+                                example: true
+                              created_at:
+                                type: string
+                                example: '2026-10-08T22:58:33.000000Z'
+                              updated_at:
+                                type: string
+                                example: '2026-10-08T22:58:33.000000Z'
+                      access_token:
+                        type: string
+                        example: 1|hDBQYufM7...
+                      token_type:
+                        type: string
+                        example: Bearer
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Las credenciales proporcionadas son incorrectas.'
+                  errors:
+                    email:
+                      - 'Las credenciales proporcionadas son incorrectas.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Las credenciales proporcionadas son incorrectas.'
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        example:
+                          - 'Las credenciales proporcionadas son incorrectas.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno del servidor'
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno del servidor'
+      tags:
+        - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Correo electrónico del usuario.'
+                  example: admin@vergel.com
+                password:
+                  type: string
+                  description: 'Contraseña de acceso.'
+                  example: password123
+              required:
+                - email
+                - password
+  /api/logout:
+    post:
+      summary: 'Cerrar sesión.'
+      operationId: cerrarSesin
+      description: 'Invalida y elimina el token de acceso actual del usuario autenticado.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Sesión cerrada exitosamente.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Sesión cerrada exitosamente.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No autenticado'
+                properties:
+                  message:
+                    type: string
+                    example: 'No autenticado'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al cerrar sesión'
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al cerrar sesión'
+      tags:
+        - Autenticación
