@@ -2107,6 +2107,7 @@ paths:
               required:
                 - email
                 - password
+      security: []
   /api/logout:
     post:
       summary: 'Cerrar sesión.'
