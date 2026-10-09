@@ -22,6 +22,9 @@ tags:
   -
     name: Autenticación
     description: ''
+  -
+    name: Plantas
+    description: ''
 components:
   securitySchemes:
     default:
@@ -3305,3 +3308,137 @@ paths:
                     example: 'Error interno al cerrar sesión'
       tags:
         - Autenticación
+  /api/v1/plants:
+    post:
+      summary: 'Registrar una nueva planta.'
+      operationId: registrarUnaNuevaPlanta
+      description: 'Permite agregar una nueva especie o planta ornamental al catálogo, con su respectiva información de precio, categoría opcional y archivo de imagen.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Monstera Deliciosa'
+                    price: 24.5
+                    categoryType: Interior
+                    imageUrl: 'http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp'
+                    imagePath: plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp
+                    active: true
+                    createdAt: '2026-10-09T16:00:00+00:00'
+                    updatedAt: '2026-10-09T16:00:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Monstera Deliciosa'
+                      price:
+                        type: number
+                        example: 24.5
+                      categoryType:
+                        type: string
+                        example: Interior
+                      imageUrl:
+                        type: string
+                        example: 'http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp'
+                      imagePath:
+                        type: string
+                        example: plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp
+                      active:
+                        type: boolean
+                        example: true
+                      createdAt:
+                        type: string
+                        example: '2026-10-09T16:00:00+00:00'
+                      updatedAt:
+                        type: string
+                        example: '2026-10-09T16:00:00+00:00'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'El nombre de la planta es obligatorio.'
+                  errors:
+                    name:
+                      - 'El nombre de la planta es obligatorio.'
+                properties:
+                  message:
+                    type: string
+                    example: 'El nombre de la planta es obligatorio.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'El nombre de la planta es obligatorio.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al crear la planta'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al crear la planta'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - Plantas
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Nombre único de la planta o especie.'
+                  example: 'Monstera Deliciosa'
+                price:
+                  type: number
+                  description: 'Precio unitario de la planta.'
+                  example: 24.5
+                category_type:
+                  type: string
+                  description: 'Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra).'
+                  example: Interior
+                  nullable: true
+                image:
+                  type: string
+                  format: binary
+                  description: 'Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).'
+                  nullable: true
+                image_url:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 5120 kilobytes.'
+                  nullable: true
+                active:
+                  type: boolean
+                  description: 'Estado de disponibilidad en catálogo. Por defecto true.'
+                  example: true
+              required:
+                - name
+                - price

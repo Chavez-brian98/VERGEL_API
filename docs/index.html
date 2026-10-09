@@ -230,6 +230,21 @@
                                                                     </ul>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-plantas" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="plantas">
+                    <a href="#plantas">Plantas</a>
+                </li>
+                                    <ul id="tocify-subheader-plantas" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="plantas-escritura">
+                                <a href="#plantas-escritura">Escritura</a>
+                            </li>
+                                                            <ul id="tocify-subheader-plantas-escritura" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="plantas-POSTapi-v1-plants">
+                                            <a href="#plantas-POSTapi-v1-plants">Registrar una nueva planta.</a>
+                                        </li>
+                                                                    </ul>
+                                                                        </ul>
+                            </ul>
             </div>
 
     <ul class="toc-footer" id="toc-footer">
@@ -6630,6 +6645,277 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>application/json</code></p>
             </div>
                         </form>
+
+                <h1 id="plantas">Plantas</h1>
+
+    
+
+                        <h2 id="plantas-escritura">Escritura</h2>
+                                                    <h2 id="plantas-POSTapi-v1-plants">Registrar una nueva planta.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permite agregar una nueva especie o planta ornamental al catálogo, con su respectiva información de precio, categoría opcional y archivo de imagen.</p>
+
+<span id="example-requests-POSTapi-v1-plants">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/plants" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --form "name=Monstera Deliciosa"\
+    --form "price=24.5"\
+    --form "category_type=Interior"\
+    --form "active=1"\
+    --form "image=@/tmp/php8f1087sop6p82kwcARO" \
+    --form "image_url=@/tmp/phpn6qb92qrd88pc36GGyr" </code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/plants"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('name', 'Monstera Deliciosa');
+body.append('price', '24.5');
+body.append('category_type', 'Interior');
+body.append('active', '1');
+body.append('image', document.querySelector('input[name="image"]').files[0]);
+body.append('image_url', document.querySelector('input[name="image_url"]').files[0]);
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-plants">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Monstera Deliciosa&quot;,
+        &quot;price&quot;: 24.5,
+        &quot;categoryType&quot;: &quot;Interior&quot;,
+        &quot;imageUrl&quot;: &quot;http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp&quot;,
+        &quot;imagePath&quot;: &quot;plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp&quot;,
+        &quot;active&quot;: true,
+        &quot;createdAt&quot;: &quot;2026-10-09T16:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-10-09T16:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El nombre de la planta es obligatorio.&quot;,
+    &quot;errors&quot;: {
+        &quot;name&quot;: [
+            &quot;El nombre de la planta es obligatorio.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Error interno al crear la planta&quot;,
+    &quot;codigo&quot;: 500
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-plants" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-plants"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-plants"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-plants" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-plants">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-plants" data-method="POST"
+      data-path="api/v1/plants"
+      data-authed="1"
+      data-hasfiles="1"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-plants', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-plants"
+                    onclick="tryItOut('POSTapi-v1-plants');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-plants"
+                    onclick="cancelTryOut('POSTapi-v1-plants');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-plants"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/plants</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-plants"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-plants"
+               value="multipart/form-data"
+               data-component="header">
+    <br>
+<p>Example: <code>multipart/form-data</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-plants"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="POSTapi-v1-plants"
+               value="Monstera Deliciosa"
+               data-component="body">
+    <br>
+<p>Nombre único de la planta o especie. Example: <code>Monstera Deliciosa</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="price"                data-endpoint="POSTapi-v1-plants"
+               value="24.5"
+               data-component="body">
+    <br>
+<p>Precio unitario de la planta. Example: <code>24.5</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>category_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="category_type"                data-endpoint="POSTapi-v1-plants"
+               value="Interior"
+               data-component="body">
+    <br>
+<p>Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra). Example: <code>Interior</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>image</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+                              name="image"                data-endpoint="POSTapi-v1-plants"
+               value=""
+               data-component="body">
+    <br>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/php8f1087sop6p82kwcARO</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+                              name="image_url"                data-endpoint="POSTapi-v1-plants"
+               value=""
+               data-component="body">
+    <br>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpn6qb92qrd88pc36GGyr</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="POSTapi-v1-plants" style="display: none">
+            <input type="radio" name="active"
+                   value="true"
+                   data-endpoint="POSTapi-v1-plants"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-v1-plants" style="display: none">
+            <input type="radio" name="active"
+                   value="false"
+                   data-endpoint="POSTapi-v1-plants"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Estado de disponibilidad en catálogo. Por defecto true. Example: <code>true</code></p>
+        </div>
+        </form>
 
             
 

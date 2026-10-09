@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "a0f53cb1-5688-4f0a-9f2c-0ef23fb0267b",
+        "_postman_id": "197d09e6-1b00-4ce3-bca4-4ca2562fb19a",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1550,6 +1550,100 @@
                                     "header": [],
                                     "code": 500,
                                     "body": "{\n  \"message\": \"Error interno al cerrar sesi\u00f3n\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Plantas",
+            "description": "",
+            "item": [
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar una nueva planta.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/plants",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/plants"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "name",
+                                            "value": "Monstera Deliciosa",
+                                            "type": "text",
+                                            "description": "Nombre \u00fanico de la planta o especie."
+                                        },
+                                        {
+                                            "key": "price",
+                                            "value": "24.5",
+                                            "type": "text",
+                                            "description": "Precio unitario de la planta."
+                                        },
+                                        {
+                                            "key": "category_type",
+                                            "value": "Interior",
+                                            "type": "text",
+                                            "description": "Categor\u00eda o ambiente de la planta (ej. Interior, Exterior, Sombra)."
+                                        },
+                                        {
+                                            "key": "active",
+                                            "value": "1",
+                                            "type": "text",
+                                            "description": "Estado de disponibilidad en cat\u00e1logo. Por defecto true."
+                                        },
+                                        {
+                                            "key": "image",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "image_url",
+                                            "src": [],
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                "description": "Permite agregar una nueva especie o planta ornamental al cat\u00e1logo, con su respectiva informaci\u00f3n de precio, categor\u00eda opcional y archivo de imagen."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Monstera Deliciosa\",\n    \"price\": 24.5,\n    \"categoryType\": \"Interior\",\n    \"imageUrl\": \"http:\/\/localhost\/storage\/plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n    \"imagePath\": \"plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n    \"active\": true,\n    \"createdAt\": \"2026-10-09T16:00:00+00:00\",\n    \"updatedAt\": \"2026-10-09T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"El nombre de la planta es obligatorio.\",\n  \"errors\": {\n    \"name\": [\n      \"El nombre de la planta es obligatorio.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al crear la planta\",\n  \"codigo\": 500\n}",
                                     "name": ""
                                 }
                             ]
