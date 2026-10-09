@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "b8e28b4e-cf30-46a5-b7a9-47ae69697267",
+        "_postman_id": "a0f53cb1-5688-4f0a-9f2c-0ef23fb0267b",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -953,7 +953,7 @@
                                 {
                                     "header": [],
                                     "code": 404,
-                                    "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Employee]\"\n}",
+                                    "body": "{\n  \"message\": \"Empleado no encontrado\",\n  \"codigo\": 404\n}",
                                     "name": ""
                                 }
                             ]
@@ -1055,7 +1055,7 @@
                                 {
                                     "header": [],
                                     "code": 404,
-                                    "body": "{\n  \"message\": \"Empleado no encontrado\"\n}",
+                                    "body": "{\n  \"message\": \"Empleado no encontrado\",\n  \"codigo\": 404\n}",
                                     "name": ""
                                 },
                                 {
@@ -1113,7 +1113,7 @@
                                 {
                                     "header": [],
                                     "code": 404,
-                                    "body": "{\n  \"message\": \"Empleado no encontrado\"\n}",
+                                    "body": "{\n  \"message\": \"Empleado no encontrado\",\n  \"codigo\": 404\n}",
                                     "name": ""
                                 }
                             ]
@@ -1162,13 +1162,288 @@
                                 {
                                     "header": [],
                                     "code": 404,
-                                    "body": "{\n  \"message\": \"Empleado no encontrado\"\n}",
+                                    "body": "{\n  \"message\": \"Empleado no encontrado\",\n  \"codigo\": 404\n}",
                                     "name": ""
                                 },
                                 {
                                     "header": [],
                                     "code": 422,
                                     "body": "{\n  \"message\": \"The active field is required.\",\n  \"errors\": {\n    \"active\": [\"The active field is required.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Roles",
+            "description": "",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar roles.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/roles",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "admin",
+                                            "description": "Busca por nombre o descripci\u00f3n del rol.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de resultados por p\u00e1gina.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/roles?search=admin&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Obtiene una lista paginada de roles junto con la cantidad de empleados asociados."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"roleName\": \"Administrador\",\n      \"description\": \"Colaborador administrativo con acceso total al sistema\",\n      \"employeesCount\": 2,\n      \"createdAt\": \"2026-10-08T22:58:33+00:00\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/roles?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/roles?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/localhost\/api\/v1\/roles\",\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener detalle de un rol.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/roles\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/roles\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the role."
+                                        },
+                                        {
+                                            "id": "role",
+                                            "key": "role",
+                                            "value": 1,
+                                            "description": "ID del rol."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve los datos del rol junto con la cantidad de empleados asociados."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"roleName\": \"Administrador\",\n    \"description\": \"Colaborador administrativo con acceso total al sistema\",\n    \"employeesCount\": 2,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Rol no encontrado\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar un nuevo rol.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/roles",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/roles"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"role_name\":\"Administrador\",\"description\":\"Colaborador administrativo con acceso total al sistema\"}"
+                                },
+                                "description": "Crea un rol en el cat\u00e1logo. El nombre del rol debe ser \u00fanico."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"roleName\": \"Administrador\",\n    \"description\": \"Colaborador administrativo con acceso total al sistema\",\n    \"employeesCount\": 0,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The role name has already been taken.\",\n  \"errors\": {\n    \"role_name\": [\"The role name has already been taken.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Actualizar un rol.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/roles\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/roles\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the role."
+                                        },
+                                        {
+                                            "id": "role",
+                                            "key": "role",
+                                            "value": 1,
+                                            "description": "ID del rol."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"role_name\":\"Administrador General\",\"description\":\"Acceso total al sistema\"}"
+                                },
+                                "description": "Actualiza de forma parcial los datos editables del rol. Registra la operaci\u00f3n en auditor\u00eda."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"roleName\": \"Administrador General\",\n    \"description\": \"Acceso total al sistema\",\n    \"employeesCount\": 2,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Rol no encontrado\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The role name has already been taken.\",\n  \"errors\": {\n    \"role_name\": [\"The role name has already been taken.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Eliminar un rol.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/roles\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/roles\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the role."
+                                        },
+                                        {
+                                            "id": "role",
+                                            "key": "role",
+                                            "value": 1,
+                                            "description": "ID del rol."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Elimina un rol del cat\u00e1logo. No se permite si el rol tiene empleados asociados."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Rol no encontrado\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\n  \"message\": \"No se puede eliminar el rol porque tiene 2 empleado(s) asociado(s). Reasigne o elimine dichos empleados primero.\",\n  \"codigo\": 409,\n  \"errors\": {\n    \"role\": [\"No se puede eliminar el rol porque tiene 2 empleado(s) asociado(s). Reasigne o elimine dichos empleados primero.\"]\n  }\n}",
                                     "name": ""
                                 }
                             ]
