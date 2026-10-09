@@ -185,6 +185,7 @@ return [
             'Clientes',
             'Planes de Suscripción',
             'Empleados',
+            'Roles',
         ],
     ],
 

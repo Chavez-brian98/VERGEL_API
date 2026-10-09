@@ -125,7 +125,12 @@ class EmployeeController extends Controller
         } catch (\Exception $e) {
             Log::error('Error creating employee: '.$e->getMessage());
 
-            return response()->json(['message' => 'Error interno al crear el empleado'], 500);
+            $data = [
+                'message' => 'Error interno al crear el empleado',
+                'codigo' => 500,
+            ];
+
+            return response()->json($data, 500);
         }
     }
 
@@ -161,14 +166,33 @@ class EmployeeController extends Controller
      *   }
      * }
      * @response status=404 {
-     *   "message": "No query results for model [App\\Models\\Employee]"
+     *   "message": "Empleado no encontrado",
+     *   "codigo": 404
      * }
      */
     public function show($id)
     {
-        $employee = $this->employeeService->getById($id);
+        try {
+            $employee = $this->employeeService->getById($id);
 
-        return new EmployeeResource($employee);
+            return new EmployeeResource($employee);
+        } catch (ModelNotFoundException $e) {
+            $data = [
+                'message' => 'Empleado no encontrado',
+                'codigo' => 404,
+            ];
+
+            return response()->json($data, 404);
+        } catch (\Exception $e) {
+            Log::error('Error showing employee: '.$e->getMessage());
+
+            $data = [
+                'message' => 'Error interno al obtener el empleado',
+                'codigo' => 500,
+            ];
+
+            return response()->json($data, 500);
+        }
     }
 
     /**
@@ -204,7 +228,8 @@ class EmployeeController extends Controller
      *   }
      * }
      * @response status=404 {
-     *   "message": "Empleado no encontrado"
+     *   "message": "Empleado no encontrado",
+     *   "codigo": 404
      * }
      * @response status=422 {
      *   "message": "The dui has already been taken.",
@@ -220,11 +245,21 @@ class EmployeeController extends Controller
 
             return (new EmployeeResource($employee))->response();
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'Empleado no encontrado'], 404);
+            $data = [
+                'message' => 'Empleado no encontrado',
+                'codigo' => 404,
+            ];
+
+            return response()->json($data, 404);
         } catch (\Exception $e) {
             Log::error('Error updating employee: '.$e->getMessage());
 
-            return response()->json(['message' => 'Error interno al actualizar el empleado'], 500);
+            $data = [
+                'message' => 'Error interno al actualizar el empleado',
+                'codigo' => 500,
+            ];
+
+            return response()->json($data, 500);
         }
     }
 
@@ -250,7 +285,8 @@ class EmployeeController extends Controller
      *   }
      * }
      * @response status=404 {
-     *   "message": "Empleado no encontrado"
+     *   "message": "Empleado no encontrado",
+     *   "codigo": 404
      * }
      * @response status=422 {
      *   "message": "The active field is required.",
@@ -270,11 +306,21 @@ class EmployeeController extends Controller
 
             return (new EmployeeResource($employee))->response();
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'Empleado no encontrado'], 404);
+            $data = [
+                'message' => 'Empleado no encontrado',
+                'codigo' => 404,
+            ];
+
+            return response()->json($data, 404);
         } catch (\Exception $e) {
             Log::error('Error updating employee status: '.$e->getMessage());
 
-            return response()->json(['message' => 'Error interno al cambiar el estado'], 500);
+            $data = [
+                'message' => 'Error interno al cambiar el estado',
+                'codigo' => 500,
+            ];
+
+            return response()->json($data, 500);
         }
     }
 
@@ -291,7 +337,8 @@ class EmployeeController extends Controller
      *
      * @response status=204
      * @response status=404 {
-     *   "message": "Empleado no encontrado"
+     *   "message": "Empleado no encontrado",
+     *   "codigo": 404
      * }
      */
     public function destroy($id)
@@ -301,11 +348,21 @@ class EmployeeController extends Controller
 
             return response()->json(null, 204);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'Empleado no encontrado'], 404);
+            $data = [
+                'message' => 'Empleado no encontrado',
+                'codigo' => 404,
+            ];
+
+            return response()->json($data, 404);
         } catch (\Exception $e) {
             Log::error('Error deleting employee: '.$e->getMessage());
 
-            return response()->json(['message' => 'Error interno al eliminar el empleado'], 500);
+            $data = [
+                'message' => 'Error interno al eliminar el empleado',
+                'codigo' => 500,
+            ];
+
+            return response()->json($data, 500);
         }
     }
 }
