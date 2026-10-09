@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "c4cfb874-e699-495c-bb03-9025198e2721",
+        "_postman_id": "b8e28b4e-cf30-46a5-b7a9-47ae69697267",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -827,6 +827,342 @@
                                     "header": [],
                                     "code": 404,
                                     "body": "{\n  \"message\": \"Plan no encontrado\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The active field is required.\",\n  \"errors\": {\n    \"active\": [\"The active field is required.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Empleados",
+            "description": "",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar empleados.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/employees",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Carlos",
+                                            "description": "Busca por nombre completo, DUI o tel\u00e9fono.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "active",
+                                            "value": "1",
+                                            "description": "Filtrar por estado (true\/activo o false\/inactivo).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "role_id",
+                                            "value": "1",
+                                            "description": "Filtrar por ID de rol.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de resultados por p\u00e1gina.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/employees?search=Carlos&active=1&role_id=1&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Obtiene una lista paginada de empleados con opciones de b\u00fasqueda y filtros."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"fullName\": \"Carlos Mendoza\",\n      \"dui\": \"01234567-8\",\n      \"phone\": \"7000-0000\",\n      \"active\": true,\n      \"roleName\": \"Administrador\",\n      \"createdAt\": \"2026-10-08T22:58:33+00:00\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/employees?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/employees?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/localhost\/api\/v1\/employees\",\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener detalle de un empleado.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/employees\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/employees\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the employee."
+                                        },
+                                        {
+                                            "id": "employee",
+                                            "key": "employee",
+                                            "value": 1,
+                                            "description": "ID del empleado."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve los datos completos del empleado junto con su rol."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"fullName\": \"Carlos Mendoza\",\n    \"dui\": \"01234567-8\",\n    \"address\": \"Colonia Centro, San Salvador\",\n    \"municipality\": \"San Salvador\",\n    \"department\": \"San Salvador\",\n    \"birthDate\": \"1990-01-15\",\n    \"hireDate\": \"2024-03-01\",\n    \"phone\": \"7000-0000\",\n    \"active\": true,\n    \"role\": {\n      \"id\": 1,\n      \"roleName\": \"Administrador\"\n    },\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Employee]\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar un nuevo empleado.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/employees",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/employees"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"full_name\":\"Carlos Mendoza\",\"role_id\":1,\"dui\":\"01234567-8\",\"address\":\"Colonia Centro, San Salvador\",\"municipality\":\"San Salvador\",\"department\":\"San Salvador\",\"birth_date\":\"1990-01-15\",\"hire_date\":\"2024-03-01\",\"phone\":\"7000-0000\",\"active\":true}"
+                                },
+                                "description": "Crea un empleado asociado a un rol existente. El estado por defecto es activo."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"fullName\": \"Carlos Mendoza\",\n    \"dui\": \"01234567-8\",\n    \"address\": \"Colonia Centro, San Salvador\",\n    \"municipality\": \"San Salvador\",\n    \"department\": \"San Salvador\",\n    \"birthDate\": \"1990-01-15\",\n    \"hireDate\": \"2024-03-01\",\n    \"phone\": \"7000-0000\",\n    \"active\": true,\n    \"role\": {\n      \"id\": 1,\n      \"roleName\": \"Administrador\"\n    },\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The full name field is required.\",\n  \"errors\": {\n    \"full_name\": [\"The full name field is required.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Actualizar un empleado.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/employees\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/employees\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the employee."
+                                        },
+                                        {
+                                            "id": "employee",
+                                            "key": "employee",
+                                            "value": 1,
+                                            "description": "ID del empleado."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"full_name\":\"Carlos Mendoza\",\"role_id\":1,\"dui\":\"01234567-8\",\"address\":\"Colonia Centro, San Salvador\",\"municipality\":\"San Salvador\",\"department\":\"San Salvador\",\"birth_date\":\"1990-01-15\",\"hire_date\":\"2024-03-01\",\"phone\":\"7000-0000\",\"active\":true}"
+                                },
+                                "description": "Actualiza de forma parcial los datos editables del empleado. Registra la operaci\u00f3n en auditor\u00eda."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"fullName\": \"Carlos Mendoza Actualizado\",\n    \"dui\": \"01234567-8\",\n    \"active\": true,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Empleado no encontrado\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The dui has already been taken.\",\n  \"errors\": {\n    \"dui\": [\"The dui has already been taken.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Eliminar un empleado (soft delete).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/employees\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/employees\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the employee."
+                                        },
+                                        {
+                                            "id": "employee",
+                                            "key": "employee",
+                                            "value": 1,
+                                            "description": "ID del empleado."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Marca al empleado como eliminado sin borrarlo f\u00edsicamente de la base de datos."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Empleado no encontrado\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Activar o desactivar un empleado.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/employees\/:employee\/status",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/employees\/:employee\/status",
+                                    "variable": [
+                                        {
+                                            "id": "employee",
+                                            "key": "employee",
+                                            "value": 1,
+                                            "description": "ID del empleado."
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"active\":false}"
+                                },
+                                "description": "Cambia el estado (activo\/inactivo) de un empleado existente."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"fullName\": \"Carlos Mendoza\",\n    \"active\": false,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Empleado no encontrado\"\n}",
                                     "name": ""
                                 },
                                 {

@@ -1,0 +1,15 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 500
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "message": "Error interno al cerrar sesión"
+      }
+order: 3000

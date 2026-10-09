@@ -1,0 +1,10 @@
+$kind: http-request
+name: Cerrar sesión.
+description: Invalida y elimina el token de acceso actual del usuario autenticado.
+url: "{{baseUrl}}/api/logout"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+examples: ./.resources/Cerrar sesión-.resources/examples
+order: 2000

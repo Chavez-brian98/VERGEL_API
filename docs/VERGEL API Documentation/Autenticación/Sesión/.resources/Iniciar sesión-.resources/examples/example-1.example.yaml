@@ -1,0 +1,20 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 422
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "message": "Las credenciales proporcionadas son incorrectas.",
+        "errors": {
+          "email": [
+            "Las credenciales proporcionadas son incorrectas."
+          ]
+        }
+      }
+order: 2000

@@ -1,0 +1,17 @@
+$kind: http-request
+name: Cambiar el plan de suscripción de un cliente.
+description: Asigna un nuevo plan al cliente, cerrando el historial del plan anterior.
+url: "{{baseUrl}}/api/v1/customers/:customer/plan"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: customer
+    value: "1"
+    description: ID del cliente.
+body:
+  type: text
+  content: '{"plan_id":2}'
+examples: ./.resources/Cambiar el plan de suscripción de un cliente-.resources/examples
+order: 5000

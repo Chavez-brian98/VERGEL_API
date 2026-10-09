@@ -1,0 +1,18 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 422
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "message": "The phone has already been taken.",
+        "errors": {
+          "phone": ["The phone has already been taken."]
+        }
+      }
+order: 2000

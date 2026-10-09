@@ -4,9 +4,9 @@ workspace:
 
 localResources:
   collections:
-    - ../Customers_Postman_Collection.json
-    - ../docs/collection.json
     - ../storage/app/private/scribe/collection.json
+    - ../Vergel API - Customers Module
+    - ../docs/VERGEL API Documentation
   specs:
     - ../docs/openapi.yaml
     - ../storage/app/private/scribe/openapi.yaml

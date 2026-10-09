@@ -25,6 +25,12 @@ class Employee extends Model
         'active',
     ];
 
+    protected $casts = [
+        'birth_date' => 'date',
+        'hire_date' => 'date',
+        'active' => 'boolean',
+    ];
+
     public function user(): HasOne
     {
         return $this->hasOne(User::class);

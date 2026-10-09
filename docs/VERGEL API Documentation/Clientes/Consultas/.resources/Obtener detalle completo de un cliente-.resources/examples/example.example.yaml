@@ -1,0 +1,45 @@
+$kind: http-example
+name: ""
+request:
+  url: ""
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: text
+    content: |-
+      {
+        "data": {
+          "id": 1,
+          "legalName": "Cliente Ejemplo S.A. de C.V.",
+          "tradeName": "Cliente Ejemplo",
+          "taxId": "0614-260290-101-1",
+          "nrc": "123456-7",
+          "economicActivity": "Venta de servicios",
+          "address": "Colonia Centro, San Salvador",
+          "municipality": "San Salvador",
+          "department": "San Salvador",
+          "phone": "7000-0000",
+          "email": "cliente@example.com",
+          "status": "active",
+          "visitFrequency": {
+            "value": 30,
+            "unit": "days"
+          },
+          "currentPlan": {
+            "id": 1,
+            "planCode": "BASICO",
+            "planName": "Plan Básico"
+          },
+          "wallet": {
+            "cashBalance": 250.5,
+            "reservedSubscriptionBalance": 0
+          },
+          "loyaltyPoints": {
+            "pointsBalance": 120
+          },
+          "createdAt": "2026-09-23T06:00:00+00:00"
+        }
+      }
+order: 1000

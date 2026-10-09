@@ -1,0 +1,8 @@
+$kind: collection
+description: API REST de VERGEL para la gestión de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).
+variables:
+  baseUrl: http://localhost
+auth:
+  - id: ab60cdf4-1058-45e5-a294-6ed25dd534bb
+    type: bearer
+    name: bearer auth
