@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('roles', RoleController::class);
 
+        Route::get('plants', [PlantController::class, 'index']);
         Route::post('plants', [PlantController::class, 'store']);
     });
 });

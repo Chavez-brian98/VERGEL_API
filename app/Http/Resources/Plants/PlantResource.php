@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class PlantResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Transforma el recurso a un arreglo para la respuesta JSON.
      *
      * @return array<string, mixed>
      */

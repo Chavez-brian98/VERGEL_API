@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class StorePlantRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario autenticado está autorizado para realizar esta solicitud.
      */
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class StorePlantRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Obtiene las reglas de validación aplicables para crear una nueva planta.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
@@ -61,7 +61,7 @@ class StorePlantRequest extends FormRequest
     }
 
     /**
-     * Get custom messages for validator errors.
+     * Obtiene los mensajes personalizados para los errores de validación.
      *
      * @return array<string, string>
      */

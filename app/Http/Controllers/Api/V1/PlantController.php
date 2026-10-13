@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Plant\IndexPlantRequest;
 use App\Http\Requests\Plant\StorePlantRequest;
 use App\Http\Resources\Plants\PlantResource;
 use App\Services\PlantService;
@@ -13,6 +14,64 @@ class PlantController extends Controller
     public function __construct(
         private PlantService $plantService
     ) {}
+
+    /**
+     * Listar y filtrar plantas.
+     *
+     * Obtiene una lista paginada de plantas del catálogo con soporte para filtros dinámicos (búsqueda, categoría, rango de precio, estado) y ordenamiento.
+     *
+     * @group Plantas
+     *
+     * @subgroup Consultas
+     *
+     * @queryParam search string Búsqueda por coincidencia en nombre o tipo de categoría. Example: Monstera
+     * @queryParam category_type string Filtrar por categoría exacta. Example: Interior
+     * @queryParam active boolean Filtrar por estado activo o inactivo (true/false). Example: true
+     * @queryParam min_price number Filtrar por precio mínimo. Example: 10.00
+     * @queryParam max_price number Filtrar por precio máximo. Example: 50.00
+     * @queryParam sort_by string Campo por el cual ordenar (id, name, price, category_type, created_at). Por defecto 'id'. Example: name
+     * @queryParam sort_direction string Dirección de ordenamiento (asc o desc). Por defecto 'desc'. Example: asc
+     * @queryParam per_page integer Cantidad de resultados por página (1-100). Por defecto 15. Example: 15
+     * @queryParam limit integer Alias alternativo para per_page. Example: 15
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "name": "Monstera Deliciosa",
+     *       "price": 24.5,
+     *       "categoryType": "Interior",
+     *       "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+     *       "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+     *       "active": true,
+     *       "createdAt": "2026-10-09T16:00:00+00:00",
+     *       "updatedAt": "2026-10-09T16:00:00+00:00"
+     *     }
+     *   ],
+     *   "links": {
+     *     "first": "http://localhost/api/v1/plants?page=1",
+     *     "last": "http://localhost/api/v1/plants?page=1",
+     *     "prev": null,
+     *     "next": null
+     *   },
+     *   "meta": {
+     *     "current_page": 1,
+     *     "from": 1,
+     *     "last_page": 1,
+     *     "path": "http://localhost/api/v1/plants",
+     *     "per_page": 15,
+     *     "to": 1,
+     *     "total": 1
+     *   }
+     * }
+     */
+    public function index(IndexPlantRequest $request)
+    {
+        $perPage = (int) ($request->input('per_page') ?? $request->input('limit', 15));
+        $plants = $this->plantService->search($request->validated(), $perPage);
+
+        return PlantResource::collection($plants);
+    }
 
     /**
      * Registrar una nueva planta.

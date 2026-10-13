@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "197d09e6-1b00-4ce3-bca4-4ca2562fb19a",
+        "_postman_id": "14df1c74-3e06-4777-9ca7-410dc2861217",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1562,6 +1562,102 @@
             "name": "Plantas",
             "description": "",
             "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar plantas.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/plants",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Monstera",
+                                            "description": "B\u00fasqueda por coincidencia en nombre o tipo de categor\u00eda.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "category_type",
+                                            "value": "Interior",
+                                            "description": "Filtrar por categor\u00eda exacta.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "active",
+                                            "value": "1",
+                                            "description": "Filtrar por estado activo o inactivo (true\/false).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "min_price",
+                                            "value": "10",
+                                            "description": "Filtrar por precio m\u00ednimo.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "max_price",
+                                            "value": "50",
+                                            "description": "Filtrar por precio m\u00e1ximo.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "name",
+                                            "description": "Campo por el cual ordenar (id, name, price, category_type, created_at). Por defecto 'id'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n de ordenamiento (asc o desc). Por defecto 'desc'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Cantidad de resultados por p\u00e1gina (1-100). Por defecto 15.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Alias alternativo para per_page.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/plants?search=Monstera&category_type=Interior&active=1&min_price=10&max_price=50&sort_by=name&sort_direction=asc&per_page=15&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
+                                },
+                                "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Monstera Deliciosa\",\n      \"price\": 24.5,\n      \"categoryType\": \"Interior\",\n      \"imageUrl\": \"http:\/\/localhost\/storage\/plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n      \"imagePath\": \"plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n      \"active\": true,\n      \"createdAt\": \"2026-10-09T16:00:00+00:00\",\n      \"updatedAt\": \"2026-10-09T16:00:00+00:00\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/plants?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/plants?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/localhost\/api\/v1\/plants\",\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
                 {
                     "name": "Escritura",
                     "description": "",
