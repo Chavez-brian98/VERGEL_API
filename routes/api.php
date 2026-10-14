@@ -33,5 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('plants', [PlantController::class, 'index']);
         Route::post('plants', [PlantController::class, 'store']);
         Route::get('plants/{id}', [PlantController::class, 'show']);
+        Route::delete('plants/{id}', [PlantController::class, 'destroy']);
     });
 });

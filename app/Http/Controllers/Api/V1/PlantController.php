@@ -9,6 +9,7 @@ use App\Http\Resources\Plants\PlantResource;
 use App\Services\PlantService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class PlantController extends Controller
 {
@@ -181,6 +182,63 @@ class PlantController extends Controller
 
             return response()->json([
                 'message' => 'Error interno al crear la planta',
+                'codigo' => 500,
+            ], 500);
+        }
+    }
+
+    /**
+     * Eliminar lógicamente una planta.
+     *
+     * Realiza un borrado lógico (soft delete) de la planta especificada. No permite la eliminación si la planta está asociada a cotizaciones existentes.
+     *
+     * @group Plantas
+     *
+     * @subgroup Escritura
+     *
+     * @urlParam plant integer required ID de la planta a eliminar. Example: 1
+     *
+     * @response status=204
+     * @response status=404 {
+     *   "message": "Planta no encontrada",
+     *   "codigo": 404
+     * }
+     * @response status=409 {
+     *   "message": "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).",
+     *   "codigo": 409,
+     *   "errors": {
+     *     "plant": [
+     *       "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s)."
+     *     ]
+     *   }
+     * }
+     * @response status=500 {
+     *   "message": "Error interno al eliminar la planta",
+     *   "codigo": 500
+     * }
+     */
+    public function destroy($id)
+    {
+        try {
+            $this->plantService->delete((int) $id);
+
+            return response()->json(null, 204);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'codigo' => 409,
+                'errors' => $e->errors(),
+            ], 409);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Planta no encontrada',
+                'codigo' => 404,
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error deleting plant: '.$e->getMessage());
+
+            return response()->json([
+                'message' => 'Error interno al eliminar la planta',
                 'codigo' => 500,
             ], 500);
         }

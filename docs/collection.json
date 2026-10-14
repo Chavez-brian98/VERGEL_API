@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "d519869d-07a9-4c71-b5ff-b44b600b0b51",
+        "_postman_id": "ee2e690f-a3de-4d52-b4e5-9fde70231e1b",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1643,7 +1643,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"category_type\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -1798,6 +1798,70 @@
                                     "header": [],
                                     "code": 500,
                                     "body": "{\n  \"message\": \"Error interno al crear la planta\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Eliminar l\u00f3gicamente una planta.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/plants\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/plants\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the plant."
+                                        },
+                                        {
+                                            "id": "plant",
+                                            "key": "plant",
+                                            "value": 1,
+                                            "description": "ID de la planta a eliminar."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Realiza un borrado l\u00f3gico (soft delete) de la planta especificada. No permite la eliminaci\u00f3n si la planta est\u00e1 asociada a cotizaciones existentes."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Planta no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\n  \"message\": \"No se puede eliminar la planta porque est\u00e1 asociada a 2 cotizaci\u00f3n(es) o presupuesto(s).\",\n  \"codigo\": 409,\n  \"errors\": {\n    \"plant\": [\n      \"No se puede eliminar la planta porque est\u00e1 asociada a 2 cotizaci\u00f3n(es) o presupuesto(s).\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al eliminar la planta\",\n  \"codigo\": 500\n}",
                                     "name": ""
                                 }
                             ]

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class PlantService
 {
@@ -96,6 +97,31 @@ class PlantService
             $this->logAudit('insert', 'plants', $plant->id, null, $plant->toArray());
 
             return $plant;
+        });
+    }
+
+    /**
+     * Elimina lógicamente una planta si no tiene cotizaciones asociadas.
+     *
+     * @throws ModelNotFoundException
+     * @throws ValidationException
+     */
+    public function delete(int $id): void
+    {
+        $plant = Plant::findOrFail($id);
+
+        $quoteItemsCount = $plant->quoteItems()->count();
+        if ($quoteItemsCount > 0) {
+            throw ValidationException::withMessages([
+                'plant' => ["No se puede eliminar la planta porque está asociada a {$quoteItemsCount} cotización(es) o presupuesto(s)."],
+            ]);
+        }
+
+        $oldData = $plant->toArray();
+
+        DB::transaction(function () use ($plant, $oldData) {
+            $plant->delete();
+            $this->logAudit('delete', 'plants', $plant->id, $oldData, null);
         });
     }
 

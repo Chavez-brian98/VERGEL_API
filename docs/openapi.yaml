@@ -3568,7 +3568,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: category_type
+                  example: created_at
                   enum:
                     - id
                     - name
@@ -3579,7 +3579,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: desc
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -3801,6 +3801,81 @@ paths:
                   message:
                     type: string
                     example: 'Error interno al obtener la planta'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - Plantas
+    delete:
+      summary: 'Eliminar lógicamente una planta.'
+      operationId: eliminarLgicamenteUnaPlanta
+      description: 'Realiza un borrado lógico (soft delete) de la planta especificada. No permite la eliminación si la planta está asociada a cotizaciones existentes.'
+      parameters: []
+      responses:
+        204:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ''
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Planta no encontrada'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Planta no encontrada'
+                  codigo:
+                    type: integer
+                    example: 404
+        409:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).'
+                  codigo: 409
+                  errors:
+                    plant:
+                      - 'No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).'
+                properties:
+                  message:
+                    type: string
+                    example: 'No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).'
+                  codigo:
+                    type: integer
+                    example: 409
+                  errors:
+                    type: object
+                    properties:
+                      plant:
+                        type: array
+                        example:
+                          - 'No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al eliminar la planta'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al eliminar la planta'
                   codigo:
                     type: integer
                     example: 500
