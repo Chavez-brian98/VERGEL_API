@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('employees/{employee}/status', [EmployeeController::class, 'updateStatus']);
 
         Route::apiResource('roles', RoleController::class);
+
+        Route::get('plants', [PlantController::class, 'index']);
+        Route::post('plants', [PlantController::class, 'store']);
+        Route::get('plants/{id}', [PlantController::class, 'show']);
+        Route::match(['put', 'patch', 'post'], 'plants/{id}', [PlantController::class, 'update']);
+        Route::delete('plants/{id}', [PlantController::class, 'destroy']);
     });
 });

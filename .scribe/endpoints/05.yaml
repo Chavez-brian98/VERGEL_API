@@ -1,0 +1,843 @@
+name: Plantas
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/plants
+    metadata:
+      custom: []
+      groupName: Plantas
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Listar y filtrar plantas.'
+      description: 'Obtiene una lista paginada de plantas del catálogo con soporte para filtros dinámicos (búsqueda, categoría, rango de precio, estado) y ordenamiento.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Búsqueda por coincidencia en nombre o tipo de categoría.'
+        required: false
+        example: Monstera
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      category_type:
+        custom: []
+        name: category_type
+        description: 'Filtrar por categoría exacta.'
+        required: false
+        example: Interior
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Filtrar por estado activo o inactivo (true/false).'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      min_price:
+        custom: []
+        name: min_price
+        description: 'Filtrar por precio mínimo.'
+        required: false
+        example: 10.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      max_price:
+        custom: []
+        name: max_price
+        description: 'Filtrar por precio máximo.'
+        required: false
+        example: 50.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort_by:
+        custom: []
+        name: sort_by
+        description: "Campo por el cual ordenar (id, name, price, category_type, created_at). Por defecto 'id'."
+        required: false
+        example: name
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort_direction:
+        custom: []
+        name: sort_direction
+        description: "Dirección de ordenamiento (asc o desc). Por defecto 'desc'."
+        required: false
+        example: asc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Cantidad de resultados por página (1-100). Por defecto 15.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Alias alternativo para per_page.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      search: Monstera
+      category_type: Interior
+      active: true
+      min_price: 10.0
+      max_price: 50.0
+      sort_by: name
+      sort_direction: asc
+      per_page: 15
+      limit: 15
+    bodyParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      category_type:
+        custom: []
+        name: category_type
+        description: 'Must not be greater than 80 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      min_price:
+        custom: []
+        name: min_price
+        description: 'Must be at least 0.'
+        required: false
+        example: 84
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      max_price:
+        custom: []
+        name: max_price
+        description: 'Must be at least 0.'
+        required: false
+        example: 12
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      sort_by:
+        custom: []
+        name: sort_by
+        description: ''
+        required: false
+        example: created_at
+        type: string
+        enumValues:
+          - id
+          - name
+          - price
+          - category_type
+          - created_at
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      sort_direction:
+        custom: []
+        name: sort_direction
+        description: ''
+        required: false
+        example: desc
+        type: string
+        enumValues:
+          - asc
+          - desc
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      search: b
+      category_type: 'n'
+      active: true
+      min_price: 84
+      max_price: 12
+      per_page: 17
+      limit: 15
+      sort_by: created_at
+      sort_direction: desc
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "name": "Monstera Deliciosa",
+                "price": 24.5,
+                "categoryType": "Interior",
+                "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+                "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+                "active": true,
+                "createdAt": "2026-10-09T16:00:00+00:00",
+                "updatedAt": "2026-10-09T16:00:00+00:00"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/plants?page=1",
+              "last": "http://localhost/api/v1/plants?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://localhost/api/v1/plants",
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/plants
+    metadata:
+      custom: []
+      groupName: Plantas
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Registrar una nueva planta.'
+      description: 'Permite agregar una nueva especie o planta ornamental al catálogo, con su respectiva información de precio, categoría opcional y archivo de imagen.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: multipart/form-data
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Nombre único de la planta o especie.'
+        required: true
+        example: 'Monstera Deliciosa'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      price:
+        custom: []
+        name: price
+        description: 'Precio unitario de la planta.'
+        required: true
+        example: 24.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      category_type:
+        custom: []
+        name: category_type
+        description: 'Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra).'
+        required: false
+        example: Interior
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      image:
+        custom: []
+        name: image
+        description: 'Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'Must be an image. Must not be greater than 5120 kilobytes.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Estado de disponibilidad en catálogo. Por defecto true.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Monstera Deliciosa'
+      price: 24.5
+      category_type: Interior
+      active: true
+    fileParameters:
+      image: null
+      image_url: null
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Monstera Deliciosa",
+              "price": 24.5,
+              "categoryType": "Interior",
+              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+              "active": true,
+              "createdAt": "2026-10-09T16:00:00+00:00",
+              "updatedAt": "2026-10-09T16:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "El nombre de la planta es obligatorio.",
+            "errors": {
+              "name": [
+                "El nombre de la planta es obligatorio."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al crear la planta",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/plants/{id}'
+    metadata:
+      custom: []
+      groupName: Plantas
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Obtener el detalle de una planta.'
+      description: 'Devuelve la información completa de una planta individual mediante su identificador único (ID).'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the plant.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      plant:
+        custom: []
+        name: plant
+        description: 'ID de la planta.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      plant: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Monstera Deliciosa",
+              "price": 24.5,
+              "categoryType": "Interior",
+              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+              "active": true,
+              "createdAt": "2026-10-09T16:00:00+00:00",
+              "updatedAt": "2026-10-09T16:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Planta no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al obtener la planta",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+      - PATCH
+      - POST
+    uri: 'api/v1/plants/{id}'
+    metadata:
+      custom: []
+      groupName: Plantas
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Actualizar una planta.'
+      description: 'Modifica los datos de una planta existente en el catálogo, permitiendo reemplazar su imagen o eliminarla.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: multipart/form-data
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the plant.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      plant:
+        custom: []
+        name: plant
+        description: 'ID de la planta a actualizar.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      plant: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'optional Nombre único de la planta o especie.'
+        required: false
+        example: 'Monstera Variegata'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      price:
+        custom: []
+        name: price
+        description: 'optional Precio unitario de la planta.'
+        required: false
+        example: 35.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      category_type:
+        custom: []
+        name: category_type
+        description: 'optional Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra).'
+        required: false
+        example: Interior
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      image:
+        custom: []
+        name: image
+        description: 'optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'Must be an image. Must not be greater than 5120 kilobytes.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'optional Estado de disponibilidad en catálogo.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      remove_image:
+        custom: []
+        name: remove_image
+        description: 'optional Si se envía en true, elimina la imagen actual de la planta.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Monstera Variegata'
+      price: 35.0
+      category_type: Interior
+      active: true
+      remove_image: false
+    fileParameters:
+      image: null
+      image_url: null
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Monstera Variegata",
+              "price": 35.0,
+              "categoryType": "Interior",
+              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+              "active": true,
+              "createdAt": "2026-10-09T16:00:00+00:00",
+              "updatedAt": "2026-10-13T23:20:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Planta no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Ya existe otra planta registrada con este nombre.",
+            "errors": {
+              "name": [
+                "Ya existe otra planta registrada con este nombre."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al actualizar la planta",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/plants/{id}'
+    metadata:
+      custom: []
+      groupName: Plantas
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Eliminar lógicamente una planta.'
+      description: 'Realiza un borrado lógico (soft delete) de la planta especificada. No permite la eliminación si la planta está asociada a cotizaciones existentes.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the plant.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      plant:
+        custom: []
+        name: plant
+        description: 'ID de la planta a eliminar.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      plant: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 204
+        content: ''
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Planta no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 409
+        content: |-
+          {
+            "message": "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).",
+            "codigo": 409,
+            "errors": {
+              "plant": [
+                "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s)."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al eliminar la planta",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
