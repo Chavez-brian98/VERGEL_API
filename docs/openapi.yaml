@@ -3543,7 +3543,7 @@ paths:
                 active:
                   type: boolean
                   description: ''
-                  example: false
+                  example: true
                   nullable: true
                 min_price:
                   type: number
@@ -3568,7 +3568,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: category_type
                   enum:
                     - id
                     - name
@@ -3717,3 +3717,109 @@ paths:
               required:
                 - name
                 - price
+  '/api/v1/plants/{id}':
+    get:
+      summary: 'Obtener el detalle de una planta.'
+      operationId: obtenerElDetalleDeUnaPlanta
+      description: 'Devuelve la información completa de una planta individual mediante su identificador único (ID).'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Monstera Deliciosa'
+                    price: 24.5
+                    categoryType: Interior
+                    imageUrl: 'http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp'
+                    imagePath: plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp
+                    active: true
+                    createdAt: '2026-10-09T16:00:00+00:00'
+                    updatedAt: '2026-10-09T16:00:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Monstera Deliciosa'
+                      price:
+                        type: number
+                        example: 24.5
+                      categoryType:
+                        type: string
+                        example: Interior
+                      imageUrl:
+                        type: string
+                        example: 'http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp'
+                      imagePath:
+                        type: string
+                        example: plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp
+                      active:
+                        type: boolean
+                        example: true
+                      createdAt:
+                        type: string
+                        example: '2026-10-09T16:00:00+00:00'
+                      updatedAt:
+                        type: string
+                        example: '2026-10-09T16:00:00+00:00'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Planta no encontrada'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Planta no encontrada'
+                  codigo:
+                    type: integer
+                    example: 404
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al obtener la planta'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al obtener la planta'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - Plantas
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the plant.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: plant
+        description: 'ID de la planta.'
+        example: 1
+        required: true
+        schema:
+          type: integer

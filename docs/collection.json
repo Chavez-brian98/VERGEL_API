@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "14df1c74-3e06-4777-9ca7-410dc2861217",
+        "_postman_id": "d519869d-07a9-4c71-b5ff-b44b600b0b51",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1643,7 +1643,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"category_type\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -1652,6 +1652,64 @@
                                     "header": [],
                                     "code": 200,
                                     "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Monstera Deliciosa\",\n      \"price\": 24.5,\n      \"categoryType\": \"Interior\",\n      \"imageUrl\": \"http:\/\/localhost\/storage\/plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n      \"imagePath\": \"plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n      \"active\": true,\n      \"createdAt\": \"2026-10-09T16:00:00+00:00\",\n      \"updatedAt\": \"2026-10-09T16:00:00+00:00\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/plants?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/plants?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/localhost\/api\/v1\/plants\",\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el detalle de una planta.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/plants\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/plants\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the plant."
+                                        },
+                                        {
+                                            "id": "plant",
+                                            "key": "plant",
+                                            "value": 1,
+                                            "description": "ID de la planta."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve la informaci\u00f3n completa de una planta individual mediante su identificador \u00fanico (ID)."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Monstera Deliciosa\",\n    \"price\": 24.5,\n    \"categoryType\": \"Interior\",\n    \"imageUrl\": \"http:\/\/localhost\/storage\/plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n    \"imagePath\": \"plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n    \"active\": true,\n    \"createdAt\": \"2026-10-09T16:00:00+00:00\",\n    \"updatedAt\": \"2026-10-09T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Planta no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al obtener la planta\",\n  \"codigo\": 500\n}",
                                     "name": ""
                                 }
                             ]

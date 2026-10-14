@@ -6,6 +6,7 @@ use App\Helpers\FileUploadHelper;
 use App\Models\AuditLog;
 use App\Models\Employee;
 use App\Models\Plant;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -58,6 +59,16 @@ class PlantService
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
         return $query->orderBy($sortBy, $sortDirection)->paginate($perPage);
+    }
+
+    /**
+     * Obtiene una planta por su identificador único.
+     *
+     * @throws ModelNotFoundException
+     */
+    public function getById(int $id): Plant
+    {
+        return Plant::findOrFail($id);
     }
 
     /**

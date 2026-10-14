@@ -7,6 +7,7 @@ use App\Http\Requests\Plant\IndexPlantRequest;
 use App\Http\Requests\Plant\StorePlantRequest;
 use App\Http\Resources\Plants\PlantResource;
 use App\Services\PlantService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
 class PlantController extends Controller
@@ -71,6 +72,60 @@ class PlantController extends Controller
         $plants = $this->plantService->search($request->validated(), $perPage);
 
         return PlantResource::collection($plants);
+    }
+
+    /**
+     * Obtener el detalle de una planta.
+     *
+     * Devuelve la información completa de una planta individual mediante su identificador único (ID).
+     *
+     * @group Plantas
+     *
+     * @subgroup Consultas
+     *
+     * @urlParam plant integer required ID de la planta. Example: 1
+     *
+     * @response status=200 {
+     *   "data": {
+     *     "id": 1,
+     *     "name": "Monstera Deliciosa",
+     *     "price": 24.5,
+     *     "categoryType": "Interior",
+     *     "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+     *     "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+     *     "active": true,
+     *     "createdAt": "2026-10-09T16:00:00+00:00",
+     *     "updatedAt": "2026-10-09T16:00:00+00:00"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Planta no encontrada",
+     *   "codigo": 404
+     * }
+     * @response status=500 {
+     *   "message": "Error interno al obtener la planta",
+     *   "codigo": 500
+     * }
+     */
+    public function show($id)
+    {
+        try {
+            $plant = $this->plantService->getById((int) $id);
+
+            return new PlantResource($plant);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Planta no encontrada',
+                'codigo' => 404,
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error showing plant: '.$e->getMessage());
+
+            return response()->json([
+                'message' => 'Error interno al obtener la planta',
+                'codigo' => 500,
+            ], 500);
+        }
     }
 
     /**
