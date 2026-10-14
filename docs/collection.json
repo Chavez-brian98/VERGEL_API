@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "ee2e690f-a3de-4d52-b4e5-9fde70231e1b",
+        "_postman_id": "e47fee5f-08fe-417a-b4cc-9406179d1777",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1643,7 +1643,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"asc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -1798,6 +1798,119 @@
                                     "header": [],
                                     "code": 500,
                                     "body": "{\n  \"message\": \"Error interno al crear la planta\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Actualizar una planta.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/plants\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/plants\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the plant."
+                                        },
+                                        {
+                                            "id": "plant",
+                                            "key": "plant",
+                                            "value": 1,
+                                            "description": "ID de la planta a actualizar."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "name",
+                                            "value": "Monstera Variegata",
+                                            "type": "text",
+                                            "description": "optional Nombre \u00fanico de la planta o especie."
+                                        },
+                                        {
+                                            "key": "price",
+                                            "value": "35",
+                                            "type": "text",
+                                            "description": "optional Precio unitario de la planta."
+                                        },
+                                        {
+                                            "key": "category_type",
+                                            "value": "Interior",
+                                            "type": "text",
+                                            "description": "optional Categor\u00eda o ambiente de la planta (ej. Interior, Exterior, Sombra)."
+                                        },
+                                        {
+                                            "key": "active",
+                                            "value": "1",
+                                            "type": "text",
+                                            "description": "optional Estado de disponibilidad en cat\u00e1logo."
+                                        },
+                                        {
+                                            "key": "remove_image",
+                                            "value": "",
+                                            "type": "text",
+                                            "description": "optional Si se env\u00eda en true, elimina la imagen actual de la planta."
+                                        },
+                                        {
+                                            "key": "image",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "image_url",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "_method",
+                                            "value": "PUT",
+                                            "type": "text"
+                                        }
+                                    ]
+                                },
+                                "description": "Modifica los datos de una planta existente en el cat\u00e1logo, permitiendo reemplazar su imagen o eliminarla."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Monstera Variegata\",\n    \"price\": 35.0,\n    \"categoryType\": \"Interior\",\n    \"imageUrl\": \"http:\/\/localhost\/storage\/plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n    \"imagePath\": \"plants\/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp\",\n    \"active\": true,\n    \"createdAt\": \"2026-10-09T16:00:00+00:00\",\n    \"updatedAt\": \"2026-10-13T23:20:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Planta no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Ya existe otra planta registrada con este nombre.\",\n  \"errors\": {\n    \"name\": [\n      \"Ya existe otra planta registrada con este nombre.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al actualizar la planta\",\n  \"codigo\": 500\n}",
                                     "name": ""
                                 }
                             ]

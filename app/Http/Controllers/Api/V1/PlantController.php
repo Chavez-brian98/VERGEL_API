@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Plant\IndexPlantRequest;
 use App\Http\Requests\Plant\StorePlantRequest;
+use App\Http\Requests\Plant\UpdatePlantRequest;
 use App\Http\Resources\Plants\PlantResource;
 use App\Services\PlantService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -182,6 +183,76 @@ class PlantController extends Controller
 
             return response()->json([
                 'message' => 'Error interno al crear la planta',
+                'codigo' => 500,
+            ], 500);
+        }
+    }
+
+    /**
+     * Actualizar una planta.
+     *
+     * Modifica los datos de una planta existente en el catálogo, permitiendo reemplazar su imagen o eliminarla.
+     *
+     * @group Plantas
+     *
+     * @subgroup Escritura
+     *
+     * @urlParam plant integer required ID de la planta a actualizar. Example: 1
+     *
+     * @bodyParam name string optional Nombre único de la planta o especie. Example: Monstera Variegata
+     * @bodyParam price number optional Precio unitario de la planta. Example: 35.00
+     * @bodyParam category_type string optional Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra). Example: Interior
+     * @bodyParam image file optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).
+     * @bodyParam active boolean optional Estado de disponibilidad en catálogo. Example: true
+     * @bodyParam remove_image boolean optional Si se envía en true, elimina la imagen actual de la planta. Example: false
+     *
+     * @response status=200 {
+     *   "data": {
+     *     "id": 1,
+     *     "name": "Monstera Variegata",
+     *     "price": 35.0,
+     *     "categoryType": "Interior",
+     *     "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+     *     "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
+     *     "active": true,
+     *     "createdAt": "2026-10-09T16:00:00+00:00",
+     *     "updatedAt": "2026-10-13T23:20:00+00:00"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Planta no encontrada",
+     *   "codigo": 404
+     * }
+     * @response status=422 {
+     *   "message": "Ya existe otra planta registrada con este nombre.",
+     *   "errors": {
+     *     "name": [
+     *       "Ya existe otra planta registrada con este nombre."
+     *     ]
+     *   }
+     * }
+     * @response status=500 {
+     *   "message": "Error interno al actualizar la planta",
+     *   "codigo": 500
+     * }
+     */
+    public function update(UpdatePlantRequest $request, $id)
+    {
+        try {
+            $image = $request->file('image') ?? $request->file('image_url');
+            $plant = $this->plantService->update((int) $id, $request->validated(), $image);
+
+            return new PlantResource($plant);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Planta no encontrada',
+                'codigo' => 404,
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error updating plant: '.$e->getMessage());
+
+            return response()->json([
+                'message' => 'Error interno al actualizar la planta',
                 'codigo' => 500,
             ], 500);
         }

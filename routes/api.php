@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('plants', [PlantController::class, 'index']);
         Route::post('plants', [PlantController::class, 'store']);
         Route::get('plants/{id}', [PlantController::class, 'show']);
+        Route::match(['put', 'patch', 'post'], 'plants/{id}', [PlantController::class, 'update']);
         Route::delete('plants/{id}', [PlantController::class, 'destroy']);
     });
 });

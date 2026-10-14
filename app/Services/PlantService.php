@@ -101,6 +101,38 @@ class PlantService
     }
 
     /**
+     * Actualiza una planta existente, gestionando el reemplazo o eliminación de imagen y registrando en auditoría.
+     *
+     * @param  array<string, mixed>  $data
+     *
+     * @throws ModelNotFoundException
+     */
+    public function update(int $id, array $data, ?UploadedFile $newImage = null): Plant
+    {
+        $plant = Plant::findOrFail($id);
+        $oldData = $plant->toArray();
+
+        return DB::transaction(function () use ($plant, $data, $newImage, $oldData) {
+            $fileToUpload = $newImage ?? ($data['image'] ?? null) ?? ($data['image_url'] ?? null);
+
+            if ($fileToUpload instanceof UploadedFile) {
+                $data['image_url'] = FileUploadHelper::replace($fileToUpload, $plant->image_url, 'plants');
+            } elseif (! empty($data['remove_image'])) {
+                FileUploadHelper::delete($plant->image_url);
+                $data['image_url'] = null;
+            }
+
+            unset($data['image'], $data['remove_image']);
+
+            $plant->update($data);
+
+            $this->logAudit('update', 'plants', $plant->id, $oldData, $plant->toArray());
+
+            return $plant;
+        });
+    }
+
+    /**
      * Elimina lógicamente una planta si no tiene cotizaciones asociadas.
      *
      * @throws ModelNotFoundException

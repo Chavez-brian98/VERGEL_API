@@ -253,6 +253,9 @@
                                                                             <li class="tocify-item level-3" data-unique="plantas-POSTapi-v1-plants">
                                             <a href="#plantas-POSTapi-v1-plants">Registrar una nueva planta.</a>
                                         </li>
+                                                                            <li class="tocify-item level-3" data-unique="plantas-PUTapi-v1-plants--id-">
+                                            <a href="#plantas-PUTapi-v1-plants--id-">Actualizar una planta.</a>
+                                        </li>
                                                                             <li class="tocify-item level-3" data-unique="plantas-DELETEapi-v1-plants--id-">
                                             <a href="#plantas-DELETEapi-v1-plants--id-">Eliminar lógicamente una planta.</a>
                                         </li>
@@ -6692,7 +6695,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"per_page\": 17,
     \"limit\": 15,
     \"sort_by\": \"created_at\",
-    \"sort_direction\": \"asc\"
+    \"sort_direction\": \"desc\"
 }"
 </code></pre></div>
 
@@ -6731,7 +6734,7 @@ let body = {
     "per_page": 17,
     "limit": 15,
     "sort_by": "created_at",
-    "sort_direction": "asc"
+    "sort_direction": "desc"
 };
 
 fetch(url, {
@@ -7098,10 +7101,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -7320,8 +7323,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/phptb0g6stm74k50fBgteu" \
-    --form "image_url=@/tmp/phpshok5mu914u79GoAcjg" </code></pre></div>
+    --form "image=@/tmp/phpigkm8n2c4qmhaMzNSI0" \
+    --form "image_url=@/tmp/phpd50pioivplfk4sdg1ow" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -7526,7 +7529,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phptb0g6stm74k50fBgteu</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpigkm8n2c4qmhaMzNSI0</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -7538,7 +7541,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpshok5mu914u79GoAcjg</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpd50pioivplfk4sdg1ow</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -7561,6 +7564,339 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </label>
     <br>
 <p>Estado de disponibilidad en catálogo. Por defecto true. Example: <code>true</code></p>
+        </div>
+        </form>
+
+                    <h2 id="plantas-PUTapi-v1-plants--id-">Actualizar una planta.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Modifica los datos de una planta existente en el catálogo, permitiendo reemplazar su imagen o eliminarla.</p>
+
+<span id="example-requests-PUTapi-v1-plants--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "http://localhost/api/v1/plants/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --form "name=Monstera Variegata"\
+    --form "price=35"\
+    --form "category_type=Interior"\
+    --form "active=1"\
+    --form "remove_image="\
+    --form "image=@/tmp/phpf8le1cj6ke5p38ahVv3" \
+    --form "image_url=@/tmp/php0qbuma1t3j0ubhDUthe" </code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/plants/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('name', 'Monstera Variegata');
+body.append('price', '35');
+body.append('category_type', 'Interior');
+body.append('active', '1');
+body.append('remove_image', '');
+body.append('image', document.querySelector('input[name="image"]').files[0]);
+body.append('image_url', document.querySelector('input[name="image_url"]').files[0]);
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-v1-plants--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Monstera Variegata&quot;,
+        &quot;price&quot;: 35,
+        &quot;categoryType&quot;: &quot;Interior&quot;,
+        &quot;imageUrl&quot;: &quot;http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp&quot;,
+        &quot;imagePath&quot;: &quot;plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp&quot;,
+        &quot;active&quot;: true,
+        &quot;createdAt&quot;: &quot;2026-10-09T16:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-10-13T23:20:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Planta no encontrada&quot;,
+    &quot;codigo&quot;: 404
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Ya existe otra planta registrada con este nombre.&quot;,
+    &quot;errors&quot;: {
+        &quot;name&quot;: [
+            &quot;Ya existe otra planta registrada con este nombre.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Error interno al actualizar la planta&quot;,
+    &quot;codigo&quot;: 500
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-v1-plants--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-v1-plants--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-v1-plants--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-v1-plants--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-v1-plants--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-v1-plants--id-" data-method="PUT"
+      data-path="api/v1/plants/{id}"
+      data-authed="1"
+      data-hasfiles="1"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-plants--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-v1-plants--id-"
+                    onclick="tryItOut('PUTapi-v1-plants--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-v1-plants--id-"
+                    onclick="cancelTryOut('PUTapi-v1-plants--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-v1-plants--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/v1/plants/{id}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/plants/{id}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/plants/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTapi-v1-plants--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-v1-plants--id-"
+               value="multipart/form-data"
+               data-component="header">
+    <br>
+<p>Example: <code>multipart/form-data</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-v1-plants--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PUTapi-v1-plants--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the plant. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>plant</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="plant"                data-endpoint="PUTapi-v1-plants--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la planta a actualizar. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="PUTapi-v1-plants--id-"
+               value="Monstera Variegata"
+               data-component="body">
+    <br>
+<p>optional Nombre único de la planta o especie. Example: <code>Monstera Variegata</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="price"                data-endpoint="PUTapi-v1-plants--id-"
+               value="35"
+               data-component="body">
+    <br>
+<p>optional Precio unitario de la planta. Example: <code>35</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>category_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="category_type"                data-endpoint="PUTapi-v1-plants--id-"
+               value="Interior"
+               data-component="body">
+    <br>
+<p>optional Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra). Example: <code>Interior</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>image</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+                              name="image"                data-endpoint="PUTapi-v1-plants--id-"
+               value=""
+               data-component="body">
+    <br>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpf8le1cj6ke5p38ahVv3</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+                              name="image_url"                data-endpoint="PUTapi-v1-plants--id-"
+               value=""
+               data-component="body">
+    <br>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/php0qbuma1t3j0ubhDUthe</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="PUTapi-v1-plants--id-" style="display: none">
+            <input type="radio" name="active"
+                   value="true"
+                   data-endpoint="PUTapi-v1-plants--id-"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PUTapi-v1-plants--id-" style="display: none">
+            <input type="radio" name="active"
+                   value="false"
+                   data-endpoint="PUTapi-v1-plants--id-"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>optional Estado de disponibilidad en catálogo. Example: <code>true</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>remove_image</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="PUTapi-v1-plants--id-" style="display: none">
+            <input type="radio" name="remove_image"
+                   value="true"
+                   data-endpoint="PUTapi-v1-plants--id-"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PUTapi-v1-plants--id-" style="display: none">
+            <input type="radio" name="remove_image"
+                   value="false"
+                   data-endpoint="PUTapi-v1-plants--id-"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>optional Si se envía en true, elimina la imagen actual de la planta. Example: <code>false</code></p>
         </div>
         </form>
 
