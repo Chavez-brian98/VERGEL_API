@@ -15,10 +15,7 @@ class AuthTestUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::firstOrCreate(
-            ['role_name' => 'Administrador'],
-            ['description' => 'Colaborador administrativo con acceso total al sistema']
-        );
+        $role = Role::where('role_name', 'Admin')->firstOrFail();
 
         $employee = Employee::firstOrCreate(
             [
@@ -33,7 +30,6 @@ class AuthTestUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@vergel.com'],
             [
-                'name' => 'Administrador Vergel',
                 'password' => Hash::make('password123'),
                 'employee_id' => $employee->id,
                 'email_verified_at' => now(),
