@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Plant;
 
+use App\Models\Plant;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,7 +14,7 @@ class UpdatePlantRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return (bool) $this->user()?->can('update', Plant::class);
     }
 
     /**

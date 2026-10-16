@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Plants;
 
+use App\Models\Employee;
 use App\Models\Plant;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +18,11 @@ class PlantIndexTest extends TestCase
     {
         parent::setUp();
 
-        $this->actingAs(User::factory()->create(), 'sanctum');
+        $role = Role::create(['role_name' => 'Colaborador']);
+        $employee = Employee::create(['full_name' => 'Empleado Index', 'role_id' => $role->id]);
+        $user = User::factory()->create(['employee_id' => $employee->id]);
+
+        $this->actingAs($user, 'sanctum');
     }
 
     public function test_it_lists_plants_with_pagination(): void
