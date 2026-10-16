@@ -22,12 +22,12 @@ class RoleSeederTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('roles', [
-            'role_name' => 'Administrador Financiero / Contador',
+            'role_name' => 'Contador',
             'description' => 'Acceso a la billetera, reportes, facturación y modificación de movimientos financieros.',
         ]);
 
         $this->assertDatabaseHas('roles', [
-            'role_name' => 'Colaborador (Personal de campo)',
+            'role_name' => 'Colaborador',
             'description' => 'Nivel operativo, encargado de ver su agenda y marcar los servicios de jardinería como completados.',
         ]);
     }
