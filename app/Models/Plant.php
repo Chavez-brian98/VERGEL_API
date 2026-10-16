@@ -14,8 +14,17 @@ class Plant extends Model
         'name',
         'price',
         'category_type',
+        'image_url',
         'active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'price' => 'decimal:2',
+            'active' => 'boolean',
+        ];
+    }
 
     public function quoteItems(): HasMany
     {
