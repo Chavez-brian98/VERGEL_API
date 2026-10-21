@@ -2,13 +2,17 @@
 
 namespace App\Http\Requests\Customer;
 
+use App\Models\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCustomerRequest extends FormRequest
 {
+    /**
+     * Determina si el usuario autenticado está autorizado para realizar esta solicitud.
+     */
     public function authorize(): bool
     {
-        return true;
+        return (bool) $this->user()?->can('update', Customer::class);
     }
 
     public function rules(): array
