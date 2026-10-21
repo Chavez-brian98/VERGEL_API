@@ -3,12 +3,37 @@
 namespace Tests\Feature\Customers;
 
 use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\Role;
+use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CustomerIndexTest extends TestCase
 {
     use RefreshDatabase;
+
+    private User $adminUser;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(RoleSeeder::class);
+
+        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
+
+        $adminEmployee = Employee::create([
+            'full_name' => 'Admin Test',
+            'role_id' => $adminRole->id,
+            'active' => true,
+        ]);
+
+        $this->adminUser = User::factory()->create([
+            'employee_id' => $adminEmployee->id,
+        ]);
+    }
 
     public function test_it_returns_all_non_deleted_customers(): void
     {
@@ -27,7 +52,7 @@ class CustomerIndexTest extends TestCase
         ]);
         $deletedCustomer->delete();
 
-        $response = $this->getJson('/api/v1/customers');
+        $response = $this->actingAs($this->adminUser, 'sanctum')->getJson('/api/v1/customers');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
