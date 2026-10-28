@@ -6,7 +6,15 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 
 **The README is stale and wrong**: it describes a POS/inventory/sales app and badges PHP 8.6 / Laravel 13 — neither matches reality. The real domain is a per-customer subscription/service business for El Salvador: customers, plants, services, subscription plans, quotes/appointments/inspections, wallets + loyalty points, DTE invoices, payments, ledger entries, audit log. Trust `database/migrations` and `app/Models`, not `README.md`.
 
-30 migrations / 25 Eloquent models. Live API modules: **auth (login/logout)**, **customers**, **subscription plans**, **employees**, and **roles** under `/api/v1` (`routes/api.php`).
+30 migrations / 25 Eloquent models. Live API modules: **auth (login/logout)**, **customers**, **subscription plans**, **employees**, **roles**, and **plants** under `/api/v1` (`routes/api.php`).
+
+## Access control (RBAC)
+
+- `app/Policies/` holds one policy per protected module: `PlantPolicy` (auto-discovered) and `CustomerPolicy` (registered explicitly in `AppServiceProvider::boot()` via `Gate::policy`).
+- Role chain: `users.employee_id` -> `employees.role_id` -> `roles.role_name` (no pivot table).
+- Both policies follow the same rule: **read = any active employee with a role**, **write = `Admin`/`Administrador` only**. So a `Contador`/`Colaborador`/`Consulta` employee is a read-only ("Consulta de Clientes") profile and `Admin` is the full-management ("Gestion de Clientes") profile.
+- Policies are enforced in `FormRequest::authorize()` (`viewAny`, `create`, `update`, `assignPlan`) and with `Gate::authorize()` in the controller for endpoints that take a raw id (`view`, `changeStatus`, `delete`).
+- Every denial is recorded in `audit_log` with `action = 'denied'` by `App\Services\AccessAuditService`, triggered from the `AccessDeniedHttpException` renderer in `bootstrap/app.php`. The renderer also returns the uniform JSON `{"message": "No tiene permisos para realizar esta acción."}` with 403.
 
 ## Architecture (thin controllers -> services)
 
@@ -37,7 +45,9 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 
 - Feature tests hit HTTP with `$this->actingAs(User::factory()->create(), 'sanctum')` and `RefreshDatabase` (see `SubscriptionPlanApiTest`).
 - Service tests manually insert `roles` + `employees` rows because services write audit logs keyed to an employee (see `CustomerServiceTest`).
-- **The committed suite is not green**: `php artisan test` reports 5 failures — 4 `Customers\Customer*Test` HTTP tests assert 200 but get 401 (they never authenticate; customer routes are protected) and `Tests\Feature\ExampleTest` throws `MissingAppKeyException` until `key:generate` runs. Plan tests + `CustomerServiceTest` pass.
+- RBAC tests must create the full chain `Role` -> `Employee` -> `User` (see `Customers\CustomerAuthorizationTest` and `Plants\PlantPolicyAuthorizationTest`); a user without `employee_id` is read-denied.
+- `audit_log.action` is an enum (`insert`, `update`, `delete`, `restore`, `denied`); the `denied` value was added by `2026_10_21_120000_add_denied_action_to_audit_log_table`.
+- The suite is green (`php artisan test` -> 173 passed) as long as `bootstrap/cache` exists and `APP_KEY` is set.
 
 ## Deploy to Render.com
 
