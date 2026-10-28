@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\ChangePlanRequest;
 use App\Http\Requests\Customer\CreateCustomerRequest;
+use App\Http\Requests\Customer\IndexCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Resources\Customers\CustomerListResource;
 use App\Http\Resources\Customers\CustomerResource;
 use App\Models\Customer;
 use App\Services\CustomerService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
@@ -26,6 +29,7 @@ class CustomerController extends Controller
      * Obtiene una lista paginada de clientes con opciones de búsqueda y filtros.
      *
      * @group Clientes
+     *
      * @subgroup Consultas
      *
      * @queryParam search string Busca por nombre legal, nombre comercial, correo, teléfono, NIT o NRC.
@@ -67,11 +71,18 @@ class CustomerController extends Controller
      *     "total": 1
      *   }
      * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
+     * }
      */
-    public function index(Request $request)
+    public function index(IndexCustomerRequest $request)
     {
-        $limit = $request->input('limit', 15);
-        $customers = $this->customerService->search($request->all(), $limit);
+        $filters = $request->validated();
+        $limit = $filters['limit'] ?? 15;
+        $customers = $this->customerService->search($filters, $limit);
 
         return CustomerListResource::collection($customers);
     }
@@ -82,6 +93,7 @@ class CustomerController extends Controller
      * Crea un cliente y, como parte del proceso, inicializa su wallet y sus puntos de lealtad.
      *
      * @group Clientes
+     *
      * @subgroup Escritura
      *
      * @bodyParam legal_name string required Nombre legal del cliente. Example: Cliente Ejemplo S.A. de C.V.
@@ -122,12 +134,17 @@ class CustomerController extends Controller
      *     "createdAt": "2026-09-23T06:00:00+00:00"
      *   }
      * }
-     *
      * @response status=422 {
      *   "message": "The legal name field is required.",
      *   "errors": {
      *     "legal_name": ["The legal name field is required."]
      *   }
+     * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
      * }
      */
     public function store(CreateCustomerRequest $request)
@@ -149,6 +166,7 @@ class CustomerController extends Controller
      * Incluye el plan actual, la wallet y los puntos de lealtad del cliente.
      *
      * @group Clientes
+     *
      * @subgroup Consultas
      *
      * @urlParam customer integer required ID del cliente. Example: 1
@@ -186,14 +204,26 @@ class CustomerController extends Controller
      *     "createdAt": "2026-09-23T06:00:00+00:00"
      *   }
      * }
-     *
      * @response status=404 {
-     *   "message": "No query results for model [App\\Models\\Customer]"
+     *   "message": "Cliente no encontrado",
+     *   "codigo": 404
+     * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
      * }
      */
     public function show($id)
     {
-        $customer = $this->customerService->getById($id);
+        Gate::authorize('view', Customer::class);
+
+        try {
+            $customer = $this->customerService->getById($id);
+        } catch (ModelNotFoundException) {
+            return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
+        }
 
         return new CustomerResource($customer);
     }
@@ -204,6 +234,7 @@ class CustomerController extends Controller
      * Actualiza los datos editables de un cliente existente.
      *
      * @group Clientes
+     *
      * @subgroup Escritura
      *
      * @urlParam customer integer required ID del cliente. Example: 1
@@ -229,12 +260,17 @@ class CustomerController extends Controller
      *     "createdAt": "2026-09-23T06:00:00+00:00"
      *   }
      * }
-     *
      * @response status=422 {
      *   "message": "The phone has already been taken.",
      *   "errors": {
      *     "phone": ["The phone has already been taken."]
      *   }
+     * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
      * }
      */
     public function update(UpdateCustomerRequest $request, $id)
@@ -243,6 +279,8 @@ class CustomerController extends Controller
             $customer = $this->customerService->update($id, $request->validated());
 
             return response()->json(new CustomerResource($customer), 200);
+        } catch (ModelNotFoundException) {
+            return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
         } catch (\Exception $e) {
             Log::error('Error updating customer: '.$e->getMessage());
 
@@ -256,6 +294,7 @@ class CustomerController extends Controller
      * Actualiza el estado de un cliente (activo o inactivo) mediante PATCH.
      *
      * @group Clientes
+     *
      * @subgroup Escritura
      *
      * @urlParam customer integer required ID del cliente. Example: 1
@@ -270,16 +309,23 @@ class CustomerController extends Controller
      *     "createdAt": "2026-09-23T06:00:00+00:00"
      *   }
      * }
-     *
      * @response status=422 {
      *   "message": "The selected status is invalid.",
      *   "errors": {
      *     "status": ["The selected status is invalid."]
      *   }
      * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
+     * }
      */
     public function updateStatus(Request $request, $id)
     {
+        Gate::authorize('changeStatus', Customer::class);
+
         $request->validate([
             'status' => 'required|in:active,inactive',
         ]);
@@ -288,6 +334,8 @@ class CustomerController extends Controller
             $customer = $this->customerService->updateStatus($id, $request->input('status'));
 
             return response()->json(new CustomerResource($customer));
+        } catch (ModelNotFoundException) {
+            return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
         } catch (\Exception $e) {
             Log::error('Error updating customer status: '.$e->getMessage());
 
@@ -301,18 +349,29 @@ class CustomerController extends Controller
      * Marca al cliente como eliminado. No se elimina físicamente de la base de datos.
      *
      * @group Clientes
+     *
      * @subgroup Escritura
      *
      * @urlParam customer integer required ID del cliente. Example: 1
      *
      * @response status=204
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
+     * }
      */
     public function destroy($id)
     {
+        Gate::authorize('delete', Customer::class);
+
         try {
             $this->customerService->delete($id);
 
             return response()->json(null, 204);
+        } catch (ModelNotFoundException) {
+            return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
         } catch (\Exception $e) {
             Log::error('Error deleting customer: '.$e->getMessage());
 
@@ -326,6 +385,7 @@ class CustomerController extends Controller
      * Asigna un nuevo plan al cliente, cerrando el historial del plan anterior.
      *
      * @group Clientes
+     *
      * @subgroup Escritura
      *
      * @urlParam customer integer required ID del cliente. Example: 1
@@ -345,11 +405,9 @@ class CustomerController extends Controller
      *     "createdAt": "2026-09-23T06:00:00+00:00"
      *   }
      * }
-     *
      * @response status=400 {
      *   "message": "El cliente ya tiene asignado este plan"
      * }
-     *
      * @response status=422 {
      *   "message": "The selected plan id is invalid.",
      *   "errors": {
@@ -363,6 +421,8 @@ class CustomerController extends Controller
             $customer = $this->customerService->updatePlan($id, $request->input('plan_id'));
 
             return response()->json(new CustomerResource($customer));
+        } catch (ModelNotFoundException) {
+            return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
         } catch (ValidationException $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         } catch (\Exception $e) {
@@ -378,6 +438,7 @@ class CustomerController extends Controller
      * Devuelve los planes que ha tenido el cliente, ordenados por fecha de inicio (descendente).
      *
      * @group Clientes
+     *
      * @subgroup Consultas
      *
      * @urlParam customer integer required ID del cliente. Example: 1
@@ -398,14 +459,27 @@ class CustomerController extends Controller
      *     }
      *   ]
      * }
-     *
      * @response status=404 {
-     *   "message": "No query results for model [App\\Models\\Customer]"
+     *   "message": "Cliente no encontrado",
+     *   "codigo": 404
+     * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
      * }
      */
     public function planHistory($id)
     {
-        $customer = Customer::findOrFail($id);
+        Gate::authorize('view', Customer::class);
+
+        try {
+            $customer = Customer::findOrFail($id);
+        } catch (ModelNotFoundException) {
+            return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
+        }
+
         $history = $customer->planHistories()->with('plan')->orderBy('start_date', 'desc')->get();
 
         return response()->json(['data' => $history]);
