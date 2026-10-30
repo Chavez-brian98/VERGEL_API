@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Customer;
+use App\Models\Supplier;
 use App\Policies\CustomerPolicy;
+use App\Policies\SupplierPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Autorización del módulo de Clientes (RBAC).
         Gate::policy(Customer::class, CustomerPolicy::class);
+        // Autorización del módulo de Proveedores (RBAC).
+        Gate::policy(Supplier::class, SupplierPolicy::class);
     }
 }
