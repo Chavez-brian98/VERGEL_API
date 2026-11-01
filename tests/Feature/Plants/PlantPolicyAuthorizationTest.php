@@ -28,9 +28,9 @@ class PlantPolicyAuthorizationTest extends TestCase
 
         $this->seed(RoleSeeder::class);
 
-        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
-        $financialRole = Role::where('role_name', 'Contador')->firstOrFail();
-        $fieldRole = Role::where('role_name', 'Colaborador')->firstOrFail();
+        $adminRole = Role::where('role_name', 'Administrador')->firstOrFail();
+        $financialRole = Role::where('role_name', 'Auditor')->firstOrFail();
+        $fieldRole = Role::where('role_name', 'Tecnico de campo')->firstOrFail();
 
         $adminEmp = Employee::create([
             'full_name' => 'Admin Test',
@@ -113,7 +113,7 @@ class PlantPolicyAuthorizationTest extends TestCase
 
     public function test_policy_denies_inactive_employees(): void
     {
-        $role = Role::where('role_name', 'Admin')->firstOrFail();
+        $role = Role::where('role_name', 'Administrador')->firstOrFail();
         $inactiveEmp = Employee::create([
             'full_name' => 'Inactivo Test',
             'role_id' => $role->id,
