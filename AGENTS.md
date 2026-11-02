@@ -6,7 +6,7 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 
 **The README is stale and wrong**: it describes a POS/inventory/sales app and badges PHP 8.6 / Laravel 13 — neither matches reality. The real domain is a per-customer subscription/service business for El Salvador: customers, plants, services, subscription plans, quotes/appointments/inspections, wallets + loyalty points, DTE invoices, payments, ledger entries, audit log. Trust `database/migrations` and `app/Models`, not `README.md`.
 
-30 migrations / 25 Eloquent models. Live API modules: **auth (login/logout)**, **customers**, **subscription plans**, **employees**, **roles**, and **plants** under `/api/v1` (`routes/api.php`).
+30 migrations / 25 Eloquent models. Live API modules: **auth (login/logout)**, **customers**, **subscription plans**, **employees**, **roles**, **plants**, and **country configs (tarifas)** under `/api/v1` (`routes/api.php`).
 
 ## Access control (RBAC)
 

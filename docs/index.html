@@ -26,7 +26,7 @@
             </style>
 
     <script>
-        var tryItOutBaseUrl = "http://localhost";
+        var tryItOutBaseUrl = "https://vergel-front.pages.dev/";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -212,6 +212,38 @@
                                                                     </ul>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-tarifas" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="tarifas">
+                    <a href="#tarifas">Tarifas</a>
+                </li>
+                                    <ul id="tocify-subheader-tarifas" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="tarifas-consultas">
+                                <a href="#tarifas-consultas">Consultas</a>
+                            </li>
+                                                            <ul id="tocify-subheader-tarifas-consultas" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="tarifas-GETapi-v1-country-configs">
+                                            <a href="#tarifas-GETapi-v1-country-configs">Listar configuraciones de país (tarifas).</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="tarifas-GETapi-v1-country-configs--id-">
+                                            <a href="#tarifas-GETapi-v1-country-configs--id-">Obtener detalle de configuración de país (tarifa).</a>
+                                        </li>
+                                                                    </ul>
+                                                                                <li class="tocify-item level-2" data-unique="tarifas-escritura">
+                                <a href="#tarifas-escritura">Escritura</a>
+                            </li>
+                                                            <ul id="tocify-subheader-tarifas-escritura" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="tarifas-POSTapi-v1-country-configs">
+                                            <a href="#tarifas-POSTapi-v1-country-configs">Registrar configuración de país (tarifa).</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="tarifas-PUTapi-v1-country-configs--id-">
+                                            <a href="#tarifas-PUTapi-v1-country-configs--id-">Actualizar configuración de país (tarifa).</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="tarifas-DELETEapi-v1-country-configs--id-">
+                                            <a href="#tarifas-DELETEapi-v1-country-configs--id-">Eliminar configuración de país (tarifa).</a>
+                                        </li>
+                                                                    </ul>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-autenticacion" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="autenticacion">
                     <a href="#autenticacion">Autenticación</a>
@@ -262,6 +294,30 @@
                                                                     </ul>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-proveedores" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="proveedores">
+                    <a href="#proveedores">Proveedores</a>
+                </li>
+                                    <ul id="tocify-subheader-proveedores" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="proveedores-gestion">
+                                <a href="#proveedores-gestion">Gestión</a>
+                            </li>
+                                                            <ul id="tocify-subheader-proveedores-gestion" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="proveedores-POSTapi-v1-suppliers">
+                                            <a href="#proveedores-POSTapi-v1-suppliers">Registrar un nuevo proveedor.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="proveedores-PUTapi-v1-suppliers--id-">
+                                            <a href="#proveedores-PUTapi-v1-suppliers--id-">Actualizar información de un proveedor.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="proveedores-DELETEapi-v1-suppliers--id-">
+                                            <a href="#proveedores-DELETEapi-v1-suppliers--id-">Eliminar proveedor (Borrado lógico).</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="proveedores-PATCHapi-v1-suppliers--supplier--status">
+                                            <a href="#proveedores-PATCHapi-v1-suppliers--supplier--status">Cambiar estado de un proveedor.</a>
+                                        </li>
+                                                                    </ul>
+                                                                        </ul>
+                            </ul>
             </div>
 
     <ul class="toc-footer" id="toc-footer">
@@ -271,7 +327,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 14, 2026</li>
+        <li>Last updated: November 2, 2026</li>
     </ul>
 </div>
 
@@ -281,7 +337,7 @@
         <h1 id="introduction">Introduction</h1>
 <p>API REST de VERGEL para la gestión de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).</p>
 <aside>
-    <strong>Base URL</strong>: <code>http://localhost</code>
+    <strong>Base URL</strong>: <code>https://vergel-front.pages.dev/</code>
 </aside>
 <p>Esta documentación describe los endpoints disponibles en la API de <strong>VERGEL</strong>.</p>
 <aside>Para consumir los endpoints protegidos necesitas un token de acceso. Envíalo como cabecera `Authorization: Bearer {token}`.</aside>
@@ -311,15 +367,24 @@
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/customers?search=architecto&amp;status=active&amp;phone=architecto&amp;desde=architecto&amp;hasta=architecto&amp;limit=15" \
+    --get "https://vergel-front.pages.dev/api/v1/customers?search=architecto&amp;status=active&amp;phone=architecto&amp;desde=architecto&amp;hasta=architecto&amp;limit=15" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
+    --header "Accept: application/json" \
+    --data "{
+    \"search\": \"b\",
+    \"status\": \"active\",
+    \"phone\": \"ngzmiyvdljnikhwa\",
+    \"desde\": \"2026-11-02\",
+    \"hasta\": \"2052-11-25\",
+    \"limit\": 22
+}"
+</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers"
+    "https://vergel-front.pages.dev/api/v1/customers"
 );
 
 const params = {
@@ -339,10 +404,19 @@ const headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "search": "b",
+    "status": "active",
+    "phone": "ngzmiyvdljnikhwa",
+    "desde": "2026-11-02",
+    "hasta": "2052-11-25",
+    "limit": 22
+};
 
 fetch(url, {
     method: "GET",
     headers,
+    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -384,6 +458,24 @@ fetch(url, {
         &quot;to&quot;: 1,
         &quot;total&quot;: 1
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
 }</code>
  </pre>
     </span>
@@ -543,7 +635,82 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Cantidad de resultados por página. Example: <code>15</code></p>
             </div>
-                </form>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-customers"
+               value="b"
+               data-component="body">
+    <br>
+<p>Must not be greater than 150 characters. Example: <code>b</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETapi-v1-customers"
+               value="active"
+               data-component="body">
+    <br>
+<p>Example: <code>active</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>active</code></li> <li><code>inactive</code></li></ul>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="phone"                data-endpoint="GETapi-v1-customers"
+               value="ngzmiyvdljnikhwa"
+               data-component="body">
+    <br>
+<p>Must not be greater than 20 characters. Example: <code>ngzmiyvdljnikhwa</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>desde</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="desde"                data-endpoint="GETapi-v1-customers"
+               value="2026-11-02"
+               data-component="body">
+    <br>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-02</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="hasta"                data-endpoint="GETapi-v1-customers"
+               value="2052-11-25"
+               data-component="body">
+    <br>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-11-25</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-customers"
+               value="22"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Must not be greater than 100. Example: <code>22</code></p>
+        </div>
+        </form>
 
                     <h2 id="clientes-GETapi-v1-customers--id-">Obtener detalle completo de un cliente.</h2>
 
@@ -559,7 +726,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/customers/architecto" \
+    --get "https://vergel-front.pages.dev/api/v1/customers/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -567,7 +734,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers/architecto"
+    "https://vergel-front.pages.dev/api/v1/customers/architecto"
 );
 
 const headers = {
@@ -625,12 +792,31 @@ fetch(url, {
 }</code>
  </pre>
             <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
+}</code>
+ </pre>
+            <blockquote>
             <p>Example response (404):</p>
         </blockquote>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\Customer]&quot;
+    &quot;message&quot;: &quot;Cliente no encontrado&quot;,
+    &quot;codigo&quot;: 404
 }</code>
  </pre>
     </span>
@@ -758,7 +944,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/customers/1/plan-history" \
+    --get "https://vergel-front.pages.dev/api/v1/customers/1/plan-history" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -766,7 +952,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers/1/plan-history"
+    "https://vergel-front.pages.dev/api/v1/customers/1/plan-history"
 );
 
 const headers = {
@@ -807,12 +993,31 @@ fetch(url, {
 }</code>
  </pre>
             <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
+}</code>
+ </pre>
+            <blockquote>
             <p>Example response (404):</p>
         </blockquote>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\Customer]&quot;
+    &quot;message&quot;: &quot;Cliente no encontrado&quot;,
+    &quot;codigo&quot;: 404
 }</code>
  </pre>
     </span>
@@ -929,7 +1134,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/v1/customers" \
+    "https://vergel-front.pages.dev/api/v1/customers" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -953,7 +1158,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers"
+    "https://vergel-front.pages.dev/api/v1/customers"
 );
 
 const headers = {
@@ -1015,6 +1220,24 @@ fetch(url, {
         &quot;loyaltyPoints&quot;: null,
         &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1288,7 +1511,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost/api/v1/customers/architecto" \
+    "https://vergel-front.pages.dev/api/v1/customers/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1311,7 +1534,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers/architecto"
+    "https://vergel-front.pages.dev/api/v1/customers/architecto"
 );
 
 const headers = {
@@ -1356,6 +1579,24 @@ fetch(url, {
         &quot;status&quot;: &quot;active&quot;,
         &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1646,7 +1887,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost/api/v1/customers/architecto" \
+    "https://vergel-front.pages.dev/api/v1/customers/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1654,7 +1895,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers/architecto"
+    "https://vergel-front.pages.dev/api/v1/customers/architecto"
 );
 
 const headers = {
@@ -1677,6 +1918,24 @@ fetch(url, {
         </blockquote>
                 <pre>
 <code>Empty response</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
+}</code>
  </pre>
     </span>
 <span id="execution-results-DELETEapi-v1-customers--id-" hidden>
@@ -1803,7 +2062,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost/api/v1/customers/1/status" \
+    "https://vergel-front.pages.dev/api/v1/customers/1/status" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1815,7 +2074,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers/1/status"
+    "https://vergel-front.pages.dev/api/v1/customers/1/status"
 );
 
 const headers = {
@@ -1849,6 +2108,24 @@ fetch(url, {
         &quot;status&quot;: &quot;inactive&quot;,
         &quot;createdAt&quot;: &quot;2026-09-23T06:00:00+00:00&quot;
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1991,7 +2268,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/v1/customers/1/plan" \
+    "https://vergel-front.pages.dev/api/v1/customers/1/plan" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2003,7 +2280,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/customers/1/plan"
+    "https://vergel-front.pages.dev/api/v1/customers/1/plan"
 );
 
 const headers = {
@@ -2198,7 +2475,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/subscription-plans?active=1&amp;search=premium&amp;frequency_unit=days&amp;limit=15" \
+    --get "https://vergel-front.pages.dev/api/v1/subscription-plans?active=1&amp;search=premium&amp;frequency_unit=days&amp;limit=15" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2206,7 +2483,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/subscription-plans"
+    "https://vergel-front.pages.dev/api/v1/subscription-plans"
 );
 
 const params = {
@@ -2431,7 +2708,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/subscription-plans/architecto" \
+    --get "https://vergel-front.pages.dev/api/v1/subscription-plans/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2439,7 +2716,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/subscription-plans/architecto"
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/architecto"
 );
 
 const headers = {
@@ -2614,7 +2891,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/subscription-plans/1/subscribers?limit=15" \
+    --get "https://vergel-front.pages.dev/api/v1/subscription-plans/1/subscribers?limit=15" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2622,7 +2899,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/subscription-plans/1/subscribers"
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/1/subscribers"
 );
 
 const params = {
@@ -2820,7 +3097,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/v1/subscription-plans" \
+    "https://vergel-front.pages.dev/api/v1/subscription-plans" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2840,7 +3117,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/subscription-plans"
+    "https://vergel-front.pages.dev/api/v1/subscription-plans"
 );
 
 const headers = {
@@ -3126,7 +3403,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost/api/v1/subscription-plans/architecto" \
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -3146,7 +3423,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/subscription-plans/architecto"
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/architecto"
 );
 
 const headers = {
@@ -3471,7 +3748,7 @@ tiene clientes activos suscritos.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost/api/v1/subscription-plans/architecto" \
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3479,7 +3756,7 @@ tiene clientes activos suscritos.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/subscription-plans/architecto"
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/architecto"
 );
 
 const headers = {
@@ -3651,7 +3928,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost/api/v1/subscription-plans/1/status" \
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/1/status" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -3663,7 +3940,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/subscription-plans/1/status"
+    "https://vergel-front.pages.dev/api/v1/subscription-plans/1/status"
 );
 
 const headers = {
@@ -3872,7 +4149,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/employees?search=Carlos&amp;active=1&amp;role_id=1&amp;limit=15" \
+    --get "https://vergel-front.pages.dev/api/v1/employees?search=Carlos&amp;active=1&amp;role_id=1&amp;limit=15" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3880,7 +4157,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/employees"
+    "https://vergel-front.pages.dev/api/v1/employees"
 );
 
 const params = {
@@ -4100,7 +4377,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/employees/architecto" \
+    --get "https://vergel-front.pages.dev/api/v1/employees/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4108,7 +4385,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/employees/architecto"
+    "https://vergel-front.pages.dev/api/v1/employees/architecto"
 );
 
 const headers = {
@@ -4288,7 +4565,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/v1/employees" \
+    "https://vergel-front.pages.dev/api/v1/employees" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -4309,7 +4586,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/employees"
+    "https://vergel-front.pages.dev/api/v1/employees"
 );
 
 const headers = {
@@ -4611,7 +4888,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost/api/v1/employees/architecto" \
+    "https://vergel-front.pages.dev/api/v1/employees/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -4632,7 +4909,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/employees/architecto"
+    "https://vergel-front.pages.dev/api/v1/employees/architecto"
 );
 
 const headers = {
@@ -4963,7 +5240,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost/api/v1/employees/architecto" \
+    "https://vergel-front.pages.dev/api/v1/employees/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4971,7 +5248,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/employees/architecto"
+    "https://vergel-front.pages.dev/api/v1/employees/architecto"
 );
 
 const headers = {
@@ -5130,7 +5407,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost/api/v1/employees/1/status" \
+    "https://vergel-front.pages.dev/api/v1/employees/1/status" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -5142,7 +5419,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/employees/1/status"
+    "https://vergel-front.pages.dev/api/v1/employees/1/status"
 );
 
 const headers = {
@@ -5343,7 +5620,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/roles?search=admin&amp;limit=15" \
+    --get "https://vergel-front.pages.dev/api/v1/roles?search=admin&amp;limit=15" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5351,7 +5628,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/roles"
+    "https://vergel-front.pages.dev/api/v1/roles"
 );
 
 const params = {
@@ -5533,7 +5810,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/roles/architecto" \
+    --get "https://vergel-front.pages.dev/api/v1/roles/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5541,7 +5818,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/roles/architecto"
+    "https://vergel-front.pages.dev/api/v1/roles/architecto"
 );
 
 const headers = {
@@ -5711,7 +5988,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/v1/roles" \
+    "https://vergel-front.pages.dev/api/v1/roles" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -5724,7 +6001,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/roles"
+    "https://vergel-front.pages.dev/api/v1/roles"
 );
 
 const headers = {
@@ -5902,7 +6179,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost/api/v1/roles/architecto" \
+    "https://vergel-front.pages.dev/api/v1/roles/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -5915,7 +6192,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/roles/architecto"
+    "https://vergel-front.pages.dev/api/v1/roles/architecto"
 );
 
 const headers = {
@@ -6132,7 +6409,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost/api/v1/roles/architecto" \
+    "https://vergel-front.pages.dev/api/v1/roles/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6140,7 +6417,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/roles/architecto"
+    "https://vergel-front.pages.dev/api/v1/roles/architecto"
 );
 
 const headers = {
@@ -6300,6 +6577,981 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
+                <h1 id="tarifas">Tarifas</h1>
+
+    
+
+                        <h2 id="tarifas-consultas">Consultas</h2>
+                                                    <h2 id="tarifas-GETapi-v1-country-configs">Listar configuraciones de país (tarifas).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Obtiene el listado de configuraciones por país con moneda, IVA y comisión de tarjeta.</p>
+
+<span id="example-requests-GETapi-v1-country-configs">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "https://vergel-front.pages.dev/api/v1/country-configs" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/country-configs"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-country-configs">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;country&quot;: &quot;El Salvador&quot;,
+            &quot;currency&quot;: &quot;USD&quot;,
+            &quot;taxPercentage&quot;: 13,
+            &quot;cardFeePercentage&quot;: 3.5,
+            &quot;createdAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;,
+            &quot;updatedAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;
+        }
+    ]
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-country-configs" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-country-configs"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-country-configs"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-country-configs" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-country-configs">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-country-configs" data-method="GET"
+      data-path="api/v1/country-configs"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-country-configs', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-country-configs"
+                    onclick="tryItOut('GETapi-v1-country-configs');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-country-configs"
+                    onclick="cancelTryOut('GETapi-v1-country-configs');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-country-configs"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/country-configs</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-v1-country-configs"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-country-configs"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-country-configs"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="tarifas-GETapi-v1-country-configs--id-">Obtener detalle de configuración de país (tarifa).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Devuelve la configuración de tarifas para el país indicado.</p>
+
+<span id="example-requests-GETapi-v1-country-configs--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "https://vergel-front.pages.dev/api/v1/country-configs/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/country-configs/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-country-configs--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;country&quot;: &quot;El Salvador&quot;,
+        &quot;currency&quot;: &quot;USD&quot;,
+        &quot;taxPercentage&quot;: 13,
+        &quot;cardFeePercentage&quot;: 3.5,
+        &quot;createdAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Configuraci&oacute;n de pa&iacute;s no encontrada&quot;,
+    &quot;codigo&quot;: 404
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-country-configs--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-country-configs--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-country-configs--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-country-configs--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-country-configs--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-country-configs--id-" data-method="GET"
+      data-path="api/v1/country-configs/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-country-configs--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-country-configs--id-"
+                    onclick="tryItOut('GETapi-v1-country-configs--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-country-configs--id-"
+                    onclick="cancelTryOut('GETapi-v1-country-configs--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-country-configs--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/country-configs/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-v1-country-configs--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-country-configs--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-country-configs--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-v1-country-configs--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the country config. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>country_config</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="country_config"                data-endpoint="GETapi-v1-country-configs--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la configuración. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                                <h2 id="tarifas-escritura">Escritura</h2>
+                                                    <h2 id="tarifas-POSTapi-v1-country-configs">Registrar configuración de país (tarifa).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Crea la configuración de tarifas para un país. El nombre del país debe ser único.</p>
+
+<span id="example-requests-POSTapi-v1-country-configs">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "https://vergel-front.pages.dev/api/v1/country-configs" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"country\": \"El Salvador\",
+    \"currency\": \"USD\",
+    \"tax_percentage\": 13,
+    \"card_fee_percentage\": 3.5
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/country-configs"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "country": "El Salvador",
+    "currency": "USD",
+    "tax_percentage": 13,
+    "card_fee_percentage": 3.5
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-country-configs">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;country&quot;: &quot;El Salvador&quot;,
+        &quot;currency&quot;: &quot;USD&quot;,
+        &quot;taxPercentage&quot;: 13,
+        &quot;cardFeePercentage&quot;: 3.5,
+        &quot;createdAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The country has already been taken.&quot;,
+    &quot;errors&quot;: {
+        &quot;country&quot;: [
+            &quot;The country has already been taken.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-country-configs" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-country-configs"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-country-configs"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-country-configs" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-country-configs">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-country-configs" data-method="POST"
+      data-path="api/v1/country-configs"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-country-configs', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-country-configs"
+                    onclick="tryItOut('POSTapi-v1-country-configs');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-country-configs"
+                    onclick="cancelTryOut('POSTapi-v1-country-configs');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-country-configs"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/country-configs</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-country-configs"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-country-configs"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-country-configs"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>country</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="country"                data-endpoint="POSTapi-v1-country-configs"
+               value="El Salvador"
+               data-component="body">
+    <br>
+<p>Nombre del país. Example: <code>El Salvador</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>currency</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="currency"                data-endpoint="POSTapi-v1-country-configs"
+               value="USD"
+               data-component="body">
+    <br>
+<p>Moneda (código ISO 4217). Example: <code>USD</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>tax_percentage</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="tax_percentage"                data-endpoint="POSTapi-v1-country-configs"
+               value="13"
+               data-component="body">
+    <br>
+<p>Porcentaje de IVA/impuesto. Example: <code>13</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>card_fee_percentage</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="card_fee_percentage"                data-endpoint="POSTapi-v1-country-configs"
+               value="3.5"
+               data-component="body">
+    <br>
+<p>Porcentaje de comisión por tarjeta. Example: <code>3.5</code></p>
+        </div>
+        </form>
+
+                    <h2 id="tarifas-PUTapi-v1-country-configs--id-">Actualizar configuración de país (tarifa).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Actualiza de forma parcial los datos de tarifas de un país. Registra la operación en auditoría.</p>
+
+<span id="example-requests-PUTapi-v1-country-configs--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "https://vergel-front.pages.dev/api/v1/country-configs/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"country\": \"El Salvador\",
+    \"currency\": \"USD\",
+    \"tax_percentage\": 13,
+    \"card_fee_percentage\": 3.5
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/country-configs/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "country": "El Salvador",
+    "currency": "USD",
+    "tax_percentage": 13,
+    "card_fee_percentage": 3.5
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-v1-country-configs--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;country&quot;: &quot;El Salvador&quot;,
+        &quot;currency&quot;: &quot;USD&quot;,
+        &quot;taxPercentage&quot;: 13,
+        &quot;cardFeePercentage&quot;: 3.5,
+        &quot;createdAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-10-08T22:58:33+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Configuraci&oacute;n de pa&iacute;s no encontrada&quot;,
+    &quot;codigo&quot;: 404
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The country has already been taken.&quot;,
+    &quot;errors&quot;: {
+        &quot;country&quot;: [
+            &quot;The country has already been taken.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-v1-country-configs--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-v1-country-configs--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-v1-country-configs--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-v1-country-configs--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-v1-country-configs--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-v1-country-configs--id-" data-method="PUT"
+      data-path="api/v1/country-configs/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-country-configs--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-v1-country-configs--id-"
+                    onclick="tryItOut('PUTapi-v1-country-configs--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-v1-country-configs--id-"
+                    onclick="cancelTryOut('PUTapi-v1-country-configs--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-v1-country-configs--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/v1/country-configs/{id}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/country-configs/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTapi-v1-country-configs--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the country config. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>country_config</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="country_config"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la configuración. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>country</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="country"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="El Salvador"
+               data-component="body">
+    <br>
+<p>Nombre del país. Example: <code>El Salvador</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>currency</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="currency"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="USD"
+               data-component="body">
+    <br>
+<p>Moneda (código ISO 4217). Example: <code>USD</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>tax_percentage</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="tax_percentage"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="13"
+               data-component="body">
+    <br>
+<p>Porcentaje de IVA/impuesto. Example: <code>13</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>card_fee_percentage</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="card_fee_percentage"                data-endpoint="PUTapi-v1-country-configs--id-"
+               value="3.5"
+               data-component="body">
+    <br>
+<p>Porcentaje de comisión por tarjeta. Example: <code>3.5</code></p>
+        </div>
+        </form>
+
+                    <h2 id="tarifas-DELETEapi-v1-country-configs--id-">Eliminar configuración de país (tarifa).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Elimina la configuración de tarifas para un país.</p>
+
+<span id="example-requests-DELETEapi-v1-country-configs--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request DELETE \
+    "https://vergel-front.pages.dev/api/v1/country-configs/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/country-configs/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-DELETEapi-v1-country-configs--id-">
+            <blockquote>
+            <p>Example response (204):</p>
+        </blockquote>
+                <pre>
+<code>Empty response</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Configuraci&oacute;n de pa&iacute;s no encontrada&quot;,
+    &quot;codigo&quot;: 404
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-DELETEapi-v1-country-configs--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-v1-country-configs--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-v1-country-configs--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-v1-country-configs--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-v1-country-configs--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-DELETEapi-v1-country-configs--id-" data-method="DELETE"
+      data-path="api/v1/country-configs/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-v1-country-configs--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-v1-country-configs--id-"
+                    onclick="tryItOut('DELETEapi-v1-country-configs--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-v1-country-configs--id-"
+                    onclick="cancelTryOut('DELETEapi-v1-country-configs--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-v1-country-configs--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/v1/country-configs/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="DELETEapi-v1-country-configs--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="DELETEapi-v1-country-configs--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="DELETEapi-v1-country-configs--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="DELETEapi-v1-country-configs--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the country config. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>country_config</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="country_config"                data-endpoint="DELETEapi-v1-country-configs--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la configuración. Example: <code>1</code></p>
+            </div>
+                    </form>
+
                 <h1 id="autenticacion">Autenticación</h1>
 
     
@@ -6318,7 +7570,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/login" \
+    "https://vergel-front.pages.dev/api/login" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -6330,7 +7582,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/login"
+    "https://vergel-front.pages.dev/api/login"
 );
 
 const headers = {
@@ -6524,7 +7776,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/logout" \
+    "https://vergel-front.pages.dev/api/logout" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6532,7 +7784,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/logout"
+    "https://vergel-front.pages.dev/api/logout"
 );
 
 const headers = {
@@ -6682,27 +7934,27 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/plants?search=Monstera&amp;category_type=Interior&amp;active=1&amp;min_price=10&amp;max_price=50&amp;sort_by=name&amp;sort_direction=asc&amp;per_page=15&amp;limit=15" \
+    --get "https://vergel-front.pages.dev/api/v1/plants?search=Monstera&amp;category_type=Interior&amp;active=1&amp;min_price=10&amp;max_price=50&amp;sort_by=name&amp;sort_direction=asc&amp;per_page=15&amp;limit=15" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
     \"search\": \"b\",
     \"category_type\": \"n\",
-    \"active\": true,
+    \"active\": false,
     \"min_price\": 84,
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"created_at\",
-    \"sort_direction\": \"desc\"
+    \"sort_by\": \"id\",
+    \"sort_direction\": \"asc\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/plants"
+    "https://vergel-front.pages.dev/api/v1/plants"
 );
 
 const params = {
@@ -6728,13 +7980,13 @@ const headers = {
 let body = {
     "search": "b",
     "category_type": "n",
-    "active": true,
+    "active": false,
     "min_price": 84,
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "created_at",
-    "sort_direction": "desc"
+    "sort_by": "id",
+    "sort_direction": "asc"
 };
 
 fetch(url, {
@@ -7030,7 +8282,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_price</code></b>&nbsp;&nbsp;
@@ -7087,10 +8339,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="created_at"
+               value="id"
                data-component="body">
     <br>
-<p>Example: <code>created_at</code></p>
+<p>Example: <code>id</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -7101,10 +8353,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="desc"
+               value="asc"
                data-component="body">
     <br>
-<p>Example: <code>desc</code></p>
+<p>Example: <code>asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -7124,7 +8376,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/plants/architecto" \
+    --get "https://vergel-front.pages.dev/api/v1/plants/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7132,7 +8384,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/plants/architecto"
+    "https://vergel-front.pages.dev/api/v1/plants/architecto"
 );
 
 const headers = {
@@ -7315,7 +8567,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost/api/v1/plants" \
+    "https://vergel-front.pages.dev/api/v1/plants" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
@@ -7323,13 +8575,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/phpigkm8n2c4qmhaMzNSI0" \
-    --form "image_url=@/tmp/phpd50pioivplfk4sdg1ow" </code></pre></div>
+    --form "image=@C:\Users\Brian\AppData\Local\Temp\php1538.tmp" \
+    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php1537.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/plants"
+    "https://vergel-front.pages.dev/api/v1/plants"
 );
 
 const headers = {
@@ -7529,7 +8781,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpigkm8n2c4qmhaMzNSI0</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php1538.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -7541,7 +8793,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpd50pioivplfk4sdg1ow</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php1537.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -7581,7 +8833,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost/api/v1/plants/architecto" \
+    "https://vergel-front.pages.dev/api/v1/plants/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
@@ -7590,13 +8842,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@/tmp/phpf8le1cj6ke5p38ahVv3" \
-    --form "image_url=@/tmp/php0qbuma1t3j0ubhDUthe" </code></pre></div>
+    --form "image=@C:\Users\Brian\AppData\Local\Temp\php156A.tmp" \
+    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php1569.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/plants/architecto"
+    "https://vergel-front.pages.dev/api/v1/plants/architecto"
 );
 
 const headers = {
@@ -7840,7 +9092,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpf8le1cj6ke5p38ahVv3</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php156A.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -7852,7 +9104,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/php0qbuma1t3j0ubhDUthe</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php1569.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -7914,7 +9166,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost/api/v1/plants/architecto" \
+    "https://vergel-front.pages.dev/api/v1/plants/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7922,7 +9174,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/plants/architecto"
+    "https://vergel-front.pages.dev/api/v1/plants/architecto"
 );
 
 const headers = {
@@ -8091,6 +9343,931 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>ID de la planta a eliminar. Example: <code>1</code></p>
             </div>
                     </form>
+
+                <h1 id="proveedores">Proveedores</h1>
+
+    <p>APIs para la gestión de proveedores, compras y suministros de El Vergel.</p>
+
+                        <h2 id="proveedores-gestion">Gestión</h2>
+                                                    <h2 id="proveedores-POSTapi-v1-suppliers">Registrar un nuevo proveedor.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-POSTapi-v1-suppliers">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "https://vergel-front.pages.dev/api/v1/suppliers" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"name\": \"Distribuidora Verde S.A. de C.V.\",
+    \"trade_name\": \"Vivero El Roble\",
+    \"tax_id\": \"0614-010190-101-1\",
+    \"nrc\": \"123456-7\",
+    \"economic_activity\": \"Venta de plantas y abonos\",
+    \"phone\": \"22223333\",
+    \"email\": \"ventas@elroble.com\",
+    \"address\": \"Calle Principal #123, San Salvador\",
+    \"contact_name\": \"Carlos Henríquez\",
+    \"contact_phone\": \"77778888\",
+    \"status\": \"active\",
+    \"notes\": \"Proveedor mayorista de tierra y sustratos\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/suppliers"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "name": "Distribuidora Verde S.A. de C.V.",
+    "trade_name": "Vivero El Roble",
+    "tax_id": "0614-010190-101-1",
+    "nrc": "123456-7",
+    "economic_activity": "Venta de plantas y abonos",
+    "phone": "22223333",
+    "email": "ventas@elroble.com",
+    "address": "Calle Principal #123, San Salvador",
+    "contact_name": "Carlos Henríquez",
+    "contact_phone": "77778888",
+    "status": "active",
+    "notes": "Proveedor mayorista de tierra y sustratos"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-suppliers">
+</span>
+<span id="execution-results-POSTapi-v1-suppliers" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-suppliers"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-suppliers"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-suppliers" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-suppliers">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-suppliers" data-method="POST"
+      data-path="api/v1/suppliers"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-suppliers', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-suppliers"
+                    onclick="tryItOut('POSTapi-v1-suppliers');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-suppliers"
+                    onclick="cancelTryOut('POSTapi-v1-suppliers');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-suppliers"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/suppliers</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-suppliers"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-suppliers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-suppliers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="POSTapi-v1-suppliers"
+               value="Distribuidora Verde S.A. de C.V."
+               data-component="body">
+    <br>
+<p>Razón social o nombre del proveedor. Example: <code>Distribuidora Verde S.A. de C.V.</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>trade_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="trade_name"                data-endpoint="POSTapi-v1-suppliers"
+               value="Vivero El Roble"
+               data-component="body">
+    <br>
+<p>Nombre comercial del proveedor. Example: <code>Vivero El Roble</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>tax_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="tax_id"                data-endpoint="POSTapi-v1-suppliers"
+               value="0614-010190-101-1"
+               data-component="body">
+    <br>
+<p>NIT o DUI del proveedor. Example: <code>0614-010190-101-1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>nrc</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="nrc"                data-endpoint="POSTapi-v1-suppliers"
+               value="123456-7"
+               data-component="body">
+    <br>
+<p>Número de Registro de Contribuyente (NRC). Example: <code>123456-7</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>economic_activity</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="economic_activity"                data-endpoint="POSTapi-v1-suppliers"
+               value="Venta de plantas y abonos"
+               data-component="body">
+    <br>
+<p>Giro comercial. Example: <code>Venta de plantas y abonos</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="phone"                data-endpoint="POSTapi-v1-suppliers"
+               value="22223333"
+               data-component="body">
+    <br>
+<p>Teléfono principal de contacto. Example: <code>22223333</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="email"                data-endpoint="POSTapi-v1-suppliers"
+               value="ventas@elroble.com"
+               data-component="body">
+    <br>
+<p>Correo electrónico. Example: <code>ventas@elroble.com</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="address"                data-endpoint="POSTapi-v1-suppliers"
+               value="Calle Principal #123, San Salvador"
+               data-component="body">
+    <br>
+<p>Dirección física. Example: <code>Calle Principal #123, San Salvador</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>contact_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact_name"                data-endpoint="POSTapi-v1-suppliers"
+               value="Carlos Henríquez"
+               data-component="body">
+    <br>
+<p>Nombre del contacto / vendedor. Example: <code>Carlos Henríquez</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>contact_phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact_phone"                data-endpoint="POSTapi-v1-suppliers"
+               value="77778888"
+               data-component="body">
+    <br>
+<p>Teléfono del contacto. Example: <code>77778888</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="POSTapi-v1-suppliers"
+               value="active"
+               data-component="body">
+    <br>
+<p>Estado inicial (<code>active</code> o <code>inactive</code>). Default: active. Example: <code>active</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="notes"                data-endpoint="POSTapi-v1-suppliers"
+               value="Proveedor mayorista de tierra y sustratos"
+               data-component="body">
+    <br>
+<p>Notas u observaciones. Example: <code>Proveedor mayorista de tierra y sustratos</code></p>
+        </div>
+        </form>
+
+                    <h2 id="proveedores-PUTapi-v1-suppliers--id-">Actualizar información de un proveedor.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-PUTapi-v1-suppliers--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"name\": \"b\",
+    \"trade_name\": \"n\",
+    \"tax_id\": \"gzmiyvdljnikhway\",
+    \"nrc\": \"kcmyuwpwlvqwrsit\",
+    \"economic_activity\": \"c\",
+    \"phone\": \"pscqldzsnrwtujwv\",
+    \"email\": \"jhaag@example.net\",
+    \"address\": \"l\",
+    \"contact_name\": \"q\",
+    \"contact_phone\": \"ppwqbewtnnoqitpx\",
+    \"status\": \"active\",
+    \"notes\": \"architecto\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "name": "b",
+    "trade_name": "n",
+    "tax_id": "gzmiyvdljnikhway",
+    "nrc": "kcmyuwpwlvqwrsit",
+    "economic_activity": "c",
+    "phone": "pscqldzsnrwtujwv",
+    "email": "jhaag@example.net",
+    "address": "l",
+    "contact_name": "q",
+    "contact_phone": "ppwqbewtnnoqitpx",
+    "status": "active",
+    "notes": "architecto"
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-v1-suppliers--id-">
+</span>
+<span id="execution-results-PUTapi-v1-suppliers--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-v1-suppliers--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-v1-suppliers--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-v1-suppliers--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-v1-suppliers--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-v1-suppliers--id-" data-method="PUT"
+      data-path="api/v1/suppliers/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-suppliers--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-v1-suppliers--id-"
+                    onclick="tryItOut('PUTapi-v1-suppliers--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-v1-suppliers--id-"
+                    onclick="cancelTryOut('PUTapi-v1-suppliers--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-v1-suppliers--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/v1/suppliers/{id}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/suppliers/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTapi-v1-suppliers--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>architecto</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="b"
+               data-component="body">
+    <br>
+<p>Must not be greater than 150 characters. Example: <code>b</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>trade_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="trade_name"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="n"
+               data-component="body">
+    <br>
+<p>Must not be greater than 150 characters. Example: <code>n</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>tax_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="tax_id"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="gzmiyvdljnikhway"
+               data-component="body">
+    <br>
+<p>Must not be greater than 20 characters. Example: <code>gzmiyvdljnikhway</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>nrc</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="nrc"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="kcmyuwpwlvqwrsit"
+               data-component="body">
+    <br>
+<p>Must not be greater than 20 characters. Example: <code>kcmyuwpwlvqwrsit</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>economic_activity</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="economic_activity"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="c"
+               data-component="body">
+    <br>
+<p>Must not be greater than 150 characters. Example: <code>c</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="phone"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="pscqldzsnrwtujwv"
+               data-component="body">
+    <br>
+<p>Must not be greater than 20 characters. Example: <code>pscqldzsnrwtujwv</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="email"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="jhaag@example.net"
+               data-component="body">
+    <br>
+<p>Must be a valid email address. Must not be greater than 120 characters. Example: <code>jhaag@example.net</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="address"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="l"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>l</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>contact_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact_name"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="q"
+               data-component="body">
+    <br>
+<p>Must not be greater than 150 characters. Example: <code>q</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>contact_phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact_phone"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="ppwqbewtnnoqitpx"
+               data-component="body">
+    <br>
+<p>Must not be greater than 20 characters. Example: <code>ppwqbewtnnoqitpx</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="active"
+               data-component="body">
+    <br>
+<p>Example: <code>active</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>active</code></li> <li><code>inactive</code></li></ul>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="notes"                data-endpoint="PUTapi-v1-suppliers--id-"
+               value="architecto"
+               data-component="body">
+    <br>
+<p>Example: <code>architecto</code></p>
+        </div>
+        </form>
+
+                    <h2 id="proveedores-DELETEapi-v1-suppliers--id-">Eliminar proveedor (Borrado lógico).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-DELETEapi-v1-suppliers--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request DELETE \
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-DELETEapi-v1-suppliers--id-">
+</span>
+<span id="execution-results-DELETEapi-v1-suppliers--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-v1-suppliers--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-v1-suppliers--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-v1-suppliers--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-v1-suppliers--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-DELETEapi-v1-suppliers--id-" data-method="DELETE"
+      data-path="api/v1/suppliers/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-v1-suppliers--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-v1-suppliers--id-"
+                    onclick="tryItOut('DELETEapi-v1-suppliers--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-v1-suppliers--id-"
+                    onclick="cancelTryOut('DELETEapi-v1-suppliers--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-v1-suppliers--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/v1/suppliers/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="DELETEapi-v1-suppliers--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="DELETEapi-v1-suppliers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="DELETEapi-v1-suppliers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="DELETEapi-v1-suppliers--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>architecto</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="proveedores-PATCHapi-v1-suppliers--supplier--status">Cambiar estado de un proveedor.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-PATCHapi-v1-suppliers--supplier--status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PATCH \
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto/status" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"status\": \"inactive\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto/status"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "status": "inactive"
+};
+
+fetch(url, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PATCHapi-v1-suppliers--supplier--status">
+</span>
+<span id="execution-results-PATCHapi-v1-suppliers--supplier--status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PATCHapi-v1-suppliers--supplier--status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-suppliers--supplier--status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PATCHapi-v1-suppliers--supplier--status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PATCHapi-v1-suppliers--supplier--status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PATCHapi-v1-suppliers--supplier--status" data-method="PATCH"
+      data-path="api/v1/suppliers/{supplier}/status"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-suppliers--supplier--status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PATCHapi-v1-suppliers--supplier--status"
+                    onclick="tryItOut('PATCHapi-v1-suppliers--supplier--status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PATCHapi-v1-suppliers--supplier--status"
+                    onclick="cancelTryOut('PATCHapi-v1-suppliers--supplier--status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PATCHapi-v1-suppliers--supplier--status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/suppliers/{supplier}/status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PATCHapi-v1-suppliers--supplier--status"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-suppliers--supplier--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PATCHapi-v1-suppliers--supplier--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>supplier</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="supplier"                data-endpoint="PATCHapi-v1-suppliers--supplier--status"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The supplier. Example: <code>architecto</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="PATCHapi-v1-suppliers--supplier--status"
+               value="inactive"
+               data-component="body">
+    <br>
+<p>Nuevo estado (<code>active</code> o <code>inactive</code>). Example: <code>inactive</code></p>
+        </div>
+        </form>
 
             
 

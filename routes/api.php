@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\PlantController;
@@ -30,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('employees/{employee}/status', [EmployeeController::class, 'updateStatus']);
 
         Route::apiResource('roles', RoleController::class);
+
+        Route::apiResource('country-configs', CountryConfigController::class);
 
         Route::apiResource('suppliers', SupplierController::class);
         Route::patch('suppliers/{supplier}/status', [SupplierController::class, 'updateStatus']);
