@@ -3,7 +3,7 @@
 API REST de VERGEL para la gestión de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).
 
 <aside>
-    <strong>Base URL</strong>: <code>http://localhost</code>
+    <strong>Base URL</strong>: <code>https://vergel-front.pages.dev/</code>
 </aside>
 
 Esta documentación describe los endpoints disponibles en la API de **VERGEL**.

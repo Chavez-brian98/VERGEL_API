@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AuthTestUserSeeder::class,
             RolesAndUsersSeeder::class,
+            CountryConfigSeeder::class,
         ]);
     }
 }
