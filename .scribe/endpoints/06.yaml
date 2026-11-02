@@ -297,3 +297,222 @@ endpoints:
     controller: null
     method: null
     route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/quotes/{quote}/appointments'
+    metadata:
+      custom: []
+      groupName: 'Citas y Agenda'
+      groupDescription: |-
+
+        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Agendar cita desde una cotización.'
+      description: |-
+        Permite programar directamente una cita de servicio o visita técnica vinculada a una cotización existente.
+        El cliente (`customer_id`) se hereda de manera automática de la cotización y el origen de la cita se establece como 'quote'.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      quote:
+        custom: []
+        name: quote
+        description: 'ID de la cotización a vincular.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      quote: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      employee_id:
+        custom: []
+        name: employee_id
+        description: 'ID del colaborador o técnico de campo asignado para la visita.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      service_id:
+        custom: []
+        name: service_id
+        description: 'ID del servicio de catálogo presupuestado (opcional).'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      appointment_date:
+        custom: []
+        name: appointment_date
+        description: 'Fecha programada de la cita en formato AAAA-MM-DD.'
+        required: true
+        example: '2026-11-20'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      appointment_time:
+        custom: []
+        name: appointment_time
+        description: 'Hora programada de la cita en formato HH:MM (24h).'
+        required: true
+        example: '10:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: "Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'."
+        required: false
+        example: pending
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      notes:
+        custom: []
+        name: notes
+        description: 'Observaciones o especificaciones de la visita.'
+        required: false
+        example: 'Ejecución del servicio según cotización aprobada.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      is_inspection:
+        custom: []
+        name: is_inspection
+        description: 'Si es verdadero, genera de forma automática una ficha de inspección técnica vinculada.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      employee_id: 2
+      service_id: 1
+      appointment_date: '2026-11-20'
+      appointment_time: '10:00'
+      status: pending
+      notes: 'Ejecución del servicio según cotización aprobada.'
+      is_inspection: false
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 2,
+              "customerId": 1,
+              "customer": {
+                "id": 1,
+                "legalName": "Juan Carlos Pérez",
+                "tradeName": null,
+                "phone": "7890-1234",
+                "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+                "municipality": "Antiguo Cuscatlán",
+                "department": "La Libertad",
+                "email": "juan.perez@example.com"
+              },
+              "employeeId": 2,
+              "employee": {
+                "id": 2,
+                "fullName": "Carlos Mendoza"
+              },
+              "serviceId": 1,
+              "service": {
+                "id": 1,
+                "name": "Poda y Mantenimiento de Césped",
+                "price": 45.0
+              },
+              "quoteId": 1,
+              "appointmentDate": "2026-11-20",
+              "appointmentTime": "10:00",
+              "status": "pending",
+              "origin": "quote",
+              "notes": "Ejecución del servicio según cotización aprobada.",
+              "createdAt": "2026-11-01T23:20:00+00:00",
+              "updatedAt": "2026-11-01T23:20:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Cotización no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "El colaborador asignado debe ser un Técnico de campo activo.",
+            "errors": {
+              "employee_id": [
+                "El colaborador asignado debe ser un Técnico de campo activo."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al agendar la cita desde cotización",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

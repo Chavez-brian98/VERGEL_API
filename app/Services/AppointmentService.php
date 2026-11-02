@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\AuditLog;
 use App\Models\Employee;
 use App\Models\Inspection;
+use App\Models\Quote;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -82,6 +83,96 @@ class AppointmentService
 
             return $appointment->load(['customer', 'employee', 'service']);
         });
+    }
+
+    /**
+     * Agenda una cita de servicio o inspección directamente vinculada a una cotización existente.
+     * Hereda automáticamente el customer_id y asigna el origen 'quote'.
+     *
+     * @param  array<string, mixed>  $data
+     *
+     * @throws ModelNotFoundException
+     * @throws ValidationException
+     */
+    public function createFromQuote(Quote|int $quote, array $data): Appointment
+    {
+        $quoteModel = $quote instanceof Quote ? $quote : Quote::findOrFail($quote);
+
+        if (! $quoteModel->customer_id) {
+            throw ValidationException::withMessages([
+                'quote' => ['La cotización seleccionada no cuenta con un cliente asociado válido.'],
+            ]);
+        }
+
+        // Validar que la cotización no tenga ya una cita activa programada
+        $this->validateQuoteHasNoActiveAppointment($quoteModel);
+
+        // Validaciones de negocio reutilizables
+        $this->validateTechnician((int) $data['employee_id']);
+        $this->validateTechnicianAvailability(
+            (int) $data['employee_id'],
+            $data['appointment_date'],
+            $data['appointment_time']
+        );
+
+        return DB::transaction(function () use ($quoteModel, $data) {
+            $notes = ! empty($data['notes'])
+                ? $data['notes']
+                : "Cita programada desde cotización {$quoteModel->quote_number}";
+
+            $appointment = Appointment::create([
+                'customer_id' => $quoteModel->customer_id,
+                'quote_id' => $quoteModel->id,
+                'service_id' => $data['service_id'] ?? null,
+                'employee_id' => $data['employee_id'],
+                'appointment_date' => $data['appointment_date'],
+                'appointment_time' => $data['appointment_time'],
+                'status' => $data['status'] ?? Appointment::STATUS_PENDING,
+                'origin' => Appointment::ORIGIN_QUOTE,
+                'notes' => $notes,
+            ]);
+
+            // Si se marcó como inspección inicial, crear el registro asociado en inspections
+            if (! empty($data['is_inspection'])) {
+                Inspection::create([
+                    'customer_id' => $quoteModel->customer_id,
+                    'appointment_id' => $appointment->id,
+                    'employee_id' => $appointment->employee_id,
+                    'inspection_date' => $appointment->appointment_date?->format('Y-m-d') ?? $data['appointment_date'],
+                    'findings' => $notes,
+                ]);
+            }
+
+            $this->logAudit('insert', 'appointments', $appointment->id, null, $appointment->toArray());
+
+            return $appointment->load(['customer', 'employee', 'service', 'quote']);
+        });
+    }
+
+    /**
+     * Valida que la cotización no tenga actualmente una cita activa (en estado pendiente o confirmada).
+     *
+     * @throws ValidationException
+     */
+    public function validateQuoteHasNoActiveAppointment(Quote $quote): void
+    {
+        $activeAppointment = Appointment::query()
+            ->where('quote_id', $quote->id)
+            ->whereIn('status', [Appointment::STATUS_PENDING, Appointment::STATUS_CONFIRMED])
+            ->first();
+
+        if ($activeAppointment) {
+            $dateFormatted = $activeAppointment->appointment_date?->format('Y-m-d') ?? $activeAppointment->appointment_date;
+            $timeFormatted = is_string($activeAppointment->appointment_time)
+                ? substr($activeAppointment->appointment_time, 0, 5)
+                : $activeAppointment->appointment_time;
+
+            throw ValidationException::withMessages([
+                'quote' => [
+                    "Esta cotización ya tiene una cita activa programada para el {$dateFormatted} a las {$timeFormatted}. Si requiere cambiar la fecha u horario, utilice la opción de reprogramar.",
+                ],
+            ]);
+        }
     }
 
     /**

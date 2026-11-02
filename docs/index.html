@@ -242,6 +242,9 @@
                                                                             <li class="tocify-item level-3" data-unique="citas-y-agenda-POSTapi-v1-appointments">
                                             <a href="#citas-y-agenda-POSTapi-v1-appointments">Agendar cita manualmente.</a>
                                         </li>
+                                                                            <li class="tocify-item level-3" data-unique="citas-y-agenda-POSTapi-v1-quotes--quote--appointments">
+                                            <a href="#citas-y-agenda-POSTapi-v1-quotes--quote--appointments">Agendar cita desde una cotización.</a>
+                                        </li>
                                                                     </ul>
                                                                         </ul>
                             </ul>
@@ -7114,6 +7117,345 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
+                    <h2 id="citas-y-agenda-POSTapi-v1-quotes--quote--appointments">Agendar cita desde una cotización.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permite programar directamente una cita de servicio o visita técnica vinculada a una cotización existente.
+El cliente (<code>customer_id</code>) se hereda de manera automática de la cotización y el origen de la cita se establece como 'quote'.</p>
+
+<span id="example-requests-POSTapi-v1-quotes--quote--appointments">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/quotes/1/appointments" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"employee_id\": 2,
+    \"service_id\": 1,
+    \"appointment_date\": \"2026-11-20\",
+    \"appointment_time\": \"10:00\",
+    \"status\": \"pending\",
+    \"notes\": \"Ejecución del servicio según cotización aprobada.\",
+    \"is_inspection\": false
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/quotes/1/appointments"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "employee_id": 2,
+    "service_id": 1,
+    "appointment_date": "2026-11-20",
+    "appointment_time": "10:00",
+    "status": "pending",
+    "notes": "Ejecución del servicio según cotización aprobada.",
+    "is_inspection": false
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-quotes--quote--appointments">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 2,
+        &quot;customerId&quot;: 1,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Juan Carlos P&eacute;rez&quot;,
+            &quot;tradeName&quot;: null,
+            &quot;phone&quot;: &quot;7890-1234&quot;,
+            &quot;address&quot;: &quot;Residencial Cumbres de Cuscatl&aacute;n, Pol. D #14&quot;,
+            &quot;municipality&quot;: &quot;Antiguo Cuscatl&aacute;n&quot;,
+            &quot;department&quot;: &quot;La Libertad&quot;,
+            &quot;email&quot;: &quot;juan.perez@example.com&quot;
+        },
+        &quot;employeeId&quot;: 2,
+        &quot;employee&quot;: {
+            &quot;id&quot;: 2,
+            &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+        },
+        &quot;serviceId&quot;: 1,
+        &quot;service&quot;: {
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Poda y Mantenimiento de C&eacute;sped&quot;,
+            &quot;price&quot;: 45
+        },
+        &quot;quoteId&quot;: 1,
+        &quot;appointmentDate&quot;: &quot;2026-11-20&quot;,
+        &quot;appointmentTime&quot;: &quot;10:00&quot;,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;origin&quot;: &quot;quote&quot;,
+        &quot;notes&quot;: &quot;Ejecuci&oacute;n del servicio seg&uacute;n cotizaci&oacute;n aprobada.&quot;,
+        &quot;createdAt&quot;: &quot;2026-11-01T23:20:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-01T23:20:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cotizaci&oacute;n no encontrada&quot;,
+    &quot;codigo&quot;: 404
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El colaborador asignado debe ser un T&eacute;cnico de campo activo.&quot;,
+    &quot;errors&quot;: {
+        &quot;employee_id&quot;: [
+            &quot;El colaborador asignado debe ser un T&eacute;cnico de campo activo.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Error interno al agendar la cita desde cotizaci&oacute;n&quot;,
+    &quot;codigo&quot;: 500
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-quotes--quote--appointments" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-quotes--quote--appointments"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-quotes--quote--appointments"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-quotes--quote--appointments" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-quotes--quote--appointments">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-quotes--quote--appointments" data-method="POST"
+      data-path="api/v1/quotes/{quote}/appointments"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-quotes--quote--appointments', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-quotes--quote--appointments"
+                    onclick="tryItOut('POSTapi-v1-quotes--quote--appointments');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-quotes--quote--appointments"
+                    onclick="cancelTryOut('POSTapi-v1-quotes--quote--appointments');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-quotes--quote--appointments"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/quotes/{quote}/appointments</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>quote</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="quote"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la cotización a vincular. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>employee_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="employee_id"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="2"
+               data-component="body">
+    <br>
+<p>ID del colaborador o técnico de campo asignado para la visita. Example: <code>2</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="service_id"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del servicio de catálogo presupuestado (opcional). Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>appointment_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="appointment_date"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="2026-11-20"
+               data-component="body">
+    <br>
+<p>Fecha programada de la cita en formato AAAA-MM-DD. Example: <code>2026-11-20</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>appointment_time</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="appointment_time"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="10:00"
+               data-component="body">
+    <br>
+<p>Hora programada de la cita en formato HH:MM (24h). Example: <code>10:00</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="pending"
+               data-component="body">
+    <br>
+<p>Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'. Example: <code>pending</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="notes"                data-endpoint="POSTapi-v1-quotes--quote--appointments"
+               value="Ejecución del servicio según cotización aprobada."
+               data-component="body">
+    <br>
+<p>Observaciones o especificaciones de la visita. Example: <code>Ejecución del servicio según cotización aprobada.</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>is_inspection</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="POSTapi-v1-quotes--quote--appointments" style="display: none">
+            <input type="radio" name="is_inspection"
+                   value="true"
+                   data-endpoint="POSTapi-v1-quotes--quote--appointments"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-v1-quotes--quote--appointments" style="display: none">
+            <input type="radio" name="is_inspection"
+                   value="false"
+                   data-endpoint="POSTapi-v1-quotes--quote--appointments"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Si es verdadero, genera de forma automática una ficha de inspección técnica vinculada. Example: <code>false</code></p>
+        </div>
+        </form>
+
                 <h1 id="plantas">Plantas</h1>
 
     
@@ -7145,8 +7487,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"created_at\",
-    \"sort_direction\": \"desc\"
+    \"sort_by\": \"price\",
+    \"sort_direction\": \"asc\"
 }"
 </code></pre></div>
 
@@ -7184,8 +7526,8 @@ let body = {
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "created_at",
-    "sort_direction": "desc"
+    "sort_by": "price",
+    "sort_direction": "asc"
 };
 
 fetch(url, {
@@ -7538,10 +7880,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="created_at"
+               value="price"
                data-component="body">
     <br>
-<p>Example: <code>created_at</code></p>
+<p>Example: <code>price</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -7552,10 +7894,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="desc"
+               value="asc"
                data-component="body">
     <br>
-<p>Example: <code>desc</code></p>
+<p>Example: <code>asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -7774,8 +8116,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/php5apr7hd0k8rg0tgC8gP" \
-    --form "image_url=@/tmp/phpv81m51hh25ap4Lbltv1" </code></pre></div>
+    --form "image=@/tmp/php0hsg4pqpsnj24wsTIRg" \
+    --form "image_url=@/tmp/phpm0av7coj3f6m7IkJCDv" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -7980,7 +8322,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/php5apr7hd0k8rg0tgC8gP</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/php0hsg4pqpsnj24wsTIRg</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -7992,7 +8334,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpv81m51hh25ap4Lbltv1</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpm0av7coj3f6m7IkJCDv</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -8041,8 +8383,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@/tmp/phplce5e1tvqhib0pGqQaT" \
-    --form "image_url=@/tmp/phpp2bt0n24fa384fjtpfj" </code></pre></div>
+    --form "image=@/tmp/phpmharrvp8bu9l83I8lxX" \
+    --form "image_url=@/tmp/phpudfjmic5kjmn6nqUppa" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8291,7 +8633,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phplce5e1tvqhib0pGqQaT</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpmharrvp8bu9l83I8lxX</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -8303,7 +8645,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpp2bt0n24fa384fjtpfj</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpudfjmic5kjmn6nqUppa</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;

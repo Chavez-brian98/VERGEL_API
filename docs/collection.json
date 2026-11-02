@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "97aca842-0a16-4f3e-b306-f5073ab72c25",
+        "_postman_id": "14ef95e9-3a64-4b0b-a987-0fc6c6addc41",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1618,6 +1618,73 @@
                                     "name": ""
                                 }
                             ]
+                        },
+                        {
+                            "name": "Agendar cita desde una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:quote\/appointments",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:quote\/appointments",
+                                    "variable": [
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n a vincular."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"employee_id\":2,\"service_id\":1,\"appointment_date\":\"2026-11-20\",\"appointment_time\":\"10:00\",\"status\":\"pending\",\"notes\":\"Ejecuci\u00f3n del servicio seg\u00fan cotizaci\u00f3n aprobada.\",\"is_inspection\":false}"
+                                },
+                                "description": "Permite programar directamente una cita de servicio o visita t\u00e9cnica vinculada a una cotizaci\u00f3n existente.\nEl cliente (`customer_id`) se hereda de manera autom\u00e1tica de la cotizaci\u00f3n y el origen de la cita se establece como 'quote'."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 2,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 2,\n    \"employee\": {\n      \"id\": 2,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": 1,\n    \"appointmentDate\": \"2026-11-20\",\n    \"appointmentTime\": \"10:00\",\n    \"status\": \"pending\",\n    \"origin\": \"quote\",\n    \"notes\": \"Ejecuci\u00f3n del servicio seg\u00fan cotizaci\u00f3n aprobada.\",\n    \"createdAt\": \"2026-11-01T23:20:00+00:00\",\n    \"updatedAt\": \"2026-11-01T23:20:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"El colaborador asignado debe ser un T\u00e9cnico de campo activo.\",\n  \"errors\": {\n    \"employee_id\": [\n      \"El colaborador asignado debe ser un T\u00e9cnico de campo activo.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al agendar la cita desde cotizaci\u00f3n\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
                         }
                     ]
                 }
@@ -1708,7 +1775,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },

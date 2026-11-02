@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Appointment\StoreAppointmentRequest;
+use App\Http\Requests\Appointment\StoreQuoteAppointmentRequest;
 use App\Http\Resources\Appointments\AppointmentResource;
 use App\Services\AppointmentService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -117,6 +119,109 @@ class AppointmentController extends Controller
 
             return response()->json([
                 'message' => 'Error interno al agendar la cita',
+                'codigo' => 500,
+            ], 500);
+        }
+    }
+
+    /**
+     * Agendar cita desde una cotización.
+     *
+     * Permite programar directamente una cita de servicio o visita técnica vinculada a una cotización existente.
+     * El cliente (`customer_id`) se hereda de manera automática de la cotización y el origen de la cita se establece como 'quote'.
+     *
+     * @subgroup Escritura
+     *
+     * @urlParam quote integer required ID de la cotización a vincular. Example: 1
+     *
+     * @bodyParam employee_id integer required ID del colaborador o técnico de campo asignado para la visita. Example: 2
+     * @bodyParam service_id integer ID del servicio de catálogo presupuestado (opcional). Example: 1
+     * @bodyParam appointment_date string required Fecha programada de la cita en formato AAAA-MM-DD. Example: 2026-11-20
+     * @bodyParam appointment_time string required Hora programada de la cita en formato HH:MM (24h). Example: 10:00
+     * @bodyParam status string Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'. Example: pending
+     * @bodyParam notes string Observaciones o especificaciones de la visita. Example: Ejecución del servicio según cotización aprobada.
+     * @bodyParam is_inspection boolean Si es verdadero, genera de forma automática una ficha de inspección técnica vinculada. Example: false
+     *
+     * @response status=201 {
+     *   "data": {
+     *     "id": 2,
+     *     "customerId": 1,
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Juan Carlos Pérez",
+     *       "tradeName": null,
+     *       "phone": "7890-1234",
+     *       "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+     *       "municipality": "Antiguo Cuscatlán",
+     *       "department": "La Libertad",
+     *       "email": "juan.perez@example.com"
+     *     },
+     *     "employeeId": 2,
+     *     "employee": {
+     *       "id": 2,
+     *       "fullName": "Carlos Mendoza"
+     *     },
+     *     "serviceId": 1,
+     *     "service": {
+     *       "id": 1,
+     *       "name": "Poda y Mantenimiento de Césped",
+     *       "price": 45.0
+     *     },
+     *     "quoteId": 1,
+     *     "appointmentDate": "2026-11-20",
+     *     "appointmentTime": "10:00",
+     *     "status": "pending",
+     *     "origin": "quote",
+     *     "notes": "Ejecución del servicio según cotización aprobada.",
+     *     "createdAt": "2026-11-01T23:20:00+00:00",
+     *     "updatedAt": "2026-11-01T23:20:00+00:00"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Cotización no encontrada",
+     *   "codigo": 404
+     * }
+     * @response status=422 {
+     *   "message": "El colaborador asignado debe ser un Técnico de campo activo.",
+     *   "errors": {
+     *     "employee_id": [
+     *       "El colaborador asignado debe ser un Técnico de campo activo."
+     *     ]
+     *   }
+     * }
+     * @response status=403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response status=500 {
+     *   "message": "Error interno al agendar la cita desde cotización",
+     *   "codigo": 500
+     * }
+     */
+    public function storeFromQuote(StoreQuoteAppointmentRequest $request, $quote): JsonResponse
+    {
+        try {
+            $appointment = $this->appointmentService->createFromQuote($quote, $request->validated());
+
+            return (new AppointmentResource($appointment))
+                ->response()
+                ->setStatusCode(201);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Cotización no encontrada',
+                'codigo' => 404,
+            ], 404);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error creating appointment from quote: '.$e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            return response()->json([
+                'message' => 'Error interno al agendar la cita desde cotización',
                 'codigo' => 500,
             ], 500);
         }
