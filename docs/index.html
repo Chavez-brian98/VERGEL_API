@@ -286,7 +286,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: November 1, 2026</li>
+        <li>Last updated: November 2, 2026</li>
     </ul>
 </div>
 
@@ -7145,7 +7145,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"price\",
+    \"sort_by\": \"created_at\",
     \"sort_direction\": \"desc\"
 }"
 </code></pre></div>
@@ -7184,7 +7184,7 @@ let body = {
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "price",
+    "sort_by": "created_at",
     "sort_direction": "desc"
 };
 
@@ -7538,10 +7538,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="price"
+               value="created_at"
                data-component="body">
     <br>
-<p>Example: <code>price</code></p>
+<p>Example: <code>created_at</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -7774,8 +7774,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/phpkcab17dmm8dn8rWfFvg" \
-    --form "image_url=@/tmp/phpbaoh0ueskuec3xrBXfU" </code></pre></div>
+    --form "image=@/tmp/php5apr7hd0k8rg0tgC8gP" \
+    --form "image_url=@/tmp/phpv81m51hh25ap4Lbltv1" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -7980,7 +7980,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpkcab17dmm8dn8rWfFvg</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/php5apr7hd0k8rg0tgC8gP</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -7992,7 +7992,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpbaoh0ueskuec3xrBXfU</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpv81m51hh25ap4Lbltv1</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -8041,8 +8041,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@/tmp/phpuokch0nmbnmd8PtKUNA" \
-    --form "image_url=@/tmp/phpg6p141c4ls1taGIZhs3" </code></pre></div>
+    --form "image=@/tmp/phplce5e1tvqhib0pGqQaT" \
+    --form "image_url=@/tmp/phpp2bt0n24fa384fjtpfj" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8291,7 +8291,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpuokch0nmbnmd8PtKUNA</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phplce5e1tvqhib0pGqQaT</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -8303,7 +8303,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpg6p141c4ls1taGIZhs3</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpp2bt0n24fa384fjtpfj</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;

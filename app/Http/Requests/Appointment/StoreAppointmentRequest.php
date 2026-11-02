@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Appointment;
 
 use App\Models\Appointment;
+use App\Models\Employee;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -70,11 +71,16 @@ class StoreAppointmentRequest extends FormRequest
                 'max:120',
             ],
 
-            // Colaborador / Técnico asignado
+            // Colaborador / Técnico asignado (exclusivo para Técnicos de campo activos)
             'employee_id' => [
                 'required',
                 'integer',
-                Rule::exists('employees', 'id')->withoutTrashed(),
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    $employee = Employee::with('role')->find($value);
+                    if (! $employee || ! $employee->active || $employee->role?->role_name !== 'Tecnico de campo') {
+                        $fail('El colaborador asignado debe ser un Técnico de campo activo.');
+                    }
+                },
             ],
 
             // Servicio del catálogo opcional
@@ -137,7 +143,7 @@ class StoreAppointmentRequest extends FormRequest
             'customer.municipality.required_with' => 'El municipio del nuevo cliente es obligatorio.',
             'customer.email.email' => 'El correo electrónico del cliente no tiene un formato válido.',
             'employee_id.required' => 'Debe asignar un colaborador o técnico para la cita.',
-            'employee_id.exists' => 'El colaborador asignado no existe.',
+            'employee_id.exists' => 'El colaborador asignado debe ser un Técnico de campo activo.',
             'service_id.exists' => 'El servicio seleccionado no existe.',
             'appointment_date.required' => 'La fecha de la cita es obligatoria.',
             'appointment_date.date_format' => 'La fecha de la cita debe tener el formato AAAA-MM-DD (ej. 2026-11-15).',

@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\Inspection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class AppointmentService
 {
@@ -29,13 +30,27 @@ class AppointmentService
      * Agenda una nueva cita de manera manual directamente desde el calendario.
      *
      * @param  array<string, mixed>  $data
+     *
+     * @throws ValidationException
      */
     public function create(array $data): Appointment
     {
+        // Validaciones de negocio reutilizables
+        $this->validateTechnician((int) $data['employee_id']);
+        $this->validateTechnicianAvailability(
+            (int) $data['employee_id'],
+            $data['appointment_date'],
+            $data['appointment_time']
+        );
+
         return DB::transaction(function () use ($data) {
             $customerId = $data['customer_id'] ?? null;
 
             if (! empty($data['customer'])) {
+                // Delegación estricta de la creación del cliente al CustomerService oficial
+                // NOTA: CustomerService inicializa de forma atómica el cliente, su billetera y sus puntos de fidelidad.
+                // Si en el futuro se requiere clasificar al prospecto con una etiqueta de origen o campaña publicitaria,
+                // se recomienda agregar dicho atributo en CustomerService.
                 $newCustomer = $this->customerService->create($data['customer']);
                 $customerId = $newCustomer->id;
             }
@@ -67,6 +82,62 @@ class AppointmentService
 
             return $appointment->load(['customer', 'employee', 'service']);
         });
+    }
+
+    /**
+     * Valida que el colaborador asignado exista, esté activo y cuente con el rol 'Tecnico de campo'.
+     *
+     * @throws ValidationException
+     */
+    public function validateTechnician(int $employeeId): void
+    {
+        $employee = Employee::with('role')->find($employeeId);
+
+        if (! $employee || ! $employee->active || $employee->role?->role_name !== 'Tecnico de campo') {
+            throw ValidationException::withMessages([
+                'employee_id' => ['El colaborador asignado debe ser un Técnico de campo activo.'],
+            ]);
+        }
+    }
+
+    /**
+     * Valida la disponibilidad del técnico, exigiendo un intervalo mínimo de 5 horas entre citas del mismo día.
+     * Citas en estado cancelada o anulada no bloquean la agenda.
+     *
+     * @throws ValidationException
+     */
+    public function validateTechnicianAvailability(
+        int $employeeId,
+        string $date,
+        string $time,
+        ?int $excludeAppointmentId = null
+    ): void {
+        $newMinutes = ((int) substr($time, 0, 2) * 60) + (int) substr($time, 3, 2);
+
+        $existingAppointments = Appointment::query()
+            ->where('employee_id', $employeeId)
+            ->whereDate('appointment_date', $date)
+            ->whereNotIn('status', [Appointment::STATUS_CANCELLED, Appointment::STATUS_ANNULLED])
+            ->when($excludeAppointmentId, fn ($q) => $q->where('id', '!=', $excludeAppointmentId))
+            ->get();
+
+        foreach ($existingAppointments as $appointment) {
+            $existingTimeStr = is_string($appointment->appointment_time)
+                ? $appointment->appointment_time
+                : (string) $appointment->appointment_time;
+
+            $existingMinutes = ((int) substr($existingTimeStr, 0, 2) * 60) + (int) substr($existingTimeStr, 3, 2);
+            $diffMinutes = abs($newMinutes - $existingMinutes);
+
+            if ($diffMinutes < 300) {
+                $existingFormatted = substr($existingTimeStr, 0, 5);
+                throw ValidationException::withMessages([
+                    'appointment_time' => [
+                        "El técnico de campo ya tiene una cita asignada a las {$existingFormatted} en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.",
+                    ],
+                ]);
+            }
+        }
     }
 
     /**

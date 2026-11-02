@@ -3841,7 +3841,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: price
+                  example: created_at
                   enum:
                     - id
                     - name

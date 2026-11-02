@@ -8,6 +8,7 @@ use App\Http\Resources\Appointments\AppointmentResource;
 use App\Services\AppointmentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 /**
  * @group Citas y Agenda
@@ -104,6 +105,11 @@ class AppointmentController extends Controller
             return (new AppointmentResource($appointment))
                 ->response()
                 ->setStatusCode(201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Exception $e) {
             Log::error('Error creating appointment: '.$e->getMessage(), [
                 'exception' => $e,

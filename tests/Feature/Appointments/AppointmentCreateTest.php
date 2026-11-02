@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Appointments;
 
+use App\Models\Appointment;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Inspection;
@@ -326,5 +327,147 @@ class AppointmentCreateTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['employee_id', 'appointment_date', 'appointment_time']);
+    }
+
+    public function test_fails_if_assigned_employee_is_not_field_technician(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Cliente Test Rol',
+            'phone' => '7111-2222',
+            'address' => 'Dirección Test',
+            'municipality' => 'San Salvador',
+            'status' => 'active',
+        ]);
+
+        // Intentar asignar a un usuario con rol Administrador o Recepcionista en vez de Técnico de campo
+        $nonTechEmployee = $this->adminUser->employee;
+
+        $payload = [
+            'customer_id' => $customer->id,
+            'employee_id' => $nonTechEmployee->id,
+            'appointment_date' => '2026-11-20',
+            'appointment_time' => '10:00',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payload);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['employee_id'])
+            ->assertJsonPath('errors.employee_id.0', 'El colaborador asignado debe ser un Técnico de campo activo.');
+    }
+
+    public function test_fails_if_technician_has_another_appointment_within_5_hours_same_day(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Cliente Conflicto Horario',
+            'phone' => '7444-5555',
+            'address' => 'Calle Los Bambúes #12',
+            'municipality' => 'San Salvador',
+            'status' => 'active',
+        ]);
+
+        // Cita existente a las 09:00
+        Appointment::create([
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-01',
+            'appointment_time' => '09:00:00',
+            'status' => 'confirmed',
+            'origin' => 'manual',
+        ]);
+
+        // Intentar programar a las 11:30 (diferencia de solo 2.5 horas, menor a 5 horas)
+        $payloadConflict = [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-01',
+            'appointment_time' => '11:30',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payloadConflict);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['appointment_time'])
+            ->assertJsonPath('errors.appointment_time.0', 'El técnico de campo ya tiene una cita asignada a las 09:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.');
+    }
+
+    public function test_allows_scheduling_multiple_appointments_with_5_hours_grace_period(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Cliente Agenda Completa',
+            'phone' => '7888-9999',
+            'address' => 'Residencial Las Palmas',
+            'municipality' => 'Santa Tecla',
+            'status' => 'active',
+        ]);
+
+        // Cita 1: 08:00
+        $response1 = $this->postJson('/api/v1/appointments', [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-05',
+            'appointment_time' => '08:00',
+        ]);
+        $response1->assertCreated();
+
+        // Cita 2: 13:00 (exactamente 5 horas después)
+        $response2 = $this->postJson('/api/v1/appointments', [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-05',
+            'appointment_time' => '13:00',
+        ]);
+        $response2->assertCreated();
+
+        // Cita 3: 18:00 (exactamente 5 horas después de la segunda)
+        $response3 = $this->postJson('/api/v1/appointments', [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-05',
+            'appointment_time' => '18:00',
+        ]);
+        $response3->assertCreated();
+
+        $this->assertDatabaseCount('appointments', 3);
+    }
+
+    public function test_allows_scheduling_at_same_time_if_previous_appointment_is_cancelled_or_annulled(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Cliente Cita Cancelada Previa',
+            'phone' => '7123-9999',
+            'address' => 'Calle La Reforma',
+            'municipality' => 'San Salvador',
+            'status' => 'active',
+        ]);
+
+        // Cita previa en estado cancelado a las 10:00
+        Appointment::create([
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-10',
+            'appointment_time' => '10:00:00',
+            'status' => 'cancelled',
+            'origin' => 'manual',
+        ]);
+
+        // Nueva cita a la misma hora (10:00) debe permitirse porque el horario está liberado
+        $response = $this->postJson('/api/v1/appointments', [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-10',
+            'appointment_time' => '10:00',
+            'status' => 'pending',
+        ]);
+
+        $response->assertCreated();
     }
 }
