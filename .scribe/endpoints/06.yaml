@@ -300,6 +300,217 @@ endpoints:
   -
     custom: []
     httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/appointments/{appointment}'
+    metadata:
+      custom: []
+      groupName: 'Citas y Agenda'
+      groupDescription: |-
+
+        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Actualizar o reprogramar una cita.'
+      description: |-
+        Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el técnico de campo,
+        actualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.
+
+        Si se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),
+        excluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      appointment:
+        custom: []
+        name: appointment
+        description: 'ID de la cita a actualizar.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      appointment: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      employee_id:
+        custom: []
+        name: employee_id
+        description: 'ID del nuevo colaborador o técnico de campo asignado.'
+        required: false
+        example: 4
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      service_id:
+        custom: []
+        name: service_id
+        description: 'ID del nuevo servicio solicitado (o null para quitar).'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      appointment_date:
+        custom: []
+        name: appointment_date
+        description: 'Nueva fecha de la cita en formato AAAA-MM-DD.'
+        required: false
+        example: '2026-11-18'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      appointment_time:
+        custom: []
+        name: appointment_time
+        description: 'Nueva hora de la cita en formato HH:MM (24h).'
+        required: false
+        example: '14:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Nuevo estado de la cita (pending, confirmed, completed, cancelled, annulled).'
+        required: false
+        example: confirmed
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      notes:
+        custom: []
+        name: notes
+        description: 'Observaciones o motivo de la reprogramación.'
+        required: false
+        example: 'Reprogramada a solicitud del cliente por viaje de negocios.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      employee_id: 4
+      service_id: 2
+      appointment_date: '2026-11-18'
+      appointment_time: '14:00'
+      status: confirmed
+      notes: 'Reprogramada a solicitud del cliente por viaje de negocios.'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "customerId": 1,
+              "customer": {
+                "id": 1,
+                "legalName": "Juan Carlos Pérez",
+                "tradeName": null,
+                "phone": "7890-1234",
+                "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+                "municipality": "Antiguo Cuscatlán",
+                "department": "La Libertad",
+                "email": "juan.perez@example.com"
+              },
+              "employeeId": 4,
+              "employee": {
+                "id": 4,
+                "fullName": "Carlos Mendoza"
+              },
+              "serviceId": 2,
+              "service": {
+                "id": 2,
+                "name": "Fertilización Orgánica",
+                "price": 35.0
+              },
+              "quoteId": null,
+              "appointmentDate": "2026-11-18",
+              "appointmentTime": "14:00",
+              "status": "confirmed",
+              "origin": "manual",
+              "notes": "Reprogramada a solicitud del cliente por viaje de negocios.",
+              "createdAt": "2026-11-01T16:00:00+00:00",
+              "updatedAt": "2026-11-02T08:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Cita no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.",
+            "errors": {
+              "appointment_time": [
+                "El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al actualizar la cita",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
       - POST
     uri: 'api/v1/quotes/{quote}/appointments'
     metadata:

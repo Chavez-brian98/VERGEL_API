@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('plants/{id}', [PlantController::class, 'destroy']);
 
         Route::post('appointments', [AppointmentController::class, 'store']);
+        Route::match(['put', 'patch'], 'appointments/{appointment}', [AppointmentController::class, 'update']);
         Route::post('quotes/{quote}/appointments', [AppointmentController::class, 'storeFromQuote']);
     });
 });

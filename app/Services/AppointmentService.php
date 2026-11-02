@@ -150,6 +150,89 @@ class AppointmentService
     }
 
     /**
+     * Actualiza y reprograma los datos de una cita existente (fecha, hora, técnico, estado, notas, servicio).
+     *
+     * @param  array<string, mixed>  $data
+     *
+     * @throws ModelNotFoundException
+     * @throws ValidationException
+     */
+    public function update(Appointment|int $appointment, array $data): Appointment
+    {
+        $appointmentModel = $appointment instanceof Appointment
+            ? $appointment
+            : Appointment::findOrFail($appointment);
+
+        // Si la cita ya está completada, no permitir reprogramación de fecha, hora o técnico
+        if ($appointmentModel->status === Appointment::STATUS_COMPLETED) {
+            if (isset($data['appointment_date']) || isset($data['appointment_time']) || isset($data['employee_id'])) {
+                throw ValidationException::withMessages([
+                    'status' => ['No se puede reprogramar una cita que ya ha sido completada.'],
+                ]);
+            }
+        }
+
+        // Si se cambia de técnico, validar que sea un Técnico de campo activo
+        if (isset($data['employee_id']) && (int) $data['employee_id'] !== (int) $appointmentModel->employee_id) {
+            $this->validateTechnician((int) $data['employee_id']);
+        }
+
+        // Determinar estado resultante
+        $targetStatus = $data['status'] ?? $appointmentModel->status;
+        $isCancelledOrAnnulled = in_array($targetStatus, [Appointment::STATUS_CANCELLED, Appointment::STATUS_ANNULLED], true);
+
+        // Si no se cancela ni anula, verificar cambios que requieran revalidar disponibilidad
+        $currentDateStr = $appointmentModel->appointment_date instanceof \DateTimeInterface
+            ? $appointmentModel->appointment_date->format('Y-m-d')
+            : (string) $appointmentModel->appointment_date;
+        $currentTimeStr = is_string($appointmentModel->appointment_time)
+            ? substr($appointmentModel->appointment_time, 0, 5)
+            : (string) $appointmentModel->appointment_time;
+
+        $dateChanged = isset($data['appointment_date']) && $data['appointment_date'] !== $currentDateStr;
+        $timeChanged = isset($data['appointment_time']) && substr($data['appointment_time'], 0, 5) !== $currentTimeStr;
+        $employeeChanged = isset($data['employee_id']) && (int) $data['employee_id'] !== (int) $appointmentModel->employee_id;
+        $reactivating = in_array($appointmentModel->status, [Appointment::STATUS_CANCELLED, Appointment::STATUS_ANNULLED], true) && ! $isCancelledOrAnnulled;
+
+        if (! $isCancelledOrAnnulled && ($dateChanged || $timeChanged || $employeeChanged || $reactivating)) {
+            $targetEmployeeId = (int) ($data['employee_id'] ?? $appointmentModel->employee_id);
+            $targetDate = $data['appointment_date'] ?? $currentDateStr;
+            $targetTime = $data['appointment_time'] ?? $currentTimeStr;
+
+            $this->validateTechnicianAvailability(
+                $targetEmployeeId,
+                $targetDate,
+                $targetTime,
+                $appointmentModel->id
+            );
+        }
+
+        return DB::transaction(function () use ($appointmentModel, $data) {
+            $oldData = $appointmentModel->toArray();
+
+            $appointmentModel->update($data);
+
+            // Si hay inspecciones asociadas y se cambió fecha o técnico, sincronizarlas
+            if ($appointmentModel->inspections()->exists()) {
+                $inspectionUpdates = [];
+                if (isset($data['employee_id'])) {
+                    $inspectionUpdates['employee_id'] = $data['employee_id'];
+                }
+                if (isset($data['appointment_date'])) {
+                    $inspectionUpdates['inspection_date'] = $data['appointment_date'];
+                }
+                if (! empty($inspectionUpdates)) {
+                    $appointmentModel->inspections()->update($inspectionUpdates);
+                }
+            }
+
+            $this->logAudit('update', 'appointments', $appointmentModel->id, $oldData, $appointmentModel->toArray());
+
+            return $appointmentModel->load(['customer', 'employee', 'service', 'quote']);
+        });
+    }
+
+    /**
      * Valida que la cotización no tenga actualmente una cita activa (en estado pendiente o confirmada).
      *
      * @throws ValidationException

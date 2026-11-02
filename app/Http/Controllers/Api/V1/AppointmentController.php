@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Appointment\StoreAppointmentRequest;
 use App\Http\Requests\Appointment\StoreQuoteAppointmentRequest;
+use App\Http\Requests\Appointment\UpdateAppointmentRequest;
 use App\Http\Resources\Appointments\AppointmentResource;
 use App\Services\AppointmentService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -222,6 +223,111 @@ class AppointmentController extends Controller
 
             return response()->json([
                 'message' => 'Error interno al agendar la cita desde cotización',
+                'codigo' => 500,
+            ], 500);
+        }
+    }
+
+    /**
+     * Actualizar o reprogramar una cita.
+     *
+     * Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el técnico de campo,
+     * actualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.
+     *
+     * Si se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),
+     * excluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.
+     *
+     * @subgroup Escritura
+     *
+     * @urlParam appointment integer required ID de la cita a actualizar. Example: 1
+     *
+     * @bodyParam employee_id integer ID del nuevo colaborador o técnico de campo asignado. Example: 4
+     * @bodyParam service_id integer ID del nuevo servicio solicitado (o null para quitar). Example: 2
+     * @bodyParam appointment_date string Nueva fecha de la cita en formato AAAA-MM-DD. Example: 2026-11-18
+     * @bodyParam appointment_time string Nueva hora de la cita en formato HH:MM (24h). Example: 14:00
+     * @bodyParam status string Nuevo estado de la cita (pending, confirmed, completed, cancelled, annulled). Example: confirmed
+     * @bodyParam notes string Observaciones o motivo de la reprogramación. Example: Reprogramada a solicitud del cliente por viaje de negocios.
+     *
+     * @response status=200 {
+     *   "data": {
+     *     "id": 1,
+     *     "customerId": 1,
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Juan Carlos Pérez",
+     *       "tradeName": null,
+     *       "phone": "7890-1234",
+     *       "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+     *       "municipality": "Antiguo Cuscatlán",
+     *       "department": "La Libertad",
+     *       "email": "juan.perez@example.com"
+     *     },
+     *     "employeeId": 4,
+     *     "employee": {
+     *       "id": 4,
+     *       "fullName": "Carlos Mendoza"
+     *     },
+     *     "serviceId": 2,
+     *     "service": {
+     *       "id": 2,
+     *       "name": "Fertilización Orgánica",
+     *       "price": 35.0
+     *     },
+     *     "quoteId": null,
+     *     "appointmentDate": "2026-11-18",
+     *     "appointmentTime": "14:00",
+     *     "status": "confirmed",
+     *     "origin": "manual",
+     *     "notes": "Reprogramada a solicitud del cliente por viaje de negocios.",
+     *     "createdAt": "2026-11-01T16:00:00+00:00",
+     *     "updatedAt": "2026-11-02T08:00:00+00:00"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Cita no encontrada",
+     *   "codigo": 404
+     * }
+     * @response status=422 {
+     *   "message": "El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.",
+     *   "errors": {
+     *     "appointment_time": [
+     *       "El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita."
+     *     ]
+     *   }
+     * }
+     * @response status=403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response status=500 {
+     *   "message": "Error interno al actualizar la cita",
+     *   "codigo": 500
+     * }
+     */
+    public function update(UpdateAppointmentRequest $request, $appointment): JsonResponse
+    {
+        try {
+            $updated = $this->appointmentService->update($appointment, $request->validated());
+
+            return (new AppointmentResource($updated))
+                ->response()
+                ->setStatusCode(200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Cita no encontrada',
+                'codigo' => 404,
+            ], 404);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error updating appointment: '.$e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            return response()->json([
+                'message' => 'Error interno al actualizar la cita',
                 'codigo' => 500,
             ], 500);
         }

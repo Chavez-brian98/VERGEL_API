@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "14ef95e9-3a64-4b0b-a987-0fc6c6addc41",
+        "_postman_id": "baa28dcf-80ff-4006-8341-87d4693ab866",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1620,6 +1620,73 @@
                             ]
                         },
                         {
+                            "name": "Actualizar o reprogramar una cita.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments\/:appointment",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments\/:appointment",
+                                    "variable": [
+                                        {
+                                            "id": "appointment",
+                                            "key": "appointment",
+                                            "value": 1,
+                                            "description": "ID de la cita a actualizar."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"employee_id\":4,\"service_id\":2,\"appointment_date\":\"2026-11-18\",\"appointment_time\":\"14:00\",\"status\":\"confirmed\",\"notes\":\"Reprogramada a solicitud del cliente por viaje de negocios.\"}"
+                                },
+                                "description": "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el t\u00e9cnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o t\u00e9cnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo autom\u00e1ticamente la propia cita evaluada para evitar falsas colisiones."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 4,\n    \"employee\": {\n      \"id\": 4,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 2,\n    \"service\": {\n      \"id\": 2,\n      \"name\": \"Fertilizaci\u00f3n Org\u00e1nica\",\n      \"price\": 35.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-18\",\n    \"appointmentTime\": \"14:00\",\n    \"status\": \"confirmed\",\n    \"origin\": \"manual\",\n    \"notes\": \"Reprogramada a solicitud del cliente por viaje de negocios.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-02T08:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cita no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"El t\u00e9cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m\u00ednimo de 5 horas entre cada visita.\",\n  \"errors\": {\n    \"appointment_time\": [\n      \"El t\u00e9cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m\u00ednimo de 5 horas entre cada visita.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al actualizar la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
                             "name": "Agendar cita desde una cotizaci\u00f3n.",
                             "request": {
                                 "url": {
@@ -1775,7 +1842,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"id\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },

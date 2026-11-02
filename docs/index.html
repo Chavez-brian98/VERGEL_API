@@ -242,6 +242,9 @@
                                                                             <li class="tocify-item level-3" data-unique="citas-y-agenda-POSTapi-v1-appointments">
                                             <a href="#citas-y-agenda-POSTapi-v1-appointments">Agendar cita manualmente.</a>
                                         </li>
+                                                                            <li class="tocify-item level-3" data-unique="citas-y-agenda-PUTapi-v1-appointments--appointment-">
+                                            <a href="#citas-y-agenda-PUTapi-v1-appointments--appointment-">Actualizar o reprogramar una cita.</a>
+                                        </li>
                                                                             <li class="tocify-item level-3" data-unique="citas-y-agenda-POSTapi-v1-quotes--quote--appointments">
                                             <a href="#citas-y-agenda-POSTapi-v1-quotes--quote--appointments">Agendar cita desde una cotización.</a>
                                         </li>
@@ -7117,6 +7120,327 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
+                    <h2 id="citas-y-agenda-PUTapi-v1-appointments--appointment-">Actualizar o reprogramar una cita.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el técnico de campo,
+actualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.</p>
+<p>Si se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),
+excluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.</p>
+
+<span id="example-requests-PUTapi-v1-appointments--appointment-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "http://localhost/api/v1/appointments/1" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"employee_id\": 4,
+    \"service_id\": 2,
+    \"appointment_date\": \"2026-11-18\",
+    \"appointment_time\": \"14:00\",
+    \"status\": \"confirmed\",
+    \"notes\": \"Reprogramada a solicitud del cliente por viaje de negocios.\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/appointments/1"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "employee_id": 4,
+    "service_id": 2,
+    "appointment_date": "2026-11-18",
+    "appointment_time": "14:00",
+    "status": "confirmed",
+    "notes": "Reprogramada a solicitud del cliente por viaje de negocios."
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-v1-appointments--appointment-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;customerId&quot;: 1,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Juan Carlos P&eacute;rez&quot;,
+            &quot;tradeName&quot;: null,
+            &quot;phone&quot;: &quot;7890-1234&quot;,
+            &quot;address&quot;: &quot;Residencial Cumbres de Cuscatl&aacute;n, Pol. D #14&quot;,
+            &quot;municipality&quot;: &quot;Antiguo Cuscatl&aacute;n&quot;,
+            &quot;department&quot;: &quot;La Libertad&quot;,
+            &quot;email&quot;: &quot;juan.perez@example.com&quot;
+        },
+        &quot;employeeId&quot;: 4,
+        &quot;employee&quot;: {
+            &quot;id&quot;: 4,
+            &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+        },
+        &quot;serviceId&quot;: 2,
+        &quot;service&quot;: {
+            &quot;id&quot;: 2,
+            &quot;name&quot;: &quot;Fertilizaci&oacute;n Org&aacute;nica&quot;,
+            &quot;price&quot;: 35
+        },
+        &quot;quoteId&quot;: null,
+        &quot;appointmentDate&quot;: &quot;2026-11-18&quot;,
+        &quot;appointmentTime&quot;: &quot;14:00&quot;,
+        &quot;status&quot;: &quot;confirmed&quot;,
+        &quot;origin&quot;: &quot;manual&quot;,
+        &quot;notes&quot;: &quot;Reprogramada a solicitud del cliente por viaje de negocios.&quot;,
+        &quot;createdAt&quot;: &quot;2026-11-01T16:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-02T08:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cita no encontrada&quot;,
+    &quot;codigo&quot;: 404
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El t&eacute;cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m&iacute;nimo de 5 horas entre cada visita.&quot;,
+    &quot;errors&quot;: {
+        &quot;appointment_time&quot;: [
+            &quot;El t&eacute;cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m&iacute;nimo de 5 horas entre cada visita.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Error interno al actualizar la cita&quot;,
+    &quot;codigo&quot;: 500
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-v1-appointments--appointment-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-v1-appointments--appointment-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-v1-appointments--appointment-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-v1-appointments--appointment-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-v1-appointments--appointment-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-v1-appointments--appointment-" data-method="PUT"
+      data-path="api/v1/appointments/{appointment}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-appointments--appointment-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-v1-appointments--appointment-"
+                    onclick="tryItOut('PUTapi-v1-appointments--appointment-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-v1-appointments--appointment-"
+                    onclick="cancelTryOut('PUTapi-v1-appointments--appointment-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-v1-appointments--appointment-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/v1/appointments/{appointment}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/appointments/{appointment}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>appointment</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="appointment"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la cita a actualizar. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>employee_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="employee_id"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="4"
+               data-component="body">
+    <br>
+<p>ID del nuevo colaborador o técnico de campo asignado. Example: <code>4</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="service_id"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="2"
+               data-component="body">
+    <br>
+<p>ID del nuevo servicio solicitado (o null para quitar). Example: <code>2</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>appointment_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="appointment_date"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="2026-11-18"
+               data-component="body">
+    <br>
+<p>Nueva fecha de la cita en formato AAAA-MM-DD. Example: <code>2026-11-18</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>appointment_time</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="appointment_time"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="14:00"
+               data-component="body">
+    <br>
+<p>Nueva hora de la cita en formato HH:MM (24h). Example: <code>14:00</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="confirmed"
+               data-component="body">
+    <br>
+<p>Nuevo estado de la cita (pending, confirmed, completed, cancelled, annulled). Example: <code>confirmed</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="notes"                data-endpoint="PUTapi-v1-appointments--appointment-"
+               value="Reprogramada a solicitud del cliente por viaje de negocios."
+               data-component="body">
+    <br>
+<p>Observaciones o motivo de la reprogramación. Example: <code>Reprogramada a solicitud del cliente por viaje de negocios.</code></p>
+        </div>
+        </form>
+
                     <h2 id="citas-y-agenda-POSTapi-v1-quotes--quote--appointments">Agendar cita desde una cotización.</h2>
 
 <p>
@@ -7482,13 +7806,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"search\": \"b\",
     \"category_type\": \"n\",
-    \"active\": false,
+    \"active\": true,
     \"min_price\": 84,
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"price\",
-    \"sort_direction\": \"asc\"
+    \"sort_by\": \"id\",
+    \"sort_direction\": \"desc\"
 }"
 </code></pre></div>
 
@@ -7521,13 +7845,13 @@ const headers = {
 let body = {
     "search": "b",
     "category_type": "n",
-    "active": false,
+    "active": true,
     "min_price": 84,
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "price",
-    "sort_direction": "asc"
+    "sort_by": "id",
+    "sort_direction": "desc"
 };
 
 fetch(url, {
@@ -7823,7 +8147,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_price</code></b>&nbsp;&nbsp;
@@ -7880,10 +8204,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="price"
+               value="id"
                data-component="body">
     <br>
-<p>Example: <code>price</code></p>
+<p>Example: <code>id</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -7894,10 +8218,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -8116,8 +8440,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/php0hsg4pqpsnj24wsTIRg" \
-    --form "image_url=@/tmp/phpm0av7coj3f6m7IkJCDv" </code></pre></div>
+    --form "image=@/tmp/phpj9ph97n6nn1u3RKEjS0" \
+    --form "image_url=@/tmp/php5gvu575eqtuk0fcSu3q" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8322,7 +8646,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/php0hsg4pqpsnj24wsTIRg</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpj9ph97n6nn1u3RKEjS0</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -8334,7 +8658,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpm0av7coj3f6m7IkJCDv</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/php5gvu575eqtuk0fcSu3q</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -8383,8 +8707,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@/tmp/phpmharrvp8bu9l83I8lxX" \
-    --form "image_url=@/tmp/phpudfjmic5kjmn6nqUppa" </code></pre></div>
+    --form "image=@/tmp/php8qt5aja3nt3tfq2sGN5" \
+    --form "image_url=@/tmp/php5omlqcb4cbru12p7xnm" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8633,7 +8957,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpmharrvp8bu9l83I8lxX</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/php8qt5aja3nt3tfq2sGN5</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -8645,7 +8969,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpudfjmic5kjmn6nqUppa</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/php5omlqcb4cbru12p7xnm</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
