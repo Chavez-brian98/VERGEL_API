@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\V1\AppointmentController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\PlantController;
@@ -35,5 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('plants/{id}', [PlantController::class, 'show']);
         Route::match(['put', 'patch', 'post'], 'plants/{id}', [PlantController::class, 'update']);
         Route::delete('plants/{id}', [PlantController::class, 'destroy']);
+
+        Route::post('appointments', [AppointmentController::class, 'store']);
     });
 });

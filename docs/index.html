@@ -230,6 +230,21 @@
                                                                     </ul>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-citas-y-agenda" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="citas-y-agenda">
+                    <a href="#citas-y-agenda">Citas y Agenda</a>
+                </li>
+                                    <ul id="tocify-subheader-citas-y-agenda" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="citas-y-agenda-escritura">
+                                <a href="#citas-y-agenda-escritura">Escritura</a>
+                            </li>
+                                                            <ul id="tocify-subheader-citas-y-agenda-escritura" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="citas-y-agenda-POSTapi-v1-appointments">
+                                            <a href="#citas-y-agenda-POSTapi-v1-appointments">Agendar cita manualmente.</a>
+                                        </li>
+                                                                    </ul>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-plantas" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="plantas">
                     <a href="#plantas">Plantas</a>
@@ -271,7 +286,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 14, 2026</li>
+        <li>Last updated: November 1, 2026</li>
     </ul>
 </div>
 
@@ -6663,6 +6678,442 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
+                <h1 id="citas-y-agenda">Citas y Agenda</h1>
+
+    <p>Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.</p>
+
+                        <h2 id="citas-y-agenda-escritura">Escritura</h2>
+                                                    <h2 id="citas-y-agenda-POSTapi-v1-appointments">Agendar cita manualmente.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permite agendar una nueva cita directamente desde el calendario sin necesidad de una cotización previa.
+Es ideal para clientes que llaman, ingresan por campañas publicitarias o requieren una inspección técnica inicial.
+Soporta tanto clientes registrados previamente como la creación automática de clientes no registrados.</p>
+
+<span id="example-requests-POSTapi-v1-appointments">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/appointments" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"customer_id\": 1,
+    \"customer\": {
+        \"legal_name\": \"Juan Carlos Pérez\",
+        \"phone\": \"7890-1234\",
+        \"address\": \"Residencial Cumbres de Cuscatlán, Pol. D #14\",
+        \"municipality\": \"Antiguo Cuscatlán\",
+        \"department\": \"La Libertad\",
+        \"email\": \"juan.perez@example.com\"
+    },
+    \"employee_id\": 2,
+    \"service_id\": 1,
+    \"appointment_date\": \"2026-11-15\",
+    \"appointment_time\": \"09:30\",
+    \"status\": \"pending\",
+    \"notes\": \"Cliente solicita inspección inicial para diseño de jardín frontal.\",
+    \"is_inspection\": true
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/appointments"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "customer_id": 1,
+    "customer": {
+        "legal_name": "Juan Carlos Pérez",
+        "phone": "7890-1234",
+        "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+        "municipality": "Antiguo Cuscatlán",
+        "department": "La Libertad",
+        "email": "juan.perez@example.com"
+    },
+    "employee_id": 2,
+    "service_id": 1,
+    "appointment_date": "2026-11-15",
+    "appointment_time": "09:30",
+    "status": "pending",
+    "notes": "Cliente solicita inspección inicial para diseño de jardín frontal.",
+    "is_inspection": true
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-appointments">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;customerId&quot;: 1,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Juan Carlos P&eacute;rez&quot;,
+            &quot;tradeName&quot;: null,
+            &quot;phone&quot;: &quot;7890-1234&quot;,
+            &quot;address&quot;: &quot;Residencial Cumbres de Cuscatl&aacute;n, Pol. D #14&quot;,
+            &quot;municipality&quot;: &quot;Antiguo Cuscatl&aacute;n&quot;,
+            &quot;department&quot;: &quot;La Libertad&quot;,
+            &quot;email&quot;: &quot;juan.perez@example.com&quot;
+        },
+        &quot;employeeId&quot;: 2,
+        &quot;employee&quot;: {
+            &quot;id&quot;: 2,
+            &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+        },
+        &quot;serviceId&quot;: 1,
+        &quot;service&quot;: {
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Poda y Mantenimiento de C&eacute;sped&quot;,
+            &quot;price&quot;: 45
+        },
+        &quot;quoteId&quot;: null,
+        &quot;appointmentDate&quot;: &quot;2026-11-15&quot;,
+        &quot;appointmentTime&quot;: &quot;09:30&quot;,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;origin&quot;: &quot;manual&quot;,
+        &quot;notes&quot;: &quot;Cliente solicita inspecci&oacute;n inicial para dise&ntilde;o de jard&iacute;n frontal.&quot;,
+        &quot;createdAt&quot;: &quot;2026-11-01T16:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-01T16:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.&quot;,
+    &quot;errors&quot;: {
+        &quot;customer_id&quot;: [
+            &quot;Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Error interno al agendar la cita&quot;,
+    &quot;codigo&quot;: 500
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-appointments" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-appointments"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-appointments"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-appointments" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-appointments">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-appointments" data-method="POST"
+      data-path="api/v1/appointments"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-appointments', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-appointments"
+                    onclick="tryItOut('POSTapi-v1-appointments');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-appointments"
+                    onclick="cancelTryOut('POSTapi-v1-appointments');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-appointments"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/appointments</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-appointments"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-appointments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-appointments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>customer_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="customer_id"                data-endpoint="POSTapi-v1-appointments"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del cliente existente en el sistema. Requerido si no se envía 'customer'. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>customer</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+<br>
+<p>Objeto con información del nuevo cliente. Requerido si no se envía 'customer_id'.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>legal_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="customer.legal_name"                data-endpoint="POSTapi-v1-appointments"
+               value="Juan Carlos Pérez"
+               data-component="body">
+    <br>
+<p>Nombre completo o razón social del cliente. Example: <code>Juan Carlos Pérez</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="customer.phone"                data-endpoint="POSTapi-v1-appointments"
+               value="7890-1234"
+               data-component="body">
+    <br>
+<p>Teléfono principal de contacto. Example: <code>7890-1234</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="customer.address"                data-endpoint="POSTapi-v1-appointments"
+               value="Residencial Cumbres de Cuscatlán, Pol. D #14"
+               data-component="body">
+    <br>
+<p>Dirección física de la propiedad o servicio. Example: <code>Residencial Cumbres de Cuscatlán, Pol. D #14</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>municipality</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="customer.municipality"                data-endpoint="POSTapi-v1-appointments"
+               value="Antiguo Cuscatlán"
+               data-component="body">
+    <br>
+<p>Municipio donde se ubica el cliente. Example: <code>Antiguo Cuscatlán</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>department</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="customer.department"                data-endpoint="POSTapi-v1-appointments"
+               value="La Libertad"
+               data-component="body">
+    <br>
+<p>Departamento donde se ubica el cliente. Example: <code>La Libertad</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="customer.email"                data-endpoint="POSTapi-v1-appointments"
+               value="juan.perez@example.com"
+               data-component="body">
+    <br>
+<p>Correo electrónico de contacto. Example: <code>juan.perez@example.com</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>employee_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="employee_id"                data-endpoint="POSTapi-v1-appointments"
+               value="2"
+               data-component="body">
+    <br>
+<p>ID del colaborador o técnico de campo asignado para atender la cita. Example: <code>2</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="service_id"                data-endpoint="POSTapi-v1-appointments"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del servicio de catálogo solicitado (opcional si es visita general). Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>appointment_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="appointment_date"                data-endpoint="POSTapi-v1-appointments"
+               value="2026-11-15"
+               data-component="body">
+    <br>
+<p>Fecha programada de la cita en formato AAAA-MM-DD. Example: <code>2026-11-15</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>appointment_time</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="appointment_time"                data-endpoint="POSTapi-v1-appointments"
+               value="09:30"
+               data-component="body">
+    <br>
+<p>Hora programada de la cita en formato HH:MM (24h). Example: <code>09:30</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="POSTapi-v1-appointments"
+               value="pending"
+               data-component="body">
+    <br>
+<p>Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'. Example: <code>pending</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="notes"                data-endpoint="POSTapi-v1-appointments"
+               value="Cliente solicita inspección inicial para diseño de jardín frontal."
+               data-component="body">
+    <br>
+<p>Observaciones o requerimientos especiales indicados por el cliente. Example: <code>Cliente solicita inspección inicial para diseño de jardín frontal.</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>is_inspection</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="POSTapi-v1-appointments" style="display: none">
+            <input type="radio" name="is_inspection"
+                   value="true"
+                   data-endpoint="POSTapi-v1-appointments"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-v1-appointments" style="display: none">
+            <input type="radio" name="is_inspection"
+                   value="false"
+                   data-endpoint="POSTapi-v1-appointments"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Si es verdadero, genera de forma automática una ficha de inspección inicial vinculada a la cita. Example: <code>true</code></p>
+        </div>
+        </form>
+
                 <h1 id="plantas">Plantas</h1>
 
     
@@ -6689,12 +7140,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"search\": \"b\",
     \"category_type\": \"n\",
-    \"active\": true,
+    \"active\": false,
     \"min_price\": 84,
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"created_at\",
+    \"sort_by\": \"price\",
     \"sort_direction\": \"desc\"
 }"
 </code></pre></div>
@@ -6728,12 +7179,12 @@ const headers = {
 let body = {
     "search": "b",
     "category_type": "n",
-    "active": true,
+    "active": false,
     "min_price": 84,
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "created_at",
+    "sort_by": "price",
     "sort_direction": "desc"
 };
 
@@ -7030,7 +7481,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_price</code></b>&nbsp;&nbsp;
@@ -7087,10 +7538,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="created_at"
+               value="price"
                data-component="body">
     <br>
-<p>Example: <code>created_at</code></p>
+<p>Example: <code>price</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -7323,8 +7774,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/phpigkm8n2c4qmhaMzNSI0" \
-    --form "image_url=@/tmp/phpd50pioivplfk4sdg1ow" </code></pre></div>
+    --form "image=@/tmp/phpkcab17dmm8dn8rWfFvg" \
+    --form "image_url=@/tmp/phpbaoh0ueskuec3xrBXfU" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -7529,7 +7980,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpigkm8n2c4qmhaMzNSI0</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpkcab17dmm8dn8rWfFvg</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -7541,7 +7992,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpd50pioivplfk4sdg1ow</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpbaoh0ueskuec3xrBXfU</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -7590,8 +8041,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@/tmp/phpf8le1cj6ke5p38ahVv3" \
-    --form "image_url=@/tmp/php0qbuma1t3j0ubhDUthe" </code></pre></div>
+    --form "image=@/tmp/phpuokch0nmbnmd8PtKUNA" \
+    --form "image_url=@/tmp/phpg6p141c4ls1taGIZhs3" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -7840,7 +8291,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpf8le1cj6ke5p38ahVv3</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpuokch0nmbnmd8PtKUNA</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -7852,7 +8303,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/php0qbuma1t3j0ubhDUthe</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpg6p141c4ls1taGIZhs3</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;

@@ -1,0 +1,299 @@
+name: 'Citas y Agenda'
+description: |-
+
+  Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/appointments
+    metadata:
+      custom: []
+      groupName: 'Citas y Agenda'
+      groupDescription: |-
+
+        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Agendar cita manualmente.'
+      description: |-
+        Permite agendar una nueva cita directamente desde el calendario sin necesidad de una cotización previa.
+        Es ideal para clientes que llaman, ingresan por campañas publicitarias o requieren una inspección técnica inicial.
+        Soporta tanto clientes registrados previamente como la creación automática de clientes no registrados.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      customer_id:
+        custom: []
+        name: customer_id
+        description: "ID del cliente existente en el sistema. Requerido si no se envía 'customer'."
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      customer:
+        custom: []
+        name: customer
+        description: "Objeto con información del nuevo cliente. Requerido si no se envía 'customer_id'."
+        required: false
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      customer.legal_name:
+        custom: []
+        name: customer.legal_name
+        description: 'Nombre completo o razón social del cliente.'
+        required: true
+        example: 'Juan Carlos Pérez'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      customer.phone:
+        custom: []
+        name: customer.phone
+        description: 'Teléfono principal de contacto.'
+        required: true
+        example: 7890-1234
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      customer.address:
+        custom: []
+        name: customer.address
+        description: 'Dirección física de la propiedad o servicio.'
+        required: true
+        example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      customer.municipality:
+        custom: []
+        name: customer.municipality
+        description: 'Municipio donde se ubica el cliente.'
+        required: true
+        example: 'Antiguo Cuscatlán'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      customer.department:
+        custom: []
+        name: customer.department
+        description: 'Departamento donde se ubica el cliente.'
+        required: false
+        example: 'La Libertad'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      customer.email:
+        custom: []
+        name: customer.email
+        description: 'Correo electrónico de contacto.'
+        required: false
+        example: juan.perez@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      employee_id:
+        custom: []
+        name: employee_id
+        description: 'ID del colaborador o técnico de campo asignado para atender la cita.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      service_id:
+        custom: []
+        name: service_id
+        description: 'ID del servicio de catálogo solicitado (opcional si es visita general).'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      appointment_date:
+        custom: []
+        name: appointment_date
+        description: 'Fecha programada de la cita en formato AAAA-MM-DD.'
+        required: true
+        example: '2026-11-15'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      appointment_time:
+        custom: []
+        name: appointment_time
+        description: 'Hora programada de la cita en formato HH:MM (24h).'
+        required: true
+        example: '09:30'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: "Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'."
+        required: false
+        example: pending
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      notes:
+        custom: []
+        name: notes
+        description: 'Observaciones o requerimientos especiales indicados por el cliente.'
+        required: false
+        example: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      is_inspection:
+        custom: []
+        name: is_inspection
+        description: 'Si es verdadero, genera de forma automática una ficha de inspección inicial vinculada a la cita.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      customer_id: 1
+      customer:
+        legal_name: 'Juan Carlos Pérez'
+        phone: 7890-1234
+        address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+        municipality: 'Antiguo Cuscatlán'
+        department: 'La Libertad'
+        email: juan.perez@example.com
+      employee_id: 2
+      service_id: 1
+      appointment_date: '2026-11-15'
+      appointment_time: '09:30'
+      status: pending
+      notes: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+      is_inspection: true
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "customerId": 1,
+              "customer": {
+                "id": 1,
+                "legalName": "Juan Carlos Pérez",
+                "tradeName": null,
+                "phone": "7890-1234",
+                "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+                "municipality": "Antiguo Cuscatlán",
+                "department": "La Libertad",
+                "email": "juan.perez@example.com"
+              },
+              "employeeId": 2,
+              "employee": {
+                "id": 2,
+                "fullName": "Carlos Mendoza"
+              },
+              "serviceId": 1,
+              "service": {
+                "id": 1,
+                "name": "Poda y Mantenimiento de Césped",
+                "price": 45.0
+              },
+              "quoteId": null,
+              "appointmentDate": "2026-11-15",
+              "appointmentTime": "09:30",
+              "status": "pending",
+              "origin": "manual",
+              "notes": "Cliente solicita inspección inicial para diseño de jardín frontal.",
+              "createdAt": "2026-11-01T16:00:00+00:00",
+              "updatedAt": "2026-11-01T16:00:00+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.",
+            "errors": {
+              "customer_id": [
+                "Debe indicar un cliente existente o proporcionar los datos del nuevo cliente."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al agendar la cita",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

@@ -1,0 +1,330 @@
+<?php
+
+namespace Tests\Feature\Appointments;
+
+use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\Inspection;
+use App\Models\Role;
+use App\Models\Service;
+use App\Models\User;
+use Database\Seeders\RoleSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class AppointmentCreateTest extends TestCase
+{
+    use RefreshDatabase;
+
+    private User $adminUser;
+
+    private User $receptionistUser;
+
+    private User $auditorUser;
+
+    private Employee $technician;
+
+    private Service $service;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(RoleSeeder::class);
+
+        $adminRole = Role::where('role_name', 'Administrador')->firstOrFail();
+        $receptionistRole = Role::where('role_name', 'Recepcionista')->firstOrFail();
+        $auditorRole = Role::where('role_name', 'Auditor')->firstOrFail();
+        $techRole = Role::where('role_name', 'Tecnico de campo')->firstOrFail();
+
+        $adminEmp = Employee::create([
+            'full_name' => 'Admin Usuario',
+            'role_id' => $adminRole->id,
+            'active' => true,
+        ]);
+        $this->adminUser = User::factory()->create(['employee_id' => $adminEmp->id]);
+
+        $recepEmp = Employee::create([
+            'full_name' => 'Recepcionista Usuario',
+            'role_id' => $receptionistRole->id,
+            'active' => true,
+        ]);
+        $this->receptionistUser = User::factory()->create(['employee_id' => $recepEmp->id]);
+
+        $auditEmp = Employee::create([
+            'full_name' => 'Auditor Usuario',
+            'role_id' => $auditorRole->id,
+            'active' => true,
+        ]);
+        $this->auditorUser = User::factory()->create(['employee_id' => $auditEmp->id]);
+
+        $this->technician = Employee::create([
+            'full_name' => 'Técnico de Campo Asignado',
+            'role_id' => $techRole->id,
+            'active' => true,
+        ]);
+
+        $this->service = Service::create([
+            'name' => 'Poda de Formación y Césped',
+            'price' => 50.00,
+            'unit_of_measure' => 'm2',
+        ]);
+    }
+
+    public function test_admin_can_schedule_appointment_with_existing_customer(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Mario Bros Residencial',
+            'phone' => '7000-1111',
+            'address' => 'Avenida El Espino #45',
+            'municipality' => 'Antiguo Cuscatlán',
+            'department' => 'La Libertad',
+            'status' => 'active',
+        ]);
+
+        $payload = [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'service_id' => $this->service->id,
+            'appointment_date' => '2026-11-20',
+            'appointment_time' => '10:00',
+            'status' => 'confirmed',
+            'notes' => 'Cita manual agendada por administración',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payload);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.customerId', $customer->id)
+            ->assertJsonPath('data.employeeId', $this->technician->id)
+            ->assertJsonPath('data.serviceId', $this->service->id)
+            ->assertJsonPath('data.status', 'confirmed')
+            ->assertJsonPath('data.origin', 'manual')
+            ->assertJsonPath('data.quoteId', null)
+            ->assertJsonPath('data.notes', 'Cita manual agendada por administración');
+
+        $this->assertDatabaseHas('appointments', [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'service_id' => $this->service->id,
+            'status' => 'confirmed',
+            'origin' => 'manual',
+            'quote_id' => null,
+        ]);
+
+        $this->assertDatabaseHas('audit_log', [
+            'affected_table' => 'appointments',
+            'action' => 'insert',
+        ]);
+    }
+
+    public function test_receptionist_can_schedule_appointment_with_new_unregistered_customer(): void
+    {
+        $this->actingAs($this->receptionistUser, 'sanctum');
+
+        $payload = [
+            'customer' => [
+                'legal_name' => 'Ana Beatriz Martínez',
+                'phone' => '7890-5555',
+                'address' => 'Colonia San Benito, Pasaje 3 #12',
+                'municipality' => 'San Salvador Centro',
+                'department' => 'San Salvador',
+                'email' => 'ana.martinez@example.com',
+            ],
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-11-25',
+            'appointment_time' => '14:30',
+            'notes' => 'Cliente llegó por anuncio de Facebook',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payload);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.customer.legalName', 'Ana Beatriz Martínez')
+            ->assertJsonPath('data.customer.phone', '7890-5555')
+            ->assertJsonPath('data.status', 'pending')
+            ->assertJsonPath('data.origin', 'manual')
+            ->assertJsonPath('data.quoteId', null);
+
+        // Verifica que se creó el cliente
+        $this->assertDatabaseHas('customers', [
+            'legal_name' => 'Ana Beatriz Martínez',
+            'phone' => '7890-5555',
+        ]);
+
+        $createdCustomer = Customer::where('phone', '7890-5555')->firstOrFail();
+
+        // Verifica que CustomerService inicializó billetera y puntos de lealtad
+        $this->assertDatabaseHas('wallets', [
+            'customer_id' => $createdCustomer->id,
+            'cash_balance' => 0.00,
+        ]);
+        $this->assertDatabaseHas('loyalty_points', [
+            'customer_id' => $createdCustomer->id,
+            'points_balance' => 0,
+        ]);
+
+        // Verifica que la cita tiene asignado el customer_id recién creado
+        $this->assertDatabaseHas('appointments', [
+            'customer_id' => $createdCustomer->id,
+            'employee_id' => $this->technician->id,
+            'origin' => 'manual',
+            'status' => 'pending',
+        ]);
+    }
+
+    public function test_can_schedule_appointment_with_inspection_flag_creates_inspection_record(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Corporación Verde SA de CV',
+            'phone' => '7222-3333',
+            'address' => 'Boulevard Los Próceres #10',
+            'municipality' => 'San Salvador',
+            'status' => 'active',
+        ]);
+
+        $payload = [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-11-28',
+            'appointment_time' => '08:30',
+            'is_inspection' => true,
+            'notes' => 'Inspección fitosanitaria de palmeras',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payload);
+
+        $response->assertCreated();
+
+        $appointmentId = $response->json('data.id');
+
+        $inspection = Inspection::where('appointment_id', $appointmentId)->firstOrFail();
+        $this->assertEquals($customer->id, $inspection->customer_id);
+        $this->assertEquals($this->technician->id, $inspection->employee_id);
+        $this->assertEquals('2026-11-28', $inspection->inspection_date->format('Y-m-d'));
+        $this->assertEquals('Inspección fitosanitaria de palmeras', $inspection->findings);
+    }
+
+    public function test_can_schedule_appointment_with_cancelled_or_annulled_status(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Cliente de Prueba Estados',
+            'phone' => '7333-4444',
+            'address' => 'Santa Elena, Calle Conchagua',
+            'municipality' => 'Antiguo Cuscatlán',
+            'status' => 'active',
+        ]);
+
+        $payloadCancelled = [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-11-22',
+            'appointment_time' => '09:00',
+            'status' => 'cancelled',
+            'notes' => 'Cita cancelada a petición de cliente',
+        ];
+
+        $responseCancelled = $this->postJson('/api/v1/appointments', $payloadCancelled);
+        $responseCancelled->assertCreated()
+            ->assertJsonPath('data.status', 'cancelled');
+
+        $payloadAnnulled = [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-11-23',
+            'appointment_time' => '11:00',
+            'status' => 'annulled',
+            'notes' => 'Cita anulada por error de horario',
+        ];
+
+        $responseAnnulled = $this->postJson('/api/v1/appointments', $payloadAnnulled);
+        $responseAnnulled->assertCreated()
+            ->assertJsonPath('data.status', 'annulled');
+    }
+
+    public function test_unauthorized_roles_are_forbidden_with_403(): void
+    {
+        $this->actingAs($this->auditorUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Cliente Bloqueado',
+            'phone' => '7999-8888',
+            'address' => 'Calle Principal #1',
+            'municipality' => 'San Salvador',
+            'status' => 'active',
+        ]);
+
+        $payload = [
+            'customer_id' => $customer->id,
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-11-20',
+            'appointment_time' => '10:00',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payload);
+        $response->assertForbidden();
+    }
+
+    public function test_validation_fails_when_neither_customer_nor_customer_id_provided(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $payload = [
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-11-20',
+            'appointment_time' => '10:00',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payload);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['customer_id', 'customer']);
+    }
+
+    public function test_validation_fails_when_both_customer_id_and_customer_provided(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $customer = Customer::create([
+            'legal_name' => 'Cliente Conflicto',
+            'phone' => '7555-6666',
+            'address' => 'Calle El Mirador #1',
+            'municipality' => 'San Salvador',
+            'status' => 'active',
+        ]);
+
+        $payload = [
+            'customer_id' => $customer->id,
+            'customer' => [
+                'legal_name' => 'Otro Cliente',
+                'phone' => '7666-7777',
+                'address' => 'Otra Dirección',
+                'municipality' => 'San Salvador',
+            ],
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-11-20',
+            'appointment_time' => '10:00',
+        ];
+
+        $response = $this->postJson('/api/v1/appointments', $payload);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['customer_id', 'customer']);
+    }
+
+    public function test_validation_fails_for_missing_required_fields(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $response = $this->postJson('/api/v1/appointments', []);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['employee_id', 'appointment_date', 'appointment_time']);
+    }
+}

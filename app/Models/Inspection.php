@@ -18,6 +18,13 @@ class Inspection extends Model
         'findings',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'inspection_date' => 'date',
+        ];
+    }
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

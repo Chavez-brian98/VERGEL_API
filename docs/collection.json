@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "e47fee5f-08fe-417a-b4cc-9406179d1777",
+        "_postman_id": "46a6da28-8ab4-465e-97a5-55ef1c82296a",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1559,6 +1559,71 @@
             ]
         },
         {
+            "name": "Citas y Agenda",
+            "description": "\nEndpoints para la gesti\u00f3n y agendamiento de citas, visitas t\u00e9cnicas e inspecciones operativas.",
+            "item": [
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Agendar cita manualmente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":1,\"customer\":{\"legal_name\":\"Juan Carlos P\u00e9rez\",\"phone\":\"7890-1234\",\"address\":\"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\"municipality\":\"Antiguo Cuscatl\u00e1n\",\"department\":\"La Libertad\",\"email\":\"juan.perez@example.com\"},\"employee_id\":2,\"service_id\":1,\"appointment_date\":\"2026-11-15\",\"appointment_time\":\"09:30\",\"status\":\"pending\",\"notes\":\"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\"is_inspection\":true}"
+                                },
+                                "description": "Permite agendar una nueva cita directamente desde el calendario sin necesidad de una cotizaci\u00f3n previa.\nEs ideal para clientes que llaman, ingresan por campa\u00f1as publicitarias o requieren una inspecci\u00f3n t\u00e9cnica inicial.\nSoporta tanto clientes registrados previamente como la creaci\u00f3n autom\u00e1tica de clientes no registrados."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 2,\n    \"employee\": {\n      \"id\": 2,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-15\",\n    \"appointmentTime\": \"09:30\",\n    \"status\": \"pending\",\n    \"origin\": \"manual\",\n    \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.\",\n  \"errors\": {\n    \"customer_id\": [\n      \"Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al agendar la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Plantas",
             "description": "",
             "item": [
@@ -1643,7 +1708,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
