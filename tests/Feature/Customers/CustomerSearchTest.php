@@ -3,12 +3,37 @@
 namespace Tests\Feature\Customers;
 
 use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\Role;
+use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CustomerSearchTest extends TestCase
 {
     use RefreshDatabase;
+
+    private User $adminUser;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(RoleSeeder::class);
+
+        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
+
+        $adminEmployee = Employee::create([
+            'full_name' => 'Admin Test',
+            'role_id' => $adminRole->id,
+            'active' => true,
+        ]);
+
+        $this->adminUser = User::factory()->create([
+            'employee_id' => $adminEmployee->id,
+        ]);
+    }
 
     public function test_it_returns_all_customers_without_filters(): void
     {
@@ -21,7 +46,8 @@ class CustomerSearchTest extends TestCase
             ]);
         }
 
-        $response = $this->getJson('/api/v1/customers?limit=21');
+        $response = $this->actingAs($this->adminUser, 'sanctum')
+            ->getJson('/api/v1/customers?limit=21');
 
         $response->assertOk()
             ->assertJsonCount(21, 'data');
@@ -42,7 +68,8 @@ class CustomerSearchTest extends TestCase
             'phone' => '2222-2201',
         ]);
 
-        $response = $this->getJson('/api/v1/customers?search=Encontrado');
+        $response = $this->actingAs($this->adminUser, 'sanctum')
+            ->getJson('/api/v1/customers?search=Encontrado');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
@@ -68,7 +95,8 @@ class CustomerSearchTest extends TestCase
         $customerInRange->forceFill(['created_at' => '2026-09-15 23:59:59'])->save();
         $customerOutsideRange->forceFill(['created_at' => '2026-09-16 00:00:00'])->save();
 
-        $response = $this->getJson('/api/v1/customers?desde=2026-09-15&hasta=2026-09-15');
+        $response = $this->actingAs($this->adminUser, 'sanctum')
+            ->getJson('/api/v1/customers?desde=2026-09-15&hasta=2026-09-15');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')

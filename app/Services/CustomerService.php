@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AuditLog;
 use App\Models\Customer;
+use App\Models\Employee;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -174,14 +175,15 @@ class CustomerService
      */
     private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData)
     {
-        $employee = \App\Models\Employee::first();
-        if (!$employee) {
+        // La bitácora referencia al empleado (employees.id), no al usuario de autenticación.
+        $employeeId = request()->user()?->employee_id ?? Employee::first()?->id;
+
+        if (! $employeeId) {
             return;
         }
-        $fallbackEmployeeId = $employee->id;
 
         AuditLog::create([
-            'employee_id' => auth()->id() ?? $fallbackEmployeeId,
+            'employee_id' => $employeeId,
             'affected_table' => $table,
             'affected_record_id' => $recordId,
             'action' => $action,

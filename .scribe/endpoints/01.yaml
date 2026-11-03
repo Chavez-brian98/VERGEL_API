@@ -96,8 +96,82 @@ endpoints:
       desde: architecto
       hasta: architecto
       limit: 15
-    bodyParameters: []
-    cleanBodyParameters: []
+    bodyParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: ''
+        required: false
+        example: active
+        type: string
+        enumValues:
+          - active
+          - inactive
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: ngzmiyvdljnikhwa
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+        required: false
+        example: '2026-11-02'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      hasta:
+        custom: []
+        name: hasta
+        description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
+        required: false
+        example: '2052-11-25'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      search: b
+      status: active
+      phone: ngzmiyvdljnikhwa
+      desde: '2026-11-02'
+      hasta: '2052-11-25'
+      limit: 22
     fileParameters: []
     responses:
       -
@@ -135,6 +209,24 @@ endpoints:
               "to": 1,
               "total": 1
             }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
           }
         headers: []
         description: ''
@@ -361,6 +453,24 @@ endpoints:
         description: ''
       -
         custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 422
         content: |-
           {
@@ -471,10 +581,29 @@ endpoints:
         description: ''
       -
         custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 404
         content: |-
           {
-            "message": "No query results for model [App\\Models\\Customer]"
+            "message": "Cliente no encontrado",
+            "codigo": 404
           }
         headers: []
         description: ''
@@ -698,6 +827,24 @@ endpoints:
         description: ''
       -
         custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 422
         content: |-
           {
@@ -773,6 +920,24 @@ endpoints:
         content: ''
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
@@ -843,6 +1008,24 @@ endpoints:
               "status": "inactive",
               "createdAt": "2026-09-23T06:00:00+00:00"
             }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
           }
         headers: []
         description: ''
@@ -929,10 +1112,29 @@ endpoints:
         description: ''
       -
         custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 404
         content: |-
           {
-            "message": "No query results for model [App\\Models\\Customer]"
+            "message": "Cliente no encontrado",
+            "codigo": 404
           }
         headers: []
         description: ''

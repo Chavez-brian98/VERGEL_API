@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\V1\AppointmentController;
+use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
+use App\Http\Controllers\Api\V1\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas públicas
@@ -30,6 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('employees/{employee}/status', [EmployeeController::class, 'updateStatus']);
 
         Route::apiResource('roles', RoleController::class);
+
+        Route::apiResource('country-configs', CountryConfigController::class);
+
+        Route::apiResource('suppliers', SupplierController::class);
+        Route::patch('suppliers/{supplier}/status', [SupplierController::class, 'updateStatus']);
 
         Route::get('plants', [PlantController::class, 'index']);
         Route::post('plants', [PlantController::class, 'store']);

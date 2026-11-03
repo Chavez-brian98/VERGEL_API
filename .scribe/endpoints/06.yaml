@@ -1,422 +1,23 @@
-name: 'Citas y Agenda'
+name: Proveedores
 description: |-
 
-  Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
+  APIs para la gestión de proveedores, compras y suministros de El Vergel.
 endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/appointments
-    metadata:
-      custom: []
-      groupName: 'Citas y Agenda'
-      groupDescription: |-
-
-        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
-      subgroup: Consultas
-      subgroupDescription: ''
-      title: 'Listar y consultar agenda de citas.'
-      description: |-
-        Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),
-        filtrado por estado, cliente, técnico asignado y paginación o listado completo para el calendario.
-
-        Los técnicos de campo únicamente pueden visualizar las citas asignadas a su persona.
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      start_date:
-        custom: []
-        name: start_date
-        description: 'Fecha inicial para filtrar rango (AAAA-MM-DD).'
-        required: false
-        example: '2026-11-01'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      end_date:
-        custom: []
-        name: end_date
-        description: 'Fecha final para filtrar rango (AAAA-MM-DD).'
-        required: false
-        example: '2026-11-30'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      date:
-        custom: []
-        name: date
-        description: 'Fecha puntual para vista diaria (AAAA-MM-DD).'
-        required: false
-        example: '2026-11-15'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: 'Estado de la cita (pending, confirmed, completed, cancelled, annulled).'
-        required: false
-        example: pending
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      client_id:
-        custom: []
-        name: client_id
-        description: 'ID del cliente a filtrar.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      customer_id:
-        custom: []
-        name: customer_id
-        description: 'ID del cliente (alias directo).'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'ID del técnico asignado a filtrar.'
-        required: false
-        example: 4
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      service_id:
-        custom: []
-        name: service_id
-        description: 'ID del servicio a filtrar.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sort_by:
-        custom: []
-        name: sort_by
-        description: "Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'."
-        required: false
-        example: appointment_date
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sort_direction:
-        custom: []
-        name: sort_direction
-        description: "Dirección de ordenamiento (asc o desc). Por defecto 'asc'."
-        required: false
-        example: asc
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Cantidad de citas por página (1-100). Por defecto 15.'
-        required: false
-        example: 15
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      all:
-        custom: []
-        name: all
-        description: 'Si es verdadero, devuelve la lista completa sin paginar para la cuadrícula mensual.'
-        required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      start_date: '2026-11-01'
-      end_date: '2026-11-30'
-      date: '2026-11-15'
-      status: pending
-      client_id: 1
-      customer_id: 1
-      employee_id: 4
-      service_id: 1
-      sort_by: appointment_date
-      sort_direction: asc
-      per_page: 15
-      all: false
-    bodyParameters:
-      start_date:
-        custom: []
-        name: start_date
-        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-        required: false
-        example: '2026-11-03'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      end_date:
-        custom: []
-        name: end_date
-        description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-        required: false
-        example: '2052-11-26'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      date:
-        custom: []
-        name: date
-        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-        required: false
-        example: '2026-11-03'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: confirmed
-        type: string
-        enumValues:
-          - pending
-          - confirmed
-          - completed
-          - cancelled
-          - annulled
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      customer_id:
-        custom: []
-        name: customer_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      client_id:
-        custom: []
-        name: client_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      service_id:
-        custom: []
-        name: service_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      sort_by:
-        custom: []
-        name: sort_by
-        description: ''
-        required: false
-        example: status
-        type: string
-        enumValues:
-          - id
-          - appointment_date
-          - appointment_time
-          - status
-          - created_at
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      sort_direction:
-        custom: []
-        name: sort_direction
-        description: ''
-        required: false
-        example: desc
-        type: string
-        enumValues:
-          - asc
-          - desc
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 22
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      limit:
-        custom: []
-        name: limit
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 7
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      all:
-        custom: []
-        name: all
-        description: ''
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      start_date: '2026-11-03'
-      end_date: '2052-11-26'
-      date: '2026-11-03'
-      status: confirmed
-      customer_id: 16
-      client_id: 16
-      employee_id: 16
-      service_id: 16
-      sort_by: status
-      sort_direction: desc
-      per_page: 22
-      limit: 7
-      all: true
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "customerId": 1,
-                "customer": {
-                  "id": 1,
-                  "legalName": "Juan Carlos Pérez",
-                  "tradeName": null,
-                  "phone": "7890-1234",
-                  "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
-                  "municipality": "Antiguo Cuscatlán",
-                  "department": "La Libertad",
-                  "email": "juan.perez@example.com"
-                },
-                "employeeId": 4,
-                "employee": {
-                  "id": 4,
-                  "fullName": "Carlos Mendoza"
-                },
-                "serviceId": 1,
-                "service": {
-                  "id": 1,
-                  "name": "Poda y Mantenimiento de Césped",
-                  "price": 45.0
-                },
-                "quoteId": null,
-                "appointmentDate": "2026-11-15",
-                "appointmentTime": "09:30",
-                "status": "pending",
-                "origin": "manual",
-                "notes": "Cliente solicita inspección inicial para diseño de jardín frontal.",
-                "createdAt": "2026-11-01T16:00:00+00:00",
-                "updatedAt": "2026-11-01T16:00:00+00:00"
-              }
-            ]
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
       - POST
-    uri: api/v1/appointments
+    uri: api/v1/suppliers
     metadata:
       custom: []
-      groupName: 'Citas y Agenda'
+      groupName: Proveedores
       groupDescription: |-
 
-        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
-      subgroup: Escritura
+        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      subgroup: Gestión
       subgroupDescription: ''
-      title: 'Agendar cita manualmente.'
-      description: |-
-        Permite agendar una nueva cita directamente desde el calendario sin necesidad de una cotización previa.
-        Es ideal para clientes que llaman, ingresan por campañas publicitarias o requieren una inspección técnica inicial.
-        Soporta tanto clientes registrados previamente como la creación automática de clientes no registrados.
+      title: 'Registrar un nuevo proveedor.'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -428,382 +29,153 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      customer_id:
+      name:
         custom: []
-        name: customer_id
-        description: "ID del cliente existente en el sistema. Requerido si no se envía 'customer'."
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      customer:
-        custom: []
-        name: customer
-        description: "Objeto con información del nuevo cliente. Requerido si no se envía 'customer_id'."
-        required: false
-        example: []
-        type: object
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      customer.legal_name:
-        custom: []
-        name: customer.legal_name
-        description: 'Nombre completo o razón social del cliente.'
+        name: name
+        description: 'Razón social o nombre del proveedor.'
         required: true
-        example: 'Juan Carlos Pérez'
+        example: 'Distribuidora Verde S.A. de C.V.'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      customer.phone:
+      trade_name:
         custom: []
-        name: customer.phone
+        name: trade_name
+        description: 'Nombre comercial del proveedor.'
+        required: false
+        example: 'Vivero El Roble'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      tax_id:
+        custom: []
+        name: tax_id
+        description: 'NIT o DUI del proveedor.'
+        required: false
+        example: 0614-010190-101-1
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      nrc:
+        custom: []
+        name: nrc
+        description: 'Número de Registro de Contribuyente (NRC).'
+        required: false
+        example: 123456-7
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      economic_activity:
+        custom: []
+        name: economic_activity
+        description: 'Giro comercial.'
+        required: false
+        example: 'Venta de plantas y abonos'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
         description: 'Teléfono principal de contacto.'
         required: true
-        example: 7890-1234
+        example: '22223333'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      customer.address:
+      email:
         custom: []
-        name: customer.address
-        description: 'Dirección física de la propiedad o servicio.'
-        required: true
-        example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      customer.municipality:
-        custom: []
-        name: customer.municipality
-        description: 'Municipio donde se ubica el cliente.'
-        required: true
-        example: 'Antiguo Cuscatlán'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      customer.department:
-        custom: []
-        name: customer.department
-        description: 'Departamento donde se ubica el cliente.'
+        name: email
+        description: 'Correo electrónico.'
         required: false
-        example: 'La Libertad'
+        example: ventas@elroble.com
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      customer.email:
+      address:
         custom: []
-        name: customer.email
-        description: 'Correo electrónico de contacto.'
+        name: address
+        description: 'Dirección física.'
         required: false
-        example: juan.perez@example.com
+        example: 'Calle Principal #123, San Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      employee_id:
+      contact_name:
         custom: []
-        name: employee_id
-        description: 'ID del colaborador o técnico de campo asignado para atender la cita.'
-        required: true
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      service_id:
-        custom: []
-        name: service_id
-        description: 'ID del servicio de catálogo solicitado (opcional si es visita general).'
+        name: contact_name
+        description: 'Nombre del contacto / vendedor.'
         required: false
-        example: 1
-        type: integer
+        example: 'Carlos Henríquez'
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      appointment_date:
+      contact_phone:
         custom: []
-        name: appointment_date
-        description: 'Fecha programada de la cita en formato AAAA-MM-DD.'
-        required: true
-        example: '2026-11-15'
+        name: contact_phone
+        description: 'Teléfono del contacto.'
+        required: false
+        example: '77778888'
         type: string
         enumValues: []
         exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      appointment_time:
-        custom: []
-        name: appointment_time
-        description: 'Hora programada de la cita en formato HH:MM (24h).'
-        required: true
-        example: '09:30'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
+        nullable: true
         deprecated: false
       status:
         custom: []
         name: status
-        description: "Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'."
+        description: 'Estado inicial (`active` o `inactive`). Default: active.'
         required: false
-        example: pending
+        example: active
         type: string
         enumValues: []
         exampleWasSpecified: true
-        nullable: false
+        nullable: true
         deprecated: false
       notes:
         custom: []
         name: notes
-        description: 'Observaciones o requerimientos especiales indicados por el cliente.'
+        description: 'Notas u observaciones.'
         required: false
-        example: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+        example: 'Proveedor mayorista de tierra y sustratos'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      is_inspection:
-        custom: []
-        name: is_inspection
-        description: 'Si es verdadero, genera de forma automática una ficha de inspección inicial vinculada a la cita.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
     cleanBodyParameters:
-      customer_id: 1
-      customer:
-        legal_name: 'Juan Carlos Pérez'
-        phone: 7890-1234
-        address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
-        municipality: 'Antiguo Cuscatlán'
-        department: 'La Libertad'
-        email: juan.perez@example.com
-      employee_id: 2
-      service_id: 1
-      appointment_date: '2026-11-15'
-      appointment_time: '09:30'
-      status: pending
-      notes: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
-      is_inspection: true
+      name: 'Distribuidora Verde S.A. de C.V.'
+      trade_name: 'Vivero El Roble'
+      tax_id: 0614-010190-101-1
+      nrc: 123456-7
+      economic_activity: 'Venta de plantas y abonos'
+      phone: '22223333'
+      email: ventas@elroble.com
+      address: 'Calle Principal #123, San Salvador'
+      contact_name: 'Carlos Henríquez'
+      contact_phone: '77778888'
+      status: active
+      notes: 'Proveedor mayorista de tierra y sustratos'
     fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 201
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "customerId": 1,
-              "customer": {
-                "id": 1,
-                "legalName": "Juan Carlos Pérez",
-                "tradeName": null,
-                "phone": "7890-1234",
-                "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
-                "municipality": "Antiguo Cuscatlán",
-                "department": "La Libertad",
-                "email": "juan.perez@example.com"
-              },
-              "employeeId": 2,
-              "employee": {
-                "id": 2,
-                "fullName": "Carlos Mendoza"
-              },
-              "serviceId": 1,
-              "service": {
-                "id": 1,
-                "name": "Poda y Mantenimiento de Césped",
-                "price": 45.0
-              },
-              "quoteId": null,
-              "appointmentDate": "2026-11-15",
-              "appointmentTime": "09:30",
-              "status": "pending",
-              "origin": "manual",
-              "notes": "Cliente solicita inspección inicial para diseño de jardín frontal.",
-              "createdAt": "2026-11-01T16:00:00+00:00",
-              "updatedAt": "2026-11-01T16:00:00+00:00"
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 403
-        content: |-
-          {
-            "message": "This action is unauthorized."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 422
-        content: |-
-          {
-            "message": "Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.",
-            "errors": {
-              "customer_id": [
-                "Debe indicar un cliente existente o proporcionar los datos del nuevo cliente."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al agendar la cita",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/appointments/{appointment}'
-    metadata:
-      custom: []
-      groupName: 'Citas y Agenda'
-      groupDescription: |-
-
-        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
-      subgroup: Consultas
-      subgroupDescription: ''
-      title: 'Obtener el detalle de una cita.'
-      description: 'Devuelve la información completa de una cita individual mediante su identificador único (ID).'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      appointment:
-        custom: []
-        name: appointment
-        description: 'ID de la cita.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      appointment: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "customerId": 1,
-              "customer": {
-                "id": 1,
-                "legalName": "Juan Carlos Pérez",
-                "tradeName": null,
-                "phone": "7890-1234",
-                "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
-                "municipality": "Antiguo Cuscatlán",
-                "department": "La Libertad",
-                "email": "juan.perez@example.com"
-              },
-              "employeeId": 4,
-              "employee": {
-                "id": 4,
-                "fullName": "Carlos Mendoza"
-              },
-              "serviceId": 1,
-              "service": {
-                "id": 1,
-                "name": "Poda y Mantenimiento de Césped",
-                "price": 45.0
-              },
-              "quoteId": null,
-              "appointmentDate": "2026-11-15",
-              "appointmentTime": "09:30",
-              "status": "pending",
-              "origin": "manual",
-              "notes": "Cliente solicita inspección inicial para diseño de jardín frontal.",
-              "createdAt": "2026-11-01T16:00:00+00:00",
-              "updatedAt": "2026-11-01T16:00:00+00:00"
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 403
-        content: |-
-          {
-            "message": "This action is unauthorized."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Cita no encontrada",
-            "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al obtener la cita",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
+    responses: []
     responseFields: []
     auth:
       - headers
@@ -817,26 +189,17 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/v1/appointments/{appointment}'
+    uri: 'api/v1/suppliers/{id}'
     metadata:
       custom: []
-      groupName: 'Citas y Agenda'
+      groupName: Proveedores
       groupDescription: |-
 
-        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
-      subgroup: Escritura
+        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      subgroup: Gestión
       subgroupDescription: ''
-      title: 'Actualizar o reprogramar una cita.'
-      description: |-
-        Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el técnico de campo,
-        actualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.
-
-        Si se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),
-        excluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.
-
-        Si el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programación
-        automática del siguiente mantenimiento según la frecuencia configurada del cliente o de su plan. Si la fecha ideal
-        no tiene disponibilidad por colisión con otra cita, devuelve 'suggestedRescheduleDates' con las fechas más cercanas.
+      title: 'Actualizar información de un proveedor.'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -844,181 +207,171 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      appointment:
+      id:
         custom: []
-        name: appointment
-        description: 'ID de la cita a actualizar.'
+        name: id
+        description: 'The ID of the supplier.'
         required: true
-        example: 1
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      appointment: 1
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      employee_id:
+      name:
         custom: []
-        name: employee_id
-        description: 'ID del nuevo colaborador o técnico de campo asignado.'
+        name: name
+        description: 'Must not be greater than 150 characters.'
         required: false
-        example: 4
-        type: integer
+        example: b
+        type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
-      service_id:
+      trade_name:
         custom: []
-        name: service_id
-        description: 'ID del nuevo servicio solicitado (o null para quitar).'
+        name: trade_name
+        description: 'Must not be greater than 150 characters.'
         required: false
-        example: 2
-        type: integer
+        example: 'n'
+        type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: true
         deprecated: false
-      appointment_date:
+      tax_id:
         custom: []
-        name: appointment_date
-        description: 'Nueva fecha de la cita en formato AAAA-MM-DD.'
+        name: tax_id
+        description: 'Must not be greater than 20 characters.'
         required: false
-        example: '2026-11-18'
+        example: gzmiyvdljnikhway
         type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      nrc:
+        custom: []
+        name: nrc
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: kcmyuwpwlvqwrsit
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      economic_activity:
+        custom: []
+        name: economic_activity
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: c
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: pscqldzsnrwtujwv
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
-      appointment_time:
+      email:
         custom: []
-        name: appointment_time
-        description: 'Nueva hora de la cita en formato HH:MM (24h).'
+        name: email
+        description: 'Must be a valid email address. Must not be greater than 120 characters.'
         required: false
-        example: '14:00'
+        example: jhaag@example.net
         type: string
         enumValues: []
-        exampleWasSpecified: true
-        nullable: false
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: l
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact_name:
+        custom: []
+        name: contact_name
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: q
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact_phone:
+        custom: []
+        name: contact_phone
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: ppwqbewtnnoqitpx
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
         deprecated: false
       status:
         custom: []
         name: status
-        description: 'Nuevo estado de la cita (pending, confirmed, completed, cancelled, annulled).'
+        description: ''
         required: false
-        example: confirmed
+        example: active
         type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
+        enumValues:
+          - active
+          - inactive
+        exampleWasSpecified: false
+        nullable: true
         deprecated: false
       notes:
         custom: []
         name: notes
-        description: 'Observaciones o motivo de la reprogramación.'
+        description: ''
         required: false
-        example: 'Reprogramada a solicitud del cliente por viaje de negocios.'
+        example: architecto
         type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      employee_id: 4
-      service_id: 2
-      appointment_date: '2026-11-18'
-      appointment_time: '14:00'
-      status: confirmed
-      notes: 'Reprogramada a solicitud del cliente por viaje de negocios.'
+      name: b
+      trade_name: 'n'
+      tax_id: gzmiyvdljnikhway
+      nrc: kcmyuwpwlvqwrsit
+      economic_activity: c
+      phone: pscqldzsnrwtujwv
+      email: jhaag@example.net
+      address: l
+      contact_name: q
+      contact_phone: ppwqbewtnnoqitpx
+      status: active
+      notes: architecto
     fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "customerId": 1,
-              "customer": {
-                "id": 1,
-                "legalName": "Juan Carlos Pérez",
-                "tradeName": null,
-                "phone": "7890-1234",
-                "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
-                "municipality": "Antiguo Cuscatlán",
-                "department": "La Libertad",
-                "email": "juan.perez@example.com"
-              },
-              "employeeId": 4,
-              "employee": {
-                "id": 4,
-                "fullName": "Carlos Mendoza"
-              },
-              "serviceId": 2,
-              "service": {
-                "id": 2,
-                "name": "Fertilización Orgánica",
-                "price": 35.0
-              },
-              "quoteId": null,
-              "appointmentDate": "2026-11-18",
-              "appointmentTime": "14:00",
-              "status": "confirmed",
-              "origin": "manual",
-              "notes": "Reprogramada a solicitud del cliente por viaje de negocios.",
-              "createdAt": "2026-11-01T16:00:00+00:00",
-              "updatedAt": "2026-11-02T08:00:00+00:00"
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 403
-        content: |-
-          {
-            "message": "This action is unauthorized."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Cita no encontrada",
-            "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 422
-        content: |-
-          {
-            "message": "El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.",
-            "errors": {
-              "appointment_time": [
-                "El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al actualizar la cita",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
+    responses: []
     responseFields: []
     auth:
       - headers
@@ -1030,20 +383,18 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - POST
-    uri: 'api/v1/quotes/{quote}/appointments'
+      - DELETE
+    uri: 'api/v1/suppliers/{id}'
     metadata:
       custom: []
-      groupName: 'Citas y Agenda'
+      groupName: Proveedores
       groupDescription: |-
 
-        Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.
-      subgroup: Escritura
+        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      subgroup: Gestión
       subgroupDescription: ''
-      title: 'Agendar cita desde una cotización.'
-      description: |-
-        Permite programar directamente una cita de servicio o visita técnica vinculada a una cotización existente.
-        El cliente (`customer_id`) se hereda de manera automática de la cotización y el origen de la cita se establece como 'quote'.
+      title: 'Eliminar proveedor (Borrado lógico).'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -1051,193 +402,86 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      quote:
+      id:
         custom: []
-        name: quote
-        description: 'ID de la cotización a vincular.'
+        name: id
+        description: 'The ID of the supplier.'
         required: true
-        example: 1
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      quote: 1
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/suppliers/{supplier}/status'
+    metadata:
+      custom: []
+      groupName: Proveedores
+      groupDescription: |-
+
+        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      subgroup: Gestión
+      subgroupDescription: ''
+      title: 'Cambiar estado de un proveedor.'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      supplier:
+        custom: []
+        name: supplier
+        description: 'The supplier.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      supplier: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'ID del colaborador o técnico de campo asignado para la visita.'
-        required: true
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      service_id:
-        custom: []
-        name: service_id
-        description: 'ID del servicio de catálogo presupuestado (opcional).'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      appointment_date:
-        custom: []
-        name: appointment_date
-        description: 'Fecha programada de la cita en formato AAAA-MM-DD.'
-        required: true
-        example: '2026-11-20'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      appointment_time:
-        custom: []
-        name: appointment_time
-        description: 'Hora programada de la cita en formato HH:MM (24h).'
-        required: true
-        example: '10:00'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
       status:
         custom: []
         name: status
-        description: "Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'."
-        required: false
-        example: pending
+        description: 'Nuevo estado (`active` o `inactive`).'
+        required: true
+        example: inactive
         type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      notes:
-        custom: []
-        name: notes
-        description: 'Observaciones o especificaciones de la visita.'
-        required: false
-        example: 'Ejecución del servicio según cotización aprobada.'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      is_inspection:
-        custom: []
-        name: is_inspection
-        description: 'Si es verdadero, genera de forma automática una ficha de inspección técnica vinculada.'
-        required: false
-        example: false
-        type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      employee_id: 2
-      service_id: 1
-      appointment_date: '2026-11-20'
-      appointment_time: '10:00'
-      status: pending
-      notes: 'Ejecución del servicio según cotización aprobada.'
-      is_inspection: false
+      status: inactive
     fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 201
-        content: |-
-          {
-            "data": {
-              "id": 2,
-              "customerId": 1,
-              "customer": {
-                "id": 1,
-                "legalName": "Juan Carlos Pérez",
-                "tradeName": null,
-                "phone": "7890-1234",
-                "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
-                "municipality": "Antiguo Cuscatlán",
-                "department": "La Libertad",
-                "email": "juan.perez@example.com"
-              },
-              "employeeId": 2,
-              "employee": {
-                "id": 2,
-                "fullName": "Carlos Mendoza"
-              },
-              "serviceId": 1,
-              "service": {
-                "id": 1,
-                "name": "Poda y Mantenimiento de Césped",
-                "price": 45.0
-              },
-              "quoteId": 1,
-              "appointmentDate": "2026-11-20",
-              "appointmentTime": "10:00",
-              "status": "pending",
-              "origin": "quote",
-              "notes": "Ejecución del servicio según cotización aprobada.",
-              "createdAt": "2026-11-01T23:20:00+00:00",
-              "updatedAt": "2026-11-01T23:20:00+00:00"
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 403
-        content: |-
-          {
-            "message": "This action is unauthorized."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Cotización no encontrada",
-            "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 422
-        content: |-
-          {
-            "message": "El colaborador asignado debe ser un Técnico de campo activo.",
-            "errors": {
-              "employee_id": [
-                "El colaborador asignado debe ser un Técnico de campo activo."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al agendar la cita desde cotización",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
+    responses: []
     responseFields: []
     auth:
       - headers
