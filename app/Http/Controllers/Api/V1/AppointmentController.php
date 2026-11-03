@@ -389,6 +389,10 @@ class AppointmentController extends Controller
      * Si se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),
      * excluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.
      *
+     * Si el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programación
+     * automática del siguiente mantenimiento según la frecuencia configurada del cliente o de su plan. Si la fecha ideal
+     * no tiene disponibilidad por colisión con otra cita, devuelve 'suggestedRescheduleDates' con las fechas más cercanas.
+     *
      * @subgroup Escritura
      *
      * @urlParam appointment integer required ID de la cita a actualizar. Example: 1

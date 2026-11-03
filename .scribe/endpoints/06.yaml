@@ -215,7 +215,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: pending
+        example: confirmed
         type: string
         enumValues:
           - pending
@@ -275,7 +275,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: created_at
+        example: status
         type: string
         enumValues:
           - id
@@ -291,7 +291,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: asc
+        example: desc
         type: string
         enumValues:
           - asc
@@ -326,7 +326,7 @@ endpoints:
         name: all
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -336,16 +336,16 @@ endpoints:
       start_date: '2026-11-03'
       end_date: '2052-11-26'
       date: '2026-11-03'
-      status: pending
+      status: confirmed
       customer_id: 16
       client_id: 16
       employee_id: 16
       service_id: 16
-      sort_by: created_at
-      sort_direction: asc
+      sort_by: status
+      sort_direction: desc
       per_page: 22
       limit: 7
-      all: false
+      all: true
     fileParameters: []
     responses:
       -
@@ -833,6 +833,10 @@ endpoints:
 
         Si se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),
         excluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.
+
+        Si el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programación
+        automática del siguiente mantenimiento según la frecuencia configurada del cliente o de su plan. Si la fecha ideal
+        no tiene disponibilidad por colisión con otra cita, devuelve 'suggestedRescheduleDates' con las fechas más cercanas.
       authenticated: true
       deprecated: false
     headers:

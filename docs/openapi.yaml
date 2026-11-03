@@ -3624,7 +3624,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: pending
+                  example: confirmed
                   enum:
                     - pending
                     - confirmed
@@ -3655,7 +3655,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: status
                   enum:
                     - id
                     - appointment_date
@@ -3666,7 +3666,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -3684,7 +3684,7 @@ paths:
                 all:
                   type: boolean
                   description: ''
-                  example: false
+                  example: true
                   nullable: true
     post:
       summary: 'Agendar cita manualmente.'
@@ -4137,7 +4137,7 @@ paths:
     put:
       summary: 'Actualizar o reprogramar una cita.'
       operationId: actualizarOReprogramarUnaCita
-      description: "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el técnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo automáticamente la propia cita evaluada para evitar falsas colisiones."
+      description: "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el técnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.\n\nSi el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programación\nautomática del siguiente mantenimiento según la frecuencia configurada del cliente o de su plan. Si la fecha ideal\nno tiene disponibilidad por colisión con otra cita, devuelve 'suggestedRescheduleDates' con las fechas más cercanas."
       parameters: []
       responses:
         200:
@@ -4890,7 +4890,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: price
+                  example: created_at
                   enum:
                     - id
                     - name
@@ -4901,7 +4901,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc

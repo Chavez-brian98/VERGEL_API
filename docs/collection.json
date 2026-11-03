@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "3e207afe-fcc6-4dfd-8831-f87a2d4d5c5d",
+        "_postman_id": "070268a0-08db-4c1c-9a38-aa9d538c80ad",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1661,7 +1661,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"pending\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"created_at\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7,\"all\":false}"
+                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"confirmed\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"status\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":true}"
                                 },
                                 "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
                             },
@@ -1823,7 +1823,7 @@
                                     "mode": "raw",
                                     "raw": "{\"employee_id\":4,\"service_id\":2,\"appointment_date\":\"2026-11-18\",\"appointment_time\":\"14:00\",\"status\":\"confirmed\",\"notes\":\"Reprogramada a solicitud del cliente por viaje de negocios.\"}"
                                 },
-                                "description": "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el t\u00e9cnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o t\u00e9cnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo autom\u00e1ticamente la propia cita evaluada para evitar falsas colisiones."
+                                "description": "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el t\u00e9cnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o t\u00e9cnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo autom\u00e1ticamente la propia cita evaluada para evitar falsas colisiones.\n\nSi el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programaci\u00f3n\nautom\u00e1tica del siguiente mantenimiento seg\u00fan la frecuencia configurada del cliente o de su plan. Si la fecha ideal\nno tiene disponibilidad por colisi\u00f3n con otra cita, devuelve 'suggestedRescheduleDates' con las fechas m\u00e1s cercanas."
                             },
                             "response": [
                                 {
@@ -2014,7 +2014,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },

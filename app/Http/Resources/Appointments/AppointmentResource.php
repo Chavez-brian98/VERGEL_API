@@ -52,6 +52,16 @@ class AppointmentResource extends JsonResource
             'status' => $this->status,
             'origin' => $this->origin,
             'notes' => $this->notes,
+            'nextAppointment' => $this->when(! is_null($this->next_appointment), function () {
+                return new AppointmentResource($this->next_appointment);
+            }),
+            'suggestedRescheduleDates' => $this->when(! is_null($this->suggested_reschedule_dates), function () {
+                return [
+                    'idealDate' => $this->suggested_reschedule_dates['ideal_date'],
+                    'availableDates' => $this->suggested_reschedule_dates['available_dates'],
+                    'message' => $this->suggested_reschedule_dates['message'],
+                ];
+            }),
             'createdAt' => $this->created_at?->toIso8601String(),
             'updatedAt' => $this->updated_at?->toIso8601String(),
         ];

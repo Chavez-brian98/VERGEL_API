@@ -6724,16 +6724,16 @@ filtrado por estado, cliente, técnico asignado y paginación o listado completo
     \"start_date\": \"2026-11-03\",
     \"end_date\": \"2052-11-26\",
     \"date\": \"2026-11-03\",
-    \"status\": \"pending\",
+    \"status\": \"confirmed\",
     \"customer_id\": 16,
     \"client_id\": 16,
     \"employee_id\": 16,
     \"service_id\": 16,
-    \"sort_by\": \"created_at\",
-    \"sort_direction\": \"asc\",
+    \"sort_by\": \"status\",
+    \"sort_direction\": \"desc\",
     \"per_page\": 22,
     \"limit\": 7,
-    \"all\": false
+    \"all\": true
 }"
 </code></pre></div>
 
@@ -6770,16 +6770,16 @@ let body = {
     "start_date": "2026-11-03",
     "end_date": "2052-11-26",
     "date": "2026-11-03",
-    "status": "pending",
+    "status": "confirmed",
     "customer_id": 16,
     "client_id": 16,
     "employee_id": 16,
     "service_id": 16,
-    "sort_by": "created_at",
-    "sort_direction": "asc",
+    "sort_by": "status",
+    "sort_direction": "desc",
     "per_page": 22,
     "limit": 7,
-    "all": false
+    "all": true
 };
 
 fetch(url, {
@@ -7117,10 +7117,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-v1-appointments"
-               value="pending"
+               value="confirmed"
                data-component="body">
     <br>
-<p>Example: <code>pending</code></p>
+<p>Example: <code>confirmed</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>completed</code></li> <li><code>cancelled</code></li> <li><code>annulled</code></li></ul>
         </div>
@@ -7179,10 +7179,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-appointments"
-               value="created_at"
+               value="status"
                data-component="body">
     <br>
-<p>Example: <code>created_at</code></p>
+<p>Example: <code>status</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>appointment_date</code></li> <li><code>appointment_time</code></li> <li><code>status</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -7193,10 +7193,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-appointments"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -7244,7 +7244,7 @@ Must be one of:
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 
@@ -7899,6 +7899,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
 actualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.</p>
 <p>Si se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),
 excluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.</p>
+<p>Si el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programación
+automática del siguiente mantenimiento según la frecuencia configurada del cliente o de su plan. Si la fecha ideal
+no tiene disponibilidad por colisión con otra cita, devuelve 'suggestedRescheduleDates' con las fechas más cercanas.</p>
 
 <span id="example-requests-PUTapi-v1-appointments--appointment-">
 <blockquote>Example request:</blockquote>
@@ -8580,8 +8583,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"price\",
-    \"sort_direction\": \"asc\"
+    \"sort_by\": \"created_at\",
+    \"sort_direction\": \"desc\"
 }"
 </code></pre></div>
 
@@ -8619,8 +8622,8 @@ let body = {
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "price",
-    "sort_direction": "asc"
+    "sort_by": "created_at",
+    "sort_direction": "desc"
 };
 
 fetch(url, {
@@ -8973,10 +8976,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="price"
+               value="created_at"
                data-component="body">
     <br>
-<p>Example: <code>price</code></p>
+<p>Example: <code>created_at</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -8987,10 +8990,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -9209,8 +9212,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/phpqnnluqou93r21n4Qd4V" \
-    --form "image_url=@/tmp/phpfnkdkvlf8mc83cH2cne" </code></pre></div>
+    --form "image=@/tmp/phpogi1rh7lraq052IAtQD" \
+    --form "image_url=@/tmp/phptqgomd0c44ho3yvOvnC" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -9415,7 +9418,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpqnnluqou93r21n4Qd4V</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpogi1rh7lraq052IAtQD</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -9427,7 +9430,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpfnkdkvlf8mc83cH2cne</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phptqgomd0c44ho3yvOvnC</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -9476,8 +9479,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@/tmp/phps6ju102ddaeq12LaQTu" \
-    --form "image_url=@/tmp/phphsbotfgf3p5o1u8U6k1" </code></pre></div>
+    --form "image=@/tmp/phpidp2mqdpjpqc5PgP3ro" \
+    --form "image_url=@/tmp/phpvmjmt8slv3ko0UjFB5L" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -9726,7 +9729,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phps6ju102ddaeq12LaQTu</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpidp2mqdpjpqc5PgP3ro</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -9738,7 +9741,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phphsbotfgf3p5o1u8U6k1</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpvmjmt8slv3ko0UjFB5L</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;

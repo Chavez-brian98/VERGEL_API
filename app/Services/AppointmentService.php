@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Models\Appointment;
 use App\Models\AuditLog;
+use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Inspection;
 use App\Models\Quote;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -281,7 +283,10 @@ class AppointmentService
             );
         }
 
-        return DB::transaction(function () use ($appointmentModel, $data) {
+        $isChangingToCompleted = ($data['status'] ?? null) === Appointment::STATUS_COMPLETED
+            && $appointmentModel->status !== Appointment::STATUS_COMPLETED;
+
+        $updatedAppointment = DB::transaction(function () use ($appointmentModel, $data) {
             $oldData = $appointmentModel->toArray();
 
             $appointmentModel->update($data);
@@ -304,6 +309,160 @@ class AppointmentService
 
             return $appointmentModel->load(['customer', 'employee', 'service', 'quote']);
         });
+
+        // Programación automática de mantenimiento recurrente si la cita fue marcada como completada
+        if ($isChangingToCompleted) {
+            $this->handleAutomaticMaintenanceScheduling($updatedAppointment);
+        }
+
+        return $updatedAppointment;
+    }
+
+    /**
+     * Gestiona la programación automática del próximo mantenimiento recurrente cuando una cita se marca como completada.
+     */
+    public function handleAutomaticMaintenanceScheduling(Appointment $appointment): void
+    {
+        $customer = $appointment->customer ?? Customer::find($appointment->customer_id);
+        $customer?->loadMissing('currentPlan');
+
+        // Solo se ejecuta para clientes en estado Activo
+        if (! $customer || $customer->status !== 'active') {
+            return;
+        }
+
+        $frequency = $this->resolveCustomerFrequency($customer);
+        if (! $frequency || $frequency['value'] <= 0) {
+            return;
+        }
+
+        $baseDate = $appointment->appointment_date instanceof \DateTimeInterface
+            ? Carbon::instance($appointment->appointment_date)
+            : Carbon::parse($appointment->appointment_date);
+
+        $idealDate = $this->calculateIdealNextDate($baseDate, $frequency['value'], $frequency['unit']);
+        $idealDateStr = $idealDate->format('Y-m-d');
+
+        $timeStr = is_string($appointment->appointment_time)
+            ? substr($appointment->appointment_time, 0, 5)
+            : (string) $appointment->appointment_time;
+
+        $employeeId = (int) $appointment->employee_id;
+
+        if ($this->isTechnicianAvailable($employeeId, $idealDateStr, $timeStr)) {
+            $newAppointment = Appointment::create([
+                'customer_id' => $customer->id,
+                'quote_id' => null,
+                'service_id' => $appointment->service_id,
+                'employee_id' => $employeeId,
+                'appointment_date' => $idealDateStr,
+                'appointment_time' => $timeStr,
+                'status' => Appointment::STATUS_PENDING,
+                'origin' => Appointment::ORIGIN_AUTOMATIC,
+                'notes' => "Mantenimiento recurrente programado automáticamente según frecuencia ({$frequency['value']} {$frequency['unit']})",
+            ]);
+
+            $this->logAudit('insert', 'appointments', $newAppointment->id, null, $newAppointment->toArray());
+
+            $appointment->next_appointment = $newAppointment->load(['customer', 'employee', 'service']);
+        } else {
+            // Calcular fechas disponibles más cercanas alrededor de la fecha ideal
+            $suggestedDates = $this->findNearestAvailableDates($employeeId, $idealDate, $timeStr, 3);
+
+            $appointment->suggested_reschedule_dates = [
+                'ideal_date' => $idealDateStr,
+                'available_dates' => $suggestedDates,
+                'message' => "El técnico de campo no tiene disponibilidad en la fecha ideal de mantenimiento ({$idealDateStr}). Se sugieren las fechas más cercanas.",
+            ];
+        }
+    }
+
+    /**
+     * Resuelve la frecuencia configurada del cliente, priorizando su configuración individual
+     * o recurriendo a la frecuencia definida en su plan de suscripción actual.
+     *
+     * @return array{value: int, unit: string}|null
+     */
+    public function resolveCustomerFrequency(Customer $customer): ?array
+    {
+        if (! empty($customer->visit_frequency_value) && ! empty($customer->visit_frequency_unit)) {
+            return [
+                'value' => (int) $customer->visit_frequency_value,
+                'unit' => $customer->visit_frequency_unit,
+            ];
+        }
+
+        $plan = $customer->currentPlan;
+        if ($plan && ! empty($plan->frequency_value) && ! empty($plan->frequency_unit)) {
+            return [
+                'value' => (int) $plan->frequency_value,
+                'unit' => $plan->frequency_unit,
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * Calcula la fecha ideal del siguiente mantenimiento según la frecuencia configurada.
+     */
+    public function calculateIdealNextDate(Carbon $baseDate, int $value, string $unit): Carbon
+    {
+        $normalizedUnit = strtolower(trim($unit));
+
+        return match ($normalizedUnit) {
+            'days', 'day', 'dias', 'día', 'días' => $baseDate->copy()->addDays($value),
+            'weeks', 'week', 'semanas', 'semana' => $baseDate->copy()->addWeeks($value),
+            'months', 'month', 'meses', 'mes' => $baseDate->copy()->addMonths($value),
+            default => $baseDate->copy()->addDays($value),
+        };
+    }
+
+    /**
+     * Verifica si el técnico de campo se encuentra disponible en una fecha y hora específicas.
+     */
+    public function isTechnicianAvailable(
+        int $employeeId,
+        string $date,
+        string $time,
+        ?int $excludeAppointmentId = null
+    ): bool {
+        try {
+            $this->validateTechnicianAvailability($employeeId, $date, $time, $excludeAppointmentId);
+
+            return true;
+        } catch (ValidationException) {
+            return false;
+        }
+    }
+
+    /**
+     * Busca las fechas disponibles más cercanas alrededor de una fecha ideal cuando existe conflicto de agenda.
+     * Evalúa offsets radiales (ej. -1, +1, -2, +2, -3, +3 días).
+     *
+     * @return array<int, string>
+     */
+    public function findNearestAvailableDates(int $employeeId, Carbon $idealDate, string $time, int $limit = 3): array
+    {
+        $suggestedDates = [];
+        $offsets = [-1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6, -7, 7];
+
+        foreach ($offsets as $offset) {
+            $candidateDate = $idealDate->copy()->addDays($offset);
+            $candidateDateStr = $candidateDate->format('Y-m-d');
+
+            if ($this->isTechnicianAvailable($employeeId, $candidateDateStr, $time)) {
+                $suggestedDates[] = $candidateDateStr;
+            }
+
+            if (count($suggestedDates) >= $limit) {
+                break;
+            }
+        }
+
+        sort($suggestedDates);
+
+        return array_values(array_unique($suggestedDates));
     }
 
     /**
