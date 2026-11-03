@@ -7,6 +7,7 @@ use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Http\Resources\Employees\EmployeeListResource;
 use App\Http\Resources\Employees\EmployeeResource;
+use App\Models\Employee;
 use App\Services\EmployeeService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -63,6 +64,8 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Employee::class);
+
         $limit = $request->input('limit', 15);
         $employees = $this->employeeService->search($request->all(), $limit);
 
@@ -118,6 +121,8 @@ class EmployeeController extends Controller
      */
     public function store(CreateEmployeeRequest $request)
     {
+        $this->authorize('create', Employee::class);
+
         try {
             $employee = $this->employeeService->create($request->validated());
 
@@ -172,6 +177,8 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view', Employee::class);
+
         try {
             $employee = $this->employeeService->getById($id);
 
@@ -240,6 +247,8 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
+        $this->authorize('update', Employee::class);
+
         try {
             $employee = $this->employeeService->update($id, $request->validated());
 
@@ -297,6 +306,8 @@ class EmployeeController extends Controller
      */
     public function updateStatus(Request $request, $id)
     {
+        $this->authorize('changeStatus', Employee::class);
+
         $request->validate([
             'active' => 'required|boolean',
         ]);
@@ -343,6 +354,8 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete', Employee::class);
+
         try {
             $this->employeeService->delete($id);
 
