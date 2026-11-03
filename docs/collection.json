@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "baa28dcf-80ff-4006-8341-87d4693ab866",
+        "_postman_id": "3e207afe-fcc6-4dfd-8831-f87a2d4d5c5d",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -1563,6 +1563,178 @@
             "description": "\nEndpoints para la gesti\u00f3n y agendamiento de citas, visitas t\u00e9cnicas e inspecciones operativas.",
             "item": [
                 {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y consultar agenda de citas.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments",
+                                    "query": [
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-11-01",
+                                            "description": "Fecha inicial para filtrar rango (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-11-30",
+                                            "description": "Fecha final para filtrar rango (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "date",
+                                            "value": "2026-11-15",
+                                            "description": "Fecha puntual para vista diaria (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Estado de la cita (pending, confirmed, completed, cancelled, annulled).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "client_id",
+                                            "value": "1",
+                                            "description": "ID del cliente a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "ID del cliente (alias directo).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "4",
+                                            "description": "ID del t\u00e9cnico asignado a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "service_id",
+                                            "value": "1",
+                                            "description": "ID del servicio a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "appointment_date",
+                                            "description": "Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n de ordenamiento (asc o desc). Por defecto 'asc'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Cantidad de citas por p\u00e1gina (1-100). Por defecto 15.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "all",
+                                            "value": "",
+                                            "description": "Si es verdadero, devuelve la lista completa sin paginar para la cuadr\u00edcula mensual.",
+                                            "disabled": true
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments?start_date=2026-11-01&end_date=2026-11-30&date=2026-11-15&status=pending&client_id=1&customer_id=1&employee_id=4&service_id=1&sort_by=appointment_date&sort_direction=asc&per_page=15&all="
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"pending\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"created_at\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7,\"all\":false}"
+                                },
+                                "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"customerId\": 1,\n      \"customer\": {\n        \"id\": 1,\n        \"legalName\": \"Juan Carlos P\u00e9rez\",\n        \"tradeName\": null,\n        \"phone\": \"7890-1234\",\n        \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n        \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n        \"department\": \"La Libertad\",\n        \"email\": \"juan.perez@example.com\"\n      },\n      \"employeeId\": 4,\n      \"employee\": {\n        \"id\": 4,\n        \"fullName\": \"Carlos Mendoza\"\n      },\n      \"serviceId\": 1,\n      \"service\": {\n        \"id\": 1,\n        \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n        \"price\": 45.0\n      },\n      \"quoteId\": null,\n      \"appointmentDate\": \"2026-11-15\",\n      \"appointmentTime\": \"09:30\",\n      \"status\": \"pending\",\n      \"origin\": \"manual\",\n      \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n      \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n      \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el detalle de una cita.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments\/:appointment",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments\/:appointment",
+                                    "variable": [
+                                        {
+                                            "id": "appointment",
+                                            "key": "appointment",
+                                            "value": 1,
+                                            "description": "ID de la cita."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve la informaci\u00f3n completa de una cita individual mediante su identificador \u00fanico (ID)."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 4,\n    \"employee\": {\n      \"id\": 4,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-15\",\n    \"appointmentTime\": \"09:30\",\n    \"status\": \"pending\",\n    \"origin\": \"manual\",\n    \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cita no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al obtener la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "name": "Escritura",
                     "description": "",
                     "item": [
@@ -1842,7 +2014,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"id\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },

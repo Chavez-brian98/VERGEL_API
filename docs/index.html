@@ -235,7 +235,18 @@
                     <a href="#citas-y-agenda">Citas y Agenda</a>
                 </li>
                                     <ul id="tocify-subheader-citas-y-agenda" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="citas-y-agenda-escritura">
+                                                    <li class="tocify-item level-2" data-unique="citas-y-agenda-consultas">
+                                <a href="#citas-y-agenda-consultas">Consultas</a>
+                            </li>
+                                                            <ul id="tocify-subheader-citas-y-agenda-consultas" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="citas-y-agenda-GETapi-v1-appointments">
+                                            <a href="#citas-y-agenda-GETapi-v1-appointments">Listar y consultar agenda de citas.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="citas-y-agenda-GETapi-v1-appointments--appointment-">
+                                            <a href="#citas-y-agenda-GETapi-v1-appointments--appointment-">Obtener el detalle de una cita.</a>
+                                        </li>
+                                                                    </ul>
+                                                                                <li class="tocify-item level-2" data-unique="citas-y-agenda-escritura">
                                 <a href="#citas-y-agenda-escritura">Escritura</a>
                             </li>
                                                             <ul id="tocify-subheader-citas-y-agenda-escritura" class="tocify-subheader">
@@ -292,7 +303,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: November 2, 2026</li>
+        <li>Last updated: November 3, 2026</li>
     </ul>
 </div>
 
@@ -6688,7 +6699,765 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>Endpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas.</p>
 
-                        <h2 id="citas-y-agenda-escritura">Escritura</h2>
+                        <h2 id="citas-y-agenda-consultas">Consultas</h2>
+                                                    <h2 id="citas-y-agenda-GETapi-v1-appointments">Listar y consultar agenda de citas.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),
+filtrado por estado, cliente, técnico asignado y paginación o listado completo para el calendario.</p>
+<p>Los técnicos de campo únicamente pueden visualizar las citas asignadas a su persona.</p>
+
+<span id="example-requests-GETapi-v1-appointments">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/appointments?start_date=2026-11-01&amp;end_date=2026-11-30&amp;date=2026-11-15&amp;status=pending&amp;client_id=1&amp;customer_id=1&amp;employee_id=4&amp;service_id=1&amp;sort_by=appointment_date&amp;sort_direction=asc&amp;per_page=15&amp;all=" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"start_date\": \"2026-11-03\",
+    \"end_date\": \"2052-11-26\",
+    \"date\": \"2026-11-03\",
+    \"status\": \"pending\",
+    \"customer_id\": 16,
+    \"client_id\": 16,
+    \"employee_id\": 16,
+    \"service_id\": 16,
+    \"sort_by\": \"created_at\",
+    \"sort_direction\": \"asc\",
+    \"per_page\": 22,
+    \"limit\": 7,
+    \"all\": false
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/appointments"
+);
+
+const params = {
+    "start_date": "2026-11-01",
+    "end_date": "2026-11-30",
+    "date": "2026-11-15",
+    "status": "pending",
+    "client_id": "1",
+    "customer_id": "1",
+    "employee_id": "4",
+    "service_id": "1",
+    "sort_by": "appointment_date",
+    "sort_direction": "asc",
+    "per_page": "15",
+    "all": "0",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "start_date": "2026-11-03",
+    "end_date": "2052-11-26",
+    "date": "2026-11-03",
+    "status": "pending",
+    "customer_id": 16,
+    "client_id": 16,
+    "employee_id": 16,
+    "service_id": 16,
+    "sort_by": "created_at",
+    "sort_direction": "asc",
+    "per_page": 22,
+    "limit": 7,
+    "all": false
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-appointments">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;customerId&quot;: 1,
+            &quot;customer&quot;: {
+                &quot;id&quot;: 1,
+                &quot;legalName&quot;: &quot;Juan Carlos P&eacute;rez&quot;,
+                &quot;tradeName&quot;: null,
+                &quot;phone&quot;: &quot;7890-1234&quot;,
+                &quot;address&quot;: &quot;Residencial Cumbres de Cuscatl&aacute;n, Pol. D #14&quot;,
+                &quot;municipality&quot;: &quot;Antiguo Cuscatl&aacute;n&quot;,
+                &quot;department&quot;: &quot;La Libertad&quot;,
+                &quot;email&quot;: &quot;juan.perez@example.com&quot;
+            },
+            &quot;employeeId&quot;: 4,
+            &quot;employee&quot;: {
+                &quot;id&quot;: 4,
+                &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+            },
+            &quot;serviceId&quot;: 1,
+            &quot;service&quot;: {
+                &quot;id&quot;: 1,
+                &quot;name&quot;: &quot;Poda y Mantenimiento de C&eacute;sped&quot;,
+                &quot;price&quot;: 45
+            },
+            &quot;quoteId&quot;: null,
+            &quot;appointmentDate&quot;: &quot;2026-11-15&quot;,
+            &quot;appointmentTime&quot;: &quot;09:30&quot;,
+            &quot;status&quot;: &quot;pending&quot;,
+            &quot;origin&quot;: &quot;manual&quot;,
+            &quot;notes&quot;: &quot;Cliente solicita inspecci&oacute;n inicial para dise&ntilde;o de jard&iacute;n frontal.&quot;,
+            &quot;createdAt&quot;: &quot;2026-11-01T16:00:00+00:00&quot;,
+            &quot;updatedAt&quot;: &quot;2026-11-01T16:00:00+00:00&quot;
+        }
+    ]
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-appointments" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-appointments"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-appointments"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-appointments" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-appointments">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-appointments" data-method="GET"
+      data-path="api/v1/appointments"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-appointments', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-appointments"
+                    onclick="tryItOut('GETapi-v1-appointments');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-appointments"
+                    onclick="cancelTryOut('GETapi-v1-appointments');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-appointments"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/appointments</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-v1-appointments"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-appointments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-appointments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>start_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="start_date"                data-endpoint="GETapi-v1-appointments"
+               value="2026-11-01"
+               data-component="query">
+    <br>
+<p>Fecha inicial para filtrar rango (AAAA-MM-DD). Example: <code>2026-11-01</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="end_date"                data-endpoint="GETapi-v1-appointments"
+               value="2026-11-30"
+               data-component="query">
+    <br>
+<p>Fecha final para filtrar rango (AAAA-MM-DD). Example: <code>2026-11-30</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="date"                data-endpoint="GETapi-v1-appointments"
+               value="2026-11-15"
+               data-component="query">
+    <br>
+<p>Fecha puntual para vista diaria (AAAA-MM-DD). Example: <code>2026-11-15</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETapi-v1-appointments"
+               value="pending"
+               data-component="query">
+    <br>
+<p>Estado de la cita (pending, confirmed, completed, cancelled, annulled). Example: <code>pending</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>client_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="client_id"                data-endpoint="GETapi-v1-appointments"
+               value="1"
+               data-component="query">
+    <br>
+<p>ID del cliente a filtrar. Example: <code>1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>customer_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="customer_id"                data-endpoint="GETapi-v1-appointments"
+               value="1"
+               data-component="query">
+    <br>
+<p>ID del cliente (alias directo). Example: <code>1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>employee_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="employee_id"                data-endpoint="GETapi-v1-appointments"
+               value="4"
+               data-component="query">
+    <br>
+<p>ID del técnico asignado a filtrar. Example: <code>4</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="service_id"                data-endpoint="GETapi-v1-appointments"
+               value="1"
+               data-component="query">
+    <br>
+<p>ID del servicio a filtrar. Example: <code>1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_by"                data-endpoint="GETapi-v1-appointments"
+               value="appointment_date"
+               data-component="query">
+    <br>
+<p>Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'. Example: <code>appointment_date</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>sort_direction</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_direction"                data-endpoint="GETapi-v1-appointments"
+               value="asc"
+               data-component="query">
+    <br>
+<p>Dirección de ordenamiento (asc o desc). Por defecto 'asc'. Example: <code>asc</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-v1-appointments"
+               value="15"
+               data-component="query">
+    <br>
+<p>Cantidad de citas por página (1-100). Por defecto 15. Example: <code>15</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>all</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="GETapi-v1-appointments" style="display: none">
+            <input type="radio" name="all"
+                   value="1"
+                   data-endpoint="GETapi-v1-appointments"
+                   data-component="query"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETapi-v1-appointments" style="display: none">
+            <input type="radio" name="all"
+                   value="0"
+                   data-endpoint="GETapi-v1-appointments"
+                   data-component="query"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Si es verdadero, devuelve la lista completa sin paginar para la cuadrícula mensual. Example: <code>false</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>start_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="start_date"                data-endpoint="GETapi-v1-appointments"
+               value="2026-11-03"
+               data-component="body">
+    <br>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-03</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="end_date"                data-endpoint="GETapi-v1-appointments"
+               value="2052-11-26"
+               data-component="body">
+    <br>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-11-26</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="date"                data-endpoint="GETapi-v1-appointments"
+               value="2026-11-03"
+               data-component="body">
+    <br>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-03</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETapi-v1-appointments"
+               value="pending"
+               data-component="body">
+    <br>
+<p>Example: <code>pending</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>completed</code></li> <li><code>cancelled</code></li> <li><code>annulled</code></li></ul>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>customer_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="customer_id"                data-endpoint="GETapi-v1-appointments"
+               value="16"
+               data-component="body">
+    <br>
+<p>Must match an existing stored value. Example: <code>16</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>client_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="client_id"                data-endpoint="GETapi-v1-appointments"
+               value="16"
+               data-component="body">
+    <br>
+<p>Must match an existing stored value. Example: <code>16</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>employee_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="employee_id"                data-endpoint="GETapi-v1-appointments"
+               value="16"
+               data-component="body">
+    <br>
+<p>Must match an existing stored value. Example: <code>16</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="service_id"                data-endpoint="GETapi-v1-appointments"
+               value="16"
+               data-component="body">
+    <br>
+<p>Must match an existing stored value. Example: <code>16</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_by"                data-endpoint="GETapi-v1-appointments"
+               value="created_at"
+               data-component="body">
+    <br>
+<p>Example: <code>created_at</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>id</code></li> <li><code>appointment_date</code></li> <li><code>appointment_time</code></li> <li><code>status</code></li> <li><code>created_at</code></li></ul>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>sort_direction</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_direction"                data-endpoint="GETapi-v1-appointments"
+               value="asc"
+               data-component="body">
+    <br>
+<p>Example: <code>asc</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-v1-appointments"
+               value="22"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Must not be greater than 100. Example: <code>22</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-appointments"
+               value="7"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Must not be greater than 100. Example: <code>7</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>all</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="GETapi-v1-appointments" style="display: none">
+            <input type="radio" name="all"
+                   value="true"
+                   data-endpoint="GETapi-v1-appointments"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETapi-v1-appointments" style="display: none">
+            <input type="radio" name="all"
+                   value="false"
+                   data-endpoint="GETapi-v1-appointments"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Example: <code>false</code></p>
+        </div>
+        </form>
+
+                    <h2 id="citas-y-agenda-GETapi-v1-appointments--appointment-">Obtener el detalle de una cita.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Devuelve la información completa de una cita individual mediante su identificador único (ID).</p>
+
+<span id="example-requests-GETapi-v1-appointments--appointment-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/appointments/1" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/appointments/1"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-appointments--appointment-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;customerId&quot;: 1,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Juan Carlos P&eacute;rez&quot;,
+            &quot;tradeName&quot;: null,
+            &quot;phone&quot;: &quot;7890-1234&quot;,
+            &quot;address&quot;: &quot;Residencial Cumbres de Cuscatl&aacute;n, Pol. D #14&quot;,
+            &quot;municipality&quot;: &quot;Antiguo Cuscatl&aacute;n&quot;,
+            &quot;department&quot;: &quot;La Libertad&quot;,
+            &quot;email&quot;: &quot;juan.perez@example.com&quot;
+        },
+        &quot;employeeId&quot;: 4,
+        &quot;employee&quot;: {
+            &quot;id&quot;: 4,
+            &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+        },
+        &quot;serviceId&quot;: 1,
+        &quot;service&quot;: {
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Poda y Mantenimiento de C&eacute;sped&quot;,
+            &quot;price&quot;: 45
+        },
+        &quot;quoteId&quot;: null,
+        &quot;appointmentDate&quot;: &quot;2026-11-15&quot;,
+        &quot;appointmentTime&quot;: &quot;09:30&quot;,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;origin&quot;: &quot;manual&quot;,
+        &quot;notes&quot;: &quot;Cliente solicita inspecci&oacute;n inicial para dise&ntilde;o de jard&iacute;n frontal.&quot;,
+        &quot;createdAt&quot;: &quot;2026-11-01T16:00:00+00:00&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-01T16:00:00+00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cita no encontrada&quot;,
+    &quot;codigo&quot;: 404
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Error interno al obtener la cita&quot;,
+    &quot;codigo&quot;: 500
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-appointments--appointment-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-appointments--appointment-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-appointments--appointment-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-appointments--appointment-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-appointments--appointment-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-appointments--appointment-" data-method="GET"
+      data-path="api/v1/appointments/{appointment}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-appointments--appointment-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-appointments--appointment-"
+                    onclick="tryItOut('GETapi-v1-appointments--appointment-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-appointments--appointment-"
+                    onclick="cancelTryOut('GETapi-v1-appointments--appointment-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-appointments--appointment-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/appointments/{appointment}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-v1-appointments--appointment-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-appointments--appointment-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-appointments--appointment-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>appointment</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="appointment"                data-endpoint="GETapi-v1-appointments--appointment-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la cita. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                                <h2 id="citas-y-agenda-escritura">Escritura</h2>
                                                     <h2 id="citas-y-agenda-POSTapi-v1-appointments">Agendar cita manualmente.</h2>
 
 <p>
@@ -7811,8 +8580,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"id\",
-    \"sort_direction\": \"desc\"
+    \"sort_by\": \"price\",
+    \"sort_direction\": \"asc\"
 }"
 </code></pre></div>
 
@@ -7850,8 +8619,8 @@ let body = {
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "id",
-    "sort_direction": "desc"
+    "sort_by": "price",
+    "sort_direction": "asc"
 };
 
 fetch(url, {
@@ -8204,10 +8973,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="id"
+               value="price"
                data-component="body">
     <br>
-<p>Example: <code>id</code></p>
+<p>Example: <code>price</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -8218,10 +8987,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="desc"
+               value="asc"
                data-component="body">
     <br>
-<p>Example: <code>desc</code></p>
+<p>Example: <code>asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -8440,8 +9209,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@/tmp/phpj9ph97n6nn1u3RKEjS0" \
-    --form "image_url=@/tmp/php5gvu575eqtuk0fcSu3q" </code></pre></div>
+    --form "image=@/tmp/phpqnnluqou93r21n4Qd4V" \
+    --form "image_url=@/tmp/phpfnkdkvlf8mc83cH2cne" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8646,7 +9415,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpj9ph97n6nn1u3RKEjS0</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phpqnnluqou93r21n4Qd4V</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -8658,7 +9427,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/php5gvu575eqtuk0fcSu3q</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phpfnkdkvlf8mc83cH2cne</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -8707,8 +9476,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@/tmp/php8qt5aja3nt3tfq2sGN5" \
-    --form "image_url=@/tmp/php5omlqcb4cbru12p7xnm" </code></pre></div>
+    --form "image=@/tmp/phps6ju102ddaeq12LaQTu" \
+    --form "image_url=@/tmp/phphsbotfgf3p5o1u8U6k1" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8957,7 +9726,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/php8qt5aja3nt3tfq2sGN5</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>/tmp/phps6ju102ddaeq12LaQTu</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -8969,7 +9738,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/php5omlqcb4cbru12p7xnm</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>/tmp/phphsbotfgf3p5o1u8U6k1</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;

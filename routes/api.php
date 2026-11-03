@@ -37,7 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::match(['put', 'patch', 'post'], 'plants/{id}', [PlantController::class, 'update']);
         Route::delete('plants/{id}', [PlantController::class, 'destroy']);
 
+        Route::get('appointments', [AppointmentController::class, 'index']);
         Route::post('appointments', [AppointmentController::class, 'store']);
+        Route::get('appointments/{appointment}', [AppointmentController::class, 'show']);
         Route::match(['put', 'patch'], 'appointments/{appointment}', [AppointmentController::class, 'update']);
         Route::post('quotes/{quote}/appointments', [AppointmentController::class, 'storeFromQuote']);
     });

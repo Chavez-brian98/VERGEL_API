@@ -7,6 +7,9 @@ use App\Models\AuditLog;
 use App\Models\Employee;
 use App\Models\Inspection;
 use App\Models\Quote;
+use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -16,6 +19,77 @@ class AppointmentService
     public function __construct(
         private readonly CustomerService $customerService
     ) {}
+
+    /**
+     * Obtiene el listado de citas aplicando filtros dinámicos con when() y Eager Loading.
+     * Alimenta las vistas mensual, semanal, diaria y en lista del calendario.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return LengthAwarePaginator|Collection<int, Appointment>
+     */
+    public function listAppointments(array $filters = [], ?User $user = null): LengthAwarePaginator|Collection
+    {
+        $query = Appointment::query()
+            ->with(['customer', 'service', 'employee', 'quote']);
+
+        // Scope de seguridad: Técnicos de campo solo consultan citas asignadas a su identificador de colaborador
+        if ($user && $user->employee?->role?->role_name === 'Tecnico de campo') {
+            $query->where('employee_id', $user->employee_id);
+        }
+
+        // Filtro por rango de fechas (Vista Mensual / Semanal)
+        $query->when(! empty($filters['start_date']), function ($q) use ($filters) {
+            $q->whereDate('appointment_date', '>=', $filters['start_date']);
+        });
+
+        $query->when(! empty($filters['end_date']), function ($q) use ($filters) {
+            $q->whereDate('appointment_date', '<=', $filters['end_date']);
+        });
+
+        // Filtro por fecha puntual (Vista Diaria)
+        $query->when(! empty($filters['date']), function ($q) use ($filters) {
+            $q->whereDate('appointment_date', $filters['date']);
+        });
+
+        // Filtro por estado
+        $query->when(! empty($filters['status']), function ($q) use ($filters) {
+            $q->where('status', $filters['status']);
+        });
+
+        // Filtro por cliente
+        $query->when(! empty($filters['customer_id']), function ($q) use ($filters) {
+            $q->where('customer_id', $filters['customer_id']);
+        });
+
+        // Filtro por técnico asignado (si no fue ya restringido por el rol de técnico)
+        $query->when(! empty($filters['employee_id']) && (! $user || $user->employee?->role?->role_name !== 'Tecnico de campo'), function ($q) use ($filters) {
+            $q->where('employee_id', $filters['employee_id']);
+        });
+
+        // Filtro por servicio
+        $query->when(! empty($filters['service_id']), function ($q) use ($filters) {
+            $q->where('service_id', $filters['service_id']);
+        });
+
+        // Ordenamiento
+        $sortBy = $filters['sort_by'] ?? 'appointment_date';
+        $sortDirection = $filters['sort_direction'] ?? 'asc';
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Si se ordena por fecha, desempatar cronológicamente por hora
+        if ($sortBy === 'appointment_date') {
+            $query->orderBy('appointment_time', $sortDirection);
+        }
+
+        // Si se solicita la colección completa (ej. para alimentar cuadrícula de vista mensual)
+        if (! empty($filters['all'])) {
+            return $query->get();
+        }
+
+        $perPage = (int) ($filters['per_page'] ?? $filters['limit'] ?? 15);
+
+        return $query->paginate($perPage);
+    }
 
     /**
      * Obtiene una cita por su identificador único.

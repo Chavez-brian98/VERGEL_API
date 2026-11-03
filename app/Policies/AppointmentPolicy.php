@@ -20,7 +20,16 @@ class AppointmentPolicy
      */
     public function view(User $user, ?Appointment $appointment = null): bool
     {
-        return $this->hasActiveRole($user);
+        if (! $this->hasActiveRole($user)) {
+            return false;
+        }
+
+        // Si el usuario es Técnico de campo, solo puede consultar citas asignadas a su persona
+        if ($user->employee?->role?->role_name === 'Tecnico de campo' && $appointment) {
+            return (int) $user->employee_id === (int) $appointment->employee_id;
+        }
+
+        return true;
     }
 
     /**

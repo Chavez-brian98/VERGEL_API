@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Appointment\IndexAppointmentRequest;
+use App\Http\Requests\Appointment\ShowAppointmentRequest;
 use App\Http\Requests\Appointment\StoreAppointmentRequest;
 use App\Http\Requests\Appointment\StoreQuoteAppointmentRequest;
 use App\Http\Requests\Appointment\UpdateAppointmentRequest;
@@ -23,6 +25,156 @@ class AppointmentController extends Controller
     public function __construct(
         private readonly AppointmentService $appointmentService
     ) {}
+
+    /**
+     * Listar y consultar agenda de citas.
+     *
+     * Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),
+     * filtrado por estado, cliente, técnico asignado y paginación o listado completo para el calendario.
+     *
+     * Los técnicos de campo únicamente pueden visualizar las citas asignadas a su persona.
+     *
+     * @subgroup Consultas
+     *
+     * @queryParam start_date string Fecha inicial para filtrar rango (AAAA-MM-DD). Example: 2026-11-01
+     * @queryParam end_date string Fecha final para filtrar rango (AAAA-MM-DD). Example: 2026-11-30
+     * @queryParam date string Fecha puntual para vista diaria (AAAA-MM-DD). Example: 2026-11-15
+     * @queryParam status string Estado de la cita (pending, confirmed, completed, cancelled, annulled). Example: pending
+     * @queryParam client_id integer ID del cliente a filtrar. Example: 1
+     * @queryParam customer_id integer ID del cliente (alias directo). Example: 1
+     * @queryParam employee_id integer ID del técnico asignado a filtrar. Example: 4
+     * @queryParam service_id integer ID del servicio a filtrar. Example: 1
+     * @queryParam sort_by string Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'. Example: appointment_date
+     * @queryParam sort_direction string Dirección de ordenamiento (asc o desc). Por defecto 'asc'. Example: asc
+     * @queryParam per_page integer Cantidad de citas por página (1-100). Por defecto 15. Example: 15
+     * @queryParam all boolean Si es verdadero, devuelve la lista completa sin paginar para la cuadrícula mensual. Example: false
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "customerId": 1,
+     *       "customer": {
+     *         "id": 1,
+     *         "legalName": "Juan Carlos Pérez",
+     *         "tradeName": null,
+     *         "phone": "7890-1234",
+     *         "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+     *         "municipality": "Antiguo Cuscatlán",
+     *         "department": "La Libertad",
+     *         "email": "juan.perez@example.com"
+     *       },
+     *       "employeeId": 4,
+     *       "employee": {
+     *         "id": 4,
+     *         "fullName": "Carlos Mendoza"
+     *       },
+     *       "serviceId": 1,
+     *       "service": {
+     *         "id": 1,
+     *         "name": "Poda y Mantenimiento de Césped",
+     *         "price": 45.0
+     *       },
+     *       "quoteId": null,
+     *       "appointmentDate": "2026-11-15",
+     *       "appointmentTime": "09:30",
+     *       "status": "pending",
+     *       "origin": "manual",
+     *       "notes": "Cliente solicita inspección inicial para diseño de jardín frontal.",
+     *       "createdAt": "2026-11-01T16:00:00+00:00",
+     *       "updatedAt": "2026-11-01T16:00:00+00:00"
+     *     }
+     *   ]
+     * }
+     */
+    public function index(IndexAppointmentRequest $request)
+    {
+        $appointments = $this->appointmentService->listAppointments(
+            $request->validated(),
+            $request->user()
+        );
+
+        return AppointmentResource::collection($appointments);
+    }
+
+    /**
+     * Obtener el detalle de una cita.
+     *
+     * Devuelve la información completa de una cita individual mediante su identificador único (ID).
+     *
+     * @subgroup Consultas
+     *
+     * @urlParam appointment integer required ID de la cita. Example: 1
+     *
+     * @response status=200 {
+     *   "data": {
+     *     "id": 1,
+     *     "customerId": 1,
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Juan Carlos Pérez",
+     *       "tradeName": null,
+     *       "phone": "7890-1234",
+     *       "address": "Residencial Cumbres de Cuscatlán, Pol. D #14",
+     *       "municipality": "Antiguo Cuscatlán",
+     *       "department": "La Libertad",
+     *       "email": "juan.perez@example.com"
+     *     },
+     *     "employeeId": 4,
+     *     "employee": {
+     *       "id": 4,
+     *       "fullName": "Carlos Mendoza"
+     *     },
+     *     "serviceId": 1,
+     *     "service": {
+     *       "id": 1,
+     *       "name": "Poda y Mantenimiento de Césped",
+     *       "price": 45.0
+     *     },
+     *     "quoteId": null,
+     *     "appointmentDate": "2026-11-15",
+     *     "appointmentTime": "09:30",
+     *     "status": "pending",
+     *     "origin": "manual",
+     *     "notes": "Cliente solicita inspección inicial para diseño de jardín frontal.",
+     *     "createdAt": "2026-11-01T16:00:00+00:00",
+     *     "updatedAt": "2026-11-01T16:00:00+00:00"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Cita no encontrada",
+     *   "codigo": 404
+     * }
+     * @response status=403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response status=500 {
+     *   "message": "Error interno al obtener la cita",
+     *   "codigo": 500
+     * }
+     */
+    public function show(ShowAppointmentRequest $request, $id)
+    {
+        try {
+            $appointment = $this->appointmentService->getById((int) $id);
+
+            return new AppointmentResource($appointment);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Cita no encontrada',
+                'codigo' => 404,
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error showing appointment: '.$e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            return response()->json([
+                'message' => 'Error interno al obtener la cita',
+                'codigo' => 500,
+            ], 500);
+        }
+    }
 
     /**
      * Agendar cita manualmente.
