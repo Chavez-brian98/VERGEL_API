@@ -1,19 +1,19 @@
-name: Plantas
+name: Tarifas
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/plants
+    uri: api/v1/country-configs
     metadata:
       custom: []
-      groupName: Plantas
+      groupName: Tarifas
       groupDescription: ''
       subgroup: Consultas
       subgroupDescription: ''
-      title: 'Listar y filtrar plantas.'
-      description: 'Obtiene una lista paginada de plantas del catálogo con soporte para filtros dinámicos (búsqueda, categoría, rango de precio, estado) y ordenamiento.'
+      title: 'Listar configuraciones de país (tarifas).'
+      description: 'Obtiene el listado de configuraciones por país con moneda, IVA y comisión de tarjeta.'
       authenticated: true
       deprecated: false
     headers:
@@ -22,233 +22,10 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      search:
-        custom: []
-        name: search
-        description: 'Búsqueda por coincidencia en nombre o tipo de categoría.'
-        required: false
-        example: Monstera
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      category_type:
-        custom: []
-        name: category_type
-        description: 'Filtrar por categoría exacta.'
-        required: false
-        example: Interior
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      active:
-        custom: []
-        name: active
-        description: 'Filtrar por estado activo o inactivo (true/false).'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      min_price:
-        custom: []
-        name: min_price
-        description: 'Filtrar por precio mínimo.'
-        required: false
-        example: 10.0
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      max_price:
-        custom: []
-        name: max_price
-        description: 'Filtrar por precio máximo.'
-        required: false
-        example: 50.0
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sort_by:
-        custom: []
-        name: sort_by
-        description: "Campo por el cual ordenar (id, name, price, category_type, created_at). Por defecto 'id'."
-        required: false
-        example: name
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sort_direction:
-        custom: []
-        name: sort_direction
-        description: "Dirección de ordenamiento (asc o desc). Por defecto 'desc'."
-        required: false
-        example: asc
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Cantidad de resultados por página (1-100). Por defecto 15.'
-        required: false
-        example: 15
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      limit:
-        custom: []
-        name: limit
-        description: 'Alias alternativo para per_page.'
-        required: false
-        example: 15
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      search: Monstera
-      category_type: Interior
-      active: true
-      min_price: 10.0
-      max_price: 50.0
-      sort_by: name
-      sort_direction: asc
-      per_page: 15
-      limit: 15
-    bodyParameters:
-      search:
-        custom: []
-        name: search
-        description: 'Must not be greater than 150 characters.'
-        required: false
-        example: b
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      category_type:
-        custom: []
-        name: category_type
-        description: 'Must not be greater than 80 characters.'
-        required: false
-        example: 'n'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      active:
-        custom: []
-        name: active
-        description: ''
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      min_price:
-        custom: []
-        name: min_price
-        description: 'Must be at least 0.'
-        required: false
-        example: 84
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      max_price:
-        custom: []
-        name: max_price
-        description: 'Must be at least 0.'
-        required: false
-        example: 12
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      limit:
-        custom: []
-        name: limit
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 15
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      sort_by:
-        custom: []
-        name: sort_by
-        description: ''
-        required: false
-        example: created_at
-        type: string
-        enumValues:
-          - id
-          - name
-          - price
-          - category_type
-          - created_at
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      sort_direction:
-        custom: []
-        name: sort_direction
-        description: ''
-        required: false
-        example: desc
-        type: string
-        enumValues:
-          - asc
-          - desc
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      search: b
-      category_type: 'n'
-      active: true
-      min_price: 84
-      max_price: 12
-      per_page: 17
-      limit: 15
-      sort_by: created_at
-      sort_direction: desc
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
     responses:
       -
@@ -259,31 +36,14 @@ endpoints:
             "data": [
               {
                 "id": 1,
-                "name": "Monstera Deliciosa",
-                "price": 24.5,
-                "categoryType": "Interior",
-                "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-                "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-                "active": true,
-                "createdAt": "2026-10-09T16:00:00+00:00",
-                "updatedAt": "2026-10-09T16:00:00+00:00"
+                "country": "El Salvador",
+                "currency": "USD",
+                "taxPercentage": 13.00,
+                "cardFeePercentage": 3.50,
+                "createdAt": "2026-10-08T22:58:33+00:00",
+                "updatedAt": "2026-10-08T22:58:33+00:00"
               }
-            ],
-            "links": {
-              "first": "http://localhost/api/v1/plants?page=1",
-              "last": "http://localhost/api/v1/plants?page=1",
-              "prev": null,
-              "next": null
-            },
-            "meta": {
-              "current_page": 1,
-              "from": 1,
-              "last_page": 1,
-              "path": "http://localhost/api/v1/plants",
-              "per_page": 15,
-              "to": 1,
-              "total": 1
-            }
+            ]
           }
         headers: []
         description: ''
@@ -299,100 +59,76 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/plants
+    uri: api/v1/country-configs
     metadata:
       custom: []
-      groupName: Plantas
+      groupName: Tarifas
       groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Registrar una nueva planta.'
-      description: 'Permite agregar una nueva especie o planta ornamental al catálogo, con su respectiva información de precio, categoría opcional y archivo de imagen.'
+      title: 'Registrar configuración de país (tarifa).'
+      description: 'Crea la configuración de tarifas para un país. El nombre del país debe ser único.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: multipart/form-data
+      Content-Type: application/json
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
+      country:
         custom: []
-        name: name
-        description: 'Nombre único de la planta o especie.'
+        name: country
+        description: 'Nombre del país.'
         required: true
-        example: 'Monstera Deliciosa'
+        example: 'El Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      price:
+      currency:
         custom: []
-        name: price
-        description: 'Precio unitario de la planta.'
+        name: currency
+        description: 'Moneda (código ISO 4217).'
         required: true
-        example: 24.5
+        example: USD
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      tax_percentage:
+        custom: []
+        name: tax_percentage
+        description: 'Porcentaje de IVA/impuesto.'
+        required: true
+        example: 13.0
         type: number
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      category_type:
+      card_fee_percentage:
         custom: []
-        name: category_type
-        description: 'Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra).'
+        name: card_fee_percentage
+        description: 'Porcentaje de comisión por tarjeta.'
         required: false
-        example: Interior
-        type: string
+        example: 3.5
+        type: number
         enumValues: []
         exampleWasSpecified: true
         nullable: true
-        deprecated: false
-      image:
-        custom: []
-        name: image
-        description: 'Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      image_url:
-        custom: []
-        name: image_url
-        description: 'Must be an image. Must not be greater than 5120 kilobytes.'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      active:
-        custom: []
-        name: active
-        description: 'Estado de disponibilidad en catálogo. Por defecto true.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: 'Monstera Deliciosa'
-      price: 24.5
-      category_type: Interior
-      active: true
-    fileParameters:
-      image: null
-      image_url: null
+      country: 'El Salvador'
+      currency: USD
+      tax_percentage: 13.0
+      card_fee_percentage: 3.5
+    fileParameters: []
     responses:
       -
         custom: []
@@ -401,14 +137,12 @@ endpoints:
           {
             "data": {
               "id": 1,
-              "name": "Monstera Deliciosa",
-              "price": 24.5,
-              "categoryType": "Interior",
-              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "active": true,
-              "createdAt": "2026-10-09T16:00:00+00:00",
-              "updatedAt": "2026-10-09T16:00:00+00:00"
+              "country": "El Salvador",
+              "currency": "USD",
+              "taxPercentage": 13.00,
+              "cardFeePercentage": 3.50,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
             }
           }
         headers: []
@@ -418,22 +152,10 @@ endpoints:
         status: 422
         content: |-
           {
-            "message": "El nombre de la planta es obligatorio.",
+            "message": "The country has already been taken.",
             "errors": {
-              "name": [
-                "El nombre de la planta es obligatorio."
-              ]
+              "country": ["The country has already been taken."]
             }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al crear la planta",
-            "codigo": 500
           }
         headers: []
         description: ''
@@ -449,15 +171,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/plants/{id}'
+    uri: 'api/v1/country-configs/{id}'
     metadata:
       custom: []
-      groupName: Plantas
+      groupName: Tarifas
       groupDescription: ''
       subgroup: Consultas
       subgroupDescription: ''
-      title: 'Obtener el detalle de una planta.'
-      description: 'Devuelve la información completa de una planta individual mediante su identificador único (ID).'
+      title: 'Obtener detalle de configuración de país (tarifa).'
+      description: 'Devuelve la configuración de tarifas para el país indicado.'
       authenticated: true
       deprecated: false
     headers:
@@ -468,7 +190,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the plant.'
+        description: 'The ID of the country config.'
         required: true
         example: architecto
         type: string
@@ -476,10 +198,10 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      plant:
+      country_config:
         custom: []
-        name: plant
-        description: 'ID de la planta.'
+        name: country_config
+        description: 'ID de la configuración.'
         required: true
         example: 1
         type: integer
@@ -489,7 +211,7 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-      plant: 1
+      country_config: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -503,14 +225,12 @@ endpoints:
           {
             "data": {
               "id": 1,
-              "name": "Monstera Deliciosa",
-              "price": 24.5,
-              "categoryType": "Interior",
-              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "active": true,
-              "createdAt": "2026-10-09T16:00:00+00:00",
-              "updatedAt": "2026-10-09T16:00:00+00:00"
+              "country": "El Salvador",
+              "currency": "USD",
+              "taxPercentage": 13.00,
+              "cardFeePercentage": 3.50,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
             }
           }
         headers: []
@@ -520,18 +240,8 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "Planta no encontrada",
+            "message": "Configuración de país no encontrada",
             "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al obtener la planta",
-            "codigo": 500
           }
         headers: []
         description: ''
@@ -548,27 +258,26 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-      - POST
-    uri: 'api/v1/plants/{id}'
+    uri: 'api/v1/country-configs/{id}'
     metadata:
       custom: []
-      groupName: Plantas
+      groupName: Tarifas
       groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Actualizar una planta.'
-      description: 'Modifica los datos de una planta existente en el catálogo, permitiendo reemplazar su imagen o eliminarla.'
+      title: 'Actualizar configuración de país (tarifa).'
+      description: 'Actualiza de forma parcial los datos de tarifas de un país. Registra la operación en auditoría.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: multipart/form-data
+      Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         custom: []
         name: id
-        description: 'The ID of the plant.'
+        description: 'The ID of the country config.'
         required: true
         example: architecto
         type: string
@@ -576,10 +285,10 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      plant:
+      country_config:
         custom: []
-        name: plant
-        description: 'ID de la planta a actualizar.'
+        name: country_config
+        description: 'ID de la configuración.'
         required: true
         example: 1
         type: integer
@@ -589,96 +298,60 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-      plant: 1
+      country_config: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
+      country:
         custom: []
-        name: name
-        description: 'optional Nombre único de la planta o especie.'
+        name: country
+        description: 'Nombre del país.'
         required: false
-        example: 'Monstera Variegata'
+        example: 'El Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      price:
+      currency:
         custom: []
-        name: price
-        description: 'optional Precio unitario de la planta.'
+        name: currency
+        description: 'Moneda (código ISO 4217).'
         required: false
-        example: 35.0
+        example: USD
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      tax_percentage:
+        custom: []
+        name: tax_percentage
+        description: 'Porcentaje de IVA/impuesto.'
+        required: false
+        example: 13.0
         type: number
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      category_type:
+      card_fee_percentage:
         custom: []
-        name: category_type
-        description: 'optional Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra).'
+        name: card_fee_percentage
+        description: 'Porcentaje de comisión por tarjeta.'
         required: false
-        example: Interior
-        type: string
+        example: 3.5
+        type: number
         enumValues: []
         exampleWasSpecified: true
         nullable: true
-        deprecated: false
-      image:
-        custom: []
-        name: image
-        description: 'optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      image_url:
-        custom: []
-        name: image_url
-        description: 'Must be an image. Must not be greater than 5120 kilobytes.'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      active:
-        custom: []
-        name: active
-        description: 'optional Estado de disponibilidad en catálogo.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      remove_image:
-        custom: []
-        name: remove_image
-        description: 'optional Si se envía en true, elimina la imagen actual de la planta.'
-        required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: 'Monstera Variegata'
-      price: 35.0
-      category_type: Interior
-      active: true
-      remove_image: false
-    fileParameters:
-      image: null
-      image_url: null
+      country: 'El Salvador'
+      currency: USD
+      tax_percentage: 13.0
+      card_fee_percentage: 3.5
+    fileParameters: []
     responses:
       -
         custom: []
@@ -687,14 +360,12 @@ endpoints:
           {
             "data": {
               "id": 1,
-              "name": "Monstera Variegata",
-              "price": 35.0,
-              "categoryType": "Interior",
-              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "active": true,
-              "createdAt": "2026-10-09T16:00:00+00:00",
-              "updatedAt": "2026-10-13T23:20:00+00:00"
+              "country": "El Salvador",
+              "currency": "USD",
+              "taxPercentage": 13.00,
+              "cardFeePercentage": 3.50,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
             }
           }
         headers: []
@@ -704,7 +375,7 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "Planta no encontrada",
+            "message": "Configuración de país no encontrada",
             "codigo": 404
           }
         headers: []
@@ -714,22 +385,10 @@ endpoints:
         status: 422
         content: |-
           {
-            "message": "Ya existe otra planta registrada con este nombre.",
+            "message": "The country has already been taken.",
             "errors": {
-              "name": [
-                "Ya existe otra planta registrada con este nombre."
-              ]
+              "country": ["The country has already been taken."]
             }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al actualizar la planta",
-            "codigo": 500
           }
         headers: []
         description: ''
@@ -745,15 +404,15 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/plants/{id}'
+    uri: 'api/v1/country-configs/{id}'
     metadata:
       custom: []
-      groupName: Plantas
+      groupName: Tarifas
       groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Eliminar lógicamente una planta.'
-      description: 'Realiza un borrado lógico (soft delete) de la planta especificada. No permite la eliminación si la planta está asociada a cotizaciones existentes.'
+      title: 'Eliminar configuración de país (tarifa).'
+      description: 'Elimina la configuración de tarifas para un país.'
       authenticated: true
       deprecated: false
     headers:
@@ -764,7 +423,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the plant.'
+        description: 'The ID of the country config.'
         required: true
         example: architecto
         type: string
@@ -772,10 +431,10 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      plant:
+      country_config:
         custom: []
-        name: plant
-        description: 'ID de la planta a eliminar.'
+        name: country_config
+        description: 'ID de la configuración.'
         required: true
         example: 1
         type: integer
@@ -785,7 +444,7 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-      plant: 1
+      country_config: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -803,33 +462,8 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "Planta no encontrada",
+            "message": "Configuración de país no encontrada",
             "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 409
-        content: |-
-          {
-            "message": "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).",
-            "codigo": 409,
-            "errors": {
-              "plant": [
-                "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s)."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al eliminar la planta",
-            "codigo": 500
           }
         headers: []
         description: ''

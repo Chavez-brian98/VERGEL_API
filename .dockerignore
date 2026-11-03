@@ -12,4 +12,5 @@ storage/certs
 storage/logs/*
 storage/framework/*
 bootstrap/cache/*
+public/storage
 *.md

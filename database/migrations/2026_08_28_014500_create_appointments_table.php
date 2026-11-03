@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained('employees')->onDelete('restrict')->onUpdate('cascade');
             $table->date('appointment_date');
             $table->time('appointment_time');
-            $table->enum('status', ['pending', 'confirmed', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled', 'annulled'])->default('pending');
             $table->enum('origin', ['manual', 'quote', 'automatic'])->default('manual');
             $table->text('notes')->nullable();
             $table->softDeletes();

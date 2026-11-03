@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\V1\AppointmentController;
+use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
+use App\Http\Controllers\Api\V1\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas públicas
@@ -30,10 +33,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('roles', RoleController::class);
 
+        Route::apiResource('country-configs', CountryConfigController::class);
+
+        Route::apiResource('suppliers', SupplierController::class);
+        Route::patch('suppliers/{supplier}/status', [SupplierController::class, 'updateStatus']);
+
         Route::get('plants', [PlantController::class, 'index']);
         Route::post('plants', [PlantController::class, 'store']);
         Route::get('plants/{id}', [PlantController::class, 'show']);
         Route::match(['put', 'patch', 'post'], 'plants/{id}', [PlantController::class, 'update']);
         Route::delete('plants/{id}', [PlantController::class, 'destroy']);
+
+        Route::get('appointments', [AppointmentController::class, 'index']);
+        Route::post('appointments', [AppointmentController::class, 'store']);
+        Route::get('appointments/{appointment}', [AppointmentController::class, 'show']);
+        Route::match(['put', 'patch'], 'appointments/{appointment}', [AppointmentController::class, 'update']);
+        Route::post('quotes/{quote}/appointments', [AppointmentController::class, 'storeFromQuote']);
     });
 });

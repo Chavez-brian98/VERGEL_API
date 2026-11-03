@@ -5,12 +5,12 @@
             "key": "baseUrl",
             "type": "string",
             "name": "string",
-            "value": "http:\/\/localhost"
+            "value": "https:\/\/vergel-front.pages.dev\/"
         }
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "e47fee5f-08fe-417a-b4cc-9406179d1777",
+        "_postman_id": "37c989c7-0ad7-4d10-8da9-e0dc83ab9ace",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -80,7 +80,10 @@
                                         "value": "application\/json"
                                     }
                                 ],
-                                "body": null,
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-03\",\"hasta\":\"2052-11-26\",\"limit\":22}"
+                                },
                                 "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
                             },
                             "response": [
@@ -88,6 +91,18 @@
                                     "header": [],
                                     "code": 200,
                                     "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n      \"tradeName\": \"Cliente Ejemplo\",\n      \"taxId\": \"0614-260290-101-1\",\n      \"nrc\": \"123456-7\",\n      \"phone\": \"7000-0000\",\n      \"status\": \"active\",\n      \"currentPlanName\": \"Plan B\u00e1sico\",\n      \"cashBalance\": 250.5,\n      \"loyaltyPoints\": 120,\n      \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/customers?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/customers?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/localhost\/api\/v1\/customers\",\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
                                     "name": ""
                                 }
                             ]
@@ -138,8 +153,20 @@
                                 },
                                 {
                                     "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
                                     "code": 404,
-                                    "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Customer]\"\n}",
+                                    "body": "{\n  \"message\": \"Cliente no encontrado\",\n  \"codigo\": 404\n}",
                                     "name": ""
                                 }
                             ]
@@ -184,8 +211,20 @@
                                 },
                                 {
                                     "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
                                     "code": 404,
-                                    "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Customer]\"\n}",
+                                    "body": "{\n  \"message\": \"Cliente no encontrado\",\n  \"codigo\": 404\n}",
                                     "name": ""
                                 }
                             ]
@@ -227,6 +266,18 @@
                                     "header": [],
                                     "code": 201,
                                     "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n    \"tradeName\": \"Cliente Ejemplo\",\n    \"taxId\": \"0614-260290-101-1\",\n    \"nrc\": \"123456-7\",\n    \"economicActivity\": \"Venta de servicios\",\n    \"address\": \"Colonia Centro, San Salvador\",\n    \"municipality\": \"San Salvador\",\n    \"department\": \"San Salvador\",\n    \"phone\": \"7000-0000\",\n    \"email\": \"cliente@example.com\",\n    \"status\": \"active\",\n    \"visitFrequency\": null,\n    \"currentPlan\": null,\n    \"wallet\": {\n      \"cashBalance\": 0,\n      \"reservedSubscriptionBalance\": 0\n    },\n    \"loyaltyPoints\": null,\n    \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
                                     "name": ""
                                 },
                                 {
@@ -286,6 +337,18 @@
                                 },
                                 {
                                     "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
                                     "code": 422,
                                     "body": "{\n  \"message\": \"The phone has already been taken.\",\n  \"errors\": {\n    \"phone\": [\"The phone has already been taken.\"]\n  }\n}",
                                     "name": ""
@@ -335,6 +398,18 @@
                                     "code": 204,
                                     "body": "",
                                     "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
                                 }
                             ]
                         },
@@ -377,6 +452,18 @@
                                     "header": [],
                                     "code": 200,
                                     "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n    \"status\": \"inactive\",\n    \"createdAt\": \"2026-09-23T06:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
                                     "name": ""
                                 },
                                 {
@@ -1453,6 +1540,262 @@
             ]
         },
         {
+            "name": "Tarifas",
+            "description": "",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar configuraciones de pa\u00eds (tarifas).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/country-configs",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/country-configs"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Obtiene el listado de configuraciones por pa\u00eds con moneda, IVA y comisi\u00f3n de tarjeta."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"country\": \"El Salvador\",\n      \"currency\": \"USD\",\n      \"taxPercentage\": 13.00,\n      \"cardFeePercentage\": 3.50,\n      \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n      \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener detalle de configuraci\u00f3n de pa\u00eds (tarifa).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/country-configs\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/country-configs\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the country config."
+                                        },
+                                        {
+                                            "id": "country_config",
+                                            "key": "country_config",
+                                            "value": 1,
+                                            "description": "ID de la configuraci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve la configuraci\u00f3n de tarifas para el pa\u00eds indicado."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"country\": \"El Salvador\",\n    \"currency\": \"USD\",\n    \"taxPercentage\": 13.00,\n    \"cardFeePercentage\": 3.50,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Configuraci\u00f3n de pa\u00eds no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar configuraci\u00f3n de pa\u00eds (tarifa).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/country-configs",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/country-configs"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"country\":\"El Salvador\",\"currency\":\"USD\",\"tax_percentage\":13,\"card_fee_percentage\":3.5}"
+                                },
+                                "description": "Crea la configuraci\u00f3n de tarifas para un pa\u00eds. El nombre del pa\u00eds debe ser \u00fanico."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"country\": \"El Salvador\",\n    \"currency\": \"USD\",\n    \"taxPercentage\": 13.00,\n    \"cardFeePercentage\": 3.50,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The country has already been taken.\",\n  \"errors\": {\n    \"country\": [\"The country has already been taken.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Actualizar configuraci\u00f3n de pa\u00eds (tarifa).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/country-configs\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/country-configs\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the country config."
+                                        },
+                                        {
+                                            "id": "country_config",
+                                            "key": "country_config",
+                                            "value": 1,
+                                            "description": "ID de la configuraci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"country\":\"El Salvador\",\"currency\":\"USD\",\"tax_percentage\":13,\"card_fee_percentage\":3.5}"
+                                },
+                                "description": "Actualiza de forma parcial los datos de tarifas de un pa\u00eds. Registra la operaci\u00f3n en auditor\u00eda."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"country\": \"El Salvador\",\n    \"currency\": \"USD\",\n    \"taxPercentage\": 13.00,\n    \"cardFeePercentage\": 3.50,\n    \"createdAt\": \"2026-10-08T22:58:33+00:00\",\n    \"updatedAt\": \"2026-10-08T22:58:33+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Configuraci\u00f3n de pa\u00eds no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The country has already been taken.\",\n  \"errors\": {\n    \"country\": [\"The country has already been taken.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Eliminar configuraci\u00f3n de pa\u00eds (tarifa).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/country-configs\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/country-configs\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the country config."
+                                        },
+                                        {
+                                            "id": "country_config",
+                                            "key": "country_config",
+                                            "value": 1,
+                                            "description": "ID de la configuraci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Elimina la configuraci\u00f3n de tarifas para un pa\u00eds."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Configuraci\u00f3n de pa\u00eds no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Autenticaci\u00f3n",
             "description": "",
             "item": [
@@ -1559,6 +1902,377 @@
             ]
         },
         {
+            "name": "Citas y Agenda",
+            "description": "\nEndpoints para la gesti\u00f3n y agendamiento de citas, visitas t\u00e9cnicas e inspecciones operativas.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y consultar agenda de citas.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments",
+                                    "query": [
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-11-01",
+                                            "description": "Fecha inicial para filtrar rango (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-11-30",
+                                            "description": "Fecha final para filtrar rango (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "date",
+                                            "value": "2026-11-15",
+                                            "description": "Fecha puntual para vista diaria (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Estado de la cita (pending, confirmed, completed, cancelled, annulled).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "client_id",
+                                            "value": "1",
+                                            "description": "ID del cliente a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "ID del cliente (alias directo).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "4",
+                                            "description": "ID del t\u00e9cnico asignado a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "service_id",
+                                            "value": "1",
+                                            "description": "ID del servicio a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "appointment_date",
+                                            "description": "Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n de ordenamiento (asc o desc). Por defecto 'asc'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Cantidad de citas por p\u00e1gina (1-100). Por defecto 15.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "all",
+                                            "value": "",
+                                            "description": "Si es verdadero, devuelve la lista completa sin paginar para la cuadr\u00edcula mensual.",
+                                            "disabled": true
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments?start_date=2026-11-01&end_date=2026-11-30&date=2026-11-15&status=pending&client_id=1&customer_id=1&employee_id=4&service_id=1&sort_by=appointment_date&sort_direction=asc&per_page=15&all="
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"completed\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"status\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
+                                },
+                                "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"customerId\": 1,\n      \"customer\": {\n        \"id\": 1,\n        \"legalName\": \"Juan Carlos P\u00e9rez\",\n        \"tradeName\": null,\n        \"phone\": \"7890-1234\",\n        \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n        \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n        \"department\": \"La Libertad\",\n        \"email\": \"juan.perez@example.com\"\n      },\n      \"employeeId\": 4,\n      \"employee\": {\n        \"id\": 4,\n        \"fullName\": \"Carlos Mendoza\"\n      },\n      \"serviceId\": 1,\n      \"service\": {\n        \"id\": 1,\n        \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n        \"price\": 45.0\n      },\n      \"quoteId\": null,\n      \"appointmentDate\": \"2026-11-15\",\n      \"appointmentTime\": \"09:30\",\n      \"status\": \"pending\",\n      \"origin\": \"manual\",\n      \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n      \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n      \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el detalle de una cita.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments\/:appointment",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments\/:appointment",
+                                    "variable": [
+                                        {
+                                            "id": "appointment",
+                                            "key": "appointment",
+                                            "value": 1,
+                                            "description": "ID de la cita."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve la informaci\u00f3n completa de una cita individual mediante su identificador \u00fanico (ID)."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 4,\n    \"employee\": {\n      \"id\": 4,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-15\",\n    \"appointmentTime\": \"09:30\",\n    \"status\": \"pending\",\n    \"origin\": \"manual\",\n    \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cita no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al obtener la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Agendar cita manualmente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":1,\"customer\":{\"legal_name\":\"Juan Carlos P\u00e9rez\",\"phone\":\"7890-1234\",\"address\":\"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\"municipality\":\"Antiguo Cuscatl\u00e1n\",\"department\":\"La Libertad\",\"email\":\"juan.perez@example.com\"},\"employee_id\":2,\"service_id\":1,\"appointment_date\":\"2026-11-15\",\"appointment_time\":\"09:30\",\"status\":\"pending\",\"notes\":\"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\"is_inspection\":true}"
+                                },
+                                "description": "Permite agendar una nueva cita directamente desde el calendario sin necesidad de una cotizaci\u00f3n previa.\nEs ideal para clientes que llaman, ingresan por campa\u00f1as publicitarias o requieren una inspecci\u00f3n t\u00e9cnica inicial.\nSoporta tanto clientes registrados previamente como la creaci\u00f3n autom\u00e1tica de clientes no registrados."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 2,\n    \"employee\": {\n      \"id\": 2,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-15\",\n    \"appointmentTime\": \"09:30\",\n    \"status\": \"pending\",\n    \"origin\": \"manual\",\n    \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.\",\n  \"errors\": {\n    \"customer_id\": [\n      \"Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al agendar la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Actualizar o reprogramar una cita.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments\/:appointment",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments\/:appointment",
+                                    "variable": [
+                                        {
+                                            "id": "appointment",
+                                            "key": "appointment",
+                                            "value": 1,
+                                            "description": "ID de la cita a actualizar."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"employee_id\":4,\"service_id\":2,\"appointment_date\":\"2026-11-18\",\"appointment_time\":\"14:00\",\"status\":\"confirmed\",\"notes\":\"Reprogramada a solicitud del cliente por viaje de negocios.\"}"
+                                },
+                                "description": "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el t\u00e9cnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o t\u00e9cnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo autom\u00e1ticamente la propia cita evaluada para evitar falsas colisiones.\n\nSi el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programaci\u00f3n\nautom\u00e1tica del siguiente mantenimiento seg\u00fan la frecuencia configurada del cliente o de su plan. Si la fecha ideal\nno tiene disponibilidad por colisi\u00f3n con otra cita, devuelve 'suggestedRescheduleDates' con las fechas m\u00e1s cercanas."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 4,\n    \"employee\": {\n      \"id\": 4,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 2,\n    \"service\": {\n      \"id\": 2,\n      \"name\": \"Fertilizaci\u00f3n Org\u00e1nica\",\n      \"price\": 35.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-18\",\n    \"appointmentTime\": \"14:00\",\n    \"status\": \"confirmed\",\n    \"origin\": \"manual\",\n    \"notes\": \"Reprogramada a solicitud del cliente por viaje de negocios.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-02T08:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cita no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"El t\u00e9cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m\u00ednimo de 5 horas entre cada visita.\",\n  \"errors\": {\n    \"appointment_time\": [\n      \"El t\u00e9cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m\u00ednimo de 5 horas entre cada visita.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al actualizar la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Agendar cita desde una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:quote\/appointments",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:quote\/appointments",
+                                    "variable": [
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n a vincular."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"employee_id\":2,\"service_id\":1,\"appointment_date\":\"2026-11-20\",\"appointment_time\":\"10:00\",\"status\":\"pending\",\"notes\":\"Ejecuci\u00f3n del servicio seg\u00fan cotizaci\u00f3n aprobada.\",\"is_inspection\":false}"
+                                },
+                                "description": "Permite programar directamente una cita de servicio o visita t\u00e9cnica vinculada a una cotizaci\u00f3n existente.\nEl cliente (`customer_id`) se hereda de manera autom\u00e1tica de la cotizaci\u00f3n y el origen de la cita se establece como 'quote'."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 2,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 2,\n    \"employee\": {\n      \"id\": 2,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": 1,\n    \"appointmentDate\": \"2026-11-20\",\n    \"appointmentTime\": \"10:00\",\n    \"status\": \"pending\",\n    \"origin\": \"quote\",\n    \"notes\": \"Ejecuci\u00f3n del servicio seg\u00fan cotizaci\u00f3n aprobada.\",\n    \"createdAt\": \"2026-11-01T23:20:00+00:00\",\n    \"updatedAt\": \"2026-11-01T23:20:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"El colaborador asignado debe ser un T\u00e9cnico de campo activo.\",\n  \"errors\": {\n    \"employee_id\": [\n      \"El colaborador asignado debe ser un T\u00e9cnico de campo activo.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al agendar la cita desde cotizaci\u00f3n\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Plantas",
             "description": "",
             "item": [
@@ -1643,7 +2357,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -1978,6 +2692,313 @@
                                     "name": ""
                                 }
                             ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Proveedores",
+            "description": "\nAPIs para la gesti\u00f3n de proveedores, compras y suministros de El Vergel.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar proveedores.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Vivero",
+                                            "description": "B\u00fasqueda por nombre, nombre comercial, email, tel\u00e9fono, tax_id (NIT\/DUI), NRC o contacto.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "active",
+                                            "description": "Filtrar por estado (`active` o `inactive`).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "economic_activity",
+                                            "value": "Jardiner\u00eda",
+                                            "description": "Filtrar por giro o actividad econ\u00f3mica.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "phone",
+                                            "value": "78901234",
+                                            "description": "Filtrar por n\u00famero de tel\u00e9fono.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "Filtrar proveedores creados desde una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "name",
+                                            "description": "Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers?search=Vivero&status=active&economic_activity=Jardiner%C3%ADa&phone=78901234&desde=2026-01-01&hasta=2026-12-31&sort_by=name&sort_direction=asc&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-03T20:28:33\",\"hasta\":\"2052-11-26\",\"sort_by\":\"status\",\"sort_direction\":\"ASC\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro econ\u00f3mico, tel\u00e9fono o rango de fechas."
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"message\":\"Unauthenticated.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar detalle de un proveedor.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the supplier."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"message\":\"Unauthenticated.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Gesti\u00f3n",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar un nuevo proveedor.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Distribuidora Verde S.A. de C.V.\",\"trade_name\":\"Vivero El Roble\",\"tax_id\":\"0614-010190-101-1\",\"nrc\":\"123456-7\",\"economic_activity\":\"Venta de plantas y abonos\",\"phone\":\"22223333\",\"email\":\"ventas@elroble.com\",\"address\":\"Calle Principal #123, San Salvador\",\"contact_name\":\"Carlos Henr\u00edquez\",\"contact_phone\":\"77778888\",\"status\":\"active\",\"notes\":\"Proveedor mayorista de tierra y sustratos\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Actualizar informaci\u00f3n de un proveedor.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the supplier."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"inactive\",\"notes\":\"architecto\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Eliminar proveedor (Borrado l\u00f3gico).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the supplier."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Cambiar estado de un proveedor.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers\/:supplier\/status",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:supplier\/status",
+                                    "variable": [
+                                        {
+                                            "id": "supplier",
+                                            "key": "supplier",
+                                            "value": "architecto",
+                                            "description": "The supplier."
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"status\":\"inactive\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
                         }
                     ]
                 }
