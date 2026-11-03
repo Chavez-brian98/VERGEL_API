@@ -46,12 +46,16 @@ RUN mkdir -p \
     storage/framework/cache/data \
     storage/framework/sessions \
     storage/framework/testing \
+    storage/app/public \
     storage/logs
 
 # Defensa contra contexto incompleto: public/ debe haber llegado a la imagen
 RUN test -f /var/www/public/index.php
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Crear enlace simbólico para el almacenamiento público
+RUN php artisan storage:link
 
 # Reutilizamos "www-data" los directorios que el proceso Apache escribe
 RUN chown -R www-data:www-data storage bootstrap/cache
