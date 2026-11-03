@@ -1902,6 +1902,377 @@
             ]
         },
         {
+            "name": "Citas y Agenda",
+            "description": "\nEndpoints para la gesti\u00f3n y agendamiento de citas, visitas t\u00e9cnicas e inspecciones operativas.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y consultar agenda de citas.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments",
+                                    "query": [
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-11-01",
+                                            "description": "Fecha inicial para filtrar rango (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-11-30",
+                                            "description": "Fecha final para filtrar rango (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "date",
+                                            "value": "2026-11-15",
+                                            "description": "Fecha puntual para vista diaria (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Estado de la cita (pending, confirmed, completed, cancelled, annulled).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "client_id",
+                                            "value": "1",
+                                            "description": "ID del cliente a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "ID del cliente (alias directo).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "4",
+                                            "description": "ID del t\u00e9cnico asignado a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "service_id",
+                                            "value": "1",
+                                            "description": "ID del servicio a filtrar.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "appointment_date",
+                                            "description": "Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n de ordenamiento (asc o desc). Por defecto 'asc'.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Cantidad de citas por p\u00e1gina (1-100). Por defecto 15.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "all",
+                                            "value": "",
+                                            "description": "Si es verdadero, devuelve la lista completa sin paginar para la cuadr\u00edcula mensual.",
+                                            "disabled": true
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments?start_date=2026-11-01&end_date=2026-11-30&date=2026-11-15&status=pending&client_id=1&customer_id=1&employee_id=4&service_id=1&sort_by=appointment_date&sort_direction=asc&per_page=15&all="
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"confirmed\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"status\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":true}"
+                                },
+                                "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"customerId\": 1,\n      \"customer\": {\n        \"id\": 1,\n        \"legalName\": \"Juan Carlos P\u00e9rez\",\n        \"tradeName\": null,\n        \"phone\": \"7890-1234\",\n        \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n        \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n        \"department\": \"La Libertad\",\n        \"email\": \"juan.perez@example.com\"\n      },\n      \"employeeId\": 4,\n      \"employee\": {\n        \"id\": 4,\n        \"fullName\": \"Carlos Mendoza\"\n      },\n      \"serviceId\": 1,\n      \"service\": {\n        \"id\": 1,\n        \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n        \"price\": 45.0\n      },\n      \"quoteId\": null,\n      \"appointmentDate\": \"2026-11-15\",\n      \"appointmentTime\": \"09:30\",\n      \"status\": \"pending\",\n      \"origin\": \"manual\",\n      \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n      \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n      \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el detalle de una cita.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments\/:appointment",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments\/:appointment",
+                                    "variable": [
+                                        {
+                                            "id": "appointment",
+                                            "key": "appointment",
+                                            "value": 1,
+                                            "description": "ID de la cita."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve la informaci\u00f3n completa de una cita individual mediante su identificador \u00fanico (ID)."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 4,\n    \"employee\": {\n      \"id\": 4,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-15\",\n    \"appointmentTime\": \"09:30\",\n    \"status\": \"pending\",\n    \"origin\": \"manual\",\n    \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cita no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al obtener la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Agendar cita manualmente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":1,\"customer\":{\"legal_name\":\"Juan Carlos P\u00e9rez\",\"phone\":\"7890-1234\",\"address\":\"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\"municipality\":\"Antiguo Cuscatl\u00e1n\",\"department\":\"La Libertad\",\"email\":\"juan.perez@example.com\"},\"employee_id\":2,\"service_id\":1,\"appointment_date\":\"2026-11-15\",\"appointment_time\":\"09:30\",\"status\":\"pending\",\"notes\":\"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\"is_inspection\":true}"
+                                },
+                                "description": "Permite agendar una nueva cita directamente desde el calendario sin necesidad de una cotizaci\u00f3n previa.\nEs ideal para clientes que llaman, ingresan por campa\u00f1as publicitarias o requieren una inspecci\u00f3n t\u00e9cnica inicial.\nSoporta tanto clientes registrados previamente como la creaci\u00f3n autom\u00e1tica de clientes no registrados."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 2,\n    \"employee\": {\n      \"id\": 2,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-15\",\n    \"appointmentTime\": \"09:30\",\n    \"status\": \"pending\",\n    \"origin\": \"manual\",\n    \"notes\": \"Cliente solicita inspecci\u00f3n inicial para dise\u00f1o de jard\u00edn frontal.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-01T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.\",\n  \"errors\": {\n    \"customer_id\": [\n      \"Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al agendar la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Actualizar o reprogramar una cita.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/appointments\/:appointment",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/appointments\/:appointment",
+                                    "variable": [
+                                        {
+                                            "id": "appointment",
+                                            "key": "appointment",
+                                            "value": 1,
+                                            "description": "ID de la cita a actualizar."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"employee_id\":4,\"service_id\":2,\"appointment_date\":\"2026-11-18\",\"appointment_time\":\"14:00\",\"status\":\"confirmed\",\"notes\":\"Reprogramada a solicitud del cliente por viaje de negocios.\"}"
+                                },
+                                "description": "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el t\u00e9cnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o t\u00e9cnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo autom\u00e1ticamente la propia cita evaluada para evitar falsas colisiones.\n\nSi el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programaci\u00f3n\nautom\u00e1tica del siguiente mantenimiento seg\u00fan la frecuencia configurada del cliente o de su plan. Si la fecha ideal\nno tiene disponibilidad por colisi\u00f3n con otra cita, devuelve 'suggestedRescheduleDates' con las fechas m\u00e1s cercanas."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 4,\n    \"employee\": {\n      \"id\": 4,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 2,\n    \"service\": {\n      \"id\": 2,\n      \"name\": \"Fertilizaci\u00f3n Org\u00e1nica\",\n      \"price\": 35.0\n    },\n    \"quoteId\": null,\n    \"appointmentDate\": \"2026-11-18\",\n    \"appointmentTime\": \"14:00\",\n    \"status\": \"confirmed\",\n    \"origin\": \"manual\",\n    \"notes\": \"Reprogramada a solicitud del cliente por viaje de negocios.\",\n    \"createdAt\": \"2026-11-01T16:00:00+00:00\",\n    \"updatedAt\": \"2026-11-02T08:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cita no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"El t\u00e9cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m\u00ednimo de 5 horas entre cada visita.\",\n  \"errors\": {\n    \"appointment_time\": [\n      \"El t\u00e9cnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo m\u00ednimo de 5 horas entre cada visita.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al actualizar la cita\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Agendar cita desde una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:quote\/appointments",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:quote\/appointments",
+                                    "variable": [
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n a vincular."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"employee_id\":2,\"service_id\":1,\"appointment_date\":\"2026-11-20\",\"appointment_time\":\"10:00\",\"status\":\"pending\",\"notes\":\"Ejecuci\u00f3n del servicio seg\u00fan cotizaci\u00f3n aprobada.\",\"is_inspection\":false}"
+                                },
+                                "description": "Permite programar directamente una cita de servicio o visita t\u00e9cnica vinculada a una cotizaci\u00f3n existente.\nEl cliente (`customer_id`) se hereda de manera autom\u00e1tica de la cotizaci\u00f3n y el origen de la cita se establece como 'quote'."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 2,\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"phone\": \"7890-1234\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"email\": \"juan.perez@example.com\"\n    },\n    \"employeeId\": 2,\n    \"employee\": {\n      \"id\": 2,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"serviceId\": 1,\n    \"service\": {\n      \"id\": 1,\n      \"name\": \"Poda y Mantenimiento de C\u00e9sped\",\n      \"price\": 45.0\n    },\n    \"quoteId\": 1,\n    \"appointmentDate\": \"2026-11-20\",\n    \"appointmentTime\": \"10:00\",\n    \"status\": \"pending\",\n    \"origin\": \"quote\",\n    \"notes\": \"Ejecuci\u00f3n del servicio seg\u00fan cotizaci\u00f3n aprobada.\",\n    \"createdAt\": \"2026-11-01T23:20:00+00:00\",\n    \"updatedAt\": \"2026-11-01T23:20:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n no encontrada\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"El colaborador asignado debe ser un T\u00e9cnico de campo activo.\",\n  \"errors\": {\n    \"employee_id\": [\n      \"El colaborador asignado debe ser un T\u00e9cnico de campo activo.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al agendar la cita desde cotizaci\u00f3n\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Plantas",
             "description": "",
             "item": [

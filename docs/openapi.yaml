@@ -26,6 +26,9 @@ tags:
     name: Autenticación
     description: ''
   -
+    name: 'Citas y Agenda'
+    description: "\nEndpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas."
+  -
     name: Plantas
     description: ''
   -
@@ -3916,6 +3919,1325 @@ paths:
                     example: 'Error interno al cerrar sesión'
       tags:
         - Autenticación
+  /api/v1/appointments:
+    get:
+      summary: 'Listar y consultar agenda de citas.'
+      operationId: listarYConsultarAgendaDeCitas
+      description: "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, técnico asignado y paginación o listado completo para el calendario.\n\nLos técnicos de campo únicamente pueden visualizar las citas asignadas a su persona."
+      parameters:
+        -
+          in: query
+          name: start_date
+          description: 'Fecha inicial para filtrar rango (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial para filtrar rango (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: end_date
+          description: 'Fecha final para filtrar rango (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final para filtrar rango (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: date
+          description: 'Fecha puntual para vista diaria (AAAA-MM-DD).'
+          example: '2026-11-15'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha puntual para vista diaria (AAAA-MM-DD).'
+            example: '2026-11-15'
+        -
+          in: query
+          name: status
+          description: 'Estado de la cita (pending, confirmed, completed, cancelled, annulled).'
+          example: pending
+          required: false
+          schema:
+            type: string
+            description: 'Estado de la cita (pending, confirmed, completed, cancelled, annulled).'
+            example: pending
+        -
+          in: query
+          name: client_id
+          description: 'ID del cliente a filtrar.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'ID del cliente a filtrar.'
+            example: 1
+        -
+          in: query
+          name: customer_id
+          description: 'ID del cliente (alias directo).'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'ID del cliente (alias directo).'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'ID del técnico asignado a filtrar.'
+          example: 4
+          required: false
+          schema:
+            type: integer
+            description: 'ID del técnico asignado a filtrar.'
+            example: 4
+        -
+          in: query
+          name: service_id
+          description: 'ID del servicio a filtrar.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'ID del servicio a filtrar.'
+            example: 1
+        -
+          in: query
+          name: sort_by
+          description: "Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'."
+          example: appointment_date
+          required: false
+          schema:
+            type: string
+            description: "Campo de ordenamiento (id, appointment_date, appointment_time, status, created_at). Por defecto 'appointment_date'."
+            example: appointment_date
+        -
+          in: query
+          name: sort_direction
+          description: "Dirección de ordenamiento (asc o desc). Por defecto 'asc'."
+          example: asc
+          required: false
+          schema:
+            type: string
+            description: "Dirección de ordenamiento (asc o desc). Por defecto 'asc'."
+            example: asc
+        -
+          in: query
+          name: per_page
+          description: 'Cantidad de citas por página (1-100). Por defecto 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de citas por página (1-100). Por defecto 15.'
+            example: 15
+        -
+          in: query
+          name: all
+          description: 'Si es verdadero, devuelve la lista completa sin paginar para la cuadrícula mensual.'
+          example: false
+          required: false
+          schema:
+            type: boolean
+            description: 'Si es verdadero, devuelve la lista completa sin paginar para la cuadrícula mensual.'
+            example: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      customerId: 1
+                      customer:
+                        id: 1
+                        legalName: 'Juan Carlos Pérez'
+                        tradeName: null
+                        phone: 7890-1234
+                        address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                        municipality: 'Antiguo Cuscatlán'
+                        department: 'La Libertad'
+                        email: juan.perez@example.com
+                      employeeId: 4
+                      employee:
+                        id: 4
+                        fullName: 'Carlos Mendoza'
+                      serviceId: 1
+                      service:
+                        id: 1
+                        name: 'Poda y Mantenimiento de Césped'
+                        price: 45.0
+                      quoteId: null
+                      appointmentDate: '2026-11-15'
+                      appointmentTime: '09:30'
+                      status: pending
+                      origin: manual
+                      notes: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                      createdAt: '2026-11-01T16:00:00+00:00'
+                      updatedAt: '2026-11-01T16:00:00+00:00'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        customerId: 1
+                        customer:
+                          id: 1
+                          legalName: 'Juan Carlos Pérez'
+                          tradeName: null
+                          phone: 7890-1234
+                          address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                          municipality: 'Antiguo Cuscatlán'
+                          department: 'La Libertad'
+                          email: juan.perez@example.com
+                        employeeId: 4
+                        employee:
+                          id: 4
+                          fullName: 'Carlos Mendoza'
+                        serviceId: 1
+                        service:
+                          id: 1
+                          name: 'Poda y Mantenimiento de Césped'
+                          price: 45
+                        quoteId: null
+                        appointmentDate: '2026-11-15'
+                        appointmentTime: '09:30'
+                        status: pending
+                        origin: manual
+                        notes: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                        createdAt: '2026-11-01T16:00:00+00:00'
+                        updatedAt: '2026-11-01T16:00:00+00:00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        customerId:
+                          type: integer
+                          example: 1
+                        customer:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            legalName:
+                              type: string
+                              example: 'Juan Carlos Pérez'
+                            tradeName:
+                              type: string
+                              example: null
+                              nullable: true
+                            phone:
+                              type: string
+                              example: 7890-1234
+                            address:
+                              type: string
+                              example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                            municipality:
+                              type: string
+                              example: 'Antiguo Cuscatlán'
+                            department:
+                              type: string
+                              example: 'La Libertad'
+                            email:
+                              type: string
+                              example: juan.perez@example.com
+                        employeeId:
+                          type: integer
+                          example: 4
+                        employee:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 4
+                            fullName:
+                              type: string
+                              example: 'Carlos Mendoza'
+                        serviceId:
+                          type: integer
+                          example: 1
+                        service:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Poda y Mantenimiento de Césped'
+                            price:
+                              type: number
+                              example: 45.0
+                        quoteId:
+                          type: string
+                          example: null
+                          nullable: true
+                        appointmentDate:
+                          type: string
+                          example: '2026-11-15'
+                        appointmentTime:
+                          type: string
+                          example: '09:30'
+                        status:
+                          type: string
+                          example: pending
+                        origin:
+                          type: string
+                          example: manual
+                        notes:
+                          type: string
+                          example: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                        createdAt:
+                          type: string
+                          example: '2026-11-01T16:00:00+00:00'
+                        updatedAt:
+                          type: string
+                          example: '2026-11-01T16:00:00+00:00'
+      tags:
+        - 'Citas y Agenda'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-03'
+                  nullable: true
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-11-26'
+                  nullable: true
+                date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-03'
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: confirmed
+                  enum:
+                    - pending
+                    - confirmed
+                    - completed
+                    - cancelled
+                    - annulled
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                client_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                service_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: status
+                  enum:
+                    - id
+                    - appointment_date
+                    - appointment_time
+                    - status
+                    - created_at
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: desc
+                  enum:
+                    - asc
+                    - desc
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+                all:
+                  type: boolean
+                  description: ''
+                  example: true
+                  nullable: true
+    post:
+      summary: 'Agendar cita manualmente.'
+      operationId: agendarCitaManualmente
+      description: "Permite agendar una nueva cita directamente desde el calendario sin necesidad de una cotización previa.\nEs ideal para clientes que llaman, ingresan por campañas publicitarias o requieren una inspección técnica inicial.\nSoporta tanto clientes registrados previamente como la creación automática de clientes no registrados."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    customerId: 1
+                    customer:
+                      id: 1
+                      legalName: 'Juan Carlos Pérez'
+                      tradeName: null
+                      phone: 7890-1234
+                      address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                      municipality: 'Antiguo Cuscatlán'
+                      department: 'La Libertad'
+                      email: juan.perez@example.com
+                    employeeId: 2
+                    employee:
+                      id: 2
+                      fullName: 'Carlos Mendoza'
+                    serviceId: 1
+                    service:
+                      id: 1
+                      name: 'Poda y Mantenimiento de Césped'
+                      price: 45.0
+                    quoteId: null
+                    appointmentDate: '2026-11-15'
+                    appointmentTime: '09:30'
+                    status: pending
+                    origin: manual
+                    notes: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                    createdAt: '2026-11-01T16:00:00+00:00'
+                    updatedAt: '2026-11-01T16:00:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      customerId:
+                        type: integer
+                        example: 1
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Juan Carlos Pérez'
+                          tradeName:
+                            type: string
+                            example: null
+                            nullable: true
+                          phone:
+                            type: string
+                            example: 7890-1234
+                          address:
+                            type: string
+                            example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                          municipality:
+                            type: string
+                            example: 'Antiguo Cuscatlán'
+                          department:
+                            type: string
+                            example: 'La Libertad'
+                          email:
+                            type: string
+                            example: juan.perez@example.com
+                      employeeId:
+                        type: integer
+                        example: 2
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 2
+                          fullName:
+                            type: string
+                            example: 'Carlos Mendoza'
+                      serviceId:
+                        type: integer
+                        example: 1
+                      service:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Poda y Mantenimiento de Césped'
+                          price:
+                            type: number
+                            example: 45.0
+                      quoteId:
+                        type: string
+                        example: null
+                        nullable: true
+                      appointmentDate:
+                        type: string
+                        example: '2026-11-15'
+                      appointmentTime:
+                        type: string
+                        example: '09:30'
+                      status:
+                        type: string
+                        example: pending
+                      origin:
+                        type: string
+                        example: manual
+                      notes:
+                        type: string
+                        example: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                      createdAt:
+                        type: string
+                        example: '2026-11-01T16:00:00+00:00'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-01T16:00:00+00:00'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.'
+                  errors:
+                    customer_id:
+                      - 'Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.'
+                  errors:
+                    type: object
+                    properties:
+                      customer_id:
+                        type: array
+                        example:
+                          - 'Debe indicar un cliente existente o proporcionar los datos del nuevo cliente.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al agendar la cita'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al agendar la cita'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - 'Citas y Agenda'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: "ID del cliente existente en el sistema. Requerido si no se envía 'customer'."
+                  example: 1
+                  nullable: true
+                customer:
+                  type: object
+                  description: "Objeto con información del nuevo cliente. Requerido si no se envía 'customer_id'."
+                  example: []
+                  properties:
+                    legal_name:
+                      type: string
+                      description: 'Nombre completo o razón social del cliente.'
+                      example: 'Juan Carlos Pérez'
+                    phone:
+                      type: string
+                      description: 'Teléfono principal de contacto.'
+                      example: 7890-1234
+                    address:
+                      type: string
+                      description: 'Dirección física de la propiedad o servicio.'
+                      example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                    municipality:
+                      type: string
+                      description: 'Municipio donde se ubica el cliente.'
+                      example: 'Antiguo Cuscatlán'
+                    department:
+                      type: string
+                      description: 'Departamento donde se ubica el cliente.'
+                      example: 'La Libertad'
+                      nullable: true
+                    email:
+                      type: string
+                      description: 'Correo electrónico de contacto.'
+                      example: juan.perez@example.com
+                      nullable: true
+                  required:
+                    - legal_name
+                    - phone
+                    - address
+                    - municipality
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'ID del colaborador o técnico de campo asignado para atender la cita.'
+                  example: 2
+                service_id:
+                  type: integer
+                  description: 'ID del servicio de catálogo solicitado (opcional si es visita general).'
+                  example: 1
+                  nullable: true
+                appointment_date:
+                  type: string
+                  description: 'Fecha programada de la cita en formato AAAA-MM-DD.'
+                  example: '2026-11-15'
+                appointment_time:
+                  type: string
+                  description: 'Hora programada de la cita en formato HH:MM (24h).'
+                  example: '09:30'
+                status:
+                  type: string
+                  description: "Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'."
+                  example: pending
+                notes:
+                  type: string
+                  description: 'Observaciones o requerimientos especiales indicados por el cliente.'
+                  example: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                  nullable: true
+                is_inspection:
+                  type: boolean
+                  description: 'Si es verdadero, genera de forma automática una ficha de inspección inicial vinculada a la cita.'
+                  example: true
+              required:
+                - employee_id
+                - appointment_date
+                - appointment_time
+  '/api/v1/appointments/{appointment}':
+    get:
+      summary: 'Obtener el detalle de una cita.'
+      operationId: obtenerElDetalleDeUnaCita
+      description: 'Devuelve la información completa de una cita individual mediante su identificador único (ID).'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    customerId: 1
+                    customer:
+                      id: 1
+                      legalName: 'Juan Carlos Pérez'
+                      tradeName: null
+                      phone: 7890-1234
+                      address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                      municipality: 'Antiguo Cuscatlán'
+                      department: 'La Libertad'
+                      email: juan.perez@example.com
+                    employeeId: 4
+                    employee:
+                      id: 4
+                      fullName: 'Carlos Mendoza'
+                    serviceId: 1
+                    service:
+                      id: 1
+                      name: 'Poda y Mantenimiento de Césped'
+                      price: 45.0
+                    quoteId: null
+                    appointmentDate: '2026-11-15'
+                    appointmentTime: '09:30'
+                    status: pending
+                    origin: manual
+                    notes: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                    createdAt: '2026-11-01T16:00:00+00:00'
+                    updatedAt: '2026-11-01T16:00:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      customerId:
+                        type: integer
+                        example: 1
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Juan Carlos Pérez'
+                          tradeName:
+                            type: string
+                            example: null
+                            nullable: true
+                          phone:
+                            type: string
+                            example: 7890-1234
+                          address:
+                            type: string
+                            example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                          municipality:
+                            type: string
+                            example: 'Antiguo Cuscatlán'
+                          department:
+                            type: string
+                            example: 'La Libertad'
+                          email:
+                            type: string
+                            example: juan.perez@example.com
+                      employeeId:
+                        type: integer
+                        example: 4
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 4
+                          fullName:
+                            type: string
+                            example: 'Carlos Mendoza'
+                      serviceId:
+                        type: integer
+                        example: 1
+                      service:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Poda y Mantenimiento de Césped'
+                          price:
+                            type: number
+                            example: 45.0
+                      quoteId:
+                        type: string
+                        example: null
+                        nullable: true
+                      appointmentDate:
+                        type: string
+                        example: '2026-11-15'
+                      appointmentTime:
+                        type: string
+                        example: '09:30'
+                      status:
+                        type: string
+                        example: pending
+                      origin:
+                        type: string
+                        example: manual
+                      notes:
+                        type: string
+                        example: 'Cliente solicita inspección inicial para diseño de jardín frontal.'
+                      createdAt:
+                        type: string
+                        example: '2026-11-01T16:00:00+00:00'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-01T16:00:00+00:00'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cita no encontrada'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Cita no encontrada'
+                  codigo:
+                    type: integer
+                    example: 404
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al obtener la cita'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al obtener la cita'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - 'Citas y Agenda'
+    put:
+      summary: 'Actualizar o reprogramar una cita.'
+      operationId: actualizarOReprogramarUnaCita
+      description: "Permite modificar los datos de una cita existente: reprogramar su fecha y hora, reasignar el técnico de campo,\nactualizar su estado (pending, confirmed, completed, cancelled, annulled), cambiar el servicio o actualizar notas.\n\nSi se reprograma la fecha, hora o técnico, el sistema valida que no existan conflictos de agenda (margen de 5 horas),\nexcluyendo automáticamente la propia cita evaluada para evitar falsas colisiones.\n\nSi el estado cambia a 'completed' y el cliente se encuentra en estado 'active', el sistema ejecuta la programación\nautomática del siguiente mantenimiento según la frecuencia configurada del cliente o de su plan. Si la fecha ideal\nno tiene disponibilidad por colisión con otra cita, devuelve 'suggestedRescheduleDates' con las fechas más cercanas."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    customerId: 1
+                    customer:
+                      id: 1
+                      legalName: 'Juan Carlos Pérez'
+                      tradeName: null
+                      phone: 7890-1234
+                      address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                      municipality: 'Antiguo Cuscatlán'
+                      department: 'La Libertad'
+                      email: juan.perez@example.com
+                    employeeId: 4
+                    employee:
+                      id: 4
+                      fullName: 'Carlos Mendoza'
+                    serviceId: 2
+                    service:
+                      id: 2
+                      name: 'Fertilización Orgánica'
+                      price: 35.0
+                    quoteId: null
+                    appointmentDate: '2026-11-18'
+                    appointmentTime: '14:00'
+                    status: confirmed
+                    origin: manual
+                    notes: 'Reprogramada a solicitud del cliente por viaje de negocios.'
+                    createdAt: '2026-11-01T16:00:00+00:00'
+                    updatedAt: '2026-11-02T08:00:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      customerId:
+                        type: integer
+                        example: 1
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Juan Carlos Pérez'
+                          tradeName:
+                            type: string
+                            example: null
+                            nullable: true
+                          phone:
+                            type: string
+                            example: 7890-1234
+                          address:
+                            type: string
+                            example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                          municipality:
+                            type: string
+                            example: 'Antiguo Cuscatlán'
+                          department:
+                            type: string
+                            example: 'La Libertad'
+                          email:
+                            type: string
+                            example: juan.perez@example.com
+                      employeeId:
+                        type: integer
+                        example: 4
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 4
+                          fullName:
+                            type: string
+                            example: 'Carlos Mendoza'
+                      serviceId:
+                        type: integer
+                        example: 2
+                      service:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 2
+                          name:
+                            type: string
+                            example: 'Fertilización Orgánica'
+                          price:
+                            type: number
+                            example: 35.0
+                      quoteId:
+                        type: string
+                        example: null
+                        nullable: true
+                      appointmentDate:
+                        type: string
+                        example: '2026-11-18'
+                      appointmentTime:
+                        type: string
+                        example: '14:00'
+                      status:
+                        type: string
+                        example: confirmed
+                      origin:
+                        type: string
+                        example: manual
+                      notes:
+                        type: string
+                        example: 'Reprogramada a solicitud del cliente por viaje de negocios.'
+                      createdAt:
+                        type: string
+                        example: '2026-11-01T16:00:00+00:00'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-02T08:00:00+00:00'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cita no encontrada'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Cita no encontrada'
+                  codigo:
+                    type: integer
+                    example: 404
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.'
+                  errors:
+                    appointment_time:
+                      - 'El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.'
+                properties:
+                  message:
+                    type: string
+                    example: 'El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.'
+                  errors:
+                    type: object
+                    properties:
+                      appointment_time:
+                        type: array
+                        example:
+                          - 'El técnico de campo ya tiene una cita asignada a las 10:00 en esta fecha. Debe existir un intervalo mínimo de 5 horas entre cada visita.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al actualizar la cita'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al actualizar la cita'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - 'Citas y Agenda'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                employee_id:
+                  type: integer
+                  description: 'ID del nuevo colaborador o técnico de campo asignado.'
+                  example: 4
+                service_id:
+                  type: integer
+                  description: 'ID del nuevo servicio solicitado (o null para quitar).'
+                  example: 2
+                  nullable: true
+                appointment_date:
+                  type: string
+                  description: 'Nueva fecha de la cita en formato AAAA-MM-DD.'
+                  example: '2026-11-18'
+                appointment_time:
+                  type: string
+                  description: 'Nueva hora de la cita en formato HH:MM (24h).'
+                  example: '14:00'
+                status:
+                  type: string
+                  description: 'Nuevo estado de la cita (pending, confirmed, completed, cancelled, annulled).'
+                  example: confirmed
+                notes:
+                  type: string
+                  description: 'Observaciones o motivo de la reprogramación.'
+                  example: 'Reprogramada a solicitud del cliente por viaje de negocios.'
+                  nullable: true
+    parameters:
+      -
+        in: path
+        name: appointment
+        description: 'ID de la cita.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/quotes/{quote}/appointments':
+    post:
+      summary: 'Agendar cita desde una cotización.'
+      operationId: agendarCitaDesdeUnaCotizacin
+      description: "Permite programar directamente una cita de servicio o visita técnica vinculada a una cotización existente.\nEl cliente (`customer_id`) se hereda de manera automática de la cotización y el origen de la cita se establece como 'quote'."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 2
+                    customerId: 1
+                    customer:
+                      id: 1
+                      legalName: 'Juan Carlos Pérez'
+                      tradeName: null
+                      phone: 7890-1234
+                      address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                      municipality: 'Antiguo Cuscatlán'
+                      department: 'La Libertad'
+                      email: juan.perez@example.com
+                    employeeId: 2
+                    employee:
+                      id: 2
+                      fullName: 'Carlos Mendoza'
+                    serviceId: 1
+                    service:
+                      id: 1
+                      name: 'Poda y Mantenimiento de Césped'
+                      price: 45.0
+                    quoteId: 1
+                    appointmentDate: '2026-11-20'
+                    appointmentTime: '10:00'
+                    status: pending
+                    origin: quote
+                    notes: 'Ejecución del servicio según cotización aprobada.'
+                    createdAt: '2026-11-01T23:20:00+00:00'
+                    updatedAt: '2026-11-01T23:20:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      customerId:
+                        type: integer
+                        example: 1
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Juan Carlos Pérez'
+                          tradeName:
+                            type: string
+                            example: null
+                            nullable: true
+                          phone:
+                            type: string
+                            example: 7890-1234
+                          address:
+                            type: string
+                            example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                          municipality:
+                            type: string
+                            example: 'Antiguo Cuscatlán'
+                          department:
+                            type: string
+                            example: 'La Libertad'
+                          email:
+                            type: string
+                            example: juan.perez@example.com
+                      employeeId:
+                        type: integer
+                        example: 2
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 2
+                          fullName:
+                            type: string
+                            example: 'Carlos Mendoza'
+                      serviceId:
+                        type: integer
+                        example: 1
+                      service:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Poda y Mantenimiento de Césped'
+                          price:
+                            type: number
+                            example: 45.0
+                      quoteId:
+                        type: integer
+                        example: 1
+                      appointmentDate:
+                        type: string
+                        example: '2026-11-20'
+                      appointmentTime:
+                        type: string
+                        example: '10:00'
+                      status:
+                        type: string
+                        example: pending
+                      origin:
+                        type: string
+                        example: quote
+                      notes:
+                        type: string
+                        example: 'Ejecución del servicio según cotización aprobada.'
+                      createdAt:
+                        type: string
+                        example: '2026-11-01T23:20:00+00:00'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-01T23:20:00+00:00'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cotización no encontrada'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Cotización no encontrada'
+                  codigo:
+                    type: integer
+                    example: 404
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'El colaborador asignado debe ser un Técnico de campo activo.'
+                  errors:
+                    employee_id:
+                      - 'El colaborador asignado debe ser un Técnico de campo activo.'
+                properties:
+                  message:
+                    type: string
+                    example: 'El colaborador asignado debe ser un Técnico de campo activo.'
+                  errors:
+                    type: object
+                    properties:
+                      employee_id:
+                        type: array
+                        example:
+                          - 'El colaborador asignado debe ser un Técnico de campo activo.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al agendar la cita desde cotización'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al agendar la cita desde cotización'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - 'Citas y Agenda'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                employee_id:
+                  type: integer
+                  description: 'ID del colaborador o técnico de campo asignado para la visita.'
+                  example: 2
+                service_id:
+                  type: integer
+                  description: 'ID del servicio de catálogo presupuestado (opcional).'
+                  example: 1
+                  nullable: true
+                appointment_date:
+                  type: string
+                  description: 'Fecha programada de la cita en formato AAAA-MM-DD.'
+                  example: '2026-11-20'
+                appointment_time:
+                  type: string
+                  description: 'Hora programada de la cita en formato HH:MM (24h).'
+                  example: '10:00'
+                status:
+                  type: string
+                  description: "Estado de la cita (pending, confirmed, completed, cancelled, annulled). Por defecto 'pending'."
+                  example: pending
+                notes:
+                  type: string
+                  description: 'Observaciones o especificaciones de la visita.'
+                  example: 'Ejecución del servicio según cotización aprobada.'
+                  nullable: true
+                is_inspection:
+                  type: boolean
+                  description: 'Si es verdadero, genera de forma automática una ficha de inspección técnica vinculada.'
+                  example: false
+              required:
+                - employee_id
+                - appointment_date
+                - appointment_time
+    parameters:
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización a vincular.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   /api/v1/plants:
     get:
       summary: 'Listar y filtrar plantas.'

@@ -14,16 +14,20 @@ class RoleSeeder extends Seeder
     {
         $roles = [
             [
-                'role_name' => 'Admin',
-                'description' => 'Control total del sistema.',
+                'role_name' => 'Administrador',
+                'description' => 'Control total del sistema y gestión integral de la plataforma.',
             ],
             [
-                'role_name' => 'Contador',
-                'description' => 'Acceso a la billetera, reportes, facturación y modificación de movimientos financieros.',
+                'role_name' => 'Auditor',
+                'description' => 'Supervisión de operaciones, consulta de reportes y trazabilidad en bitácoras de auditoría.',
             ],
             [
-                'role_name' => 'Colaborador',
-                'description' => 'Nivel operativo, encargado de ver su agenda y marcar los servicios de jardinería como completados.',
+                'role_name' => 'Recepcionista',
+                'description' => 'Atención al cliente, gestión de citas e ingreso de solicitudes y cotizaciones.',
+            ],
+            [
+                'role_name' => 'Tecnico de campo',
+                'description' => 'Nivel operativo en terreno, ejecución de servicios de jardinería y actualización de citas asignadas.',
             ],
         ];
 
