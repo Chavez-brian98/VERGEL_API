@@ -7,6 +7,7 @@ use App\Models\AuditLog;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Inspection;
+use App\Models\Payment;
 use App\Models\Quote;
 use App\Models\User;
 use Carbon\Carbon;
@@ -182,6 +183,9 @@ class AppointmentService
 
         // Validar que la cotización no tenga ya una cita activa programada
         $this->validateQuoteHasNoActiveAppointment($quoteModel);
+
+        // Validar regla transversal de anticipo mínimo del 50% en materiales
+        $this->validateMaterialAdvance($quoteModel);
 
         // Validaciones de negocio reutilizables
         $this->validateTechnician((int) $data['employee_id']);
@@ -486,6 +490,53 @@ class AppointmentService
             throw ValidationException::withMessages([
                 'quote' => [
                     "Esta cotización ya tiene una cita activa programada para el {$dateFormatted} a las {$timeFormatted}. Si requiere cambiar la fecha u horario, utilice la opción de reprogramar.",
+                ],
+            ]);
+        }
+    }
+
+    /**
+     * Valida la regla transversal de anticipo de materiales (mínimo 50% pagado)
+     * antes de permitir agendar una cita vinculada a una cotización.
+     *
+     * @throws ValidationException
+     */
+    public function validateMaterialAdvance(Quote $quote): void
+    {
+        // Si la cotización ya está totalmente pagada, se cumple el requisito
+        if ($quote->status === 'paid') {
+            return;
+        }
+
+        // 1. Sumar el costo de los materiales (plantas)
+        $materialTotal = (float) $quote->items()
+            ->where('item_type', 'plant')
+            ->sum('total');
+
+        // Si la cotización no incluye materiales (solo mano de obra), no requiere anticipo
+        if ($materialTotal <= 0) {
+            return;
+        }
+
+        // 2. Calcular el 50% requerido de anticipo sobre los materiales
+        $requiredAdvance = round($materialTotal * 0.50, 2);
+
+        // 3. Consultar el total de dinero abonado específicamente a esta cotización
+        $totalPaid = (float) Payment::query()
+            ->where('quote_id', $quote->id)
+            ->sum('amount_paid');
+
+        // 4. Validar si el abono cubre al menos el 50% del valor de los materiales
+        if ($totalPaid < $requiredAdvance) {
+            $shortage = round($requiredAdvance - $totalPaid, 2);
+            $totalFormatted = number_format($materialTotal, 2);
+            $requiredFormatted = number_format($requiredAdvance, 2);
+            $paidFormatted = number_format($totalPaid, 2);
+            $shortageFormatted = number_format($shortage, 2);
+
+            throw ValidationException::withMessages([
+                'quote' => [
+                    "Esta cotización incluye materiales por un total de \${$totalFormatted}. Se requiere un anticipo mínimo del 50% (\${$requiredFormatted}) para programar la cita. Total abonado actualmente: \${$paidFormatted} (Monto pendiente para habilitar agenda: \${$shortageFormatted}).",
                 ],
             ]);
         }

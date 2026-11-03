@@ -6,6 +6,8 @@ use App\Models\Appointment;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Inspection;
+use App\Models\Payment;
+use App\Models\Plant;
 use App\Models\Quote;
 use App\Models\Role;
 use App\Models\Service;
@@ -332,5 +334,156 @@ class QuoteAppointmentCreateTest extends TestCase
         $response->assertCreated()
             ->assertJsonPath('data.quoteId', $this->quote->id)
             ->assertJsonPath('data.status', 'pending');
+    }
+
+    public function test_fails_to_schedule_from_quote_with_materials_when_no_payment_has_been_made(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $plant = Plant::create([
+            'name' => 'Ficus Lyrata',
+            'price' => 50.00,
+            'category_type' => 'Interior',
+            'active' => true,
+        ]);
+
+        // Cotización incluye $100.00 en materiales (plantas)
+        $this->quote->items()->create([
+            'item_type' => 'plant',
+            'plant_id' => $plant->id,
+            'quantity' => 2,
+            'unit_price' => 50.00,
+            'total' => 100.00,
+        ]);
+
+        $payload = [
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-05',
+            'appointment_time' => '10:00',
+            'status' => 'pending',
+        ];
+
+        $response = $this->postJson("/api/v1/quotes/{$this->quote->id}/appointments", $payload);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['quote'])
+            ->assertJsonPath('errors.quote.0', 'Esta cotización incluye materiales por un total de $100.00. Se requiere un anticipo mínimo del 50% ($50.00) para programar la cita. Total abonado actualmente: $0.00 (Monto pendiente para habilitar agenda: $50.00).');
+    }
+
+    public function test_fails_to_schedule_from_quote_with_materials_when_payment_is_less_than_50_percent(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $plant = Plant::create([
+            'name' => 'Palmera Areca',
+            'price' => 100.00,
+            'category_type' => 'Exterior',
+            'active' => true,
+        ]);
+
+        // $100 en materiales (requiere $50)
+        $this->quote->items()->create([
+            'item_type' => 'plant',
+            'plant_id' => $plant->id,
+            'quantity' => 1,
+            'unit_price' => 100.00,
+            'total' => 100.00,
+        ]);
+
+        // Solo se han abonado $30.00
+        Payment::create([
+            'quote_id' => $this->quote->id,
+            'amount_paid' => 30.00,
+            'payment_method' => 'cash',
+        ]);
+
+        $payload = [
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-05',
+            'appointment_time' => '10:00',
+            'status' => 'pending',
+        ];
+
+        $response = $this->postJson("/api/v1/quotes/{$this->quote->id}/appointments", $payload);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['quote'])
+            ->assertJsonPath('errors.quote.0', 'Esta cotización incluye materiales por un total de $100.00. Se requiere un anticipo mínimo del 50% ($50.00) para programar la cita. Total abonado actualmente: $30.00 (Monto pendiente para habilitar agenda: $20.00).');
+    }
+
+    public function test_can_schedule_from_quote_with_materials_when_payment_is_at_least_50_percent(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $plant = Plant::create([
+            'name' => 'Bonsai Ficus',
+            'price' => 80.00,
+            'category_type' => 'Interior',
+            'active' => true,
+        ]);
+
+        // $80 en materiales (requiere $40)
+        $this->quote->items()->create([
+            'item_type' => 'plant',
+            'plant_id' => $plant->id,
+            'quantity' => 1,
+            'unit_price' => 80.00,
+            'total' => 80.00,
+        ]);
+
+        // Abono de $40.00 (50% exacto)
+        Payment::create([
+            'quote_id' => $this->quote->id,
+            'amount_paid' => 40.00,
+            'payment_method' => 'card',
+        ]);
+
+        $payload = [
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-05',
+            'appointment_time' => '10:00',
+            'status' => 'pending',
+        ];
+
+        $response = $this->postJson("/api/v1/quotes/{$this->quote->id}/appointments", $payload);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.quoteId', $this->quote->id)
+            ->assertJsonPath('data.status', 'pending');
+    }
+
+    public function test_can_schedule_from_quote_when_quote_status_is_paid(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $plant = Plant::create([
+            'name' => 'Sansevieria',
+            'price' => 200.00,
+            'category_type' => 'Interior',
+            'active' => true,
+        ]);
+
+        $this->quote->items()->create([
+            'item_type' => 'plant',
+            'plant_id' => $plant->id,
+            'quantity' => 1,
+            'unit_price' => 200.00,
+            'total' => 200.00,
+        ]);
+
+        // La cotización ya está pagada al 100%
+        $this->quote->update(['status' => 'paid']);
+
+        $payload = [
+            'employee_id' => $this->technician->id,
+            'appointment_date' => '2026-12-05',
+            'appointment_time' => '10:00',
+            'status' => 'pending',
+        ];
+
+        $response = $this->postJson("/api/v1/quotes/{$this->quote->id}/appointments", $payload);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.quoteId', $this->quote->id);
     }
 }
