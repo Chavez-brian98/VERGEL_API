@@ -278,7 +278,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: active
+                  example: inactive
                   enum:
                     - active
                     - inactive
@@ -291,12 +291,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-02'
+                  example: '2026-11-03'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-11-25'
+                  example: '2052-11-26'
                   nullable: true
                 limit:
                   type: integer
@@ -4232,7 +4232,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: confirmed
+                  example: completed
                   enum:
                     - pending
                     - confirmed
@@ -4292,7 +4292,7 @@ paths:
                 all:
                   type: boolean
                   description: ''
-                  example: true
+                  example: false
                   nullable: true
     post:
       summary: 'Agendar cita manualmente.'
@@ -5498,7 +5498,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: id
+                  example: price
                   enum:
                     - id
                     - name
@@ -5979,6 +5979,187 @@ paths:
         schema:
           type: integer
   /api/v1/suppliers:
+    get:
+      summary: 'Listar y filtrar proveedores.'
+      operationId: listarYFiltrarProveedores
+      description: 'Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro económico, teléfono o rango de fechas.'
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda por nombre, nombre comercial, email, teléfono, tax_id (NIT/DUI), NRC o contacto.'
+          example: Vivero
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda por nombre, nombre comercial, email, teléfono, tax_id (NIT/DUI), NRC o contacto.'
+            example: Vivero
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (`active` o `inactive`).'
+          example: active
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (`active` o `inactive`).'
+            example: active
+        -
+          in: query
+          name: economic_activity
+          description: 'Filtrar por giro o actividad económica.'
+          example: Jardinería
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por giro o actividad económica.'
+            example: Jardinería
+        -
+          in: query
+          name: phone
+          description: 'Filtrar por número de teléfono.'
+          example: '78901234'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por número de teléfono.'
+            example: '78901234'
+        -
+          in: query
+          name: desde
+          description: 'Filtrar proveedores creados desde una fecha (YYYY-MM-DD).'
+          example: '2026-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar proveedores creados desde una fecha (YYYY-MM-DD).'
+            example: '2026-01-01'
+        -
+          in: query
+          name: hasta
+          description: 'Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).'
+          example: '2026-12-31'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).'
+            example: '2026-12-31'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.'
+          example: name
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.'
+            example: name
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+          example: asc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+            example: asc
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1-100). Default: 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1-100). Default: 15.'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Proveedores
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: inactive
+                  enum:
+                    - active
+                    - inactive
+                  nullable: true
+                economic_activity:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: 'n'
+                  nullable: true
+                phone:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: gzmiyvdljnikhway
+                  nullable: true
+                desde:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-03T20:28:33'
+                  nullable: true
+                hasta:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
+                  example: '2052-11-26'
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: status
+                  enum:
+                    - id
+                    - name
+                    - trade_name
+                    - status
+                    - created_at
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: ASC
+                  enum:
+                    - asc
+                    - desc
+                    - ASC
+                    - DESC
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
     post:
       summary: 'Registrar un nuevo proveedor.'
       operationId: registrarUnNuevoProveedor
@@ -6056,6 +6237,26 @@ paths:
                 - name
                 - phone
   '/api/v1/suppliers/{id}':
+    get:
+      summary: 'Consultar detalle de un proveedor.'
+      operationId: consultarDetalleDeUnProveedor
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Proveedores
     put:
       summary: 'Actualizar información de un proveedor.'
       operationId: actualizarInformacinDeUnProveedor
@@ -6122,7 +6323,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: active
+                  example: inactive
                   enum:
                     - active
                     - inactive

@@ -217,7 +217,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: id
+        example: price
         type: string
         enumValues:
           - id
@@ -249,7 +249,7 @@ endpoints:
       max_price: 12
       per_page: 17
       limit: 15
-      sort_by: id
+      sort_by: price
       sort_direction: asc
     fileParameters: []
     responses:

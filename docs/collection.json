@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "d47d428a-e270-4ceb-8d06-b0a0c65de67e",
+        "_postman_id": "37c989c7-0ad7-4d10-8da9-e0dc83ab9ace",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -82,7 +82,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-02\",\"hasta\":\"2052-11-25\",\"limit\":22}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-03\",\"hasta\":\"2052-11-26\",\"limit\":22}"
                                 },
                                 "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
                             },
@@ -2004,7 +2004,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"confirmed\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"status\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":true}"
+                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"completed\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"status\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
                                 },
                                 "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
                             },
@@ -2357,7 +2357,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"id\",\"sort_direction\":\"asc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -2702,6 +2702,168 @@
             "description": "\nAPIs para la gesti\u00f3n de proveedores, compras y suministros de El Vergel.",
             "item": [
                 {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar proveedores.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Vivero",
+                                            "description": "B\u00fasqueda por nombre, nombre comercial, email, tel\u00e9fono, tax_id (NIT\/DUI), NRC o contacto.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "active",
+                                            "description": "Filtrar por estado (`active` o `inactive`).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "economic_activity",
+                                            "value": "Jardiner\u00eda",
+                                            "description": "Filtrar por giro o actividad econ\u00f3mica.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "phone",
+                                            "value": "78901234",
+                                            "description": "Filtrar por n\u00famero de tel\u00e9fono.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "Filtrar proveedores creados desde una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "name",
+                                            "description": "Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers?search=Vivero&status=active&economic_activity=Jardiner%C3%ADa&phone=78901234&desde=2026-01-01&hasta=2026-12-31&sort_by=name&sort_direction=asc&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-03T20:28:33\",\"hasta\":\"2052-11-26\",\"sort_by\":\"status\",\"sort_direction\":\"ASC\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro econ\u00f3mico, tel\u00e9fono o rango de fechas."
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"message\":\"Unauthenticated.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar detalle de un proveedor.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the supplier."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"message\":\"Unauthenticated.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "name": "Gesti\u00f3n",
                     "description": "",
                     "item": [
@@ -2763,7 +2925,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"active\",\"notes\":\"architecto\"}"
+                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"inactive\",\"notes\":\"architecto\"}"
                                 },
                                 "description": ""
                             },

@@ -18,8 +18,13 @@ fi
 echo "[entrypoint] OK: /var/www/public/index.php presente" >&2
 
 # Directorios que Apache/Laravel escriben en runtime
-mkdir -p bootstrap/cache storage/framework/views storage/framework/cache/data storage/framework/sessions storage/logs
+mkdir -p bootstrap/cache storage/framework/views storage/framework/cache/data storage/framework/sessions storage/logs storage/app/public
 chown -R www-data:www-data storage bootstrap/cache || true
+
+# Asegurar enlace simbólico para public/storage (útil cuando se montan volúmenes en local)
+if [ ! -L /var/www/public/storage ]; then
+    php artisan storage:link || true
+fi
 
 # Apache debe escuchar en $PORT (Render) o 80 (local)
 sed -i "s/^Listen .*/Listen ${PORT}/" /etc/apache2/ports.conf
