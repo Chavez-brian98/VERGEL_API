@@ -75,13 +75,13 @@ class CountryConfigService
      */
     private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
     {
-        $employee = Employee::first();
-        if (! $employee) {
+        $employeeId = auth()->user()?->employee_id ?? request()->user()?->employee_id ?? Employee::first()?->id;
+        if (! $employeeId) {
             return;
         }
 
         AuditLog::create([
-            'employee_id' => auth()->id() ?? $employee->id,
+            'employee_id' => $employeeId,
             'affected_table' => $table,
             'affected_record_id' => $recordId,
             'action' => $action,

@@ -25,9 +25,18 @@ class SupplierApiTest extends TestCase
 
         $this->seed(RoleSeeder::class);
 
-        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
-        $contadorRole = Role::where('role_name', 'Contador')->firstOrFail();
-        $colaboradorRole = Role::where('role_name', 'Colaborador')->firstOrFail();
+        $adminRole = Role::firstOrCreate(
+            ['role_name' => 'Administrador'],
+            ['description' => 'Admin Role']
+        );
+        $contadorRole = Role::firstOrCreate(
+            ['role_name' => 'Contador'],
+            ['description' => 'Contador Role']
+        );
+        $colaboradorRole = Role::firstOrCreate(
+            ['role_name' => 'Colaborador'],
+            ['description' => 'Colaborador Role']
+        );
 
         $this->adminUser = $this->createUserWithRole('Admin User', $adminRole);
         $this->contadorUser = $this->createUserWithRole('Contador User', $contadorRole);
