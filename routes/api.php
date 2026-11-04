@@ -52,5 +52,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('quotes/{quote}/appointments', [AppointmentController::class, 'storeFromQuote']);
 
         Route::get('audit-logs', [AuditLogController::class, 'index']);
+        Route::get('audit-logs/{id}', [AuditLogController::class, 'show']);
     });
 });

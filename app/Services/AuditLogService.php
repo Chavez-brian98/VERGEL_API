@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AuditLog;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AuditLogService
 {
@@ -44,5 +45,15 @@ class AuditLogService
             ->latest('created_at')
             ->latest('id')
             ->paginate($limit);
+    }
+
+    /**
+     * Obtener el detalle de un registro de bitácora por su identificador único.
+     *
+     * @throws ModelNotFoundException
+     */
+    public function getById(int $id): AuditLog
+    {
+        return AuditLog::with(['employee.user', 'employee.role'])->findOrFail($id);
     }
 }

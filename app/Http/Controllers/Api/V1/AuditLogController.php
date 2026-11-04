@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuditLog\IndexAuditLogRequest;
+use App\Http\Requests\AuditLog\ShowAuditLogRequest;
 use App\Http\Resources\AuditLogs\AuditLogResource;
 use App\Services\AuditLogService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class AuditLogController extends Controller
 {
@@ -101,5 +105,82 @@ class AuditLogController extends Controller
         $logs = $this->auditLogService->listLogs($filters);
 
         return AuditLogResource::collection($logs);
+    }
+
+    /**
+     * Obtener el detalle de una bitácora de auditoría.
+     *
+     * Devuelve la información detallada de un registro individual de auditoría mediante su ID, incluyendo el actor que ejecutó la acción y el estado anterior y nuevo de los datos afectados.
+     * Endpoint restringido exclusivamente a colaboradores activos con rol de Administrador.
+     *
+     * @group Auditoría
+     *
+     * @subgroup Consultas
+     *
+     * @urlParam id integer required ID único del registro de auditoría. Example: 1
+     *
+     * @response status=200 {
+     *   "data": {
+     *     "id": 1,
+     *     "action": "update",
+     *     "affectedTable": "plants",
+     *     "affectedRecordId": 12,
+     *     "oldData": {
+     *       "id": 12,
+     *       "name": "Monstera Deliciosa",
+     *       "price": "24.50"
+     *     },
+     *     "newData": {
+     *       "id": 12,
+     *       "name": "Monstera Deliciosa Variegata",
+     *       "price": "35.00"
+     *     },
+     *     "ipAddress": "192.168.1.15",
+     *     "createdAt": "2026-10-24T18:30:00+00:00",
+     *     "actor": {
+     *       "employeeId": 1,
+     *       "fullName": "Carlos Administrador",
+     *       "role": "Administrador",
+     *       "userId": 1,
+     *       "email": "admin@vergel.com"
+     *     }
+     *   }
+     * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response status=404 {
+     *   "message": "Registro de auditoría no encontrado",
+     *   "codigo": 404
+     * }
+     * @response status=500 {
+     *   "message": "Error interno al obtener el registro de auditoría",
+     *   "codigo": 500
+     * }
+     */
+    public function show(ShowAuditLogRequest $request, int|string $id): JsonResponse|AuditLogResource
+    {
+        try {
+            $log = $this->auditLogService->getById((int) $id);
+
+            return new AuditLogResource($log);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'message' => 'Registro de auditoría no encontrado',
+                'codigo' => 404,
+            ], 404);
+        } catch (\Throwable $e) {
+            Log::error('Error showing audit log: '.$e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            return response()->json([
+                'message' => 'Error interno al obtener el registro de auditoría',
+                'codigo' => 500,
+            ], 500);
+        }
     }
 }

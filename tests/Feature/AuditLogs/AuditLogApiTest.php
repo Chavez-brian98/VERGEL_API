@@ -147,4 +147,86 @@ class AuditLogApiTest extends TestCase
             ->assertJsonPath('data.0.action', 'delete')
             ->assertJsonPath('data.0.affectedTable', 'customers');
     }
+
+    public function test_unauthenticated_user_cannot_view_single_audit_log_detail(): void
+    {
+        $response = $this->getJson('/api/v1/audit-logs/1');
+
+        $response->assertUnauthorized();
+    }
+
+    public function test_non_admin_cannot_view_single_audit_log_detail(): void
+    {
+        $this->actingAs($this->auditorUser, 'sanctum');
+
+        $log = AuditLog::create([
+            'employee_id' => $this->adminEmployee->id,
+            'affected_table' => 'plants',
+            'affected_record_id' => 10,
+            'action' => 'insert',
+            'old_data' => null,
+            'new_data' => ['name' => 'Ficus'],
+        ]);
+
+        $response = $this->getJson('/api/v1/audit-logs/'.$log->id);
+
+        $response->assertForbidden();
+    }
+
+    public function test_admin_can_view_single_audit_log_detail(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $log = AuditLog::create([
+            'employee_id' => $this->adminEmployee->id,
+            'affected_table' => 'plants',
+            'affected_record_id' => 25,
+            'action' => 'update',
+            'old_data' => ['name' => 'Monstera'],
+            'new_data' => ['name' => 'Monstera Variegata'],
+            'ip_address' => '192.168.1.50',
+        ]);
+
+        $response = $this->getJson('/api/v1/audit-logs/'.$log->id);
+
+        $response->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'action',
+                    'affectedTable',
+                    'affectedRecordId',
+                    'oldData',
+                    'newData',
+                    'ipAddress',
+                    'createdAt',
+                    'actor' => [
+                        'employeeId',
+                        'fullName',
+                        'role',
+                        'userId',
+                        'email',
+                    ],
+                ],
+            ])
+            ->assertJsonPath('data.id', $log->id)
+            ->assertJsonPath('data.action', 'update')
+            ->assertJsonPath('data.affectedTable', 'plants')
+            ->assertJsonPath('data.affectedRecordId', 25)
+            ->assertJsonPath('data.actor.fullName', 'Admin Test')
+            ->assertJsonPath('data.actor.role', 'Administrador');
+    }
+
+    public function test_viewing_non_existent_audit_log_returns_404(): void
+    {
+        $this->actingAs($this->adminUser, 'sanctum');
+
+        $response = $this->getJson('/api/v1/audit-logs/999999');
+
+        $response->assertNotFound()
+            ->assertJson([
+                'message' => 'Registro de auditoría no encontrado',
+                'codigo' => 404,
+            ]);
+    }
 }
