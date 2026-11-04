@@ -67,20 +67,23 @@ class CustomerService
             $data['status'] = 'active';
             $customer = Customer::create($data);
 
-            $customer->wallet()->create([
+            $wallet = $customer->wallet()->create([
                 'cash_balance' => 0.00,
                 'reserved_subscription_balance' => 0.00,
             ]);
+            $this->logAudit('insert', 'wallets', $wallet->id, null, $wallet->toArray());
 
-            $customer->loyaltyPoint()->create([
+            $loyaltyPoint = $customer->loyaltyPoint()->create([
                 'points_balance' => 0,
             ]);
+            $this->logAudit('insert', 'loyalty_points', $loyaltyPoint->id, null, $loyaltyPoint->toArray());
 
             if (! empty($data['current_plan_id'])) {
-                $customer->planHistories()->create([
+                $planHistory = $customer->planHistories()->create([
                     'plan_id' => $data['current_plan_id'],
                     'start_date' => now()->toDateString(),
                 ]);
+                $this->logAudit('insert', 'customer_plan_history', $planHistory->id, null, $planHistory->toArray());
             }
 
             $this->logAudit('insert', 'customers', $customer->id, null, $customer->toArray());
@@ -150,16 +153,23 @@ class CustomerService
 
         return DB::transaction(function () use ($customer, $planId) {
             if ($customer->current_plan_id) {
-                $customer->planHistories()
+                $currentActiveHistory = $customer->planHistories()
                     ->where('plan_id', $customer->current_plan_id)
                     ->whereNull('end_date')
-                    ->update(['end_date' => now()->toDateString()]);
+                    ->first();
+
+                if ($currentActiveHistory) {
+                    $oldHistoryData = $currentActiveHistory->toArray();
+                    $currentActiveHistory->update(['end_date' => now()->toDateString()]);
+                    $this->logAudit('update', 'customer_plan_history', $currentActiveHistory->id, $oldHistoryData, $currentActiveHistory->fresh()->toArray());
+                }
             }
 
-            $customer->planHistories()->create([
+            $newHistory = $customer->planHistories()->create([
                 'plan_id' => $planId,
                 'start_date' => now()->toDateString(),
             ]);
+            $this->logAudit('insert', 'customer_plan_history', $newHistory->id, null, $newHistory->toArray());
 
             $oldData = $customer->toArray();
             $customer->update(['current_plan_id' => $planId]);
@@ -173,10 +183,10 @@ class CustomerService
     /**
      * Audit log helper
      */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData)
+    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
     {
         // La bitácora referencia al empleado (employees.id), no al usuario de autenticación.
-        $employeeId = request()->user()?->employee_id ?? Employee::first()?->id;
+        $employeeId = auth()->user()?->employee_id ?? request()->user()?->employee_id ?? Employee::first()?->id;
 
         if (! $employeeId) {
             return;
