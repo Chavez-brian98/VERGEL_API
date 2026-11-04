@@ -57,7 +57,6 @@ class RolesAndUsersSeeder extends Seeder
             User::updateOrCreate(
                 ['email' => $roleData['email']],
                 [
-                    'name' => $roleData['full_name'],
                     'password' => $password,
                     'employee_id' => $employee->id,
                     'email_verified_at' => now(),

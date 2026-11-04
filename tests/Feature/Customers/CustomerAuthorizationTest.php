@@ -42,8 +42,11 @@ class CustomerAuthorizationTest extends TestCase
 
         $this->seed(RoleSeeder::class);
 
-        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
-        $contadorRole = Role::where('role_name', 'Contador')->firstOrFail();
+        $adminRole = Role::where('role_name', 'Administrador')->firstOrFail();
+        $contadorRole = Role::firstOrCreate(
+            ['role_name' => 'Contador'],
+            ['description' => 'Perfil de contador para gestión financiera.']
+        );
         $consultaRole = Role::firstOrCreate(
             ['role_name' => 'Consulta'],
             ['description' => 'Perfil de solo consulta sobre el módulo de clientes.']
