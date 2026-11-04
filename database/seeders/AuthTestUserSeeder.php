@@ -31,7 +31,7 @@ class AuthTestUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@vergel.com'],
             [
-                'name' => 'Carlos Mendoza',
+//                'name' => 'Carlos Mendoza',
                 'password' => Hash::make('password123'),
                 'employee_id' => $adminEmployee->id,
                 'email_verified_at' => now(),
@@ -54,7 +54,6 @@ class AuthTestUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'auditor@vergel.com'],
             [
-                'name' => 'Lucía Gómez',
                 'password' => Hash::make('password123'),
                 'employee_id' => $auditorEmployee->id,
                 'email_verified_at' => now(),
@@ -77,7 +76,6 @@ class AuthTestUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'recepcion@vergel.com'],
             [
-                'name' => 'Jorge Ramos',
                 'password' => Hash::make('password123'),
                 'employee_id' => $recepcionistaEmployee->id,
                 'email_verified_at' => now(),
