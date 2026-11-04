@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\V1\AppointmentController;
+use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
@@ -49,5 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('appointments/{appointment}', [AppointmentController::class, 'show']);
         Route::match(['put', 'patch'], 'appointments/{appointment}', [AppointmentController::class, 'update']);
         Route::post('quotes/{quote}/appointments', [AppointmentController::class, 'storeFromQuote']);
+
+        Route::get('audit-logs', [AuditLogController::class, 'index']);
+        Route::get('audit-logs/{id}', [AuditLogController::class, 'show']);
     });
 });
