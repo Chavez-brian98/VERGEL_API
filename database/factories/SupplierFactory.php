@@ -17,7 +17,7 @@ class SupplierFactory extends Factory
         return [
             'name' => fake()->company(),
             'trade_name' => fake()->optional()->company(),
-            'tax_id' => '0614-' . fake()->numerify('######') . '-101-' . fake()->randomDigit(),
+            'tax_id' => '0614-'.fake()->numerify('######').'-101-'.fake()->randomDigit(),
             'nrc' => fake()->numerify('######-#'),
             'economic_activity' => fake()->randomElement(['Venta de Insumos Agrícolas', 'Vivero y Jardinería', 'Ferretería y Herramientas', 'Fertilizantes y Sustratos']),
             'phone' => fake()->numerify('7###-####'),

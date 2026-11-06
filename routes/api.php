@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
 use App\Http\Controllers\Api\V1\SupplierController;
+use App\Http\Controllers\Api\V1\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas públicas
@@ -53,5 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('audit-logs', [AuditLogController::class, 'index']);
         Route::get('audit-logs/{id}', [AuditLogController::class, 'show']);
+
+        Route::get('transactions', [TransactionController::class, 'index']);
+        Route::get('transactions/{id}', [TransactionController::class, 'show']);
     });
 });
