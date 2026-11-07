@@ -2,9 +2,16 @@
 
 namespace App\Services;
 
+use App\Models\AuditLog;
+use App\Models\Employee;
+use App\Models\Payment;
 use App\Models\Quote;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class TransactionService
 {
@@ -137,5 +144,83 @@ class TransactionService
                     ->orWhereNotNull('deleted_at');
             })
             ->findOrFail($id);
+    }
+
+    /**
+     * Registra una cotización existente como una transacción realizada (pagada) en el historial.
+     * Respeta el principio de responsabilidad única (SRP): no crea cotizaciones ni ítems,
+     * únicamente formaliza el registro de la transacción y sus pagos asociados.
+     *
+     * @param  array<string, mixed>  $data
+     *
+     * @throws ValidationException
+     */
+    public function createTransaction(array $data): Quote
+    {
+        $validator = Validator::make($data, [
+            'quote_id' => ['required', 'integer', Rule::exists('quotes', 'id')->withoutTrashed()],
+            'amount_paid' => ['nullable', 'numeric', 'min:0.01'],
+            'payment_method' => ['nullable', 'string', 'max:40'],
+            'payment_date' => ['nullable', 'date'],
+            'notes' => ['nullable', 'string', 'max:255'],
+        ], [
+            'quote_id.required' => 'El identificador de la cotización es obligatorio para registrar la transacción.',
+            'quote_id.exists' => 'La cotización especificada no existe o ha sido eliminada.',
+            'amount_paid.numeric' => 'El monto abonado debe ser un valor numérico.',
+            'amount_paid.min' => 'El monto abonado debe ser mayor a cero.',
+        ]);
+
+        $validated = $validator->validate();
+
+        return DB::transaction(function () use ($validated) {
+            $quote = Quote::findOrFail($validated['quote_id']);
+            $oldData = $quote->toArray();
+
+            // Si se suministró información de pago, registrar el cobro en la tabla payments
+            if (! empty($validated['amount_paid'])) {
+                Payment::create([
+                    'quote_id' => $quote->id,
+                    'employee_id' => auth()->user()?->employee_id ?? $quote->employee_id,
+                    'payment_date' => $validated['payment_date'] ?? now(),
+                    'amount_paid' => $validated['amount_paid'],
+                    'payment_method' => $validated['payment_method'] ?? 'cash',
+                ]);
+            }
+
+            // Marcar la cotización como pagada para integrarla al Historial de Transacciones
+            $quote->update(['status' => 'paid']);
+
+            $this->logAudit('insert', 'quotes', $quote->id, $oldData, $quote->fresh()->toArray());
+
+            return $quote->fresh([
+                'customer',
+                'employee',
+                'plan',
+                'items.service',
+                'items.plant',
+                'payments',
+            ]);
+        });
+    }
+
+    /**
+     * Registra un evento en la bitácora de auditoría (audit_log).
+     */
+    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
+    {
+        $employeeId = auth()->user()?->employee_id ?? Employee::first()?->id;
+        if (! $employeeId) {
+            return;
+        }
+
+        AuditLog::create([
+            'employee_id' => $employeeId,
+            'affected_table' => $table,
+            'affected_record_id' => $recordId,
+            'action' => $action,
+            'old_data' => $oldData,
+            'new_data' => $newData,
+            'ip_address' => request()->ip(),
+        ]);
     }
 }

@@ -9,8 +9,10 @@ use App\Models\Quote;
 use App\Models\Role;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
+use App\Services\TransactionService;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -333,5 +335,46 @@ class TransactionHistoryTest extends TestCase
         $response = $this->getJson("/api/v1/transactions/{$pendingQuote->id}");
         $response->assertStatus(404)
             ->assertJsonPath('message', 'Transacción no encontrada en el registro histórico.');
+    }
+
+    public function test_service_can_create_transaction_with_validation_and_audit(): void
+    {
+        Sanctum::actingAs($this->adminUser);
+
+        // La cotización ya existe en el sistema (dominio de cotizaciones)
+        $existingQuote = $this->createQuote([
+            'quote_number' => 'COT-REG-TEST-1',
+            'status' => 'pending',
+            'total' => 90.00,
+        ]);
+
+        $transactionService = app(TransactionService::class);
+
+        // TransactionService únicamente registra la transacción para la cotización existente
+        $quote = $transactionService->createTransaction([
+            'quote_id' => $existingQuote->id,
+            'amount_paid' => 90.00,
+            'payment_method' => 'cash',
+        ]);
+
+        $this->assertInstanceOf(Quote::class, $quote);
+        $this->assertEquals('paid', $quote->status);
+        $this->assertCount(1, $quote->payments);
+
+        $this->assertDatabaseHas('audit_log', [
+            'affected_table' => 'quotes',
+            'affected_record_id' => $quote->id,
+            'action' => 'insert',
+        ]);
+    }
+
+    public function test_service_create_transaction_throws_validation_exception_on_invalid_data(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $transactionService = app(TransactionService::class);
+        $transactionService->createTransaction([
+            'quote_id' => 999999, // Inexistente
+        ]);
     }
 }
