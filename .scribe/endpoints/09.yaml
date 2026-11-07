@@ -1,0 +1,533 @@
+name: Auditoría
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/audit-logs
+    metadata:
+      custom: []
+      groupName: Auditoría
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Listar y filtrar bitácoras de auditoría.'
+      description: 'Obtiene una lista paginada de los registros y movimientos de auditoría del sistema (creación, edición, eliminación y accesos denegados). Requiere autenticación con Sanctum y está restringido exclusivamente a colaboradores activos con rol de Administrador.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      user_id:
+        custom: []
+        name: user_id
+        description: 'Filtrar por el identificador del usuario del sistema que realizó la acción.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      employee_id:
+        custom: []
+        name: employee_id
+        description: 'Filtrar por el identificador del colaborador asociado.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      action:
+        custom: []
+        name: action
+        description: 'Filtrar por el tipo de acción registrada (insert, update, delete, restore, denied).'
+        required: false
+        example: update
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      table_name:
+        custom: []
+        name: table_name
+        description: 'Filtrar por el nombre de la tabla afectada en la base de datos.'
+        required: false
+        example: plants
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      affected_table:
+        custom: []
+        name: affected_table
+        description: 'Alias alternativo para el parámetro table_name.'
+        required: false
+        example: plants
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      affected_record_id:
+        custom: []
+        name: affected_record_id
+        description: 'Filtrar por el identificador del registro afectado.'
+        required: false
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      start_date:
+        custom: []
+        name: start_date
+        description: 'date Filtrar por fecha de registro inicial (formato YYYY-MM-DD).'
+        required: false
+        example: '2026-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      end_date:
+        custom: []
+        name: end_date
+        description: 'date Filtrar por fecha de registro final (formato YYYY-MM-DD).'
+        required: false
+        example: '2026-12-31'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'date Alias alternativo para start_date (YYYY-MM-DD).'
+        required: false
+        example: '2026-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      hasta:
+        custom: []
+        name: hasta
+        description: 'date Alias alternativo para end_date (YYYY-MM-DD).'
+        required: false
+        example: '2026-12-31'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Alias alternativo para limit.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      user_id: 1
+      employee_id: 1
+      action: update
+      table_name: plants
+      affected_table: plants
+      affected_record_id: 12
+      start_date: '2026-01-01'
+      end_date: '2026-12-31'
+      desde: '2026-01-01'
+      hasta: '2026-12-31'
+      limit: 15
+      per_page: 15
+    bodyParameters:
+      user_id:
+        custom: []
+        name: user_id
+        description: 'Must match an existing stored value.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      employee_id:
+        custom: []
+        name: employee_id
+        description: 'Must match an existing stored value.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      action:
+        custom: []
+        name: action
+        description: ''
+        required: false
+        example: restore
+        type: string
+        enumValues:
+          - insert
+          - update
+          - delete
+          - restore
+          - denied
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      affected_table:
+        custom: []
+        name: affected_table
+        description: 'Must not be greater than 60 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      table_name:
+        custom: []
+        name: table_name
+        description: 'Must not be greater than 60 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      affected_record_id:
+        custom: []
+        name: affected_record_id
+        description: 'Must be at least 1.'
+        required: false
+        example: 66
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      start_date:
+        custom: []
+        name: start_date
+        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+        required: false
+        example: '2026-11-07'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      end_date:
+        custom: []
+        name: end_date
+        description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
+        required: false
+        example: '2052-11-30'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+        required: false
+        example: '2026-11-07'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      hasta:
+        custom: []
+        name: hasta
+        description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
+        required: false
+        example: '2052-11-30'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 7
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      user_id: 16
+      employee_id: 16
+      action: restore
+      affected_table: 'n'
+      table_name: g
+      affected_record_id: 66
+      start_date: '2026-11-07'
+      end_date: '2052-11-30'
+      desde: '2026-11-07'
+      hasta: '2052-11-30'
+      limit: 22
+      per_page: 7
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "action": "update",
+                "affectedTable": "plants",
+                "affectedRecordId": 12,
+                "oldData": {
+                  "id": 12,
+                  "name": "Monstera Deliciosa",
+                  "price": "24.50"
+                },
+                "newData": {
+                  "id": 12,
+                  "name": "Monstera Deliciosa Variegata",
+                  "price": "35.00"
+                },
+                "ipAddress": "192.168.1.15",
+                "createdAt": "2026-10-24T18:30:00+00:00",
+                "actor": {
+                  "employeeId": 1,
+                  "fullName": "Carlos Administrador",
+                  "role": "Administrador",
+                  "userId": 1,
+                  "email": "admin@vergel.com"
+                }
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/audit-logs?page=1",
+              "last": "http://localhost/api/v1/audit-logs?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://localhost/api/v1/audit-logs",
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "La acción seleccionada no es válida.",
+            "errors": {
+              "action": [
+                "La acción debe ser una de las siguientes: insert, update, delete, restore o denied."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/audit-logs/{id}'
+    metadata:
+      custom: []
+      groupName: Auditoría
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Obtener el detalle de una bitácora de auditoría.'
+      description: |-
+        Devuelve la información detallada de un registro individual de auditoría mediante su ID, incluyendo el actor que ejecutó la acción y el estado anterior y nuevo de los datos afectados.
+        Endpoint restringido exclusivamente a colaboradores activos con rol de Administrador.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID único del registro de auditoría.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "action": "update",
+              "affectedTable": "plants",
+              "affectedRecordId": 12,
+              "oldData": {
+                "id": 12,
+                "name": "Monstera Deliciosa",
+                "price": "24.50"
+              },
+              "newData": {
+                "id": 12,
+                "name": "Monstera Deliciosa Variegata",
+                "price": "35.00"
+              },
+              "ipAddress": "192.168.1.15",
+              "createdAt": "2026-10-24T18:30:00+00:00",
+              "actor": {
+                "employeeId": 1,
+                "fullName": "Carlos Administrador",
+                "role": "Administrador",
+                "userId": 1,
+                "email": "admin@vergel.com"
+              }
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Registro de auditoría no encontrado",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "message": "Error interno al obtener el registro de auditoría",
+            "codigo": 500
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

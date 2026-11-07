@@ -137,7 +137,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-03'
+        example: '2026-11-07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -148,7 +148,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-11-26'
+        example: '2052-11-30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -169,8 +169,8 @@ endpoints:
       search: b
       status: inactive
       phone: ngzmiyvdljnikhwa
-      desde: '2026-11-03'
-      hasta: '2052-11-26'
+      desde: '2026-11-07'
+      hasta: '2052-11-30'
       limit: 22
     fileParameters: []
     responses:

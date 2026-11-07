@@ -182,7 +182,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-03'
+        example: '2026-11-07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -193,7 +193,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-11-26'
+        example: '2052-11-30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -204,7 +204,7 @@ endpoints:
         name: date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-03'
+        example: '2026-11-07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -215,7 +215,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: completed
+        example: cancelled
         type: string
         enumValues:
           - pending
@@ -275,7 +275,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: status
+        example: created_at
         type: string
         enumValues:
           - id
@@ -291,7 +291,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: desc
+        example: asc
         type: string
         enumValues:
           - asc
@@ -333,16 +333,16 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      start_date: '2026-11-03'
-      end_date: '2052-11-26'
-      date: '2026-11-03'
-      status: completed
+      start_date: '2026-11-07'
+      end_date: '2052-11-30'
+      date: '2026-11-07'
+      status: cancelled
       customer_id: 16
       client_id: 16
       employee_id: 16
       service_id: 16
-      sort_by: status
-      sort_direction: desc
+      sort_by: created_at
+      sort_direction: asc
       per_page: 22
       limit: 7
       all: false
