@@ -153,7 +153,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: inactive
+        example: active
         type: string
         enumValues:
           - active
@@ -188,7 +188,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-03T20:28:33'
+        example: '2026-11-07T19:50:42'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -199,7 +199,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-11-26'
+        example: '2052-11-30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -210,7 +210,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: status
+        example: trade_name
         type: string
         enumValues:
           - id
@@ -226,7 +226,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: ASC
+        example: DESC
         type: string
         enumValues:
           - asc
@@ -260,13 +260,13 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       search: b
-      status: inactive
+      status: active
       economic_activity: 'n'
       phone: gzmiyvdljnikhway
-      desde: '2026-11-03T20:28:33'
-      hasta: '2052-11-26'
-      sort_by: status
-      sort_direction: ASC
+      desde: '2026-11-07T19:50:42'
+      hasta: '2052-11-30'
+      sort_by: trade_name
+      sort_direction: DESC
       limit: 22
       per_page: 7
     fileParameters: []
