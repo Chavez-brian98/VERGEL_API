@@ -15,6 +15,10 @@ use Illuminate\Validation\ValidationException;
 
 class TransactionService
 {
+    public function __construct(
+        private readonly ?MovementService $movementService = null
+    ) {}
+
     /**
      * Consulta y filtra el historial de transacciones (trabajos ya efectuados y cancelados/declinados).
      * Excluye estrictamente los trabajos en curso o cotizaciones abiertas en estado pending.
@@ -176,9 +180,10 @@ class TransactionService
             $quote = Quote::findOrFail($validated['quote_id']);
             $oldData = $quote->toArray();
 
+            $payment = null;
             // Si se suministró información de pago, registrar el cobro en la tabla payments
             if (! empty($validated['amount_paid'])) {
-                Payment::create([
+                $payment = Payment::create([
                     'quote_id' => $quote->id,
                     'employee_id' => auth()->user()?->employee_id ?? $quote->employee_id,
                     'payment_date' => $validated['payment_date'] ?? now(),
@@ -189,6 +194,10 @@ class TransactionService
 
             // Marcar la cotización como pagada para integrarla al Historial de Transacciones
             $quote->update(['status' => 'paid']);
+
+            // Módulo 5.13: Generar automáticamente el movimiento de venta en el libro contable general
+            $movementService = $this->movementService ?? app(MovementService::class);
+            $movementService->recordSaleFromQuote($quote, $payment);
 
             $this->logAudit('insert', 'quotes', $quote->id, $oldData, $quote->fresh()->toArray());
 
