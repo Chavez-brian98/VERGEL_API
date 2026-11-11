@@ -107,6 +107,30 @@
                                                                     </ul>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-cotizaciones" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="cotizaciones">
+                    <a href="#cotizaciones">Cotizaciones</a>
+                </li>
+                                    <ul id="tocify-subheader-cotizaciones" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="cotizaciones-gestion">
+                                <a href="#cotizaciones-gestion">Gestión</a>
+                            </li>
+                                                            <ul id="tocify-subheader-cotizaciones-gestion" class="tocify-subheader">
+                                                                            <li class="tocify-item level-3" data-unique="cotizaciones-POSTapi-v1-quotes">
+                                            <a href="#cotizaciones-POSTapi-v1-quotes">Registrar una nueva cotización.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="cotizaciones-PUTapi-v1-quotes--id-">
+                                            <a href="#cotizaciones-PUTapi-v1-quotes--id-">Actualizar una cotización.</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="cotizaciones-DELETEapi-v1-quotes--id-">
+                                            <a href="#cotizaciones-DELETEapi-v1-quotes--id-">Eliminar una cotización (Borrado lógico).</a>
+                                        </li>
+                                                                            <li class="tocify-item level-3" data-unique="cotizaciones-PATCHapi-v1-quotes--quote--status">
+                                            <a href="#cotizaciones-PATCHapi-v1-quotes--quote--status">Cambiar el estado de una cotización.</a>
+                                        </li>
+                                                                    </ul>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-planes-de-suscripcion" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="planes-de-suscripcion">
                     <a href="#planes-de-suscripcion">Planes de Suscripción</a>
@@ -327,7 +351,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: November 2, 2026</li>
+        <li>Last updated: November 11, 2026</li>
     </ul>
 </div>
 
@@ -375,8 +399,8 @@
     \"search\": \"b\",
     \"status\": \"active\",
     \"phone\": \"ngzmiyvdljnikhwa\",
-    \"desde\": \"2026-11-02\",
-    \"hasta\": \"2052-11-25\",
+    \"desde\": \"2026-11-11\",
+    \"hasta\": \"2052-12-04\",
     \"limit\": 22
 }"
 </code></pre></div>
@@ -408,8 +432,8 @@ let body = {
     "search": "b",
     "status": "active",
     "phone": "ngzmiyvdljnikhwa",
-    "desde": "2026-11-02",
-    "hasta": "2052-11-25",
+    "desde": "2026-11-11",
+    "hasta": "2052-12-04",
     "limit": 22
 };
 
@@ -681,10 +705,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-customers"
-               value="2026-11-02"
+               value="2026-11-11"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-02</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-11</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -693,10 +717,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-customers"
-               value="2052-11-25"
+               value="2052-12-04"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-11-25</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-04</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -2453,6 +2477,959 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>ID del plan de suscripción a asignar. Example: <code>2</code></p>
+        </div>
+        </form>
+
+                <h1 id="cotizaciones">Cotizaciones</h1>
+
+    <p>APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.</p>
+
+                        <h2 id="cotizaciones-gestion">Gestión</h2>
+                                                    <h2 id="cotizaciones-POSTapi-v1-quotes">Registrar una nueva cotización.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>El backend calcula el total de cada ítem (<code>quantity * unit_price</code>), el subtotal con descuento del plan,
+el IVA (13% de El Salvador cuando <code>includes_vat</code> es false) y los puntos de lealtad ganados.
+El empleado se toma del usuario autenticado.</p>
+
+<span id="example-requests-POSTapi-v1-quotes">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "https://vergel-front.pages.dev/api/v1/quotes" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"customer_id\": 1,
+    \"applied_plan_id\": 1,
+    \"includes_vat\": false,
+    \"loyalty_points_used\": 0,
+    \"status\": \"pending\",
+    \"items\": [
+        {
+            \"item_type\": \"service\",
+            \"service_id\": 1,
+            \"plant_id\": 1,
+            \"quantity\": 2,
+            \"unit_price\": 25.5
+        }
+    ]
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/quotes"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "customer_id": 1,
+    "applied_plan_id": 1,
+    "includes_vat": false,
+    "loyalty_points_used": 0,
+    "status": "pending",
+    "items": [
+        {
+            "item_type": "service",
+            "service_id": 1,
+            "plant_id": 1,
+            "quantity": 2,
+            "unit_price": 25.5
+        }
+    ]
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-quotes">
+</span>
+<span id="execution-results-POSTapi-v1-quotes" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-quotes"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-quotes"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-quotes" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-quotes">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-quotes" data-method="POST"
+      data-path="api/v1/quotes"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-quotes', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-quotes"
+                    onclick="tryItOut('POSTapi-v1-quotes');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-quotes"
+                    onclick="cancelTryOut('POSTapi-v1-quotes');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-quotes"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/quotes</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-quotes"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-quotes"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-quotes"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>customer_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="customer_id"                data-endpoint="POSTapi-v1-quotes"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del cliente asociado. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>applied_plan_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="applied_plan_id"                data-endpoint="POSTapi-v1-quotes"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del plan de suscripción aplicado. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>includes_vat</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="POSTapi-v1-quotes" style="display: none">
+            <input type="radio" name="includes_vat"
+                   value="true"
+                   data-endpoint="POSTapi-v1-quotes"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-v1-quotes" style="display: none">
+            <input type="radio" name="includes_vat"
+                   value="false"
+                   data-endpoint="POSTapi-v1-quotes"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Indica si los precios ya incluyen IVA. Default: false. Example: <code>false</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>loyalty_points_used</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="loyalty_points_used"                data-endpoint="POSTapi-v1-quotes"
+               value="0"
+               data-component="body">
+    <br>
+<p>Puntos de lealtad usados (solo si la cotización incluye un servicio). Example: <code>0</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="POSTapi-v1-quotes"
+               value="pending"
+               data-component="body">
+    <br>
+<p>Estado inicial (<code>pending</code> o <code>paid</code>). Default: pending. Example: <code>pending</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>items</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+ &nbsp;
+ &nbsp;
+<br>
+<p>Lista de ítems de la cotización.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>item_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="items.0.item_type"                data-endpoint="POSTapi-v1-quotes"
+               value="service"
+               data-component="body">
+    <br>
+<p>Tipo de ítem (<code>service</code> o <code>plant</code>). Example: <code>service</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.service_id"                data-endpoint="POSTapi-v1-quotes"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del servicio cuando <code>item_type</code> es <code>service</code>. Example: <code>1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>plant_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.plant_id"                data-endpoint="POSTapi-v1-quotes"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID de la planta cuando <code>item_type</code> es <code>plant</code>. Example: <code>1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>quantity</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.quantity"                data-endpoint="POSTapi-v1-quotes"
+               value="2"
+               data-component="body">
+    <br>
+<p>Cantidad. Example: <code>2</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>unit_price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.unit_price"                data-endpoint="POSTapi-v1-quotes"
+               value="25.5"
+               data-component="body">
+    <br>
+<p>Precio unitario. Example: <code>25.5</code></p>
+                    </div>
+                                    </details>
+        </div>
+        </form>
+
+                    <h2 id="cotizaciones-PUTapi-v1-quotes--id-">Actualizar una cotización.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Actualiza datos generales y, si se envía <code>items</code>, reemplaza el detalle completo y recalcula los montos.</p>
+
+<span id="example-requests-PUTapi-v1-quotes--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "https://vergel-front.pages.dev/api/v1/quotes/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"customer_id\": 1,
+    \"applied_plan_id\": 1,
+    \"includes_vat\": true,
+    \"loyalty_points_used\": 0,
+    \"status\": \"pending\",
+    \"items\": [
+        {
+            \"item_type\": \"service\",
+            \"service_id\": 1,
+            \"plant_id\": 1,
+            \"quantity\": 2,
+            \"unit_price\": 25.5
+        }
+    ]
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/quotes/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "customer_id": 1,
+    "applied_plan_id": 1,
+    "includes_vat": true,
+    "loyalty_points_used": 0,
+    "status": "pending",
+    "items": [
+        {
+            "item_type": "service",
+            "service_id": 1,
+            "plant_id": 1,
+            "quantity": 2,
+            "unit_price": 25.5
+        }
+    ]
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-v1-quotes--id-">
+</span>
+<span id="execution-results-PUTapi-v1-quotes--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-v1-quotes--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-v1-quotes--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-v1-quotes--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-v1-quotes--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-v1-quotes--id-" data-method="PUT"
+      data-path="api/v1/quotes/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-quotes--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-v1-quotes--id-"
+                    onclick="tryItOut('PUTapi-v1-quotes--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-v1-quotes--id-"
+                    onclick="cancelTryOut('PUTapi-v1-quotes--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-v1-quotes--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/v1/quotes/{id}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/quotes/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTapi-v1-quotes--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the quote. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>quote</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="quote"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la cotización. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>customer_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="customer_id"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del cliente asociado. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>applied_plan_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="applied_plan_id"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del plan de suscripción aplicado. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>includes_vat</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="PUTapi-v1-quotes--id-" style="display: none">
+            <input type="radio" name="includes_vat"
+                   value="true"
+                   data-endpoint="PUTapi-v1-quotes--id-"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PUTapi-v1-quotes--id-" style="display: none">
+            <input type="radio" name="includes_vat"
+                   value="false"
+                   data-endpoint="PUTapi-v1-quotes--id-"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Indica si los precios ya incluyen IVA. Example: <code>true</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>loyalty_points_used</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="loyalty_points_used"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="0"
+               data-component="body">
+    <br>
+<p>Puntos de lealtad usados (solo si la cotización incluye un servicio). Example: <code>0</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="pending"
+               data-component="body">
+    <br>
+<p>Estado (<code>pending</code> o <code>paid</code>). Example: <code>pending</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>items</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+<br>
+<p>Lista de ítems; si se envía, reemplaza los existentes.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>item_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="items.0.item_type"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="service"
+               data-component="body">
+    <br>
+<p>Tipo de ítem (<code>service</code> o <code>plant</code>). Example: <code>service</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.service_id"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID del servicio cuando <code>item_type</code> es <code>service</code>. Example: <code>1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>plant_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.plant_id"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID de la planta cuando <code>item_type</code> es <code>plant</code>. Example: <code>1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>quantity</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.quantity"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="2"
+               data-component="body">
+    <br>
+<p>Cantidad. Example: <code>2</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>unit_price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.unit_price"                data-endpoint="PUTapi-v1-quotes--id-"
+               value="25.5"
+               data-component="body">
+    <br>
+<p>Precio unitario. Example: <code>25.5</code></p>
+                    </div>
+                                    </details>
+        </div>
+        </form>
+
+                    <h2 id="cotizaciones-DELETEapi-v1-quotes--id-">Eliminar una cotización (Borrado lógico).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-DELETEapi-v1-quotes--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request DELETE \
+    "https://vergel-front.pages.dev/api/v1/quotes/architecto" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/quotes/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-DELETEapi-v1-quotes--id-">
+</span>
+<span id="execution-results-DELETEapi-v1-quotes--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-v1-quotes--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-v1-quotes--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-v1-quotes--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-v1-quotes--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-DELETEapi-v1-quotes--id-" data-method="DELETE"
+      data-path="api/v1/quotes/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-v1-quotes--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-v1-quotes--id-"
+                    onclick="tryItOut('DELETEapi-v1-quotes--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-v1-quotes--id-"
+                    onclick="cancelTryOut('DELETEapi-v1-quotes--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-v1-quotes--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/v1/quotes/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="DELETEapi-v1-quotes--id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="DELETEapi-v1-quotes--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="DELETEapi-v1-quotes--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="DELETEapi-v1-quotes--id-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the quote. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>quote</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="quote"                data-endpoint="DELETEapi-v1-quotes--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la cotización. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="cotizaciones-PATCHapi-v1-quotes--quote--status">Cambiar el estado de una cotización.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-PATCHapi-v1-quotes--quote--status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PATCH \
+    "https://vergel-front.pages.dev/api/v1/quotes/1/status" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"status\": \"paid\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://vergel-front.pages.dev/api/v1/quotes/1/status"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "status": "paid"
+};
+
+fetch(url, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PATCHapi-v1-quotes--quote--status">
+</span>
+<span id="execution-results-PATCHapi-v1-quotes--quote--status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PATCHapi-v1-quotes--quote--status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-quotes--quote--status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PATCHapi-v1-quotes--quote--status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PATCHapi-v1-quotes--quote--status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PATCHapi-v1-quotes--quote--status" data-method="PATCH"
+      data-path="api/v1/quotes/{quote}/status"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-quotes--quote--status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PATCHapi-v1-quotes--quote--status"
+                    onclick="tryItOut('PATCHapi-v1-quotes--quote--status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PATCHapi-v1-quotes--quote--status"
+                    onclick="cancelTryOut('PATCHapi-v1-quotes--quote--status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PATCHapi-v1-quotes--quote--status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/quotes/{quote}/status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PATCHapi-v1-quotes--quote--status"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-quotes--quote--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PATCHapi-v1-quotes--quote--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>quote</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="quote"                data-endpoint="PATCHapi-v1-quotes--quote--status"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la cotización. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="PATCHapi-v1-quotes--quote--status"
+               value="paid"
+               data-component="body">
+    <br>
+<p>Nuevo estado (<code>pending</code> o <code>paid</code>). Example: <code>paid</code></p>
         </div>
         </form>
 
@@ -7946,7 +8923,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"id\",
+    \"sort_by\": \"name\",
     \"sort_direction\": \"asc\"
 }"
 </code></pre></div>
@@ -7985,7 +8962,7 @@ let body = {
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "id",
+    "sort_by": "name",
     "sort_direction": "asc"
 };
 
@@ -8339,10 +9316,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="id"
+               value="name"
                data-component="body">
     <br>
-<p>Example: <code>id</code></p>
+<p>Example: <code>name</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -8575,8 +9552,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@C:\Users\Brian\AppData\Local\Temp\php1538.tmp" \
-    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php1537.tmp" </code></pre></div>
+    --form "image=@C:\Users\Brian\AppData\Local\Temp\php31AF.tmp" \
+    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php31AE.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8781,7 +9758,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php1538.tmp</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php31AF.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -8793,7 +9770,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php1537.tmp</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php31AE.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -8842,8 +9819,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@C:\Users\Brian\AppData\Local\Temp\php156A.tmp" \
-    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php1569.tmp" </code></pre></div>
+    --form "image=@C:\Users\Brian\AppData\Local\Temp\php31D1.tmp" \
+    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php31D0.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -9092,7 +10069,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php156A.tmp</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php31D1.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -9104,7 +10081,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php1569.tmp</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php31D0.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;

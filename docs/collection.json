@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "d47d428a-e270-4ceb-8d06-b0a0c65de67e",
+        "_postman_id": "c3715e64-b4e5-4812-b676-f0bc3ac22cc1",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -82,7 +82,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-02\",\"hasta\":\"2052-11-25\",\"limit\":22}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-11\",\"hasta\":\"2052-12-04\",\"limit\":22}"
                                 },
                                 "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
                             },
@@ -528,6 +528,163 @@
                                     "name": ""
                                 }
                             ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Cotizaciones",
+            "description": "\nAPIs para la gesti\u00f3n de cotizaciones, \u00edtems de servicio\/planta y c\u00e1lculo autom\u00e1tico de montos.",
+            "item": [
+                {
+                    "name": "Gesti\u00f3n",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar una nueva cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":1,\"applied_plan_id\":1,\"includes_vat\":false,\"loyalty_points_used\":0,\"status\":\"pending\",\"items\":[{\"item_type\":\"service\",\"service_id\":1,\"plant_id\":1,\"quantity\":2,\"unit_price\":25.5}]}"
+                                },
+                                "description": "El backend calcula el total de cada \u00edtem (`quantity * unit_price`), el subtotal con descuento del plan,\nel IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.\nEl empleado se toma del usuario autenticado."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Actualizar una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the quote."
+                                        },
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":1,\"applied_plan_id\":1,\"includes_vat\":true,\"loyalty_points_used\":0,\"status\":\"pending\",\"items\":[{\"item_type\":\"service\",\"service_id\":1,\"plant_id\":1,\"quantity\":2,\"unit_price\":25.5}]}"
+                                },
+                                "description": "Actualiza datos generales y, si se env\u00eda `items`, reemplaza el detalle completo y recalcula los montos."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Eliminar una cotizaci\u00f3n (Borrado l\u00f3gico).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the quote."
+                                        },
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Cambiar el estado de una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:quote\/status",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:quote\/status",
+                                    "variable": [
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"status\":\"paid\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
                         }
                     ]
                 }
@@ -1986,7 +2143,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"id\",\"sort_direction\":\"asc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"name\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },

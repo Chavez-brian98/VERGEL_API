@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\Quote;
 use App\Models\Role;
 use App\Models\Supplier;
 use App\Policies\CustomerPolicy;
 use App\Policies\EmployeePolicy;
+use App\Policies\QuotePolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SupplierPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -36,5 +38,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Employee::class, EmployeePolicy::class);
         // Autorización del módulo de Roles (RBAC).
         Gate::policy(Role::class, RolePolicy::class);
+        // Autorización del módulo de Cotizaciones (RBAC).
+        Gate::policy(Quote::class, QuotePolicy::class);
     }
 }

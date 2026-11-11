@@ -11,6 +11,9 @@ tags:
     name: Clientes
     description: ''
   -
+    name: Cotizaciones
+    description: "\nAPIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos."
+  -
     name: 'Planes de Suscripción'
     description: ''
   -
@@ -288,12 +291,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-02'
+                  example: '2026-11-11'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-11-25'
+                  example: '2052-12-04'
                   nullable: true
                 limit:
                   type: integer
@@ -1224,6 +1227,211 @@ paths:
         in: path
         name: customer
         description: 'ID del cliente.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/quotes:
+    post:
+      summary: 'Registrar una nueva cotización.'
+      operationId: registrarUnaNuevaCotizacin
+      description: "El backend calcula el total de cada ítem (`quantity * unit_price`), el subtotal con descuento del plan,\nel IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.\nEl empleado se toma del usuario autenticado."
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente asociado.'
+                  example: 1
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'ID del plan de suscripción aplicado.'
+                  example: 1
+                includes_vat:
+                  type: boolean
+                  description: 'Indica si los precios ya incluyen IVA. Default: false.'
+                  example: false
+                loyalty_points_used:
+                  type: integer
+                  description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
+                  example: 0
+                status:
+                  type: string
+                  description: 'Estado inicial (`pending` o `paid`). Default: pending.'
+                  example: pending
+                items:
+                  type: array
+                  description: 'Lista de ítems de la cotización.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      item_type:
+                        type: string
+                        description: 'Tipo de ítem (`service` o `plant`).'
+                        example: service
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio cuando `item_type` es `service`.'
+                        example: 1
+                        nullable: true
+                      plant_id:
+                        type: integer
+                        description: 'ID de la planta cuando `item_type` es `plant`.'
+                        example: 1
+                        nullable: true
+                      quantity:
+                        type: number
+                        description: Cantidad.
+                        example: 2.0
+                      unit_price:
+                        type: number
+                        description: 'Precio unitario.'
+                        example: 25.5
+                    required:
+                      - item_type
+                      - service_id
+                      - plant_id
+                      - quantity
+                      - unit_price
+              required:
+                - applied_plan_id
+                - items
+  '/api/v1/quotes/{id}':
+    put:
+      summary: 'Actualizar una cotización.'
+      operationId: actualizarUnaCotizacin
+      description: 'Actualiza datos generales y, si se envía `items`, reemplaza el detalle completo y recalcula los montos.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente asociado.'
+                  example: 1
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'ID del plan de suscripción aplicado.'
+                  example: 1
+                includes_vat:
+                  type: boolean
+                  description: 'Indica si los precios ya incluyen IVA.'
+                  example: true
+                loyalty_points_used:
+                  type: integer
+                  description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
+                  example: 0
+                status:
+                  type: string
+                  description: 'Estado (`pending` o `paid`).'
+                  example: pending
+                items:
+                  type: array
+                  description: 'Lista de ítems; si se envía, reemplaza los existentes.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      item_type:
+                        type: string
+                        description: 'Tipo de ítem (`service` o `plant`).'
+                        example: service
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio cuando `item_type` es `service`.'
+                        example: 1
+                        nullable: true
+                      plant_id:
+                        type: integer
+                        description: 'ID de la planta cuando `item_type` es `plant`.'
+                        example: 1
+                        nullable: true
+                      quantity:
+                        type: number
+                        description: Cantidad.
+                        example: 2.0
+                      unit_price:
+                        type: number
+                        description: 'Precio unitario.'
+                        example: 25.5
+                    required:
+                      - item_type
+                      - service_id
+                      - plant_id
+                      - quantity
+                      - unit_price
+    delete:
+      summary: 'Eliminar una cotización (Borrado lógico).'
+      operationId: eliminarUnaCotizacinBorradoLgico
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the quote.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/quotes/{quote}/status':
+    patch:
+      summary: 'Cambiar el estado de una cotización.'
+      operationId: cambiarElEstadoDeUnaCotizacin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: 'Nuevo estado (`pending` o `paid`).'
+                  example: paid
+              required:
+                - status
+    parameters:
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización.'
         example: 1
         required: true
         schema:
@@ -4176,7 +4384,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: id
+                  example: name
                   enum:
                     - id
                     - name
