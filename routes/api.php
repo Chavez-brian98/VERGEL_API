@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\MovementController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
@@ -57,5 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('transactions', [TransactionController::class, 'index']);
         Route::get('transactions/{id}', [TransactionController::class, 'show']);
+
+        Route::get('movements', [MovementController::class, 'index']);
     });
 });
