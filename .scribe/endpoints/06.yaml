@@ -6,6 +6,291 @@ endpoints:
   -
     custom: []
     httpMethods:
+      - GET
+    uri: api/v1/suppliers
+    metadata:
+      custom: []
+      groupName: Proveedores
+      groupDescription: |-
+
+        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Listar y filtrar proveedores.'
+      description: 'Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro económico, teléfono o rango de fechas.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Búsqueda por nombre, nombre comercial, email, teléfono, tax_id (NIT/DUI), NRC o contacto.'
+        required: false
+        example: Vivero
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Filtrar por estado (`active` o `inactive`).'
+        required: false
+        example: active
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      economic_activity:
+        custom: []
+        name: economic_activity
+        description: 'Filtrar por giro o actividad económica.'
+        required: false
+        example: Jardinería
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Filtrar por número de teléfono.'
+        required: false
+        example: '78901234'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'Filtrar proveedores creados desde una fecha (YYYY-MM-DD).'
+        required: false
+        example: '2026-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      hasta:
+        custom: []
+        name: hasta
+        description: 'Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).'
+        required: false
+        example: '2026-12-31'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort_by:
+        custom: []
+        name: sort_by
+        description: 'Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.'
+        required: false
+        example: name
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort_direction:
+        custom: []
+        name: sort_direction
+        description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+        required: false
+        example: asc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Cantidad de registros por página (1-100). Default: 15.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      search: Vivero
+      status: active
+      economic_activity: Jardinería
+      phone: '78901234'
+      desde: '2026-01-01'
+      hasta: '2026-12-31'
+      sort_by: name
+      sort_direction: asc
+      limit: 15
+    bodyParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: ''
+        required: false
+        example: inactive
+        type: string
+        enumValues:
+          - active
+          - inactive
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      economic_activity:
+        custom: []
+        name: economic_activity
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: gzmiyvdljnikhway
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'Must be a valid date.'
+        required: false
+        example: '2026-11-11T19:33:11'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      hasta:
+        custom: []
+        name: hasta
+        description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
+        required: false
+        example: '2052-12-04'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      sort_by:
+        custom: []
+        name: sort_by
+        description: ''
+        required: false
+        example: created_at
+        type: string
+        enumValues:
+          - id
+          - name
+          - trade_name
+          - status
+          - created_at
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      sort_direction:
+        custom: []
+        name: sort_direction
+        description: ''
+        required: false
+        example: asc
+        type: string
+        enumValues:
+          - asc
+          - desc
+          - ASC
+          - DESC
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 7
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      search: b
+      status: inactive
+      economic_activity: 'n'
+      phone: gzmiyvdljnikhway
+      desde: '2026-11-11T19:33:11'
+      hasta: '2052-12-04'
+      sort_by: created_at
+      sort_direction: asc
+      limit: 22
+      per_page: 7
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
       - POST
     uri: api/v1/suppliers
     metadata:
@@ -14,7 +299,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Registrar un nuevo proveedor.'
       description: ''
@@ -187,6 +472,64 @@ endpoints:
   -
     custom: []
     httpMethods:
+      - GET
+    uri: 'api/v1/suppliers/{id}'
+    metadata:
+      custom: []
+      groupName: Proveedores
+      groupDescription: |-
+
+        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Consultar detalle de un proveedor.'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the supplier.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
       - PUT
       - PATCH
     uri: 'api/v1/suppliers/{id}'
@@ -196,7 +539,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Actualizar información de un proveedor.'
       description: ''
@@ -338,7 +681,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: active
+        example: inactive
         type: string
         enumValues:
           - active
@@ -368,7 +711,7 @@ endpoints:
       address: l
       contact_name: q
       contact_phone: ppwqbewtnnoqitpx
-      status: active
+      status: inactive
       notes: architecto
     fileParameters: []
     responses: []
@@ -391,7 +734,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Eliminar proveedor (Borrado lógico).'
       description: ''
@@ -440,7 +783,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Cambiar estado de un proveedor.'
       description: ''

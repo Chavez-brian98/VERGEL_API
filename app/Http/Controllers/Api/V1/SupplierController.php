@@ -54,7 +54,7 @@ class SupplierController extends Controller
     /**
      * Registrar un nuevo proveedor.
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      *
      * @bodyParam name string required Razón social o nombre del proveedor. Example: Distribuidora Verde S.A. de C.V.
      * @bodyParam trade_name string Nombre comercial del proveedor. Example: Vivero El Roble
@@ -95,7 +95,7 @@ class SupplierController extends Controller
     /**
      * Actualizar información de un proveedor.
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      */
     public function update(UpdateSupplierRequest $request, int $id): SupplierResource
     {
@@ -107,7 +107,7 @@ class SupplierController extends Controller
     /**
      * Cambiar estado de un proveedor.
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      *
      * @bodyParam status string required Nuevo estado (`active` o `inactive`). Example: inactive
      */
@@ -121,7 +121,7 @@ class SupplierController extends Controller
     /**
      * Eliminar proveedor (Borrado lógico).
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      */
     public function destroy(int $id): JsonResponse
     {
