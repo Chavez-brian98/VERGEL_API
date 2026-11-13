@@ -32,4 +32,14 @@ class QuoteItem extends Model
     {
         return $this->belongsTo(Quote::class);
     }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
+    }
+
+    public function plant(): BelongsTo
+    {
+        return $this->belongsTo(Plant::class);
+    }
 }

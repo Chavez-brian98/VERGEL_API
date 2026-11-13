@@ -47,7 +47,7 @@ class Quote extends Model
         return $this->belongsTo(Employee::class);
     }
 
-    public function appliedPlan(): BelongsTo
+    public function plan(): BelongsTo
     {
         return $this->belongsTo(SubscriptionPlan::class, 'applied_plan_id');
     }
@@ -60,5 +60,10 @@ class Quote extends Model
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 }

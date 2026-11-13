@@ -16,7 +16,7 @@ class AuthTestUserSeeder extends Seeder
     public function run(): void
     {
         // 1. Usuario Administrador
-        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
+        $adminRole = Role::where('role_name', 'Administrador')->firstOrFail();
 
         $adminEmployee = Employee::firstOrCreate(
             [
@@ -37,13 +37,13 @@ class AuthTestUserSeeder extends Seeder
             ]
         );
 
-        // 2. Usuario Contador
-        $contadorRole = Role::where('role_name', 'Contador')->firstOrFail();
+        // 2. Usuario Auditor
+        $auditorRole = Role::where('role_name', 'Auditor')->firstOrFail();
 
-        $contadorEmployee = Employee::firstOrCreate(
+        $auditorEmployee = Employee::firstOrCreate(
             [
-                'full_name' => 'Lucía Gómez (Contabilidad)',
-                'role_id' => $contadorRole->id,
+                'full_name' => 'Lucía Gómez (Auditoría)',
+                'role_id' => $auditorRole->id,
             ],
             [
                 'active' => true,
@@ -51,21 +51,21 @@ class AuthTestUserSeeder extends Seeder
         );
 
         User::updateOrCreate(
-            ['email' => 'contador@vergel.com'],
+            ['email' => 'auditor@vergel.com'],
             [
                 'password' => Hash::make('password123'),
-                'employee_id' => $contadorEmployee->id,
+                'employee_id' => $auditorEmployee->id,
                 'email_verified_at' => now(),
             ]
         );
 
-        // 3. Usuario Colaborador de Campo
-        $colaboradorRole = Role::where('role_name', 'Colaborador')->firstOrFail();
+        // 3. Usuario Recepcionista
+        $recepcionistaRole = Role::where('role_name', 'Recepcionista')->firstOrFail();
 
-        $colaboradorEmployee = Employee::firstOrCreate(
+        $recepcionistaEmployee = Employee::firstOrCreate(
             [
-                'full_name' => 'Jorge Ramos (Operativo de Campo)',
-                'role_id' => $colaboradorRole->id,
+                'full_name' => 'Sofía Martínez (Recepción)',
+                'role_id' => $recepcionistaRole->id,
             ],
             [
                 'active' => true,
@@ -73,10 +73,32 @@ class AuthTestUserSeeder extends Seeder
         );
 
         User::updateOrCreate(
-            ['email' => 'colaborador@vergel.com'],
+            ['email' => 'recepcion@vergel.com'],
             [
                 'password' => Hash::make('password123'),
-                'employee_id' => $colaboradorEmployee->id,
+                'employee_id' => $recepcionistaEmployee->id,
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // 4. Usuario Técnico de Campo
+        $tecnicoRole = Role::where('role_name', 'Tecnico de campo')->firstOrFail();
+
+        $tecnicoEmployee = Employee::firstOrCreate(
+            [
+                'full_name' => 'Jorge Ramos (Técnico de Campo)',
+                'role_id' => $tecnicoRole->id,
+            ],
+            [
+                'active' => true,
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'tecnico@vergel.com'],
+            [
+                'password' => Hash::make('password123'),
+                'employee_id' => $tecnicoEmployee->id,
                 'email_verified_at' => now(),
             ]
         );

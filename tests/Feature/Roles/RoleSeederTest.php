@@ -10,25 +10,30 @@ class RoleSeederTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_seeds_the_three_predefined_roles(): void
+    public function test_it_seeds_the_four_predefined_roles(): void
     {
         $this->seed(RoleSeeder::class);
 
-        $this->assertDatabaseCount('roles', 3);
+        $this->assertDatabaseCount('roles', 4);
 
         $this->assertDatabaseHas('roles', [
-            'role_name' => 'Admin',
-            'description' => 'Control total del sistema.',
+            'role_name' => 'Administrador',
+            'description' => 'Control total del sistema y gestión integral de la plataforma.',
         ]);
 
         $this->assertDatabaseHas('roles', [
-            'role_name' => 'Contador',
-            'description' => 'Acceso a la billetera, reportes, facturación y modificación de movimientos financieros.',
+            'role_name' => 'Auditor',
+            'description' => 'Supervisión de operaciones, consulta de reportes y trazabilidad en bitácoras de auditoría.',
         ]);
 
         $this->assertDatabaseHas('roles', [
-            'role_name' => 'Colaborador',
-            'description' => 'Nivel operativo, encargado de ver su agenda y marcar los servicios de jardinería como completados.',
+            'role_name' => 'Recepcionista',
+            'description' => 'Atención al cliente, gestión de citas e ingreso de solicitudes y cotizaciones.',
+        ]);
+
+        $this->assertDatabaseHas('roles', [
+            'role_name' => 'Tecnico de campo',
+            'description' => 'Nivel operativo en terreno, ejecución de servicios de jardinería y actualización de citas asignadas.',
         ]);
     }
 
@@ -37,6 +42,6 @@ class RoleSeederTest extends TestCase
         $this->seed(RoleSeeder::class);
         $this->seed(RoleSeeder::class);
 
-        $this->assertDatabaseCount('roles', 3);
+        $this->assertDatabaseCount('roles', 4);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AuditLog extends Model
 {
@@ -26,6 +27,15 @@ class AuditLog extends Model
             'affected_record_id' => 'integer',
             'old_data' => 'array',
             'new_data' => 'array',
+            'created_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Colaborador que realizó la acción registrada en la bitácora.
+     */
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
     }
 }

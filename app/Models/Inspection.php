@@ -33,6 +33,13 @@ class Inspection extends Model
         'total_area' => 'decimal:2',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'inspection_date' => 'date',
+        ];
+    }
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
