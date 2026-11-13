@@ -17,6 +17,7 @@ class SubscriptionPlan extends Model
         'frequency_unit',
         'visit_count',
         'maintenance_type',
+        'price',
         'discount_percentage',
         'loyalty_points_multiplier',
         'active',
@@ -27,6 +28,7 @@ class SubscriptionPlan extends Model
         return [
             'frequency_value' => 'integer',
             'visit_count' => 'integer',
+            'price' => 'decimal:2',
             'discount_percentage' => 'decimal:2',
             'loyalty_points_multiplier' => 'decimal:2',
             'active' => 'boolean',

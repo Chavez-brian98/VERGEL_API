@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LoyaltyPointTransaction extends Model
 {
-    // Indicar que la tabla no maneja updated_at
+    protected $table = 'loyalty_points_transactions';
+
     public $timestamps = false;
 
     protected $fillable = [

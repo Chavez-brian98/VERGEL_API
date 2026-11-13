@@ -5,8 +5,12 @@ use App\Http\Controllers\Api\V1\AppointmentController;
 use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\LoyaltyRedemptionController;
+use App\Http\Controllers\Api\V1\LoyaltyRewardController;
 use App\Http\Controllers\Api\V1\PlantController;
+use App\Http\Controllers\Api\V1\PortfolioController;
 use App\Http\Controllers\Api\V1\RoleController;
+use App\Http\Controllers\Api\V1\SubscriptionController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
 use App\Http\Controllers\Api\V1\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +23,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::prefix('v1')->group(function () {
+        Route::get('customers/portfolio/movements', [PortfolioController::class, 'allMovements']);
+        Route::get('customers/portfolio', [PortfolioController::class, 'index']);
+        Route::get('customers/{customer}/portfolio', [PortfolioController::class, 'summary']);
+        Route::get('customers/{customer}/portfolio/movements', [PortfolioController::class, 'movements']);
+        Route::post('customers/{customer}/wallet/transactions', [PortfolioController::class, 'storeWalletTransaction']);
+        Route::post('customers/{customer}/loyalty-points/transactions', [PortfolioController::class, 'storeLoyaltyTransaction']);
+
+        Route::get('customers/{customer}/subscriptions/current', [SubscriptionController::class, 'current']);
+        Route::get('customers/{customer}/subscriptions', [SubscriptionController::class, 'index']);
+        Route::get('subscriptions/{subscription}', [SubscriptionController::class, 'show']);
+
+        Route::get('customers/{customer}/loyalty-redemptions', [LoyaltyRedemptionController::class, 'index']);
+
+        Route::get('loyalty-rewards', [LoyaltyRewardController::class, 'index']);
+        Route::get('loyalty-rewards/{loyalty_reward}', [LoyaltyRewardController::class, 'show']);
+
         Route::apiResource('customers', CustomerController::class);
         Route::patch('customers/{customer}/status', [CustomerController::class, 'updateStatus']);
         Route::get('customers/{customer}/plan-history', [CustomerController::class, 'planHistory']);
