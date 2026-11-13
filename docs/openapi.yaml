@@ -38,6 +38,9 @@ tags:
     name: 'Historial de Transacciones'
     description: "\nEndpoints para consultar el registro histórico de trabajos de jardinería efectuados (pagados)\ny trabajos declinados o cancelados por los clientes, excluyendo trabajos en curso."
   -
+    name: 'Movimientos (Compras, Ventas y Gastos)'
+    description: "\nEndpoints del libro general dinámico del sistema. Centraliza toda la actividad económica\n(ventas por trabajos efectuados, compras a proveedores y gastos operativos tipo tickets),\npermitiendo filtrar por fechas, tipo y entidad, calculando en tiempo real la Utilidad (Ingresos - Egresos)."
+  -
     name: Plantas
     description: ''
   -
@@ -1379,7 +1382,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: paid
+                  example: pending
                   enum:
                     - pending
                     - paid
@@ -1402,7 +1405,7 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-13T18:19:50'
+                  example: '2026-11-13T20:28:56'
                   nullable: true
                 hasta:
                   type: string
@@ -1412,7 +1415,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: total
+                  example: status
                   enum:
                     - id
                     - quote_number
@@ -1423,7 +1426,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: DESC
                   enum:
                     - asc
                     - desc
@@ -4496,7 +4499,7 @@ paths:
                 action:
                   type: string
                   description: ''
-                  example: restore
+                  example: insert
                   enum:
                     - insert
                     - update
@@ -4522,22 +4525,22 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-07'
+                  example: '2026-11-13'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-11-30'
+                  example: '2052-12-06'
                   nullable: true
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-07'
+                  example: '2026-11-13'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-11-30'
+                  example: '2052-12-06'
                   nullable: true
                 limit:
                   type: integer
@@ -5237,22 +5240,22 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-07'
+                  example: '2026-11-13'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-11-30'
+                  example: '2052-12-06'
                   nullable: true
                 date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-07'
+                  example: '2026-11-13'
                   nullable: true
                 status:
                   type: string
                   description: ''
-                  example: cancelled
+                  example: annulled
                   enum:
                     - pending
                     - confirmed
@@ -5283,7 +5286,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: appointment_date
                   enum:
                     - id
                     - appointment_date
@@ -5294,7 +5297,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -6767,7 +6770,7 @@ paths:
                 status_type:
                   type: string
                   description: ''
-                  example: performed
+                  example: all
                   enum:
                     - all
                     - performed
@@ -6776,17 +6779,17 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-07'
+                  example: '2026-11-13'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-11-30'
+                  example: '2052-12-06'
                   nullable: true
                 sort_by:
                   type: string
                   description: ''
-                  example: quote_number
+                  example: total
                   enum:
                     - id
                     - quote_number
@@ -7099,6 +7102,445 @@ paths:
         required: true
         schema:
           type: integer
+  /api/v1/movements:
+    get:
+      summary: 'Listar y filtrar movimientos del libro general.'
+      operationId: listarYFiltrarMovimientosDelLibroGeneral
+      description: "Devuelve una lista paginada de todos los movimientos económicos registrados en el sistema,\ncalculando en tiempo real el resumen financiero de ingresos, compras, gastos y utilidad neta."
+      parameters:
+        -
+          in: query
+          name: movement_type
+          description: 'Filtrar por tipo (all, sale, purchase, expense, ticket). Por defecto all.'
+          example: all
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por tipo (all, sale, purchase, expense, ticket). Por defecto all.'
+            example: all
+        -
+          in: query
+          name: type
+          description: 'Alias directo de movement_type.'
+          example: sale
+          required: false
+          schema:
+            type: string
+            description: 'Alias directo de movement_type.'
+            example: sale
+        -
+          in: query
+          name: start_date
+          description: 'Fecha contable inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha contable inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: end_date
+          description: 'Fecha contable final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha contable final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: search
+          description: 'Término unificado de búsqueda (nombre de cliente/proveedor, documento o NIT).'
+          example: Vivero
+          required: false
+          schema:
+            type: string
+            description: 'Término unificado de búsqueda (nombre de cliente/proveedor, documento o NIT).'
+            example: Vivero
+        -
+          in: query
+          name: entity_name
+          description: 'Filtro específico por nombre de cliente o proveedor.'
+          example: 'Juan Pérez'
+          required: false
+          schema:
+            type: string
+            description: 'Filtro específico por nombre de cliente o proveedor.'
+            example: 'Juan Pérez'
+        -
+          in: query
+          name: status
+          description: 'Estado contable (completed, cancelled, all). Por defecto completed.'
+          example: completed
+          required: false
+          schema:
+            type: string
+            description: 'Estado contable (completed, cancelled, all). Por defecto completed.'
+            example: completed
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (id, movement_date, total, amount, created_at, document_number). Por defecto movement_date.'
+          example: movement_date
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (id, movement_date, total, amount, created_at, document_number). Por defecto movement_date.'
+            example: movement_date
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección de ordenamiento (asc o desc). Por defecto desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección de ordenamiento (asc o desc). Por defecto desc.'
+            example: desc
+        -
+          in: query
+          name: per_page
+          description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
+            example: 15
+        -
+          in: query
+          name: limit
+          description: 'Alias alternativo para per_page.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Alias alternativo para per_page.'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      type: sale
+                      typeLabel: Venta
+                      documentType: 'Cotización Pagada'
+                      documentNumber: COT-2026-0001
+                      entity:
+                        name: 'Juan Carlos Pérez'
+                        taxId: 0614-260290-101-1
+                        role: customer
+                      date: '2026-11-05'
+                      amounts:
+                        amount: 108.0
+                        vatAmount: 0.0
+                        total: 108.0
+                      status:
+                        raw: completed
+                        label: Completado
+                        isCancelled: false
+                        badge: success
+                      notes: 'Venta originada automáticamente por trabajo efectuado (Cotización COT-2026-0001)'
+                      employee:
+                        id: 1
+                        fullName: 'Carlos Administrador'
+                      origin:
+                        type: Quote
+                        id: 1
+                      createdAt: '2026-11-05T14:30:00.000000Z'
+                  summary:
+                    totalSales: 108.0
+                    totalPurchases: 50.0
+                    totalExpenses: 20.0
+                    totalIncome: 108.0
+                    totalOutflow: 70.0
+                    utility: 38.0
+                    profitMarginPercentage: 35.19
+                    totalCount: 3
+                  meta:
+                    summary:
+                      totalSales: 108.0
+                      totalPurchases: 50.0
+                      totalExpenses: 20.0
+                      totalIncome: 108.0
+                      totalOutflow: 70.0
+                      utility: 38.0
+                      profitMarginPercentage: 35.19
+                      totalCount: 3
+                  message: 'Movimientos contables obtenidos exitosamente.'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        type: sale
+                        typeLabel: Venta
+                        documentType: 'Cotización Pagada'
+                        documentNumber: COT-2026-0001
+                        entity:
+                          name: 'Juan Carlos Pérez'
+                          taxId: 0614-260290-101-1
+                          role: customer
+                        date: '2026-11-05'
+                        amounts:
+                          amount: 108
+                          vatAmount: 0
+                          total: 108
+                        status:
+                          raw: completed
+                          label: Completado
+                          isCancelled: false
+                          badge: success
+                        notes: 'Venta originada automáticamente por trabajo efectuado (Cotización COT-2026-0001)'
+                        employee:
+                          id: 1
+                          fullName: 'Carlos Administrador'
+                        origin:
+                          type: Quote
+                          id: 1
+                        createdAt: '2026-11-05T14:30:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        type:
+                          type: string
+                          example: sale
+                        typeLabel:
+                          type: string
+                          example: Venta
+                        documentType:
+                          type: string
+                          example: 'Cotización Pagada'
+                        documentNumber:
+                          type: string
+                          example: COT-2026-0001
+                        entity:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: 'Juan Carlos Pérez'
+                            taxId:
+                              type: string
+                              example: 0614-260290-101-1
+                            role:
+                              type: string
+                              example: customer
+                        date:
+                          type: string
+                          example: '2026-11-05'
+                        amounts:
+                          type: object
+                          properties:
+                            amount:
+                              type: number
+                              example: 108.0
+                            vatAmount:
+                              type: number
+                              example: 0.0
+                            total:
+                              type: number
+                              example: 108.0
+                        status:
+                          type: object
+                          properties:
+                            raw:
+                              type: string
+                              example: completed
+                            label:
+                              type: string
+                              example: Completado
+                            isCancelled:
+                              type: boolean
+                              example: false
+                            badge:
+                              type: string
+                              example: success
+                        notes:
+                          type: string
+                          example: 'Venta originada automáticamente por trabajo efectuado (Cotización COT-2026-0001)'
+                        employee:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            fullName:
+                              type: string
+                              example: 'Carlos Administrador'
+                        origin:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: Quote
+                            id:
+                              type: integer
+                              example: 1
+                        createdAt:
+                          type: string
+                          example: '2026-11-05T14:30:00.000000Z'
+                  summary:
+                    type: object
+                    properties:
+                      totalSales:
+                        type: number
+                        example: 108.0
+                      totalPurchases:
+                        type: number
+                        example: 50.0
+                      totalExpenses:
+                        type: number
+                        example: 20.0
+                      totalIncome:
+                        type: number
+                        example: 108.0
+                      totalOutflow:
+                        type: number
+                        example: 70.0
+                      utility:
+                        type: number
+                        example: 38.0
+                      profitMarginPercentage:
+                        type: number
+                        example: 35.19
+                      totalCount:
+                        type: integer
+                        example: 3
+                  meta:
+                    type: object
+                    properties:
+                      summary:
+                        type: object
+                        properties:
+                          totalSales:
+                            type: number
+                            example: 108.0
+                          totalPurchases:
+                            type: number
+                            example: 50.0
+                          totalExpenses:
+                            type: number
+                            example: 20.0
+                          totalIncome:
+                            type: number
+                            example: 108.0
+                          totalOutflow:
+                            type: number
+                            example: 70.0
+                          utility:
+                            type: number
+                            example: 38.0
+                          profitMarginPercentage:
+                            type: number
+                            example: 35.19
+                          totalCount:
+                            type: integer
+                            example: 3
+                  message:
+                    type: string
+                    example: 'Movimientos contables obtenidos exitosamente.'
+      tags:
+        - 'Movimientos (Compras, Ventas y Gastos)'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movement_type:
+                  type: string
+                  description: ''
+                  example: purchase
+                  enum:
+                    - all
+                    - sale
+                    - purchase
+                    - expense
+                    - ticket
+                  nullable: true
+                type:
+                  type: string
+                  description: ''
+                  example: expense
+                  enum:
+                    - all
+                    - sale
+                    - purchase
+                    - expense
+                    - ticket
+                  nullable: true
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-13'
+                  nullable: true
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-06'
+                  nullable: true
+                search:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: 'n'
+                  nullable: true
+                entity_name:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: g
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: completed
+                  enum:
+                    - all
+                    - completed
+                    - cancelled
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: id
+                  enum:
+                    - id
+                    - movement_date
+                    - total
+                    - amount
+                    - created_at
+                    - document_number
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: desc
+                  enum:
+                    - asc
+                    - desc
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 16
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 17
+                  nullable: true
   /api/v1/plants:
     get:
       summary: 'Listar y filtrar plantas.'
@@ -7334,7 +7776,7 @@ paths:
                 active:
                   type: boolean
                   description: ''
-                  example: true
+                  example: false
                   nullable: true
                 min_price:
                   type: number
@@ -7359,7 +7801,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: price
+                  example: name
                   enum:
                     - id
                     - name
@@ -7965,7 +8407,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: inactive
+                  example: active
                   enum:
                     - active
                     - inactive
@@ -7983,7 +8425,7 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-13T18:19:50'
+                  example: '2026-11-13T20:28:55'
                   nullable: true
                 hasta:
                   type: string
@@ -8004,7 +8446,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -8379,7 +8821,7 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-13T18:19:50'
+                  example: '2026-11-13T20:28:56'
                 end_date:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
@@ -8391,7 +8833,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: id
+                  example: total_area
                   enum:
                     - id
                     - inspection_date
@@ -8401,7 +8843,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: desc
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -8582,7 +9024,7 @@ paths:
                 inspection_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-13T18:19:50'
+                  example: '2026-11-13T20:28:56'
                 findings:
                   type: string
                   description: ''

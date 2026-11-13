@@ -165,7 +165,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: paid
+        example: pending
         type: string
         enumValues:
           - pending
@@ -211,7 +211,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-13T18:19:50'
+        example: '2026-11-13T20:28:56'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -233,8 +233,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: total
-        example: category_type
+        example: status
         type: string
         enumValues:
           - id
@@ -250,7 +249,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: desc
+        example: DESC
         type: string
         enumValues:
           - asc
@@ -284,24 +283,16 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       search: b
-      status: paid
+      status: pending
       customer_id: 16
       employee_id: 16
       applied_plan_id: 16
-      desde: '2026-11-13T18:19:50'
+      desde: '2026-11-13T20:28:56'
       hasta: '2052-12-06'
-      sort_by: total
-      sort_direction: asc
+      sort_by: status
+      sort_direction: DESC
       limit: 22
       per_page: 7
-      category_type: 'n'
-      active: false
-      min_price: 84
-      max_price: 12
-      per_page: 17
-      limit: 15
-      sort_by: category_type
-      sort_direction: desc
     fileParameters: []
     responses:
       -
