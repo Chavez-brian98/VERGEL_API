@@ -11,6 +11,9 @@ tags:
     name: Clientes
     description: ''
   -
+    name: Cotizaciones
+    description: "\nAPIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos."
+  -
     name: 'Planes de Suscripción'
     description: ''
   -
@@ -40,6 +43,9 @@ tags:
   -
     name: Proveedores
     description: "\nAPIs para la gestión de proveedores, compras y suministros de El Vergel."
+  -
+    name: 'Técnico de Campo'
+    description: "\nEndpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes."
 components:
   securitySchemes:
     default:
@@ -297,12 +303,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-07'
+                  example: '2026-11-13'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-11-30'
+                  example: '2052-12-06'
                   nullable: true
                 limit:
                   type: integer
@@ -1233,6 +1239,427 @@ paths:
         in: path
         name: customer
         description: 'ID del cliente.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/quotes:
+    get:
+      summary: 'Listar y filtrar cotizaciones.'
+      operationId: listarYFiltrarCotizaciones
+      description: 'Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas.'
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda por número de cotización o nombre del cliente.'
+          example: COT-20261111
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda por número de cotización o nombre del cliente.'
+            example: COT-20261111
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (`pending` o `paid`).'
+          example: pending
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (`pending` o `paid`).'
+            example: pending
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por cliente.'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por empleado que registró la cotización.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por empleado que registró la cotización.'
+            example: 1
+        -
+          in: query
+          name: applied_plan_id
+          description: 'Filtrar por plan de suscripción aplicado.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por plan de suscripción aplicado.'
+            example: 1
+        -
+          in: query
+          name: desde
+          description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
+          example: '2026-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
+            example: '2026-01-01'
+        -
+          in: query
+          name: hasta
+          description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
+          example: '2026-12-31'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
+            example: '2026-12-31'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
+          example: created_at
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
+            example: created_at
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+            example: desc
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1-100). Default: 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1-100). Default: 15.'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: paid
+                  enum:
+                    - pending
+                    - paid
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                desde:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-13T18:19:50'
+                  nullable: true
+                hasta:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
+                  example: '2052-12-06'
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: total
+                  enum:
+                    - id
+                    - quote_number
+                    - status
+                    - total
+                    - created_at
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: asc
+                  enum:
+                    - asc
+                    - desc
+                    - ASC
+                    - DESC
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+    post:
+      summary: 'Registrar una nueva cotización.'
+      operationId: registrarUnaNuevaCotizacin
+      description: "El backend calcula el total de cada ítem (`quantity * unit_price`), el subtotal con descuento del plan,\nel IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.\nEl empleado se toma del usuario autenticado."
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente asociado.'
+                  example: 1
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'ID del plan de suscripción aplicado.'
+                  example: 1
+                includes_vat:
+                  type: boolean
+                  description: 'Indica si los precios ya incluyen IVA. Default: false.'
+                  example: false
+                loyalty_points_used:
+                  type: integer
+                  description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
+                  example: 0
+                status:
+                  type: string
+                  description: 'Estado inicial (`pending` o `paid`). Default: pending.'
+                  example: pending
+                items:
+                  type: array
+                  description: 'Lista de ítems de la cotización.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      item_type:
+                        type: string
+                        description: 'Tipo de ítem (`service` o `plant`).'
+                        example: service
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio cuando `item_type` es `service`.'
+                        example: 1
+                        nullable: true
+                      plant_id:
+                        type: integer
+                        description: 'ID de la planta cuando `item_type` es `plant`.'
+                        example: 1
+                        nullable: true
+                      quantity:
+                        type: number
+                        description: Cantidad.
+                        example: 2.0
+                      unit_price:
+                        type: number
+                        description: 'Precio unitario.'
+                        example: 25.5
+                    required:
+                      - item_type
+                      - service_id
+                      - plant_id
+                      - quantity
+                      - unit_price
+              required:
+                - applied_plan_id
+                - items
+  '/api/v1/quotes/{id}':
+    get:
+      summary: 'Consultar el detalle de una cotización.'
+      operationId: consultarElDetalleDeUnaCotizacin
+      description: 'Incluye cliente, empleado, plan aplicado e ítems.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Cotizaciones
+    put:
+      summary: 'Actualizar una cotización.'
+      operationId: actualizarUnaCotizacin
+      description: 'Actualiza datos generales y, si se envía `items`, reemplaza el detalle completo y recalcula los montos.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente asociado.'
+                  example: 1
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'ID del plan de suscripción aplicado.'
+                  example: 1
+                includes_vat:
+                  type: boolean
+                  description: 'Indica si los precios ya incluyen IVA.'
+                  example: true
+                loyalty_points_used:
+                  type: integer
+                  description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
+                  example: 0
+                status:
+                  type: string
+                  description: 'Estado (`pending` o `paid`).'
+                  example: pending
+                items:
+                  type: array
+                  description: 'Lista de ítems; si se envía, reemplaza los existentes.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      item_type:
+                        type: string
+                        description: 'Tipo de ítem (`service` o `plant`).'
+                        example: service
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio cuando `item_type` es `service`.'
+                        example: 1
+                        nullable: true
+                      plant_id:
+                        type: integer
+                        description: 'ID de la planta cuando `item_type` es `plant`.'
+                        example: 1
+                        nullable: true
+                      quantity:
+                        type: number
+                        description: Cantidad.
+                        example: 2.0
+                      unit_price:
+                        type: number
+                        description: 'Precio unitario.'
+                        example: 25.5
+                    required:
+                      - item_type
+                      - service_id
+                      - plant_id
+                      - quantity
+                      - unit_price
+    delete:
+      summary: 'Eliminar una cotización (Borrado lógico).'
+      operationId: eliminarUnaCotizacinBorradoLgico
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the quote.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/quotes/{quote}/status':
+    patch:
+      summary: 'Cambiar el estado de una cotización.'
+      operationId: cambiarElEstadoDeUnaCotizacin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: 'Nuevo estado (`pending` o `paid`).'
+                  example: paid
+              required:
+                - status
+    parameters:
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización.'
         example: 1
         required: true
         schema:
@@ -6907,7 +7334,7 @@ paths:
                 active:
                   type: boolean
                   description: ''
-                  example: false
+                  example: true
                   nullable: true
                 min_price:
                   type: number
@@ -6932,7 +7359,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: category_type
+                  example: price
                   enum:
                     - id
                     - name
@@ -7538,7 +7965,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: active
+                  example: inactive
                   enum:
                     - active
                     - inactive
@@ -7556,17 +7983,17 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-07T19:50:42'
+                  example: '2026-11-13T18:19:50'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-11-30'
+                  example: '2052-12-06'
                   nullable: true
                 sort_by:
                   type: string
                   description: ''
-                  example: trade_name
+                  example: name
                   enum:
                     - id
                     - name
@@ -7577,7 +8004,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: DESC
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -7811,6 +8238,551 @@ paths:
         in: path
         name: supplier
         description: 'The supplier.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /api/v1/inspections:
+    get:
+      summary: 'Listar inspecciones de campo.'
+      operationId: listarInspeccionesDeCampo
+      description: ''
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
+          example: 'Jardín frontal'
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
+            example: 'Jardín frontal'
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (draft, submitted, reviewed).'
+          example: submitted
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (draft, submitted, reviewed).'
+            example: submitted
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por ID de cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por ID de cliente.'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por técnico/empleado asignado.'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por técnico/empleado asignado.'
+            example: 2
+        -
+          in: query
+          name: start_date
+          description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: end_date
+          description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
+          example: inspection_date
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
+            example: inspection_date
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (asc o desc). Default: desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (asc o desc). Default: desc.'
+            example: desc
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página.'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                status:
+                  type: string
+                  description: ''
+                  example: draft
+                  enum:
+                    - draft
+                    - submitted
+                    - reviewed
+                start_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-13T18:19:50'
+                end_date:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-06'
+                search:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                sort_by:
+                  type: string
+                  description: ''
+                  example: id
+                  enum:
+                    - id
+                    - inspection_date
+                    - created_at
+                    - status
+                    - total_area
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: desc
+                  enum:
+                    - asc
+                    - desc
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 16
+    post:
+      summary: 'Registrar inspección de campo.'
+      operationId: registrarInspeccinDeCampo
+      description: 'Crea una inspección realizada por el técnico de campo, registrando dimensiones del terreno, servicios requeridos y fotografías de referencia.'
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente visitado.'
+                  example: 1
+                appointment_id:
+                  type: integer
+                  description: 'ID de la cita previa asociada si aplica.'
+                  example: 1
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'ID del técnico asignado (opcional, por defecto el usuario autenticado).'
+                  example: 2
+                  nullable: true
+                inspection_date:
+                  type: date
+                  description: 'Fecha de la visita técnica (YYYY-MM-DD).'
+                  example: '2026-11-11'
+                findings:
+                  type: string
+                  description: 'Hallazgos, observaciones generales del lugar y necesidades del cliente.'
+                  example: 'Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.'
+                  nullable: true
+                terrain_width:
+                  type: number
+                  description: 'Ancho del terreno.'
+                  example: 15.5
+                  nullable: true
+                terrain_length:
+                  type: number
+                  description: 'Largo del terreno.'
+                  example: 20.0
+                  nullable: true
+                total_area:
+                  type: number
+                  description: 'Área total (si no se especifica, se calcula multiplicando ancho x largo).'
+                  example: 310.0
+                  nullable: true
+                area_unit:
+                  type: string
+                  description: 'Unidad de medida del terreno (m2, v2, ha). Default: m2.'
+                  example: m2
+                terrain_notes:
+                  type: string
+                  description: 'Notas sobre tipo de suelo, acceso o limitaciones físicas.'
+                  example: 'Suelo arcilloso, toma de agua a 10 metros.'
+                  nullable: true
+                status:
+                  type: string
+                  description: 'Estado de la inspección (draft, submitted, reviewed). Default: draft.'
+                  example: submitted
+                services:
+                  type: array
+                  description: 'Servicios recomendados para la cotización.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio.'
+                        example: 1
+                      suggested_quantity:
+                        type: integer
+                        description: 'Cantidad sugerida.'
+                        example: 2
+                      notes:
+                        type: string
+                        description: 'Notas técnicas del servicio.'
+                        example: 'Requiere fumigación previa.'
+                        nullable: true
+                    required:
+                      - service_id
+                photos:
+                  type: array
+                  description: 'Archivos de imagen (JPEG, PNG, WEBP, máx 10MB) de la inspección.'
+                  items:
+                    type: string
+                    format: binary
+                photos_data:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: binary
+                        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                      caption:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: 'n'
+                        nullable: true
+                    required:
+                      - file
+              required:
+                - customer_id
+                - inspection_date
+  '/api/v1/inspections/{id}':
+    get:
+      summary: 'Ver detalle de inspección de campo.'
+      operationId: verDetalleDeInspeccinDeCampo
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Técnico de Campo'
+    put:
+      summary: 'Actualizar inspección de campo.'
+      operationId: actualizarInspeccinDeCampo
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                appointment_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                inspection_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-13T18:19:50'
+                findings:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                terrain_width:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 39
+                  nullable: true
+                terrain_length:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 84
+                  nullable: true
+                total_area:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 12
+                  nullable: true
+                area_unit:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: miyvdljnikhwaykc
+                terrain_notes:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: reviewed
+                  enum:
+                    - draft
+                    - submitted
+                    - reviewed
+                services:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      service_id:
+                        type: integer
+                        description: 'This field is required when <code>services</code> is present. Must match an existing stored value.'
+                        example: 16
+                      suggested_quantity:
+                        type: integer
+                        description: 'Must be at least 1.'
+                        example: 22
+                      notes:
+                        type: string
+                        description: ''
+                        example: architecto
+                        nullable: true
+                photos:
+                  type: array
+                  description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                  items:
+                    type: string
+                    format: binary
+                photos_data:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: binary
+                        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                      caption:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: 'n'
+                        nullable: true
+                    required:
+                      - file
+    delete:
+      summary: 'Eliminar inspección técnica.'
+      operationId: eliminarInspeccinTcnica
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/v1/inspections/{inspection}/status':
+    patch:
+      summary: 'Cambiar estado de la inspección.'
+      operationId: cambiarEstadoDeLaInspeccin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: 'Nuevo estado (draft, submitted, reviewed).'
+                  example: reviewed
+              required:
+                - status
+    parameters:
+      -
+        in: path
+        name: inspection
+        description: 'The inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/v1/inspections/{inspection}/photos':
+    post:
+      summary: 'Subir fotos adicionales a la inspección.'
+      operationId: subirFotosAdicionalesALaInspeccin
+      description: 'Permite subir más imágenes de referencia a una inspección ya creada.'
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photos:
+                  type: array
+                  description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                  items:
+                    type: string
+                    format: binary
+                photos_data:
+                  type: array
+                  description: 'This field is required when <code>photos</code> is not present.'
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: binary
+                        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                      caption:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: b
+                        nullable: true
+                    required:
+                      - file
+    parameters:
+      -
+        in: path
+        name: inspection
+        description: 'The inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/v1/inspections/{inspection}/photos/{photo}':
+    delete:
+      summary: 'Eliminar foto de inspección.'
+      operationId: eliminarFotoDeInspeccin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+    parameters:
+      -
+        in: path
+        name: inspection
+        description: 'The inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: photo
+        description: 'The photo.'
         example: architecto
         required: true
         schema:

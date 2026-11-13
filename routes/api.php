@@ -6,8 +6,10 @@ use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\InspectionController;
 use App\Http\Controllers\Api\V1\MovementController;
 use App\Http\Controllers\Api\V1\PlantController;
+use App\Http\Controllers\Api\V1\QuoteController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
 use App\Http\Controllers\Api\V1\SupplierController;
@@ -40,6 +42,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('suppliers', SupplierController::class);
         Route::patch('suppliers/{supplier}/status', [SupplierController::class, 'updateStatus']);
+
+        Route::apiResource('quotes', QuoteController::class);
+        Route::patch('quotes/{quote}/status', [QuoteController::class, 'updateStatus']);
+
+        Route::apiResource('inspections', InspectionController::class);
+        Route::patch('inspections/{inspection}/status', [InspectionController::class, 'updateStatus']);
+        Route::post('inspections/{inspection}/photos', [InspectionController::class, 'uploadPhotos']);
+        Route::delete('inspections/{inspection}/photos/{photo}', [InspectionController::class, 'deletePhoto']);
 
         Route::get('plants', [PlantController::class, 'index']);
         Route::post('plants', [PlantController::class, 'store']);

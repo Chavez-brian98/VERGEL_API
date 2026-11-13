@@ -183,6 +183,7 @@ return [
         // Note: does not work for `external` docs types
         'order' => [
             'Clientes',
+            'Cotizaciones',
             'Planes de Suscripción',
             'Empleados',
             'Roles',

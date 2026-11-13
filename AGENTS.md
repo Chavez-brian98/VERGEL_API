@@ -6,13 +6,14 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 
 **The README is stale and wrong**: it describes a POS/inventory/sales app and badges PHP 8.6 / Laravel 13 — neither matches reality. The real domain is a per-customer subscription/service business for El Salvador: customers, plants, services, subscription plans, quotes/appointments/inspections, wallets + loyalty points, DTE invoices, payments, ledger entries, audit log. Trust `database/migrations` and `app/Models`, not `README.md`.
 
-30 migrations / 25 Eloquent models. Live API modules: **auth (login/logout)**, **customers**, **subscription plans**, **employees**, **roles**, **plants**, and **country configs (tarifas)** under `/api/v1` (`routes/api.php`).
+30 migrations / 25 Eloquent models. Live API modules: **auth (login/logout)**, **customers**, **quotes (cotizaciones)**, **subscription plans**, **employees**, **roles**, **plants**, and **country configs (tarifas)** under `/api/v1` (`routes/api.php`).
 
 ## Access control (RBAC)
 
-- `app/Policies/` holds one policy per protected module: `PlantPolicy` (auto-discovered) and `CustomerPolicy` (registered explicitly in `AppServiceProvider::boot()` via `Gate::policy`).
+- `app/Policies/` holds one policy per protected module: `PlantPolicy` (auto-discovered) and `CustomerPolicy`, `SupplierPolicy`, `EmployeePolicy`, `RolePolicy`, `QuotePolicy` (registered explicitly in `AppServiceProvider::boot()` via `Gate::policy`).
 - Role chain: `users.employee_id` -> `employees.role_id` -> `roles.role_name` (no pivot table).
-- Both policies follow the same rule: **read = any active employee with a role**, **write = `Admin`/`Administrador` only**. So a `Contador`/`Colaborador`/`Consulta` employee is a read-only ("Consulta de Clientes") profile and `Admin` is the full-management ("Gestion de Clientes") profile.
+- Policies follow the same rule: **read = any active employee with a role**, **write = `Admin`/`Administrador` only** (exception: suppliers and quotes also allow `Contador`/`Recepcionista` respectively). So a `Contador`/`Colaborador`/`Consulta` employee is a read-only ("Consulta de Clientes") profile and `Admin` is the full-management ("Gestion de Clientes") profile.
+- The employer form: `exit_date` is not input directly—it's auto-set only when an employee's status changes to `desactivado`.
 - Policies are enforced in `FormRequest::authorize()` (`viewAny`, `create`, `update`, `assignPlan`) and with `Gate::authorize()` in the controller for endpoints that take a raw id (`view`, `changeStatus`, `delete`).
 - Every denial is recorded in `audit_log` with `action = 'denied'` by `App\Services\AccessAuditService`, triggered from the `AccessDeniedHttpException` renderer in `bootstrap/app.php`. The renderer also returns the uniform JSON `{"message": "No tiene permisos para realizar esta acción."}` with 403.
 
@@ -22,6 +23,7 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 - Controllers: `app/Http/Controllers/Api/AuthController` and `app/Http/Controllers/Api/V1/*`. They validate via FormRequests, delegate to services, and return API Resources. They do **not** query Eloquent directly (only exception: `CustomerController::planHistory`).
 - FormRequests: `app/Http/Requests/<Domain>/`. Services: `app/Services/` (+ `app/Services/Plans/`). Business logic + `DB::transaction` live in services; every write also calls a private `logAudit()` that inserts into `audit_log`. Audit is silently skipped when no `employees` row exists.
 - Resources: `app/Http/Resources/<Domain>/` — map snake_case columns to camelCase JSON (`legal_name` -> `legalName`).
+- Quotes (`QuoteService`): totals are computed server-side — item `total = quantity * unit_price`, plan `discount_percentage`, IVA from `CountryConfig` (El Salvador, 13% fallback) when `includes_vat=false`, and `loyalty_points_earned = floor(discounted_subtotal * loyalty_points_multiplier)`. `loyalty_points_used` is only allowed when the quote has at least one `service` item; it is not converted to money.
 - Auth user is the skeleton `users` table, linked to `employees` via `users.employee_id` (unique, nullable). `employees.email/password` were dropped; credentials live on `users`. Seeded admin: `admin@vergel.com` / `password123` (`AuthTestUserSeeder`, run by `db:seed`).
 
 ## Setup & gotchas
@@ -38,7 +40,7 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 
 - Tests: `composer test` (config:clear + artisan test). Single: `php artisan test --filter=<name>`; suites `--testsuite=Unit|Feature`. Tests need `bootstrap/cache` + `APP_KEY`.
 - Format: `./vendor/bin/pint` (default preset, no `pint.json`).
-- Scribe docs: annotations are controller docblocks (`@group`, `@subgroup`, `@queryParam`, `@bodyParam`, `@response`); config `config/scribe.php` (static, `output_path: docs` at repo root). Regenerate: `php artisan scribe:generate`. Committed output is `docs/index.html` + `docs/openapi.yaml` + assets; the extra Postman/collection export it emits is untracked. Needs the bootstrap/cache + storage dirs above.
+- Scribe docs: annotations are controller docblocks (`@group`, `@subgroup`, `@queryParam`, `@bodyParam`, `@response`); config `config/scribe.php` (static, `output_path: docs` at repo root). Regenerate: `php artisan scribe:generate`. Committed output is `docs/index.html` + `docs/openapi.yaml` + assets; the extra Postman/collection export it emits is untracked. Needs the bootstrap/cache + storage dirs above. Nested array params must be `@bodyParam items object[]` + `@bodyParam items[].field` (using `items[0].field` breaks HTML generation with "Undefined array key name"). GET response calls need MySQL; if it is down Scribe logs `FAIL` per GET but still writes the docs.
 - `npm run build` / `npm run dev` only affect the blade skeleton (`resources/views/welcome.blade.php`); the API has no frontend deps. Root `/` is a real 200 and the Render health check.
 
 ## Testing
@@ -47,7 +49,7 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 - Service tests manually insert `roles` + `employees` rows because services write audit logs keyed to an employee (see `CustomerServiceTest`).
 - RBAC tests must create the full chain `Role` -> `Employee` -> `User` (see `Customers\CustomerAuthorizationTest` and `Plants\PlantPolicyAuthorizationTest`); a user without `employee_id` is read-denied.
 - `audit_log.action` is an enum (`insert`, `update`, `delete`, `restore`, `denied`); the `denied` value was added by `2026_10_21_120000_add_denied_action_to_audit_log_table`.
-- The suite is green (`php artisan test` -> 173 passed) as long as `bootstrap/cache` exists and `APP_KEY` is set.
+- The suite is green (`php artisan test` -> 190 passed) as long as `bootstrap/cache` exists and `APP_KEY` is set.
 
 ## Deploy to Render.com
 
@@ -58,7 +60,7 @@ Laravel 12.68 REST API (Docker uses PHP 8.4; `composer.json` allows ^8.2), MySQL
 
 ## Conventions
 
-- Models: `$fillable` + `$casts`; mostly `SoftDeletes`; explicit `$table` only for non-plural names (`audit_log`, `customer_plan_history`, `country_config`).
+- Models: `$fillable` + `$casts`; mostly `SoftDeletes`; explicit `$table` only for non-plural names (`audit_log`, `customer_plan_history`). Note `country_configs` is plural; `CountryConfig` must not override `$table`.
 - Money is `decimal(10,2)`; statuses are enum columns; FKs use `foreignId()->constrained()` with explicit `onDelete`/`onUpdate`.
 - Spanish is the convention for comments, docblocks, README, and commit messages (`feat:`, `fix:`).
 - El Salvador domain concepts in the schema: DUI, NRC, DTE invoices, IVA.

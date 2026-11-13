@@ -1,19 +1,23 @@
-name: Plantas
-description: ''
+name: Cotizaciones
+description: |-
+
+  APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/plants
+    uri: api/v1/quotes
     metadata:
       custom: []
-      groupName: Plantas
-      groupDescription: ''
+      groupName: Cotizaciones
+      groupDescription: |-
+
+        APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.
       subgroup: Consultas
       subgroupDescription: ''
-      title: 'Listar y filtrar plantas.'
-      description: 'Obtiene una lista paginada de plantas del catálogo con soporte para filtros dinámicos (búsqueda, categoría, rango de precio, estado) y ordenamiento.'
+      title: 'Listar y filtrar cotizaciones.'
+      description: 'Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas.'
       authenticated: true
       deprecated: false
     headers:
@@ -26,54 +30,76 @@ endpoints:
       search:
         custom: []
         name: search
-        description: 'Búsqueda por coincidencia en nombre o tipo de categoría.'
+        description: 'Búsqueda por número de cotización o nombre del cliente.'
         required: false
-        example: Monstera
+        example: COT-20261111
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      category_type:
+      status:
         custom: []
-        name: category_type
-        description: 'Filtrar por categoría exacta.'
+        name: status
+        description: 'Filtrar por estado (`pending` o `paid`).'
         required: false
-        example: Interior
+        example: pending
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      active:
+      customer_id:
         custom: []
-        name: active
-        description: 'Filtrar por estado activo o inactivo (true/false).'
+        name: customer_id
+        description: 'Filtrar por cliente.'
         required: false
-        example: true
-        type: boolean
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      min_price:
+      employee_id:
         custom: []
-        name: min_price
-        description: 'Filtrar por precio mínimo.'
+        name: employee_id
+        description: 'Filtrar por empleado que registró la cotización.'
         required: false
-        example: 10.0
-        type: number
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      max_price:
+      applied_plan_id:
         custom: []
-        name: max_price
-        description: 'Filtrar por precio máximo.'
+        name: applied_plan_id
+        description: 'Filtrar por plan de suscripción aplicado.'
         required: false
-        example: 50.0
-        type: number
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
+        required: false
+        example: '2026-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      hasta:
+        custom: []
+        name: hasta
+        description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
+        required: false
+        example: '2026-12-31'
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
@@ -81,9 +107,9 @@ endpoints:
       sort_by:
         custom: []
         name: sort_by
-        description: "Campo por el cual ordenar (id, name, price, category_type, created_at). Por defecto 'id'."
+        description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
         required: false
-        example: name
+        example: created_at
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -92,21 +118,10 @@ endpoints:
       sort_direction:
         custom: []
         name: sort_direction
-        description: "Dirección de ordenamiento (asc o desc). Por defecto 'desc'."
+        description: 'Dirección (`asc` o `desc`). Default: `desc`.'
         required: false
-        example: asc
+        example: desc
         type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Cantidad de resultados por página (1-100). Por defecto 15.'
-        required: false
-        example: 15
-        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
@@ -114,7 +129,7 @@ endpoints:
       limit:
         custom: []
         name: limit
-        description: 'Alias alternativo para per_page.'
+        description: 'Cantidad de registros por página (1-100). Default: 15.'
         required: false
         example: 15
         type: integer
@@ -123,14 +138,15 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
-      search: Monstera
-      category_type: Interior
-      active: true
-      min_price: 10.0
-      max_price: 50.0
-      sort_by: name
-      sort_direction: asc
-      per_page: 15
+      search: COT-20261111
+      status: pending
+      customer_id: 1
+      employee_id: 1
+      applied_plan_id: 1
+      desde: '2026-01-01'
+      hasta: '2026-12-31'
+      sort_by: created_at
+      sort_direction: desc
       limit: 15
     bodyParameters:
       search:
@@ -144,68 +160,70 @@ endpoints:
         exampleWasSpecified: false
         nullable: true
         deprecated: false
-      category_type:
+      status:
         custom: []
-        name: category_type
-        description: 'Must not be greater than 80 characters.'
+        name: status
+        description: ''
         required: false
-        example: 'n'
+        example: paid
+        type: string
+        enumValues:
+          - pending
+          - paid
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      customer_id:
+        custom: []
+        name: customer_id
+        description: 'Must match an existing stored value.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      employee_id:
+        custom: []
+        name: employee_id
+        description: 'Must match an existing stored value.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      applied_plan_id:
+        custom: []
+        name: applied_plan_id
+        description: 'Must match an existing stored value.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      desde:
+        custom: []
+        name: desde
+        description: 'Must be a valid date.'
+        required: false
+        example: '2026-11-13T18:19:50'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
-      active:
+      hasta:
         custom: []
-        name: active
-        description: ''
+        name: hasta
+        description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      min_price:
-        custom: []
-        name: min_price
-        description: 'Must be at least 0.'
-        required: false
-        example: 84
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      max_price:
-        custom: []
-        name: max_price
-        description: 'Must be at least 0.'
-        required: false
-        example: 12
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      limit:
-        custom: []
-        name: limit
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 15
-        type: integer
+        example: '2052-12-06'
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -215,13 +233,14 @@ endpoints:
         name: sort_by
         description: ''
         required: false
+        example: total
         example: category_type
         type: string
         enumValues:
           - id
-          - name
-          - price
-          - category_type
+          - quote_number
+          - status
+          - total
           - created_at
         exampleWasSpecified: false
         nullable: true
@@ -236,11 +255,45 @@ endpoints:
         enumValues:
           - asc
           - desc
+          - ASC
+          - DESC
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 7
+        type: integer
+        enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
       search: b
+      status: paid
+      customer_id: 16
+      employee_id: 16
+      applied_plan_id: 16
+      desde: '2026-11-13T18:19:50'
+      hasta: '2052-12-06'
+      sort_by: total
+      sort_direction: asc
+      limit: 22
+      per_page: 7
       category_type: 'n'
       active: false
       min_price: 84
@@ -253,40 +306,13 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "name": "Monstera Deliciosa",
-                "price": 24.5,
-                "categoryType": "Interior",
-                "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-                "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-                "active": true,
-                "createdAt": "2026-10-09T16:00:00+00:00",
-                "updatedAt": "2026-10-09T16:00:00+00:00"
-              }
-            ],
-            "links": {
-              "first": "http://localhost/api/v1/plants?page=1",
-              "last": "http://localhost/api/v1/plants?page=1",
-              "prev": null,
-              "next": null
-            },
-            "meta": {
-              "current_page": 1,
-              "from": 1,
-              "last_page": 1,
-              "path": "http://localhost/api/v1/plants",
-              "per_page": 15,
-              "to": 1,
-              "total": 1
-            }
-          }
-        headers: []
-        description: ''
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
     responseFields: []
     auth:
       - headers
@@ -299,144 +325,168 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/plants
+    uri: api/v1/quotes
     metadata:
       custom: []
-      groupName: Plantas
-      groupDescription: ''
-      subgroup: Escritura
+      groupName: Cotizaciones
+      groupDescription: |-
+
+        APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.
+      subgroup: Gestión
       subgroupDescription: ''
-      title: 'Registrar una nueva planta.'
-      description: 'Permite agregar una nueva especie o planta ornamental al catálogo, con su respectiva información de precio, categoría opcional y archivo de imagen.'
+      title: 'Registrar una nueva cotización.'
+      description: |-
+        El backend calcula el total de cada ítem (`quantity * unit_price`), el subtotal con descuento del plan,
+        el IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.
+        El empleado se toma del usuario autenticado.
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: multipart/form-data
+      Content-Type: application/json
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
+      customer_id:
         custom: []
-        name: name
-        description: 'Nombre único de la planta o especie.'
+        name: customer_id
+        description: 'ID del cliente asociado.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      applied_plan_id:
+        custom: []
+        name: applied_plan_id
+        description: 'ID del plan de suscripción aplicado.'
         required: true
-        example: 'Monstera Deliciosa'
-        type: string
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      price:
+      includes_vat:
         custom: []
-        name: price
-        description: 'Precio unitario de la planta.'
-        required: true
-        example: 24.5
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      category_type:
-        custom: []
-        name: category_type
-        description: 'Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra).'
+        name: includes_vat
+        description: 'Indica si los precios ya incluyen IVA. Default: false.'
         required: false
-        example: Interior
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      image:
-        custom: []
-        name: image
-        description: 'Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      image_url:
-        custom: []
-        name: image_url
-        description: 'Must be an image. Must not be greater than 5120 kilobytes.'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      active:
-        custom: []
-        name: active
-        description: 'Estado de disponibilidad en catálogo. Por defecto true.'
-        required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
+      loyalty_points_used:
+        custom: []
+        name: loyalty_points_used
+        description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
+        required: false
+        example: 0
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Estado inicial (`pending` o `paid`). Default: pending.'
+        required: false
+        example: pending
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      items:
+        custom: []
+        name: items
+        description: 'Lista de ítems de la cotización.'
+        required: true
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'items[].item_type':
+        custom: []
+        name: 'items[].item_type'
+        description: 'Tipo de ítem (`service` o `plant`).'
+        required: true
+        example: service
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      'items[].service_id':
+        custom: []
+        name: 'items[].service_id'
+        description: 'ID del servicio cuando `item_type` es `service`.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      'items[].plant_id':
+        custom: []
+        name: 'items[].plant_id'
+        description: 'ID de la planta cuando `item_type` es `plant`.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      'items[].quantity':
+        custom: []
+        name: 'items[].quantity'
+        description: Cantidad.
+        required: true
+        example: 2.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      'items[].unit_price':
+        custom: []
+        name: 'items[].unit_price'
+        description: 'Precio unitario.'
+        required: true
+        example: 25.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
-      name: 'Monstera Deliciosa'
-      price: 24.5
-      category_type: Interior
-      active: true
-    fileParameters:
-      image: null
-      image_url: null
-    responses:
-      -
-        custom: []
-        status: 201
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "name": "Monstera Deliciosa",
-              "price": 24.5,
-              "categoryType": "Interior",
-              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "active": true,
-              "createdAt": "2026-10-09T16:00:00+00:00",
-              "updatedAt": "2026-10-09T16:00:00+00:00"
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 422
-        content: |-
-          {
-            "message": "El nombre de la planta es obligatorio.",
-            "errors": {
-              "name": [
-                "El nombre de la planta es obligatorio."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al crear la planta",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
+      customer_id: 1
+      applied_plan_id: 1
+      includes_vat: false
+      loyalty_points_used: 0
+      status: pending
+      items:
+        -
+          item_type: service
+          service_id: 1
+          plant_id: 1
+          quantity: 2.0
+          unit_price: 25.5
+    fileParameters: []
+    responses: []
     responseFields: []
     auth:
       - headers
@@ -449,15 +499,17 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/plants/{id}'
+    uri: 'api/v1/quotes/{id}'
     metadata:
       custom: []
-      groupName: Plantas
-      groupDescription: ''
+      groupName: Cotizaciones
+      groupDescription: |-
+
+        APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.
       subgroup: Consultas
       subgroupDescription: ''
-      title: 'Obtener el detalle de una planta.'
-      description: 'Devuelve la información completa de una planta individual mediante su identificador único (ID).'
+      title: 'Consultar el detalle de una cotización.'
+      description: 'Incluye cliente, empleado, plan aplicado e ítems.'
       authenticated: true
       deprecated: false
     headers:
@@ -468,7 +520,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the plant.'
+        description: 'The ID of the quote.'
         required: true
         example: architecto
         type: string
@@ -476,10 +528,10 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      plant:
+      quote:
         custom: []
-        name: plant
-        description: 'ID de la planta.'
+        name: quote
+        description: 'ID de la cotización.'
         required: true
         example: 1
         type: integer
@@ -489,7 +541,7 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-      plant: 1
+      quote: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -498,43 +550,13 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "name": "Monstera Deliciosa",
-              "price": 24.5,
-              "categoryType": "Interior",
-              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "active": true,
-              "createdAt": "2026-10-09T16:00:00+00:00",
-              "updatedAt": "2026-10-09T16:00:00+00:00"
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Planta no encontrada",
-            "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al obtener la planta",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
     responseFields: []
     auth:
       - headers
@@ -548,27 +570,28 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-      - POST
-    uri: 'api/v1/plants/{id}'
+    uri: 'api/v1/quotes/{id}'
     metadata:
       custom: []
-      groupName: Plantas
-      groupDescription: ''
-      subgroup: Escritura
+      groupName: Cotizaciones
+      groupDescription: |-
+
+        APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.
+      subgroup: Gestión
       subgroupDescription: ''
-      title: 'Actualizar una planta.'
-      description: 'Modifica los datos de una planta existente en el catálogo, permitiendo reemplazar su imagen o eliminarla.'
+      title: 'Actualizar una cotización.'
+      description: 'Actualiza datos generales y, si se envía `items`, reemplaza el detalle completo y recalcula los montos.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: multipart/form-data
+      Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         custom: []
         name: id
-        description: 'The ID of the plant.'
+        description: 'The ID of the quote.'
         required: true
         example: architecto
         type: string
@@ -576,10 +599,10 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      plant:
+      quote:
         custom: []
-        name: plant
-        description: 'ID de la planta a actualizar.'
+        name: quote
+        description: 'ID de la cotización.'
         required: true
         example: 1
         type: integer
@@ -589,69 +612,36 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-      plant: 1
+      quote: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
+      customer_id:
         custom: []
-        name: name
-        description: 'optional Nombre único de la planta o especie.'
+        name: customer_id
+        description: 'ID del cliente asociado.'
         required: false
-        example: 'Monstera Variegata'
-        type: string
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      applied_plan_id:
+        custom: []
+        name: applied_plan_id
+        description: 'ID del plan de suscripción aplicado.'
+        required: false
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      price:
+      includes_vat:
         custom: []
-        name: price
-        description: 'optional Precio unitario de la planta.'
-        required: false
-        example: 35.0
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      category_type:
-        custom: []
-        name: category_type
-        description: 'optional Categoría o ambiente de la planta (ej. Interior, Exterior, Sombra).'
-        required: false
-        example: Interior
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      image:
-        custom: []
-        name: image
-        description: 'optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB).'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      image_url:
-        custom: []
-        name: image_url
-        description: 'Must be an image. Must not be greater than 5120 kilobytes.'
-        required: false
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      active:
-        custom: []
-        name: active
-        description: 'optional Estado de disponibilidad en catálogo.'
+        name: includes_vat
+        description: 'Indica si los precios ya incluyen IVA.'
         required: false
         example: true
         type: boolean
@@ -659,80 +649,110 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      remove_image:
+      loyalty_points_used:
         custom: []
-        name: remove_image
-        description: 'optional Si se envía en true, elimina la imagen actual de la planta.'
+        name: loyalty_points_used
+        description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
         required: false
-        example: false
-        type: boolean
+        example: 0
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Estado (`pending` o `paid`).'
+        required: false
+        example: pending
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      items:
+        custom: []
+        name: items
+        description: 'Lista de ítems; si se envía, reemplaza los existentes.'
+        required: false
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'items[].item_type':
+        custom: []
+        name: 'items[].item_type'
+        description: 'Tipo de ítem (`service` o `plant`).'
+        required: true
+        example: service
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      'items[].service_id':
+        custom: []
+        name: 'items[].service_id'
+        description: 'ID del servicio cuando `item_type` es `service`.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      'items[].plant_id':
+        custom: []
+        name: 'items[].plant_id'
+        description: 'ID de la planta cuando `item_type` es `plant`.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      'items[].quantity':
+        custom: []
+        name: 'items[].quantity'
+        description: Cantidad.
+        required: true
+        example: 2.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      'items[].unit_price':
+        custom: []
+        name: 'items[].unit_price'
+        description: 'Precio unitario.'
+        required: true
+        example: 25.5
+        type: number
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: 'Monstera Variegata'
-      price: 35.0
-      category_type: Interior
-      active: true
-      remove_image: false
-    fileParameters:
-      image: null
-      image_url: null
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "name": "Monstera Variegata",
-              "price": 35.0,
-              "categoryType": "Interior",
-              "imageUrl": "http://localhost/storage/plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "imagePath": "plants/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d.webp",
-              "active": true,
-              "createdAt": "2026-10-09T16:00:00+00:00",
-              "updatedAt": "2026-10-13T23:20:00+00:00"
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Planta no encontrada",
-            "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 422
-        content: |-
-          {
-            "message": "Ya existe otra planta registrada con este nombre.",
-            "errors": {
-              "name": [
-                "Ya existe otra planta registrada con este nombre."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al actualizar la planta",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
+      customer_id: 1
+      applied_plan_id: 1
+      includes_vat: true
+      loyalty_points_used: 0
+      status: pending
+      items:
+        -
+          item_type: service
+          service_id: 1
+          plant_id: 1
+          quantity: 2.0
+          unit_price: 25.5
+    fileParameters: []
+    responses: []
     responseFields: []
     auth:
       - headers
@@ -745,15 +765,17 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/plants/{id}'
+    uri: 'api/v1/quotes/{id}'
     metadata:
       custom: []
-      groupName: Plantas
-      groupDescription: ''
-      subgroup: Escritura
+      groupName: Cotizaciones
+      groupDescription: |-
+
+        APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.
+      subgroup: Gestión
       subgroupDescription: ''
-      title: 'Eliminar lógicamente una planta.'
-      description: 'Realiza un borrado lógico (soft delete) de la planta especificada. No permite la eliminación si la planta está asociada a cotizaciones existentes.'
+      title: 'Eliminar una cotización (Borrado lógico).'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -764,7 +786,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the plant.'
+        description: 'The ID of the quote.'
         required: true
         example: architecto
         type: string
@@ -772,10 +794,10 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      plant:
+      quote:
         custom: []
-        name: plant
-        description: 'ID de la planta a eliminar.'
+        name: quote
+        description: 'ID de la cotización.'
         required: true
         example: 1
         type: integer
@@ -785,54 +807,74 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-      plant: 1
+      quote: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses:
-      -
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/quotes/{quote}/status'
+    metadata:
+      custom: []
+      groupName: Cotizaciones
+      groupDescription: |-
+
+        APIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos.
+      subgroup: Gestión
+      subgroupDescription: ''
+      title: 'Cambiar el estado de una cotización.'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      quote:
         custom: []
-        status: 204
-        content: ''
-        headers: []
-        description: ''
-      -
+        name: quote
+        description: 'ID de la cotización.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      quote: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      status:
         custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Planta no encontrada",
-            "codigo": 404
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 409
-        content: |-
-          {
-            "message": "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s).",
-            "codigo": 409,
-            "errors": {
-              "plant": [
-                "No se puede eliminar la planta porque está asociada a 2 cotización(es) o presupuesto(s)."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al eliminar la planta",
-            "codigo": 500
-          }
-        headers: []
-        description: ''
+        name: status
+        description: 'Nuevo estado (`pending` o `paid`).'
+        required: true
+        example: paid
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      status: paid
+    fileParameters: []
+    responses: []
     responseFields: []
     auth:
       - headers
