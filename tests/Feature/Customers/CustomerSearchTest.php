@@ -22,7 +22,7 @@ class CustomerSearchTest extends TestCase
 
         $this->seed(RoleSeeder::class);
 
-        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
+        $adminRole = Role::where('role_name', 'Administrador')->firstOrFail();
 
         $adminEmployee = Employee::create([
             'full_name' => 'Admin Test',

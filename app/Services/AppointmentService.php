@@ -147,13 +147,15 @@ class AppointmentService
 
             // Si se marcó como inspección inicial, crear el registro asociado en inspections
             if (! empty($data['is_inspection'])) {
-                Inspection::create([
+                $inspection = Inspection::create([
                     'customer_id' => $customerId,
                     'appointment_id' => $appointment->id,
                     'employee_id' => $appointment->employee_id,
                     'inspection_date' => $appointment->appointment_date?->format('Y-m-d') ?? $data['appointment_date'],
                     'findings' => $appointment->notes,
                 ]);
+
+                $this->logAudit('insert', 'inspections', $inspection->id, null, $inspection->toArray());
             }
 
             $this->logAudit('insert', 'appointments', $appointment->id, null, $appointment->toArray());
@@ -214,13 +216,15 @@ class AppointmentService
 
             // Si se marcó como inspección inicial, crear el registro asociado en inspections
             if (! empty($data['is_inspection'])) {
-                Inspection::create([
+                $inspection = Inspection::create([
                     'customer_id' => $quoteModel->customer_id,
                     'appointment_id' => $appointment->id,
                     'employee_id' => $appointment->employee_id,
                     'inspection_date' => $appointment->appointment_date?->format('Y-m-d') ?? $data['appointment_date'],
                     'findings' => $notes,
                 ]);
+
+                $this->logAudit('insert', 'inspections', $inspection->id, null, $inspection->toArray());
             }
 
             $this->logAudit('insert', 'appointments', $appointment->id, null, $appointment->toArray());
@@ -305,7 +309,11 @@ class AppointmentService
                     $inspectionUpdates['inspection_date'] = $data['appointment_date'];
                 }
                 if (! empty($inspectionUpdates)) {
-                    $appointmentModel->inspections()->update($inspectionUpdates);
+                    foreach ($appointmentModel->inspections as $inspection) {
+                        $oldInspectionData = $inspection->toArray();
+                        $appointmentModel->inspections()->where('id', $inspection->id)->update($inspectionUpdates);
+                        $this->logAudit('update', 'inspections', $inspection->id, $oldInspectionData, $inspection->fresh()->toArray());
+                    }
                 }
             }
 

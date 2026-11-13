@@ -2,17 +2,20 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\V1\AppointmentController;
+use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\LoyaltyRedemptionController;
 use App\Http\Controllers\Api\V1\LoyaltyRewardController;
+use App\Http\Controllers\Api\V1\MovementController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\PortfolioController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
 use App\Http\Controllers\Api\V1\SupplierController;
+use App\Http\Controllers\Api\V1\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas públicas
@@ -69,5 +72,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('appointments/{appointment}', [AppointmentController::class, 'show']);
         Route::match(['put', 'patch'], 'appointments/{appointment}', [AppointmentController::class, 'update']);
         Route::post('quotes/{quote}/appointments', [AppointmentController::class, 'storeFromQuote']);
+
+        Route::get('audit-logs', [AuditLogController::class, 'index']);
+        Route::get('audit-logs/{id}', [AuditLogController::class, 'show']);
+
+        Route::get('transactions', [TransactionController::class, 'index']);
+        Route::get('transactions/{id}', [TransactionController::class, 'show']);
+
+        Route::get('movements', [MovementController::class, 'index']);
     });
 });

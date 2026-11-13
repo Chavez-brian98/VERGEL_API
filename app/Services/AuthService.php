@@ -27,7 +27,7 @@ class AuthService
             ]);
         }
 
-        $user->load('employee'); //agrega la información del empleado al usuario
+        $user->load('employee'); // agrega la información del empleado al usuario
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -42,7 +42,7 @@ class AuthService
      */
     public function logout(User $user): void
     {
-        /** @var PersonalAccessToken|null $token  ' Da la "pista" al editor para que entienda el tipo real '*/
+        /** @var PersonalAccessToken|null $token ' Da la "pista" al editor para que entienda el tipo real ' */
         $token = $user->currentAccessToken();
 
         $token?->delete();
