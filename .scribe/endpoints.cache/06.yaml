@@ -190,7 +190,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-07T19:50:42'
+        example: '2026-11-13T20:28:55'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -201,7 +201,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-11-30'
+        example: '2052-12-06'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -212,7 +212,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: trade_name
+        example: name
         type: string
         enumValues:
           - id
@@ -228,7 +228,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: DESC
+        example: desc
         type: string
         enumValues:
           - asc
@@ -265,10 +265,10 @@ endpoints:
       status: active
       economic_activity: 'n'
       phone: gzmiyvdljnikhway
-      desde: '2026-11-07T19:50:42'
-      hasta: '2052-11-30'
-      sort_by: trade_name
-      sort_direction: DESC
+      desde: '2026-11-13T20:28:55'
+      hasta: '2052-12-06'
+      sort_by: name
+      sort_direction: desc
       limit: 22
       per_page: 7
     fileParameters: []
@@ -301,7 +301,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Registrar un nuevo proveedor.'
       description: ''
@@ -541,7 +541,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Actualizar información de un proveedor.'
       description: ''
@@ -736,7 +736,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Eliminar proveedor (Borrado lógico).'
       description: ''
@@ -785,7 +785,7 @@ endpoints:
       groupDescription: |-
 
         APIs para la gestión de proveedores, compras y suministros de El Vergel.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Cambiar estado de un proveedor.'
       description: ''

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CountryConfig extends Model
 {
-    protected $table = 'country_config';
-
     protected $fillable = [
         'country',
         'currency',
