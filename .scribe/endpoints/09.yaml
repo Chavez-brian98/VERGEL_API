@@ -1,5 +1,4 @@
 name: Plantas
-name: Auditoría
 description: ''
 endpoints:
   -
@@ -15,15 +14,6 @@ endpoints:
       subgroupDescription: ''
       title: 'Listar y filtrar plantas.'
       description: 'Obtiene una lista paginada de plantas del catálogo con soporte para filtros dinámicos (búsqueda, categoría, rango de precio, estado) y ordenamiento.'
-    uri: api/v1/audit-logs
-    metadata:
-      custom: []
-      groupName: Auditoría
-      groupDescription: ''
-      subgroup: Consultas
-      subgroupDescription: ''
-      title: 'Listar y filtrar bitácoras de auditoría.'
-      description: 'Obtiene una lista paginada de los registros y movimientos de auditoría del sistema (creación, edición, eliminación y accesos denegados). Requiere autenticación con Sanctum y está restringido exclusivamente a colaboradores activos con rol de Administrador.'
       authenticated: true
       deprecated: false
     headers:
@@ -39,34 +29,6 @@ endpoints:
         description: 'Búsqueda por coincidencia en nombre o tipo de categoría.'
         required: false
         example: Monstera
-      user_id:
-        custom: []
-        name: user_id
-        description: 'Filtrar por el identificador del usuario del sistema que realizó la acción.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'Filtrar por el identificador del colaborador asociado.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      action:
-        custom: []
-        name: action
-        description: 'Filtrar por el tipo de acción registrada (insert, update, delete, restore, denied).'
-        required: false
-        example: update
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -78,12 +40,6 @@ endpoints:
         description: 'Filtrar por categoría exacta.'
         required: false
         example: Interior
-      table_name:
-        custom: []
-        name: table_name
-        description: 'Filtrar por el nombre de la tabla afectada en la base de datos.'
-        required: false
-        example: plants
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -96,13 +52,6 @@ endpoints:
         required: false
         example: true
         type: boolean
-      affected_table:
-        custom: []
-        name: affected_table
-        description: 'Alias alternativo para el parámetro table_name.'
-        required: false
-        example: plants
-        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
@@ -114,13 +63,6 @@ endpoints:
         required: false
         example: 10.0
         type: number
-      affected_record_id:
-        custom: []
-        name: affected_record_id
-        description: 'Filtrar por el identificador del registro afectado.'
-        required: false
-        example: 12
-        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
@@ -132,13 +74,6 @@ endpoints:
         required: false
         example: 50.0
         type: number
-      start_date:
-        custom: []
-        name: start_date
-        description: 'date Filtrar por fecha de registro inicial (formato YYYY-MM-DD).'
-        required: false
-        example: '2026-01-01'
-        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
@@ -149,12 +84,6 @@ endpoints:
         description: "Campo por el cual ordenar (id, name, price, category_type, created_at). Por defecto 'id'."
         required: false
         example: name
-      end_date:
-        custom: []
-        name: end_date
-        description: 'date Filtrar por fecha de registro final (formato YYYY-MM-DD).'
-        required: false
-        example: '2026-12-31'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -166,12 +95,6 @@ endpoints:
         description: "Dirección de ordenamiento (asc o desc). Por defecto 'desc'."
         required: false
         example: asc
-      desde:
-        custom: []
-        name: desde
-        description: 'date Alias alternativo para start_date (YYYY-MM-DD).'
-        required: false
-        example: '2026-01-01'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -184,13 +107,6 @@ endpoints:
         required: false
         example: 15
         type: integer
-      hasta:
-        custom: []
-        name: hasta
-        description: 'date Alias alternativo para end_date (YYYY-MM-DD).'
-        required: false
-        example: '2026-12-31'
-        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
@@ -199,18 +115,6 @@ endpoints:
         custom: []
         name: limit
         description: 'Alias alternativo para per_page.'
-        description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
-        required: false
-        example: 15
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Alias alternativo para limit.'
         required: false
         example: 15
         type: integer
@@ -236,26 +140,6 @@ endpoints:
         required: false
         example: b
         type: string
-      user_id: 1
-      employee_id: 1
-      action: update
-      table_name: plants
-      affected_table: plants
-      affected_record_id: 12
-      start_date: '2026-01-01'
-      end_date: '2026-12-31'
-      desde: '2026-01-01'
-      hasta: '2026-12-31'
-      limit: 15
-      per_page: 15
-    bodyParameters:
-      user_id:
-        custom: []
-        name: user_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -267,13 +151,6 @@ endpoints:
         required: false
         example: 'n'
         type: string
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -283,7 +160,7 @@ endpoints:
         name: active
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -296,29 +173,6 @@ endpoints:
         required: false
         example: 84
         type: number
-      action:
-        custom: []
-        name: action
-        description: ''
-        required: false
-        example: restore
-        type: string
-        enumValues:
-          - insert
-          - update
-          - delete
-          - restore
-          - denied
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      affected_table:
-        custom: []
-        name: affected_table
-        description: 'Must not be greater than 60 characters.'
-        required: false
-        example: 'n'
-        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -330,13 +184,6 @@ endpoints:
         required: false
         example: 12
         type: number
-      table_name:
-        custom: []
-        name: table_name
-        description: 'Must not be greater than 60 characters.'
-        required: false
-        example: g
-        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -347,12 +194,6 @@ endpoints:
         description: 'Must be at least 1. Must not be greater than 100.'
         required: false
         example: 17
-      affected_record_id:
-        custom: []
-        name: affected_record_id
-        description: 'Must be at least 1.'
-        required: false
-        example: 66
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -365,13 +206,6 @@ endpoints:
         required: false
         example: 15
         type: integer
-      start_date:
-        custom: []
-        name: start_date
-        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-        required: false
-        example: '2026-11-07'
-        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -381,7 +215,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: price
+        example: name
         type: string
         enumValues:
           - id
@@ -397,88 +231,24 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: asc
+        example: desc
         type: string
         enumValues:
           - asc
           - desc
-      end_date:
-        custom: []
-        name: end_date
-        description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-        required: false
-        example: '2052-11-30'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      desde:
-        custom: []
-        name: desde
-        description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-        required: false
-        example: '2026-11-07'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      hasta:
-        custom: []
-        name: hasta
-        description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-        required: false
-        example: '2052-11-30'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      limit:
-        custom: []
-        name: limit
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 22
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 7
-        type: integer
-        enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
       search: b
       category_type: 'n'
-      active: true
+      active: false
       min_price: 84
       max_price: 12
       per_page: 17
       limit: 15
-      sort_by: price
-      sort_direction: asc
-      user_id: 16
-      employee_id: 16
-      action: restore
-      affected_table: 'n'
-      table_name: g
-      affected_record_id: 66
-      start_date: '2026-11-07'
-      end_date: '2052-11-30'
-      desde: '2026-11-07'
-      hasta: '2052-11-30'
-      limit: 22
-      per_page: 7
+      sort_by: name
+      sort_direction: desc
     fileParameters: []
     responses:
       -
@@ -502,33 +272,6 @@ endpoints:
             "links": {
               "first": "http://localhost/api/v1/plants?page=1",
               "last": "http://localhost/api/v1/plants?page=1",
-                "action": "update",
-                "affectedTable": "plants",
-                "affectedRecordId": 12,
-                "oldData": {
-                  "id": 12,
-                  "name": "Monstera Deliciosa",
-                  "price": "24.50"
-                },
-                "newData": {
-                  "id": 12,
-                  "name": "Monstera Deliciosa Variegata",
-                  "price": "35.00"
-                },
-                "ipAddress": "192.168.1.15",
-                "createdAt": "2026-10-24T18:30:00+00:00",
-                "actor": {
-                  "employeeId": 1,
-                  "fullName": "Carlos Administrador",
-                  "role": "Administrador",
-                  "userId": 1,
-                  "email": "admin@vergel.com"
-                }
-              }
-            ],
-            "links": {
-              "first": "http://localhost/api/v1/audit-logs?page=1",
-              "last": "http://localhost/api/v1/audit-logs?page=1",
               "prev": null,
               "next": null
             },
@@ -537,7 +280,6 @@ endpoints:
               "from": 1,
               "last_page": 1,
               "path": "http://localhost/api/v1/plants",
-              "path": "http://localhost/api/v1/audit-logs",
               "per_page": 15,
               "to": 1,
               "total": 1
@@ -668,12 +410,6 @@ endpoints:
               "createdAt": "2026-10-09T16:00:00+00:00",
               "updatedAt": "2026-10-09T16:00:00+00:00"
             }
-      -
-        custom: []
-        status: 401
-        content: |-
-          {
-            "message": "Unauthenticated."
           }
         headers: []
         description: ''
@@ -688,10 +424,6 @@ endpoints:
                 "El nombre de la planta es obligatorio."
               ]
             }
-        status: 403
-        content: |-
-          {
-            "message": "This action is unauthorized."
           }
         headers: []
         description: ''
@@ -702,15 +434,6 @@ endpoints:
           {
             "message": "Error interno al crear la planta",
             "codigo": 500
-        status: 422
-        content: |-
-          {
-            "message": "La acción seleccionada no es válida.",
-            "errors": {
-              "action": [
-                "La acción debe ser una de las siguientes: insert, update, delete, restore o denied."
-              ]
-            }
           }
         headers: []
         description: ''
@@ -735,17 +458,6 @@ endpoints:
       subgroupDescription: ''
       title: 'Obtener el detalle de una planta.'
       description: 'Devuelve la información completa de una planta individual mediante su identificador único (ID).'
-    uri: 'api/v1/audit-logs/{id}'
-    metadata:
-      custom: []
-      groupName: Auditoría
-      groupDescription: ''
-      subgroup: Consultas
-      subgroupDescription: ''
-      title: 'Obtener el detalle de una bitácora de auditoría.'
-      description: |-
-        Devuelve la información detallada de un registro individual de auditoría mediante su ID, incluyendo el actor que ejecutó la acción y el estado anterior y nuevo de los datos afectados.
-        Endpoint restringido exclusivamente a colaboradores activos con rol de Administrador.
       authenticated: true
       deprecated: false
     headers:
@@ -768,7 +480,6 @@ endpoints:
         custom: []
         name: plant
         description: 'ID de la planta.'
-        description: 'ID único del registro de auditoría.'
         required: true
         example: 1
         type: integer
@@ -779,7 +490,6 @@ endpoints:
     cleanUrlParameters:
       id: architecto
       plant: 1
-      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -985,28 +695,6 @@ endpoints:
               "active": true,
               "createdAt": "2026-10-09T16:00:00+00:00",
               "updatedAt": "2026-10-13T23:20:00+00:00"
-              "action": "update",
-              "affectedTable": "plants",
-              "affectedRecordId": 12,
-              "oldData": {
-                "id": 12,
-                "name": "Monstera Deliciosa",
-                "price": "24.50"
-              },
-              "newData": {
-                "id": 12,
-                "name": "Monstera Deliciosa Variegata",
-                "price": "35.00"
-              },
-              "ipAddress": "192.168.1.15",
-              "createdAt": "2026-10-24T18:30:00+00:00",
-              "actor": {
-                "employeeId": 1,
-                "fullName": "Carlos Administrador",
-                "role": "Administrador",
-                "userId": 1,
-                "email": "admin@vergel.com"
-              }
             }
           }
         headers: []
@@ -1018,10 +706,6 @@ endpoints:
           {
             "message": "Planta no encontrada",
             "codigo": 404
-        status: 401
-        content: |-
-          {
-            "message": "Unauthenticated."
           }
         headers: []
         description: ''
@@ -1036,10 +720,6 @@ endpoints:
                 "Ya existe otra planta registrada con este nombre."
               ]
             }
-        status: 403
-        content: |-
-          {
-            "message": "This action is unauthorized."
           }
         headers: []
         description: ''
@@ -1124,10 +804,6 @@ endpoints:
         content: |-
           {
             "message": "Planta no encontrada",
-        status: 404
-        content: |-
-          {
-            "message": "Registro de auditoría no encontrado",
             "codigo": 404
           }
         headers: []
@@ -1153,10 +829,6 @@ endpoints:
         content: |-
           {
             "message": "Error interno al eliminar la planta",
-        status: 500
-        content: |-
-          {
-            "message": "Error interno al obtener el registro de auditoría",
             "codigo": 500
           }
         headers: []
