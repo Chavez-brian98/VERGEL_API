@@ -180,7 +180,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-11T19:33:11'
+        example: '2026-11-13T18:19:50'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -191,7 +191,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-04'
+        example: '2052-12-06'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -229,7 +229,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: asc
+        example: desc
         type: string
         enumValues:
           - asc
@@ -263,11 +263,11 @@ endpoints:
       customer_id: 16
       employee_id: 16
       status: draft
-      start_date: '2026-11-11T19:33:11'
-      end_date: '2052-12-04'
+      start_date: '2026-11-13T18:19:50'
+      end_date: '2052-12-06'
       search: 'n'
       sort_by: id
-      sort_direction: asc
+      sort_direction: desc
       per_page: 7
       limit: 16
     fileParameters: []
@@ -696,7 +696,7 @@ endpoints:
         name: inspection_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-11T19:33:11'
+        example: '2026-11-13T18:19:50'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -773,7 +773,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: submitted
+        example: reviewed
         type: string
         enumValues:
           - draft
@@ -875,14 +875,14 @@ endpoints:
       customer_id: 16
       appointment_id: 16
       employee_id: 16
-      inspection_date: '2026-11-11T19:33:11'
+      inspection_date: '2026-11-13T18:19:50'
       findings: architecto
       terrain_width: 39
       terrain_length: 84
       total_area: 12
       area_unit: miyvdljnikhwaykc
       terrain_notes: architecto
-      status: submitted
+      status: reviewed
       services:
         -
           service_id: 16

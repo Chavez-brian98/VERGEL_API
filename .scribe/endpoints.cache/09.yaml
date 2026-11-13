@@ -162,7 +162,7 @@ endpoints:
         name: active
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -217,7 +217,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: category_type
+        example: price
         type: string
         enumValues:
           - id
@@ -233,7 +233,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: desc
+        example: asc
         type: string
         enumValues:
           - asc
@@ -244,13 +244,13 @@ endpoints:
     cleanBodyParameters:
       search: b
       category_type: 'n'
-      active: false
+      active: true
       min_price: 84
       max_price: 12
       per_page: 17
       limit: 15
-      sort_by: category_type
-      sort_direction: desc
+      sort_by: price
+      sort_direction: asc
     fileParameters: []
     responses:
       -

@@ -294,12 +294,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-11'
+                  example: '2026-11-13'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-04'
+                  example: '2052-12-06'
                   nullable: true
                 limit:
                   type: integer
@@ -1370,7 +1370,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: pending
+                  example: paid
                   enum:
                     - pending
                     - paid
@@ -1393,17 +1393,17 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-11T19:33:11'
+                  example: '2026-11-13T18:19:50'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-04'
+                  example: '2052-12-06'
                   nullable: true
                 sort_by:
                   type: string
                   description: ''
-                  example: status
+                  example: total
                   enum:
                     - id
                     - quote_number
@@ -1414,7 +1414,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: ASC
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -4578,7 +4578,7 @@ paths:
                 active:
                   type: boolean
                   description: ''
-                  example: false
+                  example: true
                   nullable: true
                 min_price:
                   type: number
@@ -4603,7 +4603,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: category_type
+                  example: price
                   enum:
                     - id
                     - name
@@ -4614,7 +4614,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: desc
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -5227,17 +5227,17 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-11T19:33:11'
+                  example: '2026-11-13T18:19:50'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-04'
+                  example: '2052-12-06'
                   nullable: true
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: name
                   enum:
                     - id
                     - name
@@ -5623,11 +5623,11 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-11T19:33:11'
+                  example: '2026-11-13T18:19:50'
                 end_date:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-04'
+                  example: '2052-12-06'
                 search:
                   type: string
                   description: 'Must not be greater than 255 characters.'
@@ -5645,7 +5645,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -5826,7 +5826,7 @@ paths:
                 inspection_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-11T19:33:11'
+                  example: '2026-11-13T18:19:50'
                 findings:
                   type: string
                   description: ''
@@ -5859,7 +5859,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: submitted
+                  example: reviewed
                   enum:
                     - draft
                     - submitted

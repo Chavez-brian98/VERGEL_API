@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "f07fe7f8-7986-4be4-9682-df0051267732",
+        "_postman_id": "4f95d560-6e3d-4ca4-ad8a-0ba94670e647",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -82,7 +82,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-11\",\"hasta\":\"2052-12-04\",\"limit\":22}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-13\",\"hasta\":\"2052-12-06\",\"limit\":22}"
                                 },
                                 "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
                             },
@@ -624,7 +624,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"pending\",\"customer_id\":16,\"employee_id\":16,\"applied_plan_id\":16,\"desde\":\"2026-11-11T19:33:11\",\"hasta\":\"2052-12-04\",\"sort_by\":\"status\",\"sort_direction\":\"ASC\",\"limit\":22,\"per_page\":7}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"paid\",\"customer_id\":16,\"employee_id\":16,\"applied_plan_id\":16,\"desde\":\"2026-11-13T18:19:50\",\"hasta\":\"2052-12-06\",\"sort_by\":\"total\",\"sort_direction\":\"asc\",\"limit\":22,\"per_page\":7}"
                                 },
                                 "description": "Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas."
                             },
@@ -2317,7 +2317,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"category_type\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -2742,7 +2742,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-11T19:33:11\",\"hasta\":\"2052-12-04\",\"sort_by\":\"created_at\",\"sort_direction\":\"asc\",\"limit\":22,\"per_page\":7}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-13T18:19:50\",\"hasta\":\"2052-12-06\",\"sort_by\":\"name\",\"sort_direction\":\"asc\",\"limit\":22,\"per_page\":7}"
                                 },
                                 "description": "Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro econ\u00f3mico, tel\u00e9fono o rango de fechas."
                             },
@@ -3045,7 +3045,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"customer_id\":16,\"employee_id\":16,\"status\":\"draft\",\"start_date\":\"2026-11-11T19:33:11\",\"end_date\":\"2052-12-04\",\"search\":\"n\",\"sort_by\":\"id\",\"sort_direction\":\"asc\",\"per_page\":7,\"limit\":16}"
+                            "raw": "{\"customer_id\":16,\"employee_id\":16,\"status\":\"draft\",\"start_date\":\"2026-11-13T18:19:50\",\"end_date\":\"2052-12-06\",\"search\":\"n\",\"sort_by\":\"id\",\"sort_direction\":\"desc\",\"per_page\":7,\"limit\":16}"
                         },
                         "description": ""
                     },
@@ -3304,7 +3304,7 @@
                                 },
                                 {
                                     "key": "inspection_date",
-                                    "value": "2026-11-11T19:33:11",
+                                    "value": "2026-11-13T18:19:50",
                                     "type": "text",
                                     "description": "Must be a valid date."
                                 },
@@ -3346,7 +3346,7 @@
                                 },
                                 {
                                     "key": "status",
-                                    "value": "submitted",
+                                    "value": "reviewed",
                                     "type": "text",
                                     "description": ""
                                 },

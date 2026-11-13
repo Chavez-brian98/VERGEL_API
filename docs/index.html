@@ -404,7 +404,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: November 11, 2026</li>
+        <li>Last updated: November 13, 2026</li>
     </ul>
 </div>
 
@@ -452,8 +452,8 @@
     \"search\": \"b\",
     \"status\": \"active\",
     \"phone\": \"ngzmiyvdljnikhwa\",
-    \"desde\": \"2026-11-11\",
-    \"hasta\": \"2052-12-04\",
+    \"desde\": \"2026-11-13\",
+    \"hasta\": \"2052-12-06\",
     \"limit\": 22
 }"
 </code></pre></div>
@@ -485,8 +485,8 @@ let body = {
     "search": "b",
     "status": "active",
     "phone": "ngzmiyvdljnikhwa",
-    "desde": "2026-11-11",
-    "hasta": "2052-12-04",
+    "desde": "2026-11-13",
+    "hasta": "2052-12-06",
     "limit": 22
 };
 
@@ -758,10 +758,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-customers"
-               value="2026-11-11"
+               value="2026-11-13"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-11</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -770,10 +770,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-customers"
-               value="2052-12-04"
+               value="2052-12-06"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-04</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-06</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -2558,14 +2558,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"search\": \"b\",
-    \"status\": \"pending\",
+    \"status\": \"paid\",
     \"customer_id\": 16,
     \"employee_id\": 16,
     \"applied_plan_id\": 16,
-    \"desde\": \"2026-11-11T19:33:11\",
-    \"hasta\": \"2052-12-04\",
-    \"sort_by\": \"status\",
-    \"sort_direction\": \"ASC\",
+    \"desde\": \"2026-11-13T18:19:50\",
+    \"hasta\": \"2052-12-06\",
+    \"sort_by\": \"total\",
+    \"sort_direction\": \"asc\",
     \"limit\": 22,
     \"per_page\": 7
 }"
@@ -2600,14 +2600,14 @@ const headers = {
 
 let body = {
     "search": "b",
-    "status": "pending",
+    "status": "paid",
     "customer_id": 16,
     "employee_id": 16,
     "applied_plan_id": 16,
-    "desde": "2026-11-11T19:33:11",
-    "hasta": "2052-12-04",
-    "sort_by": "status",
-    "sort_direction": "ASC",
+    "desde": "2026-11-13T18:19:50",
+    "hasta": "2052-12-06",
+    "sort_by": "total",
+    "sort_direction": "asc",
     "limit": 22,
     "per_page": 7
 };
@@ -2862,10 +2862,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-v1-quotes"
-               value="pending"
+               value="paid"
                data-component="body">
     <br>
-<p>Example: <code>pending</code></p>
+<p>Example: <code>paid</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>paid</code></li></ul>
         </div>
@@ -2912,10 +2912,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-quotes"
-               value="2026-11-11T19:33:11"
+               value="2026-11-13T18:19:50"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-11T19:33:11</code></p>
+<p>Must be a valid date. Example: <code>2026-11-13T18:19:50</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -2924,10 +2924,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-quotes"
-               value="2052-12-04"
+               value="2052-12-06"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-04</code></p>
+<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-06</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
@@ -2936,10 +2936,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-quotes"
-               value="status"
+               value="total"
                data-component="body">
     <br>
-<p>Example: <code>status</code></p>
+<p>Example: <code>total</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>quote_number</code></li> <li><code>status</code></li> <li><code>total</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -2950,10 +2950,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-quotes"
-               value="ASC"
+               value="asc"
                data-component="body">
     <br>
-<p>Example: <code>ASC</code></p>
+<p>Example: <code>asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li> <li><code>ASC</code></li> <li><code>DESC</code></li></ul>
         </div>
@@ -9584,13 +9584,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"search\": \"b\",
     \"category_type\": \"n\",
-    \"active\": false,
+    \"active\": true,
     \"min_price\": 84,
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"category_type\",
-    \"sort_direction\": \"desc\"
+    \"sort_by\": \"price\",
+    \"sort_direction\": \"asc\"
 }"
 </code></pre></div>
 
@@ -9623,13 +9623,13 @@ const headers = {
 let body = {
     "search": "b",
     "category_type": "n",
-    "active": false,
+    "active": true,
     "min_price": 84,
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "category_type",
-    "sort_direction": "desc"
+    "sort_by": "price",
+    "sort_direction": "asc"
 };
 
 fetch(url, {
@@ -9925,7 +9925,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_price</code></b>&nbsp;&nbsp;
@@ -9982,10 +9982,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="category_type"
+               value="price"
                data-component="body">
     <br>
-<p>Example: <code>category_type</code></p>
+<p>Example: <code>price</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -9996,10 +9996,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="desc"
+               value="asc"
                data-component="body">
     <br>
-<p>Example: <code>desc</code></p>
+<p>Example: <code>asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -10218,8 +10218,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@C:\Users\2022CR211\AppData\Local\Temp\php17DD.tmp" \
-    --form "image_url=@C:\Users\2022CR211\AppData\Local\Temp\php17DC.tmp" </code></pre></div>
+    --form "image=@C:\Users\2022CR211\AppData\Local\Temp\php6E00.tmp" \
+    --form "image_url=@C:\Users\2022CR211\AppData\Local\Temp\php6DFF.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -10424,7 +10424,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php17DD.tmp</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php6E00.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -10436,7 +10436,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php17DC.tmp</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php6DFF.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -10485,8 +10485,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@C:\Users\2022CR211\AppData\Local\Temp\php182E.tmp" \
-    --form "image_url=@C:\Users\2022CR211\AppData\Local\Temp\php181E.tmp" </code></pre></div>
+    --form "image=@C:\Users\2022CR211\AppData\Local\Temp\php6E13.tmp" \
+    --form "image_url=@C:\Users\2022CR211\AppData\Local\Temp\php6E12.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -10735,7 +10735,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php182E.tmp</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php6E13.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -10747,7 +10747,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php181E.tmp</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php6E12.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -11015,9 +11015,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"status\": \"inactive\",
     \"economic_activity\": \"n\",
     \"phone\": \"gzmiyvdljnikhway\",
-    \"desde\": \"2026-11-11T19:33:11\",
-    \"hasta\": \"2052-12-04\",
-    \"sort_by\": \"created_at\",
+    \"desde\": \"2026-11-13T18:19:50\",
+    \"hasta\": \"2052-12-06\",
+    \"sort_by\": \"name\",
     \"sort_direction\": \"asc\",
     \"limit\": 22,
     \"per_page\": 7
@@ -11055,9 +11055,9 @@ let body = {
     "status": "inactive",
     "economic_activity": "n",
     "phone": "gzmiyvdljnikhway",
-    "desde": "2026-11-11T19:33:11",
-    "hasta": "2052-12-04",
-    "sort_by": "created_at",
+    "desde": "2026-11-13T18:19:50",
+    "hasta": "2052-12-06",
+    "sort_by": "name",
     "sort_direction": "asc",
     "limit": 22,
     "per_page": 7
@@ -11339,10 +11339,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-suppliers"
-               value="2026-11-11T19:33:11"
+               value="2026-11-13T18:19:50"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-11T19:33:11</code></p>
+<p>Must be a valid date. Example: <code>2026-11-13T18:19:50</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -11351,10 +11351,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-suppliers"
-               value="2052-12-04"
+               value="2052-12-06"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-04</code></p>
+<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-06</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
@@ -11363,10 +11363,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-suppliers"
-               value="created_at"
+               value="name"
                data-component="body">
     <br>
-<p>Example: <code>created_at</code></p>
+<p>Example: <code>name</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>trade_name</code></li> <li><code>status</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -12512,11 +12512,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"customer_id\": 16,
     \"employee_id\": 16,
     \"status\": \"draft\",
-    \"start_date\": \"2026-11-11T19:33:11\",
-    \"end_date\": \"2052-12-04\",
+    \"start_date\": \"2026-11-13T18:19:50\",
+    \"end_date\": \"2052-12-06\",
     \"search\": \"n\",
     \"sort_by\": \"id\",
-    \"sort_direction\": \"asc\",
+    \"sort_direction\": \"desc\",
     \"per_page\": 7,
     \"limit\": 16
 }"
@@ -12552,11 +12552,11 @@ let body = {
     "customer_id": 16,
     "employee_id": 16,
     "status": "draft",
-    "start_date": "2026-11-11T19:33:11",
-    "end_date": "2052-12-04",
+    "start_date": "2026-11-13T18:19:50",
+    "end_date": "2052-12-06",
     "search": "n",
     "sort_by": "id",
-    "sort_direction": "asc",
+    "sort_direction": "desc",
     "per_page": 7,
     "limit": 16
 };
@@ -12825,10 +12825,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-v1-inspections"
-               value="2026-11-11T19:33:11"
+               value="2026-11-13T18:19:50"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-11T19:33:11</code></p>
+<p>Must be a valid date. Example: <code>2026-11-13T18:19:50</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
@@ -12837,10 +12837,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="end_date"                data-endpoint="GETapi-v1-inspections"
-               value="2052-12-04"
+               value="2052-12-06"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-04</code></p>
+<p>Must be a valid date. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-06</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
@@ -12875,10 +12875,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-inspections"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -12941,8 +12941,8 @@ Must be one of:
     --form "services[][suggested_quantity]=2"\
     --form "services[][notes]=Requiere fumigación previa."\
     --form "photos_data[][caption]=n"\
-    --form "photos[]=@C:\Users\2022CR211\AppData\Local\Temp\php16CA.tmp" \
-    --form "photos_data[][file]=@C:\Users\2022CR211\AppData\Local\Temp\php16C9.tmp" </code></pre></div>
+    --form "photos[]=@C:\Users\2022CR211\AppData\Local\Temp\php6DA8.tmp" \
+    --form "photos_data[][file]=@C:\Users\2022CR211\AppData\Local\Temp\php6DA7.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -13283,7 +13283,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php16C9.tmp</code></p>
+<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php6DA7.tmp</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>caption</code></b>&nbsp;&nbsp;
@@ -13477,20 +13477,20 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "customer_id=16"\
     --form "appointment_id=16"\
     --form "employee_id=16"\
-    --form "inspection_date=2026-11-11T19:33:11"\
+    --form "inspection_date=2026-11-13T18:19:50"\
     --form "findings=architecto"\
     --form "terrain_width=39"\
     --form "terrain_length=84"\
     --form "total_area=12"\
     --form "area_unit=miyvdljnikhwaykc"\
     --form "terrain_notes=architecto"\
-    --form "status=submitted"\
+    --form "status=reviewed"\
     --form "services[][service_id]=16"\
     --form "services[][suggested_quantity]=22"\
     --form "services[][notes]=architecto"\
     --form "photos_data[][caption]=n"\
-    --form "photos[]=@C:\Users\2022CR211\AppData\Local\Temp\php16FB.tmp" \
-    --form "photos_data[][file]=@C:\Users\2022CR211\AppData\Local\Temp\php170B.tmp" </code></pre></div>
+    --form "photos[]=@C:\Users\2022CR211\AppData\Local\Temp\php6DBA.tmp" \
+    --form "photos_data[][file]=@C:\Users\2022CR211\AppData\Local\Temp\php6DBB.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -13508,14 +13508,14 @@ const body = new FormData();
 body.append('customer_id', '16');
 body.append('appointment_id', '16');
 body.append('employee_id', '16');
-body.append('inspection_date', '2026-11-11T19:33:11');
+body.append('inspection_date', '2026-11-13T18:19:50');
 body.append('findings', 'architecto');
 body.append('terrain_width', '39');
 body.append('terrain_length', '84');
 body.append('total_area', '12');
 body.append('area_unit', 'miyvdljnikhwaykc');
 body.append('terrain_notes', 'architecto');
-body.append('status', 'submitted');
+body.append('status', 'reviewed');
 body.append('services[][service_id]', '16');
 body.append('services[][suggested_quantity]', '22');
 body.append('services[][notes]', 'architecto');
@@ -13677,10 +13677,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="inspection_date"                data-endpoint="PUTapi-v1-inspections--id-"
-               value="2026-11-11T19:33:11"
+               value="2026-11-13T18:19:50"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-11T19:33:11</code></p>
+<p>Must be a valid date. Example: <code>2026-11-13T18:19:50</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>findings</code></b>&nbsp;&nbsp;
@@ -13761,10 +13761,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PUTapi-v1-inspections--id-"
-               value="submitted"
+               value="reviewed"
                data-component="body">
     <br>
-<p>Example: <code>submitted</code></p>
+<p>Example: <code>reviewed</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>draft</code></li> <li><code>submitted</code></li> <li><code>reviewed</code></li></ul>
         </div>
@@ -13850,7 +13850,7 @@ Must be one of:
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php170B.tmp</code></p>
+<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php6DBB.tmp</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>caption</code></b>&nbsp;&nbsp;
@@ -14186,8 +14186,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "photos_data[][caption]=b"\
-    --form "photos[]=@C:\Users\2022CR211\AppData\Local\Temp\php174C.tmp" \
-    --form "photos_data[][file]=@C:\Users\2022CR211\AppData\Local\Temp\php175C.tmp" </code></pre></div>
+    --form "photos[]=@C:\Users\2022CR211\AppData\Local\Temp\php6DDC.tmp" \
+    --form "photos_data[][file]=@C:\Users\2022CR211\AppData\Local\Temp\php6DDD.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -14347,7 +14347,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php175C.tmp</code></p>
+<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\2022CR211\AppData\Local\Temp\php6DDD.tmp</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>caption</code></b>&nbsp;&nbsp;

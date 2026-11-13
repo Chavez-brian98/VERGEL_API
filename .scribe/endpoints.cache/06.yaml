@@ -190,7 +190,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-11T19:33:11'
+        example: '2026-11-13T18:19:50'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -201,7 +201,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-12-04'
+        example: '2052-12-06'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -212,7 +212,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: created_at
+        example: name
         type: string
         enumValues:
           - id
@@ -265,9 +265,9 @@ endpoints:
       status: inactive
       economic_activity: 'n'
       phone: gzmiyvdljnikhway
-      desde: '2026-11-11T19:33:11'
-      hasta: '2052-12-04'
-      sort_by: created_at
+      desde: '2026-11-13T18:19:50'
+      hasta: '2052-12-06'
+      sort_by: name
       sort_direction: asc
       limit: 22
       per_page: 7

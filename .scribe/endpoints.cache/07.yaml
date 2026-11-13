@@ -167,7 +167,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: pending
+        example: paid
         type: string
         enumValues:
           - pending
@@ -213,7 +213,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-11T19:33:11'
+        example: '2026-11-13T18:19:50'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -224,7 +224,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-12-04'
+        example: '2052-12-06'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -235,7 +235,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: status
+        example: total
         type: string
         enumValues:
           - id
@@ -251,7 +251,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: ASC
+        example: asc
         type: string
         enumValues:
           - asc
@@ -285,14 +285,14 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       search: b
-      status: pending
+      status: paid
       customer_id: 16
       employee_id: 16
       applied_plan_id: 16
-      desde: '2026-11-11T19:33:11'
-      hasta: '2052-12-04'
-      sort_by: status
-      sort_direction: ASC
+      desde: '2026-11-13T18:19:50'
+      hasta: '2052-12-06'
+      sort_by: total
+      sort_direction: asc
       limit: 22
       per_page: 7
     fileParameters: []
