@@ -18,13 +18,23 @@ class EmployeeApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->actingAs(User::factory()->create(), 'sanctum');
+        DB::table('employees')->delete();
+        DB::table('users')->delete();
+        DB::table('roles')->delete();
 
         $this->roleId = DB::table('roles')->insertGetId([
             'role_name' => 'Administrador',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        $employee = Employee::create([
+            'full_name' => 'Admin Test',
+            'role_id' => $this->roleId,
+            'active' => true,
+        ]);
+
+        $this->actingAs(User::factory()->create(['employee_id' => $employee->id]), 'sanctum');
     }
 
     public function test_it_lists_employees_with_role_name(): void
@@ -39,7 +49,7 @@ class EmployeeApiTest extends TestCase
         $response = $this->getJson('/api/v1/employees');
 
         $response->assertOk()
-            ->assertJsonCount(2, 'data')
+            ->assertJsonCount(3, 'data')
             ->assertJsonFragment([
                 'fullName' => 'Carlos Mendoza',
                 'roleName' => 'Administrador',
@@ -185,7 +195,7 @@ class EmployeeApiTest extends TestCase
         $response->assertOk()
             ->assertJsonCount(2, 'data')
             ->assertJsonPath('meta.per_page', 2)
-            ->assertJsonPath('meta.total', 3);
+            ->assertJsonPath('meta.total', 4);
     }
 
     public function test_it_returns_404_for_a_missing_employee(): void

@@ -11,6 +11,9 @@ tags:
     name: Clientes
     description: ''
   -
+    name: Cotizaciones
+    description: "\nAPIs para la gestión de cotizaciones, ítems de servicio/planta y cálculo automático de montos."
+  -
     name: 'Planes de Suscripción'
     description: ''
   -
@@ -23,17 +26,29 @@ tags:
     name: Tarifas
     description: ''
   -
+    name: Auditoría
+    description: ''
+  -
     name: Autenticación
     description: ''
   -
     name: 'Citas y Agenda'
     description: "\nEndpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas."
   -
+    name: 'Historial de Transacciones'
+    description: "\nEndpoints para consultar el registro histórico de trabajos de jardinería efectuados (pagados)\ny trabajos declinados o cancelados por los clientes, excluyendo trabajos en curso."
+  -
+    name: 'Movimientos (Compras, Ventas y Gastos)'
+    description: "\nEndpoints del libro general dinámico del sistema. Centraliza toda la actividad económica\n(ventas por trabajos efectuados, compras a proveedores y gastos operativos tipo tickets),\npermitiendo filtrar por fechas, tipo y entidad, calculando en tiempo real la Utilidad (Ingresos - Egresos)."
+  -
     name: Plantas
     description: ''
   -
     name: Proveedores
     description: "\nAPIs para la gestión de proveedores, compras y suministros de El Vergel."
+  -
+    name: 'Técnico de Campo'
+    description: "\nEndpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes."
 components:
   securitySchemes:
     default:
@@ -291,12 +306,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-03'
+                  example: '2026-11-13'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-11-26'
+                  example: '2052-12-06'
                   nullable: true
                 limit:
                   type: integer
@@ -1227,6 +1242,427 @@ paths:
         in: path
         name: customer
         description: 'ID del cliente.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/quotes:
+    get:
+      summary: 'Listar y filtrar cotizaciones.'
+      operationId: listarYFiltrarCotizaciones
+      description: 'Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas.'
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda por número de cotización o nombre del cliente.'
+          example: COT-20261111
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda por número de cotización o nombre del cliente.'
+            example: COT-20261111
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (`pending` o `paid`).'
+          example: pending
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (`pending` o `paid`).'
+            example: pending
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por cliente.'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por empleado que registró la cotización.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por empleado que registró la cotización.'
+            example: 1
+        -
+          in: query
+          name: applied_plan_id
+          description: 'Filtrar por plan de suscripción aplicado.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por plan de suscripción aplicado.'
+            example: 1
+        -
+          in: query
+          name: desde
+          description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
+          example: '2026-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
+            example: '2026-01-01'
+        -
+          in: query
+          name: hasta
+          description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
+          example: '2026-12-31'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
+            example: '2026-12-31'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
+          example: created_at
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
+            example: created_at
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+            example: desc
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1-100). Default: 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1-100). Default: 15.'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: pending
+                  enum:
+                    - pending
+                    - paid
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                desde:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-13T20:28:56'
+                  nullable: true
+                hasta:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
+                  example: '2052-12-06'
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: status
+                  enum:
+                    - id
+                    - quote_number
+                    - status
+                    - total
+                    - created_at
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: DESC
+                  enum:
+                    - asc
+                    - desc
+                    - ASC
+                    - DESC
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+    post:
+      summary: 'Registrar una nueva cotización.'
+      operationId: registrarUnaNuevaCotizacin
+      description: "El backend calcula el total de cada ítem (`quantity * unit_price`), el subtotal con descuento del plan,\nel IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.\nEl empleado se toma del usuario autenticado."
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente asociado.'
+                  example: 1
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'ID del plan de suscripción aplicado.'
+                  example: 1
+                includes_vat:
+                  type: boolean
+                  description: 'Indica si los precios ya incluyen IVA. Default: false.'
+                  example: false
+                loyalty_points_used:
+                  type: integer
+                  description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
+                  example: 0
+                status:
+                  type: string
+                  description: 'Estado inicial (`pending` o `paid`). Default: pending.'
+                  example: pending
+                items:
+                  type: array
+                  description: 'Lista de ítems de la cotización.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      item_type:
+                        type: string
+                        description: 'Tipo de ítem (`service` o `plant`).'
+                        example: service
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio cuando `item_type` es `service`.'
+                        example: 1
+                        nullable: true
+                      plant_id:
+                        type: integer
+                        description: 'ID de la planta cuando `item_type` es `plant`.'
+                        example: 1
+                        nullable: true
+                      quantity:
+                        type: number
+                        description: Cantidad.
+                        example: 2.0
+                      unit_price:
+                        type: number
+                        description: 'Precio unitario.'
+                        example: 25.5
+                    required:
+                      - item_type
+                      - service_id
+                      - plant_id
+                      - quantity
+                      - unit_price
+              required:
+                - applied_plan_id
+                - items
+  '/api/v1/quotes/{id}':
+    get:
+      summary: 'Consultar el detalle de una cotización.'
+      operationId: consultarElDetalleDeUnaCotizacin
+      description: 'Incluye cliente, empleado, plan aplicado e ítems.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Cotizaciones
+    put:
+      summary: 'Actualizar una cotización.'
+      operationId: actualizarUnaCotizacin
+      description: 'Actualiza datos generales y, si se envía `items`, reemplaza el detalle completo y recalcula los montos.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente asociado.'
+                  example: 1
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'ID del plan de suscripción aplicado.'
+                  example: 1
+                includes_vat:
+                  type: boolean
+                  description: 'Indica si los precios ya incluyen IVA.'
+                  example: true
+                loyalty_points_used:
+                  type: integer
+                  description: 'Puntos de lealtad usados (solo si la cotización incluye un servicio).'
+                  example: 0
+                status:
+                  type: string
+                  description: 'Estado (`pending` o `paid`).'
+                  example: pending
+                items:
+                  type: array
+                  description: 'Lista de ítems; si se envía, reemplaza los existentes.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      item_type:
+                        type: string
+                        description: 'Tipo de ítem (`service` o `plant`).'
+                        example: service
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio cuando `item_type` es `service`.'
+                        example: 1
+                        nullable: true
+                      plant_id:
+                        type: integer
+                        description: 'ID de la planta cuando `item_type` es `plant`.'
+                        example: 1
+                        nullable: true
+                      quantity:
+                        type: number
+                        description: Cantidad.
+                        example: 2.0
+                      unit_price:
+                        type: number
+                        description: 'Precio unitario.'
+                        example: 25.5
+                    required:
+                      - item_type
+                      - service_id
+                      - plant_id
+                      - quantity
+                      - unit_price
+    delete:
+      summary: 'Eliminar una cotización (Borrado lógico).'
+      operationId: eliminarUnaCotizacinBorradoLgico
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the quote.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/quotes/{quote}/status':
+    patch:
+      summary: 'Cambiar el estado de una cotización.'
+      operationId: cambiarElEstadoDeUnaCotizacin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: 'Nuevo estado (`pending` o `paid`).'
+                  example: paid
+              required:
+                - status
+    parameters:
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización.'
         example: 1
         required: true
         schema:
@@ -3695,6 +4131,593 @@ paths:
         required: true
         schema:
           type: integer
+  /api/v1/audit-logs:
+    get:
+      summary: 'Listar y filtrar bitácoras de auditoría.'
+      operationId: listarYFiltrarBitcorasDeAuditora
+      description: 'Obtiene una lista paginada de los registros y movimientos de auditoría del sistema (creación, edición, eliminación y accesos denegados). Requiere autenticación con Sanctum y está restringido exclusivamente a colaboradores activos con rol de Administrador.'
+      parameters:
+        -
+          in: query
+          name: user_id
+          description: 'Filtrar por el identificador del usuario del sistema que realizó la acción.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por el identificador del usuario del sistema que realizó la acción.'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por el identificador del colaborador asociado.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por el identificador del colaborador asociado.'
+            example: 1
+        -
+          in: query
+          name: action
+          description: 'Filtrar por el tipo de acción registrada (insert, update, delete, restore, denied).'
+          example: update
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por el tipo de acción registrada (insert, update, delete, restore, denied).'
+            example: update
+        -
+          in: query
+          name: table_name
+          description: 'Filtrar por el nombre de la tabla afectada en la base de datos.'
+          example: plants
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por el nombre de la tabla afectada en la base de datos.'
+            example: plants
+        -
+          in: query
+          name: affected_table
+          description: 'Alias alternativo para el parámetro table_name.'
+          example: plants
+          required: false
+          schema:
+            type: string
+            description: 'Alias alternativo para el parámetro table_name.'
+            example: plants
+        -
+          in: query
+          name: affected_record_id
+          description: 'Filtrar por el identificador del registro afectado.'
+          example: 12
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por el identificador del registro afectado.'
+            example: 12
+        -
+          in: query
+          name: start_date
+          description: 'date Filtrar por fecha de registro inicial (formato YYYY-MM-DD).'
+          example: '2026-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar por fecha de registro inicial (formato YYYY-MM-DD).'
+            example: '2026-01-01'
+        -
+          in: query
+          name: end_date
+          description: 'date Filtrar por fecha de registro final (formato YYYY-MM-DD).'
+          example: '2026-12-31'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar por fecha de registro final (formato YYYY-MM-DD).'
+            example: '2026-12-31'
+        -
+          in: query
+          name: desde
+          description: 'date Alias alternativo para start_date (YYYY-MM-DD).'
+          example: '2026-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'date Alias alternativo para start_date (YYYY-MM-DD).'
+            example: '2026-01-01'
+        -
+          in: query
+          name: hasta
+          description: 'date Alias alternativo para end_date (YYYY-MM-DD).'
+          example: '2026-12-31'
+          required: false
+          schema:
+            type: string
+            description: 'date Alias alternativo para end_date (YYYY-MM-DD).'
+            example: '2026-12-31'
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
+            example: 15
+        -
+          in: query
+          name: per_page
+          description: 'Alias alternativo para limit.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Alias alternativo para limit.'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      action: update
+                      affectedTable: plants
+                      affectedRecordId: 12
+                      oldData:
+                        id: 12
+                        name: 'Monstera Deliciosa'
+                        price: '24.50'
+                      newData:
+                        id: 12
+                        name: 'Monstera Deliciosa Variegata'
+                        price: '35.00'
+                      ipAddress: 192.168.1.15
+                      createdAt: '2026-10-24T18:30:00+00:00'
+                      actor:
+                        employeeId: 1
+                        fullName: 'Carlos Administrador'
+                        role: Administrador
+                        userId: 1
+                        email: admin@vergel.com
+                  links:
+                    first: 'http://localhost/api/v1/audit-logs?page=1'
+                    last: 'http://localhost/api/v1/audit-logs?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    path: 'http://localhost/api/v1/audit-logs'
+                    per_page: 15
+                    to: 1
+                    total: 1
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        action: update
+                        affectedTable: plants
+                        affectedRecordId: 12
+                        oldData:
+                          id: 12
+                          name: 'Monstera Deliciosa'
+                          price: '24.50'
+                        newData:
+                          id: 12
+                          name: 'Monstera Deliciosa Variegata'
+                          price: '35.00'
+                        ipAddress: 192.168.1.15
+                        createdAt: '2026-10-24T18:30:00+00:00'
+                        actor:
+                          employeeId: 1
+                          fullName: 'Carlos Administrador'
+                          role: Administrador
+                          userId: 1
+                          email: admin@vergel.com
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        action:
+                          type: string
+                          example: update
+                        affectedTable:
+                          type: string
+                          example: plants
+                        affectedRecordId:
+                          type: integer
+                          example: 12
+                        oldData:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 12
+                            name:
+                              type: string
+                              example: 'Monstera Deliciosa'
+                            price:
+                              type: string
+                              example: '24.50'
+                        newData:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 12
+                            name:
+                              type: string
+                              example: 'Monstera Deliciosa Variegata'
+                            price:
+                              type: string
+                              example: '35.00'
+                        ipAddress:
+                          type: string
+                          example: 192.168.1.15
+                        createdAt:
+                          type: string
+                          example: '2026-10-24T18:30:00+00:00'
+                        actor:
+                          type: object
+                          properties:
+                            employeeId:
+                              type: integer
+                              example: 1
+                            fullName:
+                              type: string
+                              example: 'Carlos Administrador'
+                            role:
+                              type: string
+                              example: Administrador
+                            userId:
+                              type: integer
+                              example: 1
+                            email:
+                              type: string
+                              example: admin@vergel.com
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://localhost/api/v1/audit-logs?page=1'
+                      last:
+                        type: string
+                        example: 'http://localhost/api/v1/audit-logs?page=1'
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                      next:
+                        type: string
+                        example: null
+                        nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      path:
+                        type: string
+                        example: 'http://localhost/api/v1/audit-logs'
+                      per_page:
+                        type: integer
+                        example: 15
+                      to:
+                        type: integer
+                        example: 1
+                      total:
+                        type: integer
+                        example: 1
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'La acción seleccionada no es válida.'
+                  errors:
+                    action:
+                      - 'La acción debe ser una de las siguientes: insert, update, delete, restore o denied.'
+                properties:
+                  message:
+                    type: string
+                    example: 'La acción seleccionada no es válida.'
+                  errors:
+                    type: object
+                    properties:
+                      action:
+                        type: array
+                        example:
+                          - 'La acción debe ser una de las siguientes: insert, update, delete, restore o denied.'
+                        items:
+                          type: string
+      tags:
+        - Auditoría
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                action:
+                  type: string
+                  description: ''
+                  example: insert
+                  enum:
+                    - insert
+                    - update
+                    - delete
+                    - restore
+                    - denied
+                  nullable: true
+                affected_table:
+                  type: string
+                  description: 'Must not be greater than 60 characters.'
+                  example: 'n'
+                  nullable: true
+                table_name:
+                  type: string
+                  description: 'Must not be greater than 60 characters.'
+                  example: g
+                  nullable: true
+                affected_record_id:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 66
+                  nullable: true
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-13'
+                  nullable: true
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-06'
+                  nullable: true
+                desde:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-13'
+                  nullable: true
+                hasta:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
+                  example: '2052-12-06'
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+  '/api/v1/audit-logs/{id}':
+    get:
+      summary: 'Obtener el detalle de una bitácora de auditoría.'
+      operationId: obtenerElDetalleDeUnaBitcoraDeAuditora
+      description: "Devuelve la información detallada de un registro individual de auditoría mediante su ID, incluyendo el actor que ejecutó la acción y el estado anterior y nuevo de los datos afectados.\nEndpoint restringido exclusivamente a colaboradores activos con rol de Administrador."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    action: update
+                    affectedTable: plants
+                    affectedRecordId: 12
+                    oldData:
+                      id: 12
+                      name: 'Monstera Deliciosa'
+                      price: '24.50'
+                    newData:
+                      id: 12
+                      name: 'Monstera Deliciosa Variegata'
+                      price: '35.00'
+                    ipAddress: 192.168.1.15
+                    createdAt: '2026-10-24T18:30:00+00:00'
+                    actor:
+                      employeeId: 1
+                      fullName: 'Carlos Administrador'
+                      role: Administrador
+                      userId: 1
+                      email: admin@vergel.com
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      action:
+                        type: string
+                        example: update
+                      affectedTable:
+                        type: string
+                        example: plants
+                      affectedRecordId:
+                        type: integer
+                        example: 12
+                      oldData:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 12
+                          name:
+                            type: string
+                            example: 'Monstera Deliciosa'
+                          price:
+                            type: string
+                            example: '24.50'
+                      newData:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 12
+                          name:
+                            type: string
+                            example: 'Monstera Deliciosa Variegata'
+                          price:
+                            type: string
+                            example: '35.00'
+                      ipAddress:
+                        type: string
+                        example: 192.168.1.15
+                      createdAt:
+                        type: string
+                        example: '2026-10-24T18:30:00+00:00'
+                      actor:
+                        type: object
+                        properties:
+                          employeeId:
+                            type: integer
+                            example: 1
+                          fullName:
+                            type: string
+                            example: 'Carlos Administrador'
+                          role:
+                            type: string
+                            example: Administrador
+                          userId:
+                            type: integer
+                            example: 1
+                          email:
+                            type: string
+                            example: admin@vergel.com
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Registro de auditoría no encontrado'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Registro de auditoría no encontrado'
+                  codigo:
+                    type: integer
+                    example: 404
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al obtener el registro de auditoría'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al obtener el registro de auditoría'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - Auditoría
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'ID único del registro de auditoría.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   /api/login:
     post:
       summary: 'Iniciar sesión.'
@@ -4217,22 +5240,22 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-03'
+                  example: '2026-11-13'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-11-26'
+                  example: '2052-12-06'
                   nullable: true
                 date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-03'
+                  example: '2026-11-13'
                   nullable: true
                 status:
                   type: string
                   description: ''
-                  example: completed
+                  example: annulled
                   enum:
                     - pending
                     - confirmed
@@ -4263,7 +5286,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: status
+                  example: appointment_date
                   enum:
                     - id
                     - appointment_date
@@ -5238,6 +6261,1286 @@ paths:
         required: true
         schema:
           type: integer
+  /api/v1/transactions:
+    get:
+      summary: 'Listar y filtrar historial de transacciones.'
+      operationId: listarYFiltrarHistorialDeTransacciones
+      description: "Devuelve una lista paginada de transacciones históricas que ya fueron realizadas (pagadas)\no que fueron canceladas/declinadas porque el cliente no aceptó la cotización.\nExcluye estrictamente los trabajos en curso o cotizaciones abiertas en estado pendiente.\n\nIncluye un buscador principal unificado (por ID de cliente, número de referencia/cotización\no nombre del cliente), filtro específico por cliente y la sección \"Resumen por cliente\"."
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Término de búsqueda general que filtra por ID de cliente, N° de cotización o nombre legal/comercial.'
+          example: Juan
+          required: false
+          schema:
+            type: string
+            description: 'Término de búsqueda general que filtra por ID de cliente, N° de cotización o nombre legal/comercial.'
+            example: Juan
+        -
+          in: query
+          name: customer_id
+          description: 'ID del cliente para consultar su historial específico.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'ID del cliente para consultar su historial específico.'
+            example: 1
+        -
+          in: query
+          name: client_id
+          description: 'Alias directo de customer_id.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Alias directo de customer_id.'
+            example: 1
+        -
+          in: query
+          name: status_type
+          description: 'Filtrar por clasificación histórica (all, performed, declined). Por defecto all.'
+          example: performed
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por clasificación histórica (all, performed, declined). Por defecto all.'
+            example: performed
+        -
+          in: query
+          name: start_date
+          description: 'Fecha inicial en formato AAAA-MM-DD.'
+          example: '2026-10-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial en formato AAAA-MM-DD.'
+            example: '2026-10-01'
+        -
+          in: query
+          name: end_date
+          description: 'Fecha final en formato AAAA-MM-DD.'
+          example: '2026-10-31'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final en formato AAAA-MM-DD.'
+            example: '2026-10-31'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (id, quote_number, total, created_at). Por defecto created_at.'
+          example: created_at
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (id, quote_number, total, created_at). Por defecto created_at.'
+            example: created_at
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección de ordenamiento (asc o desc). Por defecto desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección de ordenamiento (asc o desc). Por defecto desc.'
+            example: desc
+        -
+          in: query
+          name: per_page
+          description: 'Cantidad de transacciones por página (1 a 100). Por defecto 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de transacciones por página (1 a 100). Por defecto 15.'
+            example: 15
+        -
+          in: query
+          name: limit
+          description: 'Alias alternativo para per_page.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Alias alternativo para per_page.'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      quoteNumber: COT-2026-0001
+                      transactionReference: COT-2026-0001
+                      customerId: 1
+                      customer:
+                        id: 1
+                        legalName: 'Juan Carlos Pérez'
+                        tradeName: null
+                        taxId: 0614-260290-101-1
+                        phone: 7890-1234
+                        email: juan.perez@example.com
+                        municipality: 'Antiguo Cuscatlán'
+                        department: 'La Libertad'
+                        address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                      employeeId: 1
+                      employee:
+                        id: 1
+                        fullName: 'Carlos Administrador'
+                      plan:
+                        id: 1
+                        name: 'Plan Estándar'
+                        code: STD
+                      amounts:
+                        basePrice: 120.0
+                        discountedSubtotal: 108.0
+                        includesVat: false
+                        total: 108.0
+                      loyaltyPoints:
+                        used: 0
+                        earned: 20
+                      status:
+                        raw: paid
+                        state: performed
+                        label: 'Trabajo Efectuado (Pagado)'
+                        isCancelled: false
+                        isPaid: true
+                        badge: success
+                      items:
+                        -
+                          id: 1
+                          itemType: service
+                          quantity: 1.0
+                          unitPrice: 120.0
+                          total: 120.0
+                          service:
+                            id: 1
+                            name: 'Poda y Mantenimiento de Césped'
+                          plant: null
+                      payments:
+                        -
+                          id: 1
+                          amountPaid: 108.0
+                          paymentMethod: transfer
+                          paymentDate: '2026-10-15T14:30:00.000000Z'
+                      createdAt: '2026-10-10T10:00:00.000000Z'
+                      declinedAt: null
+                  meta:
+                    summary:
+                      acceptedCount: 12
+                      declinedCount: 2
+                      totalCount: 14
+                      totalAcceptedAmount: 2450.0
+                      totalDeclinedAmount: 380.0
+                  message: 'Historial de transacciones obtenido exitosamente.'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        quoteNumber: COT-2026-0001
+                        transactionReference: COT-2026-0001
+                        customerId: 1
+                        customer:
+                          id: 1
+                          legalName: 'Juan Carlos Pérez'
+                          tradeName: null
+                          taxId: 0614-260290-101-1
+                          phone: 7890-1234
+                          email: juan.perez@example.com
+                          municipality: 'Antiguo Cuscatlán'
+                          department: 'La Libertad'
+                          address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                        employeeId: 1
+                        employee:
+                          id: 1
+                          fullName: 'Carlos Administrador'
+                        plan:
+                          id: 1
+                          name: 'Plan Estándar'
+                          code: STD
+                        amounts:
+                          basePrice: 120
+                          discountedSubtotal: 108
+                          includesVat: false
+                          total: 108
+                        loyaltyPoints:
+                          used: 0
+                          earned: 20
+                        status:
+                          raw: paid
+                          state: performed
+                          label: 'Trabajo Efectuado (Pagado)'
+                          isCancelled: false
+                          isPaid: true
+                          badge: success
+                        items:
+                          -
+                            id: 1
+                            itemType: service
+                            quantity: 1
+                            unitPrice: 120
+                            total: 120
+                            service:
+                              id: 1
+                              name: 'Poda y Mantenimiento de Césped'
+                            plant: null
+                        payments:
+                          -
+                            id: 1
+                            amountPaid: 108
+                            paymentMethod: transfer
+                            paymentDate: '2026-10-15T14:30:00.000000Z'
+                        createdAt: '2026-10-10T10:00:00.000000Z'
+                        declinedAt: null
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        quoteNumber:
+                          type: string
+                          example: COT-2026-0001
+                        transactionReference:
+                          type: string
+                          example: COT-2026-0001
+                        customerId:
+                          type: integer
+                          example: 1
+                        customer:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            legalName:
+                              type: string
+                              example: 'Juan Carlos Pérez'
+                            tradeName:
+                              type: string
+                              example: null
+                              nullable: true
+                            taxId:
+                              type: string
+                              example: 0614-260290-101-1
+                            phone:
+                              type: string
+                              example: 7890-1234
+                            email:
+                              type: string
+                              example: juan.perez@example.com
+                            municipality:
+                              type: string
+                              example: 'Antiguo Cuscatlán'
+                            department:
+                              type: string
+                              example: 'La Libertad'
+                            address:
+                              type: string
+                              example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                        employeeId:
+                          type: integer
+                          example: 1
+                        employee:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            fullName:
+                              type: string
+                              example: 'Carlos Administrador'
+                        plan:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Plan Estándar'
+                            code:
+                              type: string
+                              example: STD
+                        amounts:
+                          type: object
+                          properties:
+                            basePrice:
+                              type: number
+                              example: 120.0
+                            discountedSubtotal:
+                              type: number
+                              example: 108.0
+                            includesVat:
+                              type: boolean
+                              example: false
+                            total:
+                              type: number
+                              example: 108.0
+                        loyaltyPoints:
+                          type: object
+                          properties:
+                            used:
+                              type: integer
+                              example: 0
+                            earned:
+                              type: integer
+                              example: 20
+                        status:
+                          type: object
+                          properties:
+                            raw:
+                              type: string
+                              example: paid
+                            state:
+                              type: string
+                              example: performed
+                            label:
+                              type: string
+                              example: 'Trabajo Efectuado (Pagado)'
+                            isCancelled:
+                              type: boolean
+                              example: false
+                            isPaid:
+                              type: boolean
+                              example: true
+                            badge:
+                              type: string
+                              example: success
+                        items:
+                          type: array
+                          example:
+                            -
+                              id: 1
+                              itemType: service
+                              quantity: 1
+                              unitPrice: 120
+                              total: 120
+                              service:
+                                id: 1
+                                name: 'Poda y Mantenimiento de Césped'
+                              plant: null
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              itemType:
+                                type: string
+                                example: service
+                              quantity:
+                                type: number
+                                example: 1.0
+                              unitPrice:
+                                type: number
+                                example: 120.0
+                              total:
+                                type: number
+                                example: 120.0
+                              service:
+                                type: object
+                                properties:
+                                  id:
+                                    type: integer
+                                    example: 1
+                                  name:
+                                    type: string
+                                    example: 'Poda y Mantenimiento de Césped'
+                              plant:
+                                type: string
+                                example: null
+                                nullable: true
+                        payments:
+                          type: array
+                          example:
+                            -
+                              id: 1
+                              amountPaid: 108
+                              paymentMethod: transfer
+                              paymentDate: '2026-10-15T14:30:00.000000Z'
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              amountPaid:
+                                type: number
+                                example: 108.0
+                              paymentMethod:
+                                type: string
+                                example: transfer
+                              paymentDate:
+                                type: string
+                                example: '2026-10-15T14:30:00.000000Z'
+                        createdAt:
+                          type: string
+                          example: '2026-10-10T10:00:00.000000Z'
+                        declinedAt:
+                          type: string
+                          example: null
+                          nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      summary:
+                        type: object
+                        properties:
+                          acceptedCount:
+                            type: integer
+                            example: 12
+                          declinedCount:
+                            type: integer
+                            example: 2
+                          totalCount:
+                            type: integer
+                            example: 14
+                          totalAcceptedAmount:
+                            type: number
+                            example: 2450.0
+                          totalDeclinedAmount:
+                            type: number
+                            example: 380.0
+                  message:
+                    type: string
+                    example: 'Historial de transacciones obtenido exitosamente.'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al consultar el historial de transacciones.'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al consultar el historial de transacciones.'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - 'Historial de Transacciones'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: b
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                client_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                status_type:
+                  type: string
+                  description: ''
+                  example: all
+                  enum:
+                    - all
+                    - performed
+                    - declined
+                  nullable: true
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-13'
+                  nullable: true
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-06'
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: total
+                  enum:
+                    - id
+                    - quote_number
+                    - total
+                    - created_at
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: asc
+                  enum:
+                    - asc
+                    - desc
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+  '/api/v1/transactions/{id}':
+    get:
+      summary: 'Obtener el detalle de una transacción histórica.'
+      operationId: obtenerElDetalleDeUnaTransaccinHistrica
+      description: "Devuelve la información completa y desglosada de una transacción individual (trabajo efectuado o declinado)\nmediante su identificador único (ID). Si la transacción está en curso o pendiente, no se encontrará en este historial."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    quoteNumber: COT-2026-0001
+                    transactionReference: COT-2026-0001
+                    customerId: 1
+                    customer:
+                      id: 1
+                      legalName: 'Juan Carlos Pérez'
+                      tradeName: null
+                      taxId: 0614-260290-101-1
+                      phone: 7890-1234
+                      email: juan.perez@example.com
+                      municipality: 'Antiguo Cuscatlán'
+                      department: 'La Libertad'
+                      address: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                    employeeId: 1
+                    employee:
+                      id: 1
+                      fullName: 'Carlos Administrador'
+                    amounts:
+                      basePrice: 120.0
+                      discountedSubtotal: 108.0
+                      includesVat: false
+                      total: 108.0
+                    status:
+                      raw: paid
+                      state: performed
+                      label: 'Trabajo Efectuado (Pagado)'
+                      isCancelled: false
+                      isPaid: true
+                      badge: success
+                    items:
+                      -
+                        id: 1
+                        itemType: service
+                        quantity: 1.0
+                        unitPrice: 120.0
+                        total: 120.0
+                        service:
+                          id: 1
+                          name: 'Poda y Mantenimiento de Césped'
+                        plant: null
+                    payments:
+                      -
+                        id: 1
+                        amountPaid: 108.0
+                        paymentMethod: transfer
+                        paymentDate: '2026-10-15T14:30:00.000000Z'
+                    createdAt: '2026-10-10T10:00:00.000000Z'
+                    declinedAt: null
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      quoteNumber:
+                        type: string
+                        example: COT-2026-0001
+                      transactionReference:
+                        type: string
+                        example: COT-2026-0001
+                      customerId:
+                        type: integer
+                        example: 1
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Juan Carlos Pérez'
+                          tradeName:
+                            type: string
+                            example: null
+                            nullable: true
+                          taxId:
+                            type: string
+                            example: 0614-260290-101-1
+                          phone:
+                            type: string
+                            example: 7890-1234
+                          email:
+                            type: string
+                            example: juan.perez@example.com
+                          municipality:
+                            type: string
+                            example: 'Antiguo Cuscatlán'
+                          department:
+                            type: string
+                            example: 'La Libertad'
+                          address:
+                            type: string
+                            example: 'Residencial Cumbres de Cuscatlán, Pol. D #14'
+                      employeeId:
+                        type: integer
+                        example: 1
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          fullName:
+                            type: string
+                            example: 'Carlos Administrador'
+                      amounts:
+                        type: object
+                        properties:
+                          basePrice:
+                            type: number
+                            example: 120.0
+                          discountedSubtotal:
+                            type: number
+                            example: 108.0
+                          includesVat:
+                            type: boolean
+                            example: false
+                          total:
+                            type: number
+                            example: 108.0
+                      status:
+                        type: object
+                        properties:
+                          raw:
+                            type: string
+                            example: paid
+                          state:
+                            type: string
+                            example: performed
+                          label:
+                            type: string
+                            example: 'Trabajo Efectuado (Pagado)'
+                          isCancelled:
+                            type: boolean
+                            example: false
+                          isPaid:
+                            type: boolean
+                            example: true
+                          badge:
+                            type: string
+                            example: success
+                      items:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            itemType: service
+                            quantity: 1
+                            unitPrice: 120
+                            total: 120
+                            service:
+                              id: 1
+                              name: 'Poda y Mantenimiento de Césped'
+                            plant: null
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            itemType:
+                              type: string
+                              example: service
+                            quantity:
+                              type: number
+                              example: 1.0
+                            unitPrice:
+                              type: number
+                              example: 120.0
+                            total:
+                              type: number
+                              example: 120.0
+                            service:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  example: 1
+                                name:
+                                  type: string
+                                  example: 'Poda y Mantenimiento de Césped'
+                            plant:
+                              type: string
+                              example: null
+                              nullable: true
+                      payments:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            amountPaid: 108
+                            paymentMethod: transfer
+                            paymentDate: '2026-10-15T14:30:00.000000Z'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            amountPaid:
+                              type: number
+                              example: 108.0
+                            paymentMethod:
+                              type: string
+                              example: transfer
+                            paymentDate:
+                              type: string
+                              example: '2026-10-15T14:30:00.000000Z'
+                      createdAt:
+                        type: string
+                        example: '2026-10-10T10:00:00.000000Z'
+                      declinedAt:
+                        type: string
+                        example: null
+                        nullable: true
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Transacción no encontrada en el registro histórico.'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Transacción no encontrada en el registro histórico.'
+                  codigo:
+                    type: integer
+                    example: 404
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Error interno al consultar el detalle de la transacción.'
+                  codigo: 500
+                properties:
+                  message:
+                    type: string
+                    example: 'Error interno al consultar el detalle de la transacción.'
+                  codigo:
+                    type: integer
+                    example: 500
+      tags:
+        - 'Historial de Transacciones'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'ID de la transacción histórica (cotización).'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/movements:
+    get:
+      summary: 'Listar y filtrar movimientos del libro general.'
+      operationId: listarYFiltrarMovimientosDelLibroGeneral
+      description: "Devuelve una lista paginada de todos los movimientos económicos registrados en el sistema,\ncalculando en tiempo real el resumen financiero de ingresos, compras, gastos y utilidad neta."
+      parameters:
+        -
+          in: query
+          name: movement_type
+          description: 'Filtrar por tipo (all, sale, purchase, expense, ticket). Por defecto all.'
+          example: all
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por tipo (all, sale, purchase, expense, ticket). Por defecto all.'
+            example: all
+        -
+          in: query
+          name: type
+          description: 'Alias directo de movement_type.'
+          example: sale
+          required: false
+          schema:
+            type: string
+            description: 'Alias directo de movement_type.'
+            example: sale
+        -
+          in: query
+          name: start_date
+          description: 'Fecha contable inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha contable inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: end_date
+          description: 'Fecha contable final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha contable final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: search
+          description: 'Término unificado de búsqueda (nombre de cliente/proveedor, documento o NIT).'
+          example: Vivero
+          required: false
+          schema:
+            type: string
+            description: 'Término unificado de búsqueda (nombre de cliente/proveedor, documento o NIT).'
+            example: Vivero
+        -
+          in: query
+          name: entity_name
+          description: 'Filtro específico por nombre de cliente o proveedor.'
+          example: 'Juan Pérez'
+          required: false
+          schema:
+            type: string
+            description: 'Filtro específico por nombre de cliente o proveedor.'
+            example: 'Juan Pérez'
+        -
+          in: query
+          name: status
+          description: 'Estado contable (completed, cancelled, all). Por defecto completed.'
+          example: completed
+          required: false
+          schema:
+            type: string
+            description: 'Estado contable (completed, cancelled, all). Por defecto completed.'
+            example: completed
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (id, movement_date, total, amount, created_at, document_number). Por defecto movement_date.'
+          example: movement_date
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (id, movement_date, total, amount, created_at, document_number). Por defecto movement_date.'
+            example: movement_date
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección de ordenamiento (asc o desc). Por defecto desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección de ordenamiento (asc o desc). Por defecto desc.'
+            example: desc
+        -
+          in: query
+          name: per_page
+          description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1 a 100). Por defecto 15.'
+            example: 15
+        -
+          in: query
+          name: limit
+          description: 'Alias alternativo para per_page.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Alias alternativo para per_page.'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      type: sale
+                      typeLabel: Venta
+                      documentType: 'Cotización Pagada'
+                      documentNumber: COT-2026-0001
+                      entity:
+                        name: 'Juan Carlos Pérez'
+                        taxId: 0614-260290-101-1
+                        role: customer
+                      date: '2026-11-05'
+                      amounts:
+                        amount: 108.0
+                        vatAmount: 0.0
+                        total: 108.0
+                      status:
+                        raw: completed
+                        label: Completado
+                        isCancelled: false
+                        badge: success
+                      notes: 'Venta originada automáticamente por trabajo efectuado (Cotización COT-2026-0001)'
+                      employee:
+                        id: 1
+                        fullName: 'Carlos Administrador'
+                      origin:
+                        type: Quote
+                        id: 1
+                      createdAt: '2026-11-05T14:30:00.000000Z'
+                  summary:
+                    totalSales: 108.0
+                    totalPurchases: 50.0
+                    totalExpenses: 20.0
+                    totalIncome: 108.0
+                    totalOutflow: 70.0
+                    utility: 38.0
+                    profitMarginPercentage: 35.19
+                    totalCount: 3
+                  meta:
+                    summary:
+                      totalSales: 108.0
+                      totalPurchases: 50.0
+                      totalExpenses: 20.0
+                      totalIncome: 108.0
+                      totalOutflow: 70.0
+                      utility: 38.0
+                      profitMarginPercentage: 35.19
+                      totalCount: 3
+                  message: 'Movimientos contables obtenidos exitosamente.'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        type: sale
+                        typeLabel: Venta
+                        documentType: 'Cotización Pagada'
+                        documentNumber: COT-2026-0001
+                        entity:
+                          name: 'Juan Carlos Pérez'
+                          taxId: 0614-260290-101-1
+                          role: customer
+                        date: '2026-11-05'
+                        amounts:
+                          amount: 108
+                          vatAmount: 0
+                          total: 108
+                        status:
+                          raw: completed
+                          label: Completado
+                          isCancelled: false
+                          badge: success
+                        notes: 'Venta originada automáticamente por trabajo efectuado (Cotización COT-2026-0001)'
+                        employee:
+                          id: 1
+                          fullName: 'Carlos Administrador'
+                        origin:
+                          type: Quote
+                          id: 1
+                        createdAt: '2026-11-05T14:30:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        type:
+                          type: string
+                          example: sale
+                        typeLabel:
+                          type: string
+                          example: Venta
+                        documentType:
+                          type: string
+                          example: 'Cotización Pagada'
+                        documentNumber:
+                          type: string
+                          example: COT-2026-0001
+                        entity:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: 'Juan Carlos Pérez'
+                            taxId:
+                              type: string
+                              example: 0614-260290-101-1
+                            role:
+                              type: string
+                              example: customer
+                        date:
+                          type: string
+                          example: '2026-11-05'
+                        amounts:
+                          type: object
+                          properties:
+                            amount:
+                              type: number
+                              example: 108.0
+                            vatAmount:
+                              type: number
+                              example: 0.0
+                            total:
+                              type: number
+                              example: 108.0
+                        status:
+                          type: object
+                          properties:
+                            raw:
+                              type: string
+                              example: completed
+                            label:
+                              type: string
+                              example: Completado
+                            isCancelled:
+                              type: boolean
+                              example: false
+                            badge:
+                              type: string
+                              example: success
+                        notes:
+                          type: string
+                          example: 'Venta originada automáticamente por trabajo efectuado (Cotización COT-2026-0001)'
+                        employee:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            fullName:
+                              type: string
+                              example: 'Carlos Administrador'
+                        origin:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: Quote
+                            id:
+                              type: integer
+                              example: 1
+                        createdAt:
+                          type: string
+                          example: '2026-11-05T14:30:00.000000Z'
+                  summary:
+                    type: object
+                    properties:
+                      totalSales:
+                        type: number
+                        example: 108.0
+                      totalPurchases:
+                        type: number
+                        example: 50.0
+                      totalExpenses:
+                        type: number
+                        example: 20.0
+                      totalIncome:
+                        type: number
+                        example: 108.0
+                      totalOutflow:
+                        type: number
+                        example: 70.0
+                      utility:
+                        type: number
+                        example: 38.0
+                      profitMarginPercentage:
+                        type: number
+                        example: 35.19
+                      totalCount:
+                        type: integer
+                        example: 3
+                  meta:
+                    type: object
+                    properties:
+                      summary:
+                        type: object
+                        properties:
+                          totalSales:
+                            type: number
+                            example: 108.0
+                          totalPurchases:
+                            type: number
+                            example: 50.0
+                          totalExpenses:
+                            type: number
+                            example: 20.0
+                          totalIncome:
+                            type: number
+                            example: 108.0
+                          totalOutflow:
+                            type: number
+                            example: 70.0
+                          utility:
+                            type: number
+                            example: 38.0
+                          profitMarginPercentage:
+                            type: number
+                            example: 35.19
+                          totalCount:
+                            type: integer
+                            example: 3
+                  message:
+                    type: string
+                    example: 'Movimientos contables obtenidos exitosamente.'
+      tags:
+        - 'Movimientos (Compras, Ventas y Gastos)'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movement_type:
+                  type: string
+                  description: ''
+                  example: purchase
+                  enum:
+                    - all
+                    - sale
+                    - purchase
+                    - expense
+                    - ticket
+                  nullable: true
+                type:
+                  type: string
+                  description: ''
+                  example: expense
+                  enum:
+                    - all
+                    - sale
+                    - purchase
+                    - expense
+                    - ticket
+                  nullable: true
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-13'
+                  nullable: true
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-06'
+                  nullable: true
+                search:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: 'n'
+                  nullable: true
+                entity_name:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: g
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: completed
+                  enum:
+                    - all
+                    - completed
+                    - cancelled
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: id
+                  enum:
+                    - id
+                    - movement_date
+                    - total
+                    - amount
+                    - created_at
+                    - document_number
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: desc
+                  enum:
+                    - asc
+                    - desc
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 16
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 17
+                  nullable: true
   /api/v1/plants:
     get:
       summary: 'Listar y filtrar plantas.'
@@ -5498,7 +7801,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: price
+                  example: name
                   enum:
                     - id
                     - name
@@ -5509,7 +7812,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -6104,7 +8407,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: inactive
+                  example: active
                   enum:
                     - active
                     - inactive
@@ -6122,17 +8425,17 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-03T20:28:33'
+                  example: '2026-11-13T20:28:55'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-11-26'
+                  example: '2052-12-06'
                   nullable: true
                 sort_by:
                   type: string
                   description: ''
-                  example: status
+                  example: name
                   enum:
                     - id
                     - name
@@ -6143,7 +8446,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: ASC
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -6377,6 +8680,551 @@ paths:
         in: path
         name: supplier
         description: 'The supplier.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /api/v1/inspections:
+    get:
+      summary: 'Listar inspecciones de campo.'
+      operationId: listarInspeccionesDeCampo
+      description: ''
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
+          example: 'Jardín frontal'
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
+            example: 'Jardín frontal'
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (draft, submitted, reviewed).'
+          example: submitted
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (draft, submitted, reviewed).'
+            example: submitted
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por ID de cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por ID de cliente.'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por técnico/empleado asignado.'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por técnico/empleado asignado.'
+            example: 2
+        -
+          in: query
+          name: start_date
+          description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: end_date
+          description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
+          example: inspection_date
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
+            example: inspection_date
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (asc o desc). Default: desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (asc o desc). Default: desc.'
+            example: desc
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página.'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                status:
+                  type: string
+                  description: ''
+                  example: draft
+                  enum:
+                    - draft
+                    - submitted
+                    - reviewed
+                start_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-13T20:28:56'
+                end_date:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-06'
+                search:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                sort_by:
+                  type: string
+                  description: ''
+                  example: total_area
+                  enum:
+                    - id
+                    - inspection_date
+                    - created_at
+                    - status
+                    - total_area
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: asc
+                  enum:
+                    - asc
+                    - desc
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 16
+    post:
+      summary: 'Registrar inspección de campo.'
+      operationId: registrarInspeccinDeCampo
+      description: 'Crea una inspección realizada por el técnico de campo, registrando dimensiones del terreno, servicios requeridos y fotografías de referencia.'
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'ID del cliente visitado.'
+                  example: 1
+                appointment_id:
+                  type: integer
+                  description: 'ID de la cita previa asociada si aplica.'
+                  example: 1
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'ID del técnico asignado (opcional, por defecto el usuario autenticado).'
+                  example: 2
+                  nullable: true
+                inspection_date:
+                  type: date
+                  description: 'Fecha de la visita técnica (YYYY-MM-DD).'
+                  example: '2026-11-11'
+                findings:
+                  type: string
+                  description: 'Hallazgos, observaciones generales del lugar y necesidades del cliente.'
+                  example: 'Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.'
+                  nullable: true
+                terrain_width:
+                  type: number
+                  description: 'Ancho del terreno.'
+                  example: 15.5
+                  nullable: true
+                terrain_length:
+                  type: number
+                  description: 'Largo del terreno.'
+                  example: 20.0
+                  nullable: true
+                total_area:
+                  type: number
+                  description: 'Área total (si no se especifica, se calcula multiplicando ancho x largo).'
+                  example: 310.0
+                  nullable: true
+                area_unit:
+                  type: string
+                  description: 'Unidad de medida del terreno (m2, v2, ha). Default: m2.'
+                  example: m2
+                terrain_notes:
+                  type: string
+                  description: 'Notas sobre tipo de suelo, acceso o limitaciones físicas.'
+                  example: 'Suelo arcilloso, toma de agua a 10 metros.'
+                  nullable: true
+                status:
+                  type: string
+                  description: 'Estado de la inspección (draft, submitted, reviewed). Default: draft.'
+                  example: submitted
+                services:
+                  type: array
+                  description: 'Servicios recomendados para la cotización.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      service_id:
+                        type: integer
+                        description: 'ID del servicio.'
+                        example: 1
+                      suggested_quantity:
+                        type: integer
+                        description: 'Cantidad sugerida.'
+                        example: 2
+                      notes:
+                        type: string
+                        description: 'Notas técnicas del servicio.'
+                        example: 'Requiere fumigación previa.'
+                        nullable: true
+                    required:
+                      - service_id
+                photos:
+                  type: array
+                  description: 'Archivos de imagen (JPEG, PNG, WEBP, máx 10MB) de la inspección.'
+                  items:
+                    type: string
+                    format: binary
+                photos_data:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: binary
+                        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                      caption:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: 'n'
+                        nullable: true
+                    required:
+                      - file
+              required:
+                - customer_id
+                - inspection_date
+  '/api/v1/inspections/{id}':
+    get:
+      summary: 'Ver detalle de inspección de campo.'
+      operationId: verDetalleDeInspeccinDeCampo
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Técnico de Campo'
+    put:
+      summary: 'Actualizar inspección de campo.'
+      operationId: actualizarInspeccinDeCampo
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                appointment_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                inspection_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-13T20:28:56'
+                findings:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                terrain_width:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 39
+                  nullable: true
+                terrain_length:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 84
+                  nullable: true
+                total_area:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 12
+                  nullable: true
+                area_unit:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: miyvdljnikhwaykc
+                terrain_notes:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: reviewed
+                  enum:
+                    - draft
+                    - submitted
+                    - reviewed
+                services:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      service_id:
+                        type: integer
+                        description: 'This field is required when <code>services</code> is present. Must match an existing stored value.'
+                        example: 16
+                      suggested_quantity:
+                        type: integer
+                        description: 'Must be at least 1.'
+                        example: 22
+                      notes:
+                        type: string
+                        description: ''
+                        example: architecto
+                        nullable: true
+                photos:
+                  type: array
+                  description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                  items:
+                    type: string
+                    format: binary
+                photos_data:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: binary
+                        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                      caption:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: 'n'
+                        nullable: true
+                    required:
+                      - file
+    delete:
+      summary: 'Eliminar inspección técnica.'
+      operationId: eliminarInspeccinTcnica
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/v1/inspections/{inspection}/status':
+    patch:
+      summary: 'Cambiar estado de la inspección.'
+      operationId: cambiarEstadoDeLaInspeccin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: 'Nuevo estado (draft, submitted, reviewed).'
+                  example: reviewed
+              required:
+                - status
+    parameters:
+      -
+        in: path
+        name: inspection
+        description: 'The inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/v1/inspections/{inspection}/photos':
+    post:
+      summary: 'Subir fotos adicionales a la inspección.'
+      operationId: subirFotosAdicionalesALaInspeccin
+      description: 'Permite subir más imágenes de referencia a una inspección ya creada.'
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photos:
+                  type: array
+                  description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                  items:
+                    type: string
+                    format: binary
+                photos_data:
+                  type: array
+                  description: 'This field is required when <code>photos</code> is not present.'
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: binary
+                        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+                      caption:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: b
+                        nullable: true
+                    required:
+                      - file
+    parameters:
+      -
+        in: path
+        name: inspection
+        description: 'The inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/v1/inspections/{inspection}/photos/{photo}':
+    delete:
+      summary: 'Eliminar foto de inspección.'
+      operationId: eliminarFotoDeInspeccin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Técnico de Campo'
+    parameters:
+      -
+        in: path
+        name: inspection
+        description: 'The inspection.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: photo
+        description: 'The photo.'
         example: architecto
         required: true
         schema:

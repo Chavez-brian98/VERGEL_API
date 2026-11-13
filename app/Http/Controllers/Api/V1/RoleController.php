@@ -7,6 +7,7 @@ use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Resources\Roles\RoleListResource;
 use App\Http\Resources\Roles\RoleResource;
+use App\Models\Role;
 use App\Services\RoleService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -60,6 +61,8 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Role::class);
+
         $limit = $request->input('limit', 15);
         $roles = $this->roleService->search($request->all(), $limit);
 
@@ -97,6 +100,8 @@ class RoleController extends Controller
      */
     public function store(CreateRoleRequest $request)
     {
+        $this->authorize('create', Role::class);
+
         try {
             $role = $this->roleService->create($request->validated());
 
@@ -141,6 +146,8 @@ class RoleController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view', Role::class);
+
         try {
             $role = $this->roleService->getById($id);
 
@@ -201,6 +208,8 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, $id)
     {
+        $this->authorize('update', Role::class);
+
         try {
             $role = $this->roleService->update($id, $request->validated());
 
@@ -250,6 +259,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete', Role::class);
+
         try {
             $this->roleService->delete($id);
 

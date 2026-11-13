@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "37c989c7-0ad7-4d10-8da9-e0dc83ab9ace",
+        "_postman_id": "5c449317-17e6-4a50-9cdd-55ac40c4c7d6",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -82,7 +82,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-03\",\"hasta\":\"2052-11-26\",\"limit\":22}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-13\",\"hasta\":\"2052-12-06\",\"limit\":22}"
                                 },
                                 "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
                             },
@@ -528,6 +528,337 @@
                                     "name": ""
                                 }
                             ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Cotizaciones",
+            "description": "\nAPIs para la gesti\u00f3n de cotizaciones, \u00edtems de servicio\/planta y c\u00e1lculo autom\u00e1tico de montos.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar cotizaciones.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "COT-20261111",
+                                            "description": "B\u00fasqueda por n\u00famero de cotizaci\u00f3n o nombre del cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Filtrar por estado (`pending` o `paid`).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "Filtrar por cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "1",
+                                            "description": "Filtrar por empleado que registr\u00f3 la cotizaci\u00f3n.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "applied_plan_id",
+                                            "value": "1",
+                                            "description": "Filtrar por plan de suscripci\u00f3n aplicado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "created_at",
+                                            "description": "Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "desc",
+                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes?search=COT-20261111&status=pending&customer_id=1&employee_id=1&applied_plan_id=1&desde=2026-01-01&hasta=2026-12-31&sort_by=created_at&sort_direction=desc&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"pending\",\"customer_id\":16,\"employee_id\":16,\"applied_plan_id\":16,\"desde\":\"2026-11-13T20:28:56\",\"hasta\":\"2052-12-06\",\"sort_by\":\"status\",\"sort_direction\":\"DESC\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas."
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"message\":\"Unauthenticated.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar el detalle de una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the quote."
+                                        },
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Incluye cliente, empleado, plan aplicado e \u00edtems."
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"message\":\"Unauthenticated.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Gesti\u00f3n",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar una nueva cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":1,\"applied_plan_id\":1,\"includes_vat\":false,\"loyalty_points_used\":0,\"status\":\"pending\",\"items\":[{\"item_type\":\"service\",\"service_id\":1,\"plant_id\":1,\"quantity\":2,\"unit_price\":25.5}]}"
+                                },
+                                "description": "El backend calcula el total de cada \u00edtem (`quantity * unit_price`), el subtotal con descuento del plan,\nel IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.\nEl empleado se toma del usuario autenticado."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Actualizar una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the quote."
+                                        },
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":1,\"applied_plan_id\":1,\"includes_vat\":true,\"loyalty_points_used\":0,\"status\":\"pending\",\"items\":[{\"item_type\":\"service\",\"service_id\":1,\"plant_id\":1,\"quantity\":2,\"unit_price\":25.5}]}"
+                                },
+                                "description": "Actualiza datos generales y, si se env\u00eda `items`, reemplaza el detalle completo y recalcula los montos."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Eliminar una cotizaci\u00f3n (Borrado l\u00f3gico).",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the quote."
+                                        },
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Cambiar el estado de una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:quote\/status",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:quote\/status",
+                                    "variable": [
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"status\":\"paid\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
                         }
                     ]
                 }
@@ -1796,6 +2127,208 @@
             ]
         },
         {
+            "name": "Auditor\u00eda",
+            "description": "",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar bit\u00e1coras de auditor\u00eda.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/audit-logs",
+                                    "query": [
+                                        {
+                                            "key": "user_id",
+                                            "value": "1",
+                                            "description": "Filtrar por el identificador del usuario del sistema que realiz\u00f3 la acci\u00f3n.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "1",
+                                            "description": "Filtrar por el identificador del colaborador asociado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "action",
+                                            "value": "update",
+                                            "description": "Filtrar por el tipo de acci\u00f3n registrada (insert, update, delete, restore, denied).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "table_name",
+                                            "value": "plants",
+                                            "description": "Filtrar por el nombre de la tabla afectada en la base de datos.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "affected_table",
+                                            "value": "plants",
+                                            "description": "Alias alternativo para el par\u00e1metro table_name.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "affected_record_id",
+                                            "value": "12",
+                                            "description": "Filtrar por el identificador del registro afectado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-01-01",
+                                            "description": "date Filtrar por fecha de registro inicial (formato YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-12-31",
+                                            "description": "date Filtrar por fecha de registro final (formato YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "date Alias alternativo para start_date (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "date Alias alternativo para end_date (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1 a 100). Por defecto 15.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Alias alternativo para limit.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/audit-logs?user_id=1&employee_id=1&action=update&table_name=plants&affected_table=plants&affected_record_id=12&start_date=2026-01-01&end_date=2026-12-31&desde=2026-01-01&hasta=2026-12-31&limit=15&per_page=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"user_id\":16,\"employee_id\":16,\"action\":\"insert\",\"affected_table\":\"n\",\"table_name\":\"g\",\"affected_record_id\":66,\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"desde\":\"2026-11-13\",\"hasta\":\"2052-12-06\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Obtiene una lista paginada de los registros y movimientos de auditor\u00eda del sistema (creaci\u00f3n, edici\u00f3n, eliminaci\u00f3n y accesos denegados). Requiere autenticaci\u00f3n con Sanctum y est\u00e1 restringido exclusivamente a colaboradores activos con rol de Administrador."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"action\": \"update\",\n      \"affectedTable\": \"plants\",\n      \"affectedRecordId\": 12,\n      \"oldData\": {\n        \"id\": 12,\n        \"name\": \"Monstera Deliciosa\",\n        \"price\": \"24.50\"\n      },\n      \"newData\": {\n        \"id\": 12,\n        \"name\": \"Monstera Deliciosa Variegata\",\n        \"price\": \"35.00\"\n      },\n      \"ipAddress\": \"192.168.1.15\",\n      \"createdAt\": \"2026-10-24T18:30:00+00:00\",\n      \"actor\": {\n        \"employeeId\": 1,\n        \"fullName\": \"Carlos Administrador\",\n        \"role\": \"Administrador\",\n        \"userId\": 1,\n        \"email\": \"admin@vergel.com\"\n      }\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/audit-logs?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/audit-logs?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/localhost\/api\/v1\/audit-logs\",\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"La acci\u00f3n seleccionada no es v\u00e1lida.\",\n  \"errors\": {\n    \"action\": [\n      \"La acci\u00f3n debe ser una de las siguientes: insert, update, delete, restore o denied.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el detalle de una bit\u00e1cora de auditor\u00eda.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/audit-logs\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/audit-logs\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 1,
+                                            "description": "ID \u00fanico del registro de auditor\u00eda."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve la informaci\u00f3n detallada de un registro individual de auditor\u00eda mediante su ID, incluyendo el actor que ejecut\u00f3 la acci\u00f3n y el estado anterior y nuevo de los datos afectados.\nEndpoint restringido exclusivamente a colaboradores activos con rol de Administrador."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"action\": \"update\",\n    \"affectedTable\": \"plants\",\n    \"affectedRecordId\": 12,\n    \"oldData\": {\n      \"id\": 12,\n      \"name\": \"Monstera Deliciosa\",\n      \"price\": \"24.50\"\n    },\n    \"newData\": {\n      \"id\": 12,\n      \"name\": \"Monstera Deliciosa Variegata\",\n      \"price\": \"35.00\"\n    },\n    \"ipAddress\": \"192.168.1.15\",\n    \"createdAt\": \"2026-10-24T18:30:00+00:00\",\n    \"actor\": {\n      \"employeeId\": 1,\n      \"fullName\": \"Carlos Administrador\",\n      \"role\": \"Administrador\",\n      \"userId\": 1,\n      \"email\": \"admin@vergel.com\"\n    }\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Registro de auditor\u00eda no encontrado\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al obtener el registro de auditor\u00eda\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Autenticaci\u00f3n",
             "description": "",
             "item": [
@@ -2004,7 +2537,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"start_date\":\"2026-11-03\",\"end_date\":\"2052-11-26\",\"date\":\"2026-11-03\",\"status\":\"completed\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"status\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
+                                    "raw": "{\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"date\":\"2026-11-13\",\"status\":\"annulled\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"appointment_date\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
                                 },
                                 "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
                             },
@@ -2273,6 +2806,298 @@
             ]
         },
         {
+            "name": "Historial de Transacciones",
+            "description": "\nEndpoints para consultar el registro hist\u00f3rico de trabajos de jardiner\u00eda efectuados (pagados)\ny trabajos declinados o cancelados por los clientes, excluyendo trabajos en curso.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar historial de transacciones.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/transactions",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Juan",
+                                            "description": "T\u00e9rmino de b\u00fasqueda general que filtra por ID de cliente, N\u00b0 de cotizaci\u00f3n o nombre legal\/comercial.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "ID del cliente para consultar su historial espec\u00edfico.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "client_id",
+                                            "value": "1",
+                                            "description": "Alias directo de customer_id.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status_type",
+                                            "value": "performed",
+                                            "description": "Filtrar por clasificaci\u00f3n hist\u00f3rica (all, performed, declined). Por defecto all.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-10-01",
+                                            "description": "Fecha inicial en formato AAAA-MM-DD.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-10-31",
+                                            "description": "Fecha final en formato AAAA-MM-DD.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "created_at",
+                                            "description": "Campo de ordenamiento (id, quote_number, total, created_at). Por defecto created_at.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "desc",
+                                            "description": "Direcci\u00f3n de ordenamiento (asc o desc). Por defecto desc.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Cantidad de transacciones por p\u00e1gina (1 a 100). Por defecto 15.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Alias alternativo para per_page.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/transactions?search=Juan&customer_id=1&client_id=1&status_type=performed&start_date=2026-10-01&end_date=2026-10-31&sort_by=created_at&sort_direction=desc&per_page=15&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"customer_id\":16,\"client_id\":16,\"status_type\":\"all\",\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"sort_by\":\"total\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7}"
+                                },
+                                "description": "Devuelve una lista paginada de transacciones hist\u00f3ricas que ya fueron realizadas (pagadas)\no que fueron canceladas\/declinadas porque el cliente no acept\u00f3 la cotizaci\u00f3n.\nExcluye estrictamente los trabajos en curso o cotizaciones abiertas en estado pendiente.\n\nIncluye un buscador principal unificado (por ID de cliente, n\u00famero de referencia\/cotizaci\u00f3n\no nombre del cliente), filtro espec\u00edfico por cliente y la secci\u00f3n \"Resumen por cliente\"."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"quoteNumber\": \"COT-2026-0001\",\n      \"transactionReference\": \"COT-2026-0001\",\n      \"customerId\": 1,\n      \"customer\": {\n        \"id\": 1,\n        \"legalName\": \"Juan Carlos P\u00e9rez\",\n        \"tradeName\": null,\n        \"taxId\": \"0614-260290-101-1\",\n        \"phone\": \"7890-1234\",\n        \"email\": \"juan.perez@example.com\",\n        \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n        \"department\": \"La Libertad\",\n        \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\"\n      },\n      \"employeeId\": 1,\n      \"employee\": {\n        \"id\": 1,\n        \"fullName\": \"Carlos Administrador\"\n      },\n      \"plan\": {\n        \"id\": 1,\n        \"name\": \"Plan Est\u00e1ndar\",\n        \"code\": \"STD\"\n      },\n      \"amounts\": {\n        \"basePrice\": 120.0,\n        \"discountedSubtotal\": 108.0,\n        \"includesVat\": false,\n        \"total\": 108.0\n      },\n      \"loyaltyPoints\": {\n        \"used\": 0,\n        \"earned\": 20\n      },\n      \"status\": {\n        \"raw\": \"paid\",\n        \"state\": \"performed\",\n        \"label\": \"Trabajo Efectuado (Pagado)\",\n        \"isCancelled\": false,\n        \"isPaid\": true,\n        \"badge\": \"success\"\n      },\n      \"items\": [\n        {\n          \"id\": 1,\n          \"itemType\": \"service\",\n          \"quantity\": 1.0,\n          \"unitPrice\": 120.0,\n          \"total\": 120.0,\n          \"service\": {\n            \"id\": 1,\n            \"name\": \"Poda y Mantenimiento de C\u00e9sped\"\n          },\n          \"plant\": null\n        }\n      ],\n      \"payments\": [\n        {\n          \"id\": 1,\n          \"amountPaid\": 108.0,\n          \"paymentMethod\": \"transfer\",\n          \"paymentDate\": \"2026-10-15T14:30:00.000000Z\"\n        }\n      ],\n      \"createdAt\": \"2026-10-10T10:00:00.000000Z\",\n      \"declinedAt\": null\n    }\n  ],\n  \"meta\": {\n    \"summary\": {\n      \"acceptedCount\": 12,\n      \"declinedCount\": 2,\n      \"totalCount\": 14,\n      \"totalAcceptedAmount\": 2450.0,\n      \"totalDeclinedAmount\": 380.0\n    }\n  },\n  \"message\": \"Historial de transacciones obtenido exitosamente.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al consultar el historial de transacciones.\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el detalle de una transacci\u00f3n hist\u00f3rica.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/transactions\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/transactions\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 1,
+                                            "description": "ID de la transacci\u00f3n hist\u00f3rica (cotizaci\u00f3n)."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve la informaci\u00f3n completa y desglosada de una transacci\u00f3n individual (trabajo efectuado o declinado)\nmediante su identificador \u00fanico (ID). Si la transacci\u00f3n est\u00e1 en curso o pendiente, no se encontrar\u00e1 en este historial."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"quoteNumber\": \"COT-2026-0001\",\n    \"transactionReference\": \"COT-2026-0001\",\n    \"customerId\": 1,\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Juan Carlos P\u00e9rez\",\n      \"tradeName\": null,\n      \"taxId\": \"0614-260290-101-1\",\n      \"phone\": \"7890-1234\",\n      \"email\": \"juan.perez@example.com\",\n      \"municipality\": \"Antiguo Cuscatl\u00e1n\",\n      \"department\": \"La Libertad\",\n      \"address\": \"Residencial Cumbres de Cuscatl\u00e1n, Pol. D #14\"\n    },\n    \"employeeId\": 1,\n    \"employee\": {\n      \"id\": 1,\n      \"fullName\": \"Carlos Administrador\"\n    },\n    \"amounts\": {\n      \"basePrice\": 120.0,\n      \"discountedSubtotal\": 108.0,\n      \"includesVat\": false,\n      \"total\": 108.0\n    },\n    \"status\": {\n      \"raw\": \"paid\",\n      \"state\": \"performed\",\n      \"label\": \"Trabajo Efectuado (Pagado)\",\n      \"isCancelled\": false,\n      \"isPaid\": true,\n      \"badge\": \"success\"\n    },\n    \"items\": [\n      {\n        \"id\": 1,\n        \"itemType\": \"service\",\n        \"quantity\": 1.0,\n        \"unitPrice\": 120.0,\n        \"total\": 120.0,\n        \"service\": {\n          \"id\": 1,\n          \"name\": \"Poda y Mantenimiento de C\u00e9sped\"\n        },\n        \"plant\": null\n      }\n    ],\n    \"payments\": [\n      {\n        \"id\": 1,\n        \"amountPaid\": 108.0,\n        \"paymentMethod\": \"transfer\",\n        \"paymentDate\": \"2026-10-15T14:30:00.000000Z\"\n      }\n    ],\n    \"createdAt\": \"2026-10-10T10:00:00.000000Z\",\n    \"declinedAt\": null\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Transacci\u00f3n no encontrada en el registro hist\u00f3rico.\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message\": \"Error interno al consultar el detalle de la transacci\u00f3n.\",\n  \"codigo\": 500\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Movimientos (Compras, Ventas y Gastos)",
+            "description": "\nEndpoints del libro general din\u00e1mico del sistema. Centraliza toda la actividad econ\u00f3mica\n(ventas por trabajos efectuados, compras a proveedores y gastos operativos tipo tickets),\npermitiendo filtrar por fechas, tipo y entidad, calculando en tiempo real la Utilidad (Ingresos - Egresos).",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar movimientos del libro general.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/movements",
+                                    "query": [
+                                        {
+                                            "key": "movement_type",
+                                            "value": "all",
+                                            "description": "Filtrar por tipo (all, sale, purchase, expense, ticket). Por defecto all.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "type",
+                                            "value": "sale",
+                                            "description": "Alias directo de movement_type.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-11-01",
+                                            "description": "Fecha contable inicial (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-11-30",
+                                            "description": "Fecha contable final (AAAA-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "search",
+                                            "value": "Vivero",
+                                            "description": "T\u00e9rmino unificado de b\u00fasqueda (nombre de cliente\/proveedor, documento o NIT).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "entity_name",
+                                            "value": "Juan P\u00e9rez",
+                                            "description": "Filtro espec\u00edfico por nombre de cliente o proveedor.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "completed",
+                                            "description": "Estado contable (completed, cancelled, all). Por defecto completed.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "movement_date",
+                                            "description": "Campo de ordenamiento (id, movement_date, total, amount, created_at, document_number). Por defecto movement_date.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "desc",
+                                            "description": "Direcci\u00f3n de ordenamiento (asc o desc). Por defecto desc.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1 a 100). Por defecto 15.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Alias alternativo para per_page.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/movements?movement_type=all&type=sale&start_date=2026-11-01&end_date=2026-11-30&search=Vivero&entity_name=Juan%20P%C3%A9rez&status=completed&sort_by=movement_date&sort_direction=desc&per_page=15&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"movement_type\":\"purchase\",\"type\":\"expense\",\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"search\":\"n\",\"entity_name\":\"g\",\"status\":\"completed\",\"sort_by\":\"id\",\"sort_direction\":\"desc\",\"per_page\":16,\"limit\":17}"
+                                },
+                                "description": "Devuelve una lista paginada de todos los movimientos econ\u00f3micos registrados en el sistema,\ncalculando en tiempo real el resumen financiero de ingresos, compras, gastos y utilidad neta."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"type\": \"sale\",\n      \"typeLabel\": \"Venta\",\n      \"documentType\": \"Cotizaci\u00f3n Pagada\",\n      \"documentNumber\": \"COT-2026-0001\",\n      \"entity\": {\n        \"name\": \"Juan Carlos P\u00e9rez\",\n        \"taxId\": \"0614-260290-101-1\",\n        \"role\": \"customer\"\n      },\n      \"date\": \"2026-11-05\",\n      \"amounts\": {\n        \"amount\": 108.00,\n        \"vatAmount\": 0.00,\n        \"total\": 108.00\n      },\n      \"status\": {\n        \"raw\": \"completed\",\n        \"label\": \"Completado\",\n        \"isCancelled\": false,\n        \"badge\": \"success\"\n      },\n      \"notes\": \"Venta originada autom\u00e1ticamente por trabajo efectuado (Cotizaci\u00f3n COT-2026-0001)\",\n      \"employee\": {\n        \"id\": 1,\n        \"fullName\": \"Carlos Administrador\"\n      },\n      \"origin\": {\n        \"type\": \"Quote\",\n        \"id\": 1\n      },\n      \"createdAt\": \"2026-11-05T14:30:00.000000Z\"\n    }\n  ],\n  \"summary\": {\n    \"totalSales\": 108.00,\n    \"totalPurchases\": 50.00,\n    \"totalExpenses\": 20.00,\n    \"totalIncome\": 108.00,\n    \"totalOutflow\": 70.00,\n    \"utility\": 38.00,\n    \"profitMarginPercentage\": 35.19,\n    \"totalCount\": 3\n  },\n  \"meta\": {\n    \"summary\": {\n      \"totalSales\": 108.00,\n      \"totalPurchases\": 50.00,\n      \"totalExpenses\": 20.00,\n      \"totalIncome\": 108.00,\n      \"totalOutflow\": 70.00,\n      \"utility\": 38.00,\n      \"profitMarginPercentage\": 35.19,\n      \"totalCount\": 3\n    }\n  },\n  \"message\": \"Movimientos contables obtenidos exitosamente.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Plantas",
             "description": "",
             "item": [
@@ -2357,7 +3182,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"name\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -2782,7 +3607,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-03T20:28:33\",\"hasta\":\"2052-11-26\",\"sort_by\":\"status\",\"sort_direction\":\"ASC\",\"limit\":22,\"per_page\":7}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-13T20:28:55\",\"hasta\":\"2052-12-06\",\"sort_by\":\"name\",\"sort_direction\":\"desc\",\"limit\":22,\"per_page\":7}"
                                 },
                                 "description": "Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro econ\u00f3mico, tel\u00e9fono o rango de fechas."
                             },
@@ -2864,7 +3689,7 @@
                     ]
                 },
                 {
-                    "name": "Gesti\u00f3n",
+                    "name": "Escritura",
                     "description": "",
                     "item": [
                         {
@@ -3001,6 +3826,600 @@
                             "response": []
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "name": "T\u00e9cnico de Campo",
+            "description": "\nEndpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galer\u00eda de im\u00e1genes.",
+            "item": [
+                {
+                    "name": "Listar inspecciones de campo.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections",
+                            "query": [
+                                {
+                                    "key": "search",
+                                    "value": "Jard\u00edn frontal",
+                                    "description": "B\u00fasqueda en hallazgos, notas de terreno o nombre del cliente.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "submitted",
+                                    "description": "Filtrar por estado (draft, submitted, reviewed).",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "customer_id",
+                                    "value": "1",
+                                    "description": "Filtrar por ID de cliente.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "employee_id",
+                                    "value": "2",
+                                    "description": "Filtrar por t\u00e9cnico\/empleado asignado.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "start_date",
+                                    "value": "2026-11-01",
+                                    "description": "date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "end_date",
+                                    "value": "2026-11-30",
+                                    "description": "date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sort_by",
+                                    "value": "inspection_date",
+                                    "description": "Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sort_direction",
+                                    "value": "desc",
+                                    "description": "Direcci\u00f3n (asc o desc). Default: desc.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "15",
+                                    "description": "Registros por p\u00e1gina.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections?search=Jard%C3%ADn%20frontal&status=submitted&customer_id=1&employee_id=2&start_date=2026-11-01&end_date=2026-11-30&sort_by=inspection_date&sort_direction=desc&per_page=15"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"customer_id\":16,\"employee_id\":16,\"status\":\"draft\",\"start_date\":\"2026-11-13T20:28:56\",\"end_date\":\"2052-12-06\",\"search\":\"n\",\"sort_by\":\"total_area\",\"sort_direction\":\"asc\",\"per_page\":7,\"limit\":16}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Registrar inspecci\u00f3n de campo.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "customer_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "ID del cliente visitado."
+                                },
+                                {
+                                    "key": "appointment_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "ID de la cita previa asociada si aplica."
+                                },
+                                {
+                                    "key": "employee_id",
+                                    "value": "2",
+                                    "type": "text",
+                                    "description": "ID del t\u00e9cnico asignado (opcional, por defecto el usuario autenticado)."
+                                },
+                                {
+                                    "key": "inspection_date",
+                                    "value": "2026-11-11",
+                                    "type": "text",
+                                    "description": "Fecha de la visita t\u00e9cnica (YYYY-MM-DD)."
+                                },
+                                {
+                                    "key": "findings",
+                                    "value": "Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelaci\u00f3n.",
+                                    "type": "text",
+                                    "description": "Hallazgos, observaciones generales del lugar y necesidades del cliente."
+                                },
+                                {
+                                    "key": "terrain_width",
+                                    "value": "15.5",
+                                    "type": "text",
+                                    "description": "Ancho del terreno."
+                                },
+                                {
+                                    "key": "terrain_length",
+                                    "value": "20",
+                                    "type": "text",
+                                    "description": "Largo del terreno."
+                                },
+                                {
+                                    "key": "total_area",
+                                    "value": "310",
+                                    "type": "text",
+                                    "description": "\u00c1rea total (si no se especifica, se calcula multiplicando ancho x largo)."
+                                },
+                                {
+                                    "key": "area_unit",
+                                    "value": "m2",
+                                    "type": "text",
+                                    "description": "Unidad de medida del terreno (m2, v2, ha). Default: m2."
+                                },
+                                {
+                                    "key": "terrain_notes",
+                                    "value": "Suelo arcilloso, toma de agua a 10 metros.",
+                                    "type": "text",
+                                    "description": "Notas sobre tipo de suelo, acceso o limitaciones f\u00edsicas."
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "submitted",
+                                    "type": "text",
+                                    "description": "Estado de la inspecci\u00f3n (draft, submitted, reviewed). Default: draft."
+                                },
+                                {
+                                    "key": "services[0][service_id]",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "services[0][suggested_quantity]",
+                                    "value": "2",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "services[0][notes]",
+                                    "value": "Requiere fumigaci\u00f3n previa.",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "photos_data[0][caption]",
+                                    "value": "n",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "photos[]",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "photos_data[][file]",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Crea una inspecci\u00f3n realizada por el t\u00e9cnico de campo, registrando dimensiones del terreno, servicios requeridos y fotograf\u00edas de referencia."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Ver detalle de inspecci\u00f3n de campo.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the inspection."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Actualizar inspecci\u00f3n de campo.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the inspection."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "customer_id",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": "Must match an existing stored value."
+                                },
+                                {
+                                    "key": "appointment_id",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": "Must match an existing stored value."
+                                },
+                                {
+                                    "key": "employee_id",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": "Must match an existing stored value."
+                                },
+                                {
+                                    "key": "inspection_date",
+                                    "value": "2026-11-13T20:28:56",
+                                    "type": "text",
+                                    "description": "Must be a valid date."
+                                },
+                                {
+                                    "key": "findings",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "terrain_width",
+                                    "value": "39",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "terrain_length",
+                                    "value": "84",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "total_area",
+                                    "value": "12",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "area_unit",
+                                    "value": "miyvdljnikhwaykc",
+                                    "type": "text",
+                                    "description": "Must not be greater than 20 characters."
+                                },
+                                {
+                                    "key": "terrain_notes",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "reviewed",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "services[0][service_id]",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "services[0][suggested_quantity]",
+                                    "value": "22",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "services[0][notes]",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "photos_data[0][caption]",
+                                    "value": "n",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "photos[]",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "photos_data[][file]",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Eliminar inspecci\u00f3n t\u00e9cnica.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the inspection."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Cambiar estado de la inspecci\u00f3n.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections\/:inspection\/status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/status",
+                            "variable": [
+                                {
+                                    "id": "inspection",
+                                    "key": "inspection",
+                                    "value": "architecto",
+                                    "description": "The inspection."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":\"reviewed\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Subir fotos adicionales a la inspecci\u00f3n.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections\/:inspection\/photos",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/photos",
+                            "variable": [
+                                {
+                                    "id": "inspection",
+                                    "key": "inspection",
+                                    "value": "architecto",
+                                    "description": "The inspection."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "photos_data[0][caption]",
+                                    "value": "b",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "photos[]",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "photos_data[][file]",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Permite subir m\u00e1s im\u00e1genes de referencia a una inspecci\u00f3n ya creada."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Eliminar foto de inspecci\u00f3n.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/inspections\/:inspection\/photos\/:photo",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/photos\/:photo",
+                            "variable": [
+                                {
+                                    "id": "inspection",
+                                    "key": "inspection",
+                                    "value": "architecto",
+                                    "description": "The inspection."
+                                },
+                                {
+                                    "id": "photo",
+                                    "key": "photo",
+                                    "value": "architecto",
+                                    "description": "The photo."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
                 }
             ]
         }

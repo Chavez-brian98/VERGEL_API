@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class RoleApiTest extends TestCase
@@ -16,27 +17,37 @@ class RoleApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->actingAs(User::factory()->create(), 'sanctum');
+        $roleId = DB::table('roles')->insertGetId([
+            'role_name' => 'Administrador',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $employee = Employee::create([
+            'full_name' => 'Admin Test',
+            'role_id' => $roleId,
+            'active' => true,
+        ]);
+
+        $this->actingAs(User::factory()->create(['employee_id' => $employee->id]), 'sanctum');
     }
 
     public function test_it_lists_roles_with_employees_count(): void
     {
-        $role = Role::create(['role_name' => 'Administrador', 'description' => 'Acceso total']);
-        Employee::create(['full_name' => 'Empleado Uno', 'role_id' => $role->id]);
+        $role = Role::create(['role_name' => 'Colaborador', 'description' => 'Colaboración']);
+        Employee::create(['full_name' => 'Empleado Uno', 'role_id' => $role->id, 'active' => true]);
 
         $response = $this->getJson('/api/v1/roles');
 
         $response->assertOk()
-            ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-                'roleName' => 'Administrador',
+                'roleName' => 'Colaborador',
                 'employeesCount' => 1,
             ]);
     }
 
     public function test_it_filters_roles_by_search(): void
     {
-        Role::create(['role_name' => 'Administrador', 'description' => 'Acceso total']);
         Role::create(['role_name' => 'Jardinero', 'description' => 'Áreas verdes']);
 
         $response = $this->getJson('/api/v1/roles?search=jardinero');
@@ -76,8 +87,6 @@ class RoleApiTest extends TestCase
 
     public function test_it_rejects_duplicate_role_name(): void
     {
-        Role::create(['role_name' => 'Administrador']);
-
         $response = $this->postJson('/api/v1/roles', ['role_name' => 'Administrador']);
 
         $response->assertStatus(422)
@@ -86,37 +95,37 @@ class RoleApiTest extends TestCase
 
     public function test_it_shows_a_role(): void
     {
-        $role = Role::create(['role_name' => 'Administrador', 'description' => 'Acceso total']);
+        $role = Role::create(['role_name' => 'Tecnico', 'description' => 'Soporte técnico']);
 
         $response = $this->getJson("/api/v1/roles/{$role->id}");
 
         $response->assertOk()
             ->assertJsonFragment([
                 'id' => $role->id,
-                'roleName' => 'Administrador',
+                'roleName' => 'Tecnico',
                 'employeesCount' => 0,
             ]);
     }
 
     public function test_it_updates_a_role(): void
     {
-        $role = Role::create(['role_name' => 'Administrador', 'description' => 'Acceso total']);
+        $role = Role::create(['role_name' => 'Contador', 'description' => 'Contabilidad']);
 
         $response = $this->putJson("/api/v1/roles/{$role->id}", [
-            'role_name' => 'Administrador General',
+            'role_name' => 'Contador General',
             'description' => 'Acceso total al sistema',
         ]);
 
         $response->assertOk()
             ->assertJsonFragment([
                 'id' => $role->id,
-                'roleName' => 'Administrador General',
+                'roleName' => 'Contador General',
                 'description' => 'Acceso total al sistema',
             ]);
 
         $this->assertDatabaseHas('roles', [
             'id' => $role->id,
-            'role_name' => 'Administrador General',
+            'role_name' => 'Contador General',
         ]);
     }
 
@@ -132,8 +141,8 @@ class RoleApiTest extends TestCase
 
     public function test_it_blocks_deleting_a_role_with_employees(): void
     {
-        $role = Role::create(['role_name' => 'Administrador']);
-        Employee::create(['full_name' => 'Empleado Uno', 'role_id' => $role->id]);
+        $role = Role::create(['role_name' => 'ConEmpleados' . uniqid()]);
+        Employee::create(['full_name' => 'Empleado Uno', 'role_id' => $role->id, 'active' => true]);
 
         $response = $this->deleteJson("/api/v1/roles/{$role->id}");
 
@@ -146,16 +155,18 @@ class RoleApiTest extends TestCase
 
     public function test_it_paginates_roles_using_the_limit_parameter(): void
     {
-        Role::create(['role_name' => 'Rol 1']);
-        Role::create(['role_name' => 'Rol 2']);
-        Role::create(['role_name' => 'Rol 3']);
+        DB::table('roles')->insert([
+            ['role_name' => 'Rol 1', 'created_at' => now(), 'updated_at' => now()],
+            ['role_name' => 'Rol 2', 'created_at' => now(), 'updated_at' => now()],
+            ['role_name' => 'Rol 3', 'created_at' => now(), 'updated_at' => now()],
+        ]);
 
         $response = $this->getJson('/api/v1/roles?limit=2');
 
         $response->assertOk()
             ->assertJsonCount(2, 'data')
             ->assertJsonPath('meta.per_page', 2)
-            ->assertJsonPath('meta.total', 3);
+            ->assertJsonPath('meta.total', 4);
     }
 
     public function test_it_returns_404_for_a_missing_role(): void

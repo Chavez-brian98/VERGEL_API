@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Suppliers;
 
-use App\Models\AuditLog;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\Supplier;
@@ -16,7 +15,9 @@ class SupplierApiTest extends TestCase
     use RefreshDatabase;
 
     private User $adminUser;
+
     private User $contadorUser;
+
     private User $colaboradorUser;
 
     protected function setUp(): void

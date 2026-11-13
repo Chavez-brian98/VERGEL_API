@@ -4,10 +4,19 @@ namespace App\Providers;
 
 use App\Models\AuditLog;
 use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\Inspection;
+use App\Models\Quote;
+use App\Models\Role;
 use App\Models\Supplier;
 use App\Policies\AuditLogPolicy;
 use App\Policies\CustomerPolicy;
+use App\Policies\EmployeePolicy;
+use App\Policies\InspectionPolicy;
+use App\Policies\QuotePolicy;
+use App\Policies\RolePolicy;
 use App\Policies\SupplierPolicy;
+use App\Policies\TransactionPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,7 +39,17 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Customer::class, CustomerPolicy::class);
         // Autorización del módulo de Proveedores (RBAC).
         Gate::policy(Supplier::class, SupplierPolicy::class);
+        // Autorización del módulo de Empleados (RBAC).
+        Gate::policy(Employee::class, EmployeePolicy::class);
+        // Autorización del módulo de Roles (RBAC).
+        Gate::policy(Role::class, RolePolicy::class);
+        // Autorización del módulo de Cotizaciones (RBAC).
+        Gate::policy(Quote::class, QuotePolicy::class);
+        // Autorización del módulo de Inspecciones / Técnico de Campo (RBAC).
+        Gate::policy(Inspection::class, InspectionPolicy::class);
         // Autorización del módulo de Bitácoras de Auditoría (RBAC).
         Gate::policy(AuditLog::class, AuditLogPolicy::class);
+        // Autorización del módulo de Historial de Transacciones (RBAC).
+        Gate::policy(Quote::class, TransactionPolicy::class);
     }
 }
