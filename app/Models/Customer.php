@@ -73,4 +73,9 @@ class Customer extends Model
     {
         return $this->hasMany(Subscription::class);
     }
+
+    public function loyaltyRedemptions(): HasMany
+    {
+        return $this->hasMany(LoyaltyRedemption::class);
+    }
 }

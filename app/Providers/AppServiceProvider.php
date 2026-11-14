@@ -9,12 +9,16 @@ use App\Models\Inspection;
 use App\Models\Quote;
 use App\Models\Role;
 use App\Models\Supplier;
+use App\Models\User;
 use App\Policies\AuditLogPolicy;
 use App\Policies\CustomerPolicy;
+
+use App\Policies\PortfolioPolicy;
 use App\Policies\EmployeePolicy;
 use App\Policies\InspectionPolicy;
 use App\Policies\QuotePolicy;
 use App\Policies\RolePolicy;
+
 use App\Policies\SupplierPolicy;
 use App\Policies\TransactionPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -50,6 +54,12 @@ class AppServiceProvider extends ServiceProvider
         // Autorización del módulo de Bitácoras de Auditoría (RBAC).
         Gate::policy(AuditLog::class, AuditLogPolicy::class);
         // Autorización del módulo de Historial de Transacciones (RBAC).
+        Gate::policy(Quote::class, TransactionPolicy::class);
+
+        // Autorización del módulo de Cartera (RBAC), con el mismo esquema que Clientes.
+        Gate::define('viewPortfolio', fn (User $user) => app(PortfolioPolicy::class)->view($user));
+        Gate::define('viewPortfolioMovements', fn (User $user) => app(PortfolioPolicy::class)->viewMovements($user));
+        Gate::define('managePortfolio', fn (User $user) => app(PortfolioPolicy::class)->manage($user));
         Gate::define('viewAnyTransaction', [TransactionPolicy::class, 'viewAny']);
         Gate::define('viewTransaction', [TransactionPolicy::class, 'view']);
     }
