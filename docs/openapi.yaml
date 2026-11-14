@@ -32,8 +32,14 @@ tags:
     name: Autenticación
     description: ''
   -
+    name: Cartera
+    description: "\nAPIs para consultar y gestionar la billetera, EcoPuntos y movimientos del cliente."
+  -
     name: 'Citas y Agenda'
     description: "\nEndpoints para la gestión y agendamiento de citas, visitas técnicas e inspecciones operativas."
+  -
+    name: EcoPuntos
+    description: "\nAPIs de consulta de canjes de recompensas de clientes."
   -
     name: 'Historial de Transacciones'
     description: "\nEndpoints para consultar el registro histórico de trabajos de jardinería efectuados (pagados)\ny trabajos declinados o cancelados por los clientes, excluyendo trabajos en curso."
@@ -46,6 +52,9 @@ tags:
   -
     name: Proveedores
     description: "\nAPIs para la gestión de proveedores, compras y suministros de El Vergel."
+  -
+    name: Suscripciones
+    description: "\nAPIs de consulta de las suscripciones de clientes."
   -
     name: 'Técnico de Campo'
     description: "\nEndpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes."
@@ -895,10 +904,10 @@ paths:
         in: path
         name: id
         description: 'The ID of the customer.'
-        example: architecto
+        example: 16
         required: true
         schema:
-          type: string
+          type: integer
       -
         in: path
         name: customer
@@ -1247,6 +1256,230 @@ paths:
         schema:
           type: integer
   /api/v1/quotes:
+    get:
+      summary: 'Listar y filtrar cotizaciones.'
+      operationId: listarYFiltrarCotizaciones
+      description: 'Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas.'
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda por número de cotización o nombre del cliente.'
+          example: COT-20261111
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda por número de cotización o nombre del cliente.'
+            example: COT-20261111
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (`pending` o `paid`).'
+          example: pending
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (`pending` o `paid`).'
+            example: pending
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por cliente.'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por empleado que registró la cotización.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por empleado que registró la cotización.'
+            example: 1
+        -
+          in: query
+          name: applied_plan_id
+          description: 'Filtrar por plan de suscripción aplicado.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por plan de suscripción aplicado.'
+            example: 1
+        -
+          in: query
+          name: desde
+          description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
+          example: '2026-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
+            example: '2026-01-01'
+        -
+          in: query
+          name: hasta
+          description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
+          example: '2026-12-31'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
+            example: '2026-12-31'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
+          example: created_at
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
+            example: created_at
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+            example: desc
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1-100). Default: 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1-100). Default: 15.'
+            example: 15
+      responses:
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected customer id is invalid. (and 2 more errors)'
+                  errors:
+                    customer_id:
+                      - 'The selected customer id is invalid.'
+                    employee_id:
+                      - 'The selected employee id is invalid.'
+                    applied_plan_id:
+                      - 'The selected applied plan id is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected customer id is invalid. (and 2 more errors)'
+                  errors:
+                    type: object
+                    properties:
+                      customer_id:
+                        type: array
+                        example:
+                          - 'The selected customer id is invalid.'
+                        items:
+                          type: string
+                      employee_id:
+                        type: array
+                        example:
+                          - 'The selected employee id is invalid.'
+                        items:
+                          type: string
+                      applied_plan_id:
+                        type: array
+                        example:
+                          - 'The selected applied plan id is invalid.'
+                        items:
+                          type: string
+      tags:
+        - Cotizaciones
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: paid
+                  enum:
+                    - pending
+                    - paid
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                applied_plan_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                desde:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-14T21:04:18'
+                  nullable: true
+                hasta:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
+                  example: '2052-12-07'
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: created_at
+                  enum:
+                    - id
+                    - quote_number
+                    - status
+                    - total
+                    - created_at
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: asc
+                  enum:
+                    - asc
+                    - desc
+                    - ASC
+                    - DESC
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
     post:
       summary: 'Registrar una nueva cotización.'
       operationId: registrarUnaNuevaCotizacin
@@ -1323,6 +1556,26 @@ paths:
                 - applied_plan_id
                 - items
   '/api/v1/quotes/{id}':
+    get:
+      summary: 'Consultar el detalle de una cotización.'
+      operationId: consultarElDetalleDeUnaCotizacin
+      description: 'Incluye cliente, empleado, plan aplicado e ítems.'
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Cotizaciones
     put:
       summary: 'Actualizar una cotización.'
       operationId: actualizarUnaCotizacin
@@ -2970,10 +3223,10 @@ paths:
         in: path
         name: id
         description: 'The ID of the employee.'
-        example: architecto
+        example: 1
         required: true
         schema:
-          type: string
+          type: integer
       -
         in: path
         name: employee
@@ -4283,7 +4536,7 @@ paths:
                 action:
                   type: string
                   description: ''
-                  example: restore
+                  example: delete
                   enum:
                     - insert
                     - update
@@ -4726,6 +4979,1043 @@ paths:
                     example: 'Error interno al cerrar sesión'
       tags:
         - Autenticación
+  /api/v1/customers/portfolio/movements:
+    get:
+      summary: 'Consultar movimientos de cartera de todos los clientes.'
+      operationId: consultarMovimientosDeCarteraDeTodosLosClientes
+      description: ''
+      parameters:
+        -
+          in: query
+          name: type
+          description: 'Filtrar por origen: all, wallet o loyalty. Default: all.'
+          example: architecto
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por origen: all, wallet o loyalty. Default: all.'
+            example: architecto
+        -
+          in: query
+          name: page
+          description: 'Página solicitada. Default: 1.'
+          example: 16
+          required: false
+          schema:
+            type: integer
+            description: 'Página solicitada. Default: 1.'
+            example: 16
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1-100). Default: 15.'
+          example: 16
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1-100). Default: 15.'
+            example: 16
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                  meta:
+                    currentPage: 16
+                    totalPages: 1
+                    totalItems: 0
+                properties:
+                  data:
+                    type: array
+                    example: []
+                  meta:
+                    type: object
+                    properties:
+                      currentPage:
+                        type: integer
+                        example: 16
+                      totalPages:
+                        type: integer
+                        example: 1
+                      totalItems:
+                        type: integer
+                        example: 0
+      tags:
+        - Cartera
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: ''
+                  example: wallet
+                  enum:
+                    - all
+                    - wallet
+                    - loyalty
+                  nullable: true
+                page:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 16
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+  /api/v1/customers/portfolio:
+    get:
+      summary: 'Listar los resúmenes básicos de cartera de todos los clientes.'
+      operationId: listarLosResmenesBsicosDeCarteraDeTodosLosClientes
+      description: ''
+      parameters:
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de resultados por página (1-100). Default: 15.'
+          example: 16
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de resultados por página (1-100). Default: 15.'
+            example: 16
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                  links:
+                    first: 'http://localhost/api/v1/customers/portfolio?page=1'
+                    last: 'http://localhost/api/v1/customers/portfolio?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: null
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: 'http://localhost/api/v1/customers/portfolio?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: 'http://localhost/api/v1/customers/portfolio'
+                    per_page: 1
+                    to: null
+                    total: 0
+                properties:
+                  data:
+                    type: array
+                    example: []
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://localhost/api/v1/customers/portfolio?page=1'
+                      last:
+                        type: string
+                        example: 'http://localhost/api/v1/customers/portfolio?page=1'
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                      next:
+                        type: string
+                        example: null
+                        nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: string
+                        example: null
+                        nullable: true
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: 'http://localhost/api/v1/customers/portfolio?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                              nullable: true
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                              nullable: true
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: 'http://localhost/api/v1/customers/portfolio'
+                      per_page:
+                        type: integer
+                        example: 1
+                      to:
+                        type: string
+                        example: null
+                        nullable: true
+                      total:
+                        type: integer
+                        example: 0
+      tags:
+        - Cartera
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 1
+                  nullable: true
+  '/api/v1/customers/{customer}/portfolio':
+    get:
+      summary: 'Obtener el resumen consolidado de cartera del cliente.'
+      operationId: obtenerElResumenConsolidadoDeCarteraDelCliente
+      description: "Devuelve los datos generales del cliente, plan actual e historial, saldos\nde billetera, EcoPuntos, deuda, suscripciones, citas y actividad reciente."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  customerId: 15
+                  legalName: 'Comercializadora San JosǸ S.A. de C.V.'
+                  tradeName: 'San JosǸ'
+                  taxId: 0614-260290-101-1
+                  nrc: 123456-7
+                  economicActivity: 'Venta de servicios'
+                  address: 'Colonia Centro, San Salvador'
+                  department: 'San Salvador'
+                  municipality: 'San Salvador'
+                  phone: '+50378901234'
+                  email: cliente@example.com
+                  status: active
+                  visitFrequency:
+                    value: 30
+                    unit: days
+                  memberSince: '2026-01-15T10:00:00+00:00'
+                  hasPlan: true
+                  currentPlan:
+                    id: 2
+                    planCode: PREMIUM
+                    planName: 'Plan Premium'
+                    frequencyValue: 30
+                    frequencyUnit: days
+                    visitCount: 2
+                    maintenanceType: Mensual
+                    discountPercentage: 10.0
+                    loyaltyPointsMultiplier: 1.5
+                    active: true
+                    startDate: '2026-10-01'
+                    endDate: null
+                  planHistory:
+                    -
+                      id: 5
+                      planId: 2
+                      planCode: PREMIUM
+                      planName: 'Plan Premium'
+                      startDate: '2026-10-01'
+                      endDate: null
+                  wallet:
+                    cashBalance: 150.0
+                    reservedSubscriptionBalance: 50.0
+                    totalAvailable: 200.0
+                  loyalty:
+                    pointsBalance: 320
+                  totalBalance: 200.0
+                  totalPoints: 320
+                  debt:
+                    pendingQuotesCount: 1
+                    totalPendingAmount: 85.5
+                    quotes:
+                      -
+                        id: 1
+                        quoteNumber: COT-2026-0001
+                        total: 100.0
+                        amountPaid: 14.5
+                        pendingAmount: 85.5
+                        createdAt: '2026-10-20T09:00:00+00:00'
+                  subscriptions:
+                    activeCount: 1
+                    current:
+                      id: 1
+                      planId: 2
+                      planCode: PREMIUM
+                      planName: 'Plan Premium'
+                      paymentDate: '2026-10-01'
+                      amountPaid: 100.0
+                      reservedBalance: 50.0
+                      status: active
+                  appointments:
+                    upcomingCount: 1
+                    next:
+                      id: 10
+                      appointmentDate: '2026-11-10'
+                      appointmentTime: '09:00'
+                      status: confirmed
+                      origin: automatic
+                      serviceId: 3
+                      service:
+                        id: 3
+                        name: Mantenimiento
+                        price: 25.0
+                      employeeId: 4
+                      employee:
+                        id: 4
+                        fullName: 'TǸcnico Campo'
+                    lastCompletedDate: '2026-10-10'
+                  recentQuotes:
+                    -
+                      id: 1
+                      quoteNumber: COT-2026-0001
+                      total: 100.0
+                      status: pending
+                      loyaltyPointsUsed: 0
+                      loyaltyPointsEarned: 10
+                      createdAt: '2026-10-20T09:00:00+00:00'
+                  recentPayments:
+                    -
+                      id: 1
+                      quoteId: 1
+                      quoteNumber: COT-2026-0001
+                      amountPaid: 14.5
+                      paymentMethod: cash
+                      paymentDate: '2026-10-21T11:00:00+00:00'
+                properties:
+                  customerId:
+                    type: integer
+                    example: 15
+                  legalName:
+                    type: string
+                    example: 'Comercializadora San JosǸ S.A. de C.V.'
+                  tradeName:
+                    type: string
+                    example: 'San JosǸ'
+                  taxId:
+                    type: string
+                    example: 0614-260290-101-1
+                  nrc:
+                    type: string
+                    example: 123456-7
+                  economicActivity:
+                    type: string
+                    example: 'Venta de servicios'
+                  address:
+                    type: string
+                    example: 'Colonia Centro, San Salvador'
+                  department:
+                    type: string
+                    example: 'San Salvador'
+                  municipality:
+                    type: string
+                    example: 'San Salvador'
+                  phone:
+                    type: string
+                    example: '+50378901234'
+                  email:
+                    type: string
+                    example: cliente@example.com
+                  status:
+                    type: string
+                    example: active
+                  visitFrequency:
+                    type: object
+                    properties:
+                      value:
+                        type: integer
+                        example: 30
+                      unit:
+                        type: string
+                        example: days
+                  memberSince:
+                    type: string
+                    example: '2026-01-15T10:00:00+00:00'
+                  hasPlan:
+                    type: boolean
+                    example: true
+                  currentPlan:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      planCode:
+                        type: string
+                        example: PREMIUM
+                      planName:
+                        type: string
+                        example: 'Plan Premium'
+                      frequencyValue:
+                        type: integer
+                        example: 30
+                      frequencyUnit:
+                        type: string
+                        example: days
+                      visitCount:
+                        type: integer
+                        example: 2
+                      maintenanceType:
+                        type: string
+                        example: Mensual
+                      discountPercentage:
+                        type: number
+                        example: 10.0
+                      loyaltyPointsMultiplier:
+                        type: number
+                        example: 1.5
+                      active:
+                        type: boolean
+                        example: true
+                      startDate:
+                        type: string
+                        example: '2026-10-01'
+                      endDate:
+                        type: string
+                        example: null
+                        nullable: true
+                  planHistory:
+                    type: array
+                    example:
+                      -
+                        id: 5
+                        planId: 2
+                        planCode: PREMIUM
+                        planName: 'Plan Premium'
+                        startDate: '2026-10-01'
+                        endDate: null
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 5
+                        planId:
+                          type: integer
+                          example: 2
+                        planCode:
+                          type: string
+                          example: PREMIUM
+                        planName:
+                          type: string
+                          example: 'Plan Premium'
+                        startDate:
+                          type: string
+                          example: '2026-10-01'
+                        endDate:
+                          type: string
+                          example: null
+                          nullable: true
+                  wallet:
+                    type: object
+                    properties:
+                      cashBalance:
+                        type: number
+                        example: 150.0
+                      reservedSubscriptionBalance:
+                        type: number
+                        example: 50.0
+                      totalAvailable:
+                        type: number
+                        example: 200.0
+                  loyalty:
+                    type: object
+                    properties:
+                      pointsBalance:
+                        type: integer
+                        example: 320
+                  totalBalance:
+                    type: number
+                    example: 200.0
+                  totalPoints:
+                    type: integer
+                    example: 320
+                  debt:
+                    type: object
+                    properties:
+                      pendingQuotesCount:
+                        type: integer
+                        example: 1
+                      totalPendingAmount:
+                        type: number
+                        example: 85.5
+                      quotes:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            quoteNumber: COT-2026-0001
+                            total: 100
+                            amountPaid: 14.5
+                            pendingAmount: 85.5
+                            createdAt: '2026-10-20T09:00:00+00:00'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            quoteNumber:
+                              type: string
+                              example: COT-2026-0001
+                            total:
+                              type: number
+                              example: 100.0
+                            amountPaid:
+                              type: number
+                              example: 14.5
+                            pendingAmount:
+                              type: number
+                              example: 85.5
+                            createdAt:
+                              type: string
+                              example: '2026-10-20T09:00:00+00:00'
+                  subscriptions:
+                    type: object
+                    properties:
+                      activeCount:
+                        type: integer
+                        example: 1
+                      current:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          planId:
+                            type: integer
+                            example: 2
+                          planCode:
+                            type: string
+                            example: PREMIUM
+                          planName:
+                            type: string
+                            example: 'Plan Premium'
+                          paymentDate:
+                            type: string
+                            example: '2026-10-01'
+                          amountPaid:
+                            type: number
+                            example: 100.0
+                          reservedBalance:
+                            type: number
+                            example: 50.0
+                          status:
+                            type: string
+                            example: active
+                  appointments:
+                    type: object
+                    properties:
+                      upcomingCount:
+                        type: integer
+                        example: 1
+                      next:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 10
+                          appointmentDate:
+                            type: string
+                            example: '2026-11-10'
+                          appointmentTime:
+                            type: string
+                            example: '09:00'
+                          status:
+                            type: string
+                            example: confirmed
+                          origin:
+                            type: string
+                            example: automatic
+                          serviceId:
+                            type: integer
+                            example: 3
+                          service:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 3
+                              name:
+                                type: string
+                                example: Mantenimiento
+                              price:
+                                type: number
+                                example: 25.0
+                          employeeId:
+                            type: integer
+                            example: 4
+                          employee:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 4
+                              fullName:
+                                type: string
+                                example: 'TǸcnico Campo'
+                      lastCompletedDate:
+                        type: string
+                        example: '2026-10-10'
+                  recentQuotes:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        quoteNumber: COT-2026-0001
+                        total: 100
+                        status: pending
+                        loyaltyPointsUsed: 0
+                        loyaltyPointsEarned: 10
+                        createdAt: '2026-10-20T09:00:00+00:00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        quoteNumber:
+                          type: string
+                          example: COT-2026-0001
+                        total:
+                          type: number
+                          example: 100.0
+                        status:
+                          type: string
+                          example: pending
+                        loyaltyPointsUsed:
+                          type: integer
+                          example: 0
+                        loyaltyPointsEarned:
+                          type: integer
+                          example: 10
+                        createdAt:
+                          type: string
+                          example: '2026-10-20T09:00:00+00:00'
+                  recentPayments:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        quoteId: 1
+                        quoteNumber: COT-2026-0001
+                        amountPaid: 14.5
+                        paymentMethod: cash
+                        paymentDate: '2026-10-21T11:00:00+00:00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        quoteId:
+                          type: integer
+                          example: 1
+                        quoteNumber:
+                          type: string
+                          example: COT-2026-0001
+                        amountPaid:
+                          type: number
+                          example: 14.5
+                        paymentMethod:
+                          type: string
+                          example: cash
+                        paymentDate:
+                          type: string
+                          example: '2026-10-21T11:00:00+00:00'
+      tags:
+        - Cartera
+    parameters:
+      -
+        in: path
+        name: customer
+        description: 'ID del cliente.'
+        example: 15
+        required: true
+        schema:
+          type: integer
+  '/api/v1/customers/{customer}/portfolio/movements':
+    get:
+      summary: 'Consultar el historial unificado de movimientos del cliente.'
+      operationId: consultarElHistorialUnificadoDeMovimientosDelCliente
+      description: 'Combina transacciones de dinero y EcoPuntos, ordenadas por fecha descendente.'
+      parameters:
+        -
+          in: query
+          name: type
+          description: 'Filtro por origen del movimiento: all, wallet o loyalty. Default: all.'
+          example: all
+          required: false
+          schema:
+            type: string
+            description: 'Filtro por origen del movimiento: all, wallet o loyalty. Default: all.'
+            example: all
+        -
+          in: query
+          name: page
+          description: 'Página solicitada. Default: 1.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Página solicitada. Default: 1.'
+            example: 1
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1-100). Default: 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1-100). Default: 15.'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 102
+                      source: loyalty
+                      transactionType: earned_purchase
+                      amount: null
+                      points: 50
+                      description: 'Puntos ganados por Cotización #COT-2026-004'
+                      paymentMethod: null
+                      createdAt: '2026-03-01T10:15:00+00:00'
+                  meta:
+                    currentPage: 1
+                    totalPages: 1
+                    totalItems: 1
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 102
+                        source: loyalty
+                        transactionType: earned_purchase
+                        amount: null
+                        points: 50
+                        description: 'Puntos ganados por Cotización #COT-2026-004'
+                        paymentMethod: null
+                        createdAt: '2026-03-01T10:15:00+00:00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 102
+                        source:
+                          type: string
+                          example: loyalty
+                        transactionType:
+                          type: string
+                          example: earned_purchase
+                        amount:
+                          type: string
+                          example: null
+                          nullable: true
+                        points:
+                          type: integer
+                          example: 50
+                        description:
+                          type: string
+                          example: 'Puntos ganados por Cotización #COT-2026-004'
+                        paymentMethod:
+                          type: string
+                          example: null
+                          nullable: true
+                        createdAt:
+                          type: string
+                          example: '2026-03-01T10:15:00+00:00'
+                  meta:
+                    type: object
+                    properties:
+                      currentPage:
+                        type: integer
+                        example: 1
+                      totalPages:
+                        type: integer
+                        example: 1
+                      totalItems:
+                        type: integer
+                        example: 1
+      tags:
+        - Cartera
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: ''
+                  example: loyalty
+                  enum:
+                    - all
+                    - wallet
+                    - loyalty
+                  nullable: true
+                page:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 16
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+    parameters:
+      -
+        in: path
+        name: customer
+        description: 'ID del cliente.'
+        example: 15
+        required: true
+        schema:
+          type: integer
+  '/api/v1/customers/{customer}/wallet/transactions':
+    post:
+      summary: 'Registrar una transacci��n de billetera.'
+      operationId: registrarUnaTransaccinDeBilletera
+      description: "Tipos permitidos: top_up, annual_fee, maintenance_deduction, adjustment,\nreserve_funds y spend_reserved_funds.\n- reserve_funds: mueve saldo de cash a reservado para suscripción.\n- spend_reserved_funds: descuenta del saldo reservado.\nLas transacciones son inmutables; las correcciones se registran como ajustes."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 45
+                    transactionType: top_up
+                    amount: 100.0
+                    paymentMethod: transfer
+                    isAnnualPayment: false
+                    cashBalance: 250.0
+                    reservedSubscriptionBalance: 50.0
+                    totalAvailable: 300.0
+                    createdAt: '2026-02-28T16:00:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 45
+                      transactionType:
+                        type: string
+                        example: top_up
+                      amount:
+                        type: number
+                        example: 100.0
+                      paymentMethod:
+                        type: string
+                        example: transfer
+                      isAnnualPayment:
+                        type: boolean
+                        example: false
+                      cashBalance:
+                        type: number
+                        example: 250.0
+                      reservedSubscriptionBalance:
+                        type: number
+                        example: 50.0
+                      totalAvailable:
+                        type: number
+                        example: 300.0
+                      createdAt:
+                        type: string
+                        example: '2026-02-28T16:00:00+00:00'
+      tags:
+        - Cartera
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_type:
+                  type: string
+                  description: 'Tipo de transacci��n.'
+                  example: top_up
+                amount:
+                  type: numeric
+                  description: 'Monto de la transacci��n. Para adjustment puede ser negativo.'
+                  example: '100.00'
+                payment_method:
+                  type: string
+                  description: 'MǸtodo de pago.'
+                  example: transfer
+                  nullable: true
+                is_annual_payment:
+                  type: boolean
+                  description: 'Indica si corresponde a pago anual.'
+                  example: false
+                  nullable: true
+              required:
+                - transaction_type
+                - amount
+    parameters:
+      -
+        in: path
+        name: customer
+        description: 'ID del cliente.'
+        example: 15
+        required: true
+        schema:
+          type: integer
+  '/api/v1/customers/{customer}/loyalty-points/transactions':
+    post:
+      summary: 'Registrar una transacción de EcoPuntos.'
+      operationId: registrarUnaTransaccinDeEcoPuntos
+      description: "Tipos permitidos: earned_purchase, redeemed, referral, promotional y special_bonus.\nEl balance de puntos nunca puede quedar en negativo."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 102
+                    transactionType: earned_purchase
+                    points: 50
+                    description: 'Puntos ganados por compra'
+                    pointsBalance: 370
+                    createdAt: '2026-03-01T10:15:00+00:00'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 102
+                      transactionType:
+                        type: string
+                        example: earned_purchase
+                      points:
+                        type: integer
+                        example: 50
+                      description:
+                        type: string
+                        example: 'Puntos ganados por compra'
+                      pointsBalance:
+                        type: integer
+                        example: 370
+                      createdAt:
+                        type: string
+                        example: '2026-03-01T10:15:00+00:00'
+      tags:
+        - Cartera
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_type:
+                  type: string
+                  description: 'Tipo de transacción de puntos.'
+                  example: earned_purchase
+                points:
+                  type: integer
+                  description: 'Cantidad de puntos.'
+                  example: 50
+                description:
+                  type: string
+                  description: 'Descripción del movimiento.'
+                  example: 'Puntos ganados por compra'
+                  nullable: true
+                quote_id:
+                  type: integer
+                  description: 'ID de cotización asociada, si aplica.'
+                  example: 4
+                  nullable: true
+              required:
+                - transaction_type
+                - points
+    parameters:
+      -
+        in: path
+        name: customer
+        description: 'ID del cliente.'
+        example: 15
+        required: true
+        schema:
+          type: integer
   /api/v1/appointments:
     get:
       summary: 'Listar y consultar agenda de citas.'
@@ -5039,7 +6329,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: pending
+                  example: cancelled
                   enum:
                     - pending
                     - confirmed
@@ -5070,7 +6360,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: appointment_date
+                  example: created_at
                   enum:
                     - id
                     - appointment_date
@@ -5081,7 +6371,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: desc
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -6045,6 +7335,109 @@ paths:
         required: true
         schema:
           type: integer
+  '/api/v1/customers/{customer}/loyalty-redemptions':
+    get:
+      summary: 'Listar los canjes de un cliente.'
+      operationId: listarLosCanjesDeUnCliente
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cliente no encontrado'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Cliente no encontrado'
+                  codigo:
+                    type: integer
+                    example: 404
+      tags:
+        - EcoPuntos
+    parameters:
+      -
+        in: path
+        name: customer
+        description: 'ID del cliente.'
+        example: 15
+        required: true
+        schema:
+          type: integer
+  /api/v1/loyalty-rewards:
+    get:
+      summary: 'Listar recompensas.'
+      operationId: listarRecompensas
+      description: ''
+      parameters:
+        -
+          in: query
+          name: available
+          description: 'Mostrar solo recompensas disponibles.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Mostrar solo recompensas disponibles.'
+            example: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                properties:
+                  data:
+                    type: array
+                    example: []
+      tags:
+        - EcoPuntos
+  '/api/v1/loyalty-rewards/{loyalty_reward}':
+    get:
+      summary: 'Ver una recompensa.'
+      operationId: verUnaRecompensa
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\LoyaltyReward] 16'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\LoyaltyReward] 16'
+      tags:
+        - EcoPuntos
+    parameters:
+      -
+        in: path
+        name: loyalty_reward
+        description: ''
+        example: 16
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: reward
+        description: 'ID de la recompensa.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   /api/v1/transactions:
     get:
       summary: 'Listar y filtrar historial de transacciones.'
@@ -6554,7 +7947,7 @@ paths:
                 status_type:
                   type: string
                   description: ''
-                  example: all
+                  example: performed
                   enum:
                     - all
                     - performed
@@ -6573,7 +7966,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: total
+                  example: id
                   enum:
                     - id
                     - quote_number
@@ -6583,7 +7976,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -7258,7 +8651,7 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: ticket
+                  example: purchase
                   enum:
                     - all
                     - sale
@@ -7298,7 +8691,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: total
+                  example: created_at
                   enum:
                     - id
                     - movement_date
@@ -7310,7 +8703,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: desc
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -7585,7 +8978,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: name
+                  example: price
                   enum:
                     - id
                     - name
@@ -7596,7 +8989,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: desc
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -8066,6 +9459,294 @@ paths:
         schema:
           type: integer
   /api/v1/suppliers:
+    get:
+      summary: 'Listar y filtrar proveedores.'
+      operationId: listarYFiltrarProveedores
+      description: 'Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro económico, teléfono o rango de fechas.'
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda por nombre, nombre comercial, email, teléfono, tax_id (NIT/DUI), NRC o contacto.'
+          example: Vivero
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda por nombre, nombre comercial, email, teléfono, tax_id (NIT/DUI), NRC o contacto.'
+            example: Vivero
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (`active` o `inactive`).'
+          example: active
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (`active` o `inactive`).'
+            example: active
+        -
+          in: query
+          name: economic_activity
+          description: 'Filtrar por giro o actividad económica.'
+          example: Jardinería
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por giro o actividad económica.'
+            example: Jardinería
+        -
+          in: query
+          name: phone
+          description: 'Filtrar por número de teléfono.'
+          example: '78901234'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por número de teléfono.'
+            example: '78901234'
+        -
+          in: query
+          name: desde
+          description: 'Filtrar proveedores creados desde una fecha (YYYY-MM-DD).'
+          example: '2026-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar proveedores creados desde una fecha (YYYY-MM-DD).'
+            example: '2026-01-01'
+        -
+          in: query
+          name: hasta
+          description: 'Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).'
+          example: '2026-12-31'
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).'
+            example: '2026-12-31'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.'
+          example: name
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.'
+            example: name
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+          example: asc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (`asc` o `desc`). Default: `desc`.'
+            example: asc
+        -
+          in: query
+          name: limit
+          description: 'Cantidad de registros por página (1-100). Default: 15.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Cantidad de registros por página (1-100). Default: 15.'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                  links:
+                    first: 'http://localhost/api/v1/suppliers?page=1'
+                    last: 'http://localhost/api/v1/suppliers?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: null
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: 'http://localhost/api/v1/suppliers?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: 'http://localhost/api/v1/suppliers'
+                    per_page: 22
+                    to: null
+                    total: 0
+                properties:
+                  data:
+                    type: array
+                    example: []
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://localhost/api/v1/suppliers?page=1'
+                      last:
+                        type: string
+                        example: 'http://localhost/api/v1/suppliers?page=1'
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                      next:
+                        type: string
+                        example: null
+                        nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: string
+                        example: null
+                        nullable: true
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: 'http://localhost/api/v1/suppliers?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                              nullable: true
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                              nullable: true
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: 'http://localhost/api/v1/suppliers'
+                      per_page:
+                        type: integer
+                        example: 22
+                      to:
+                        type: string
+                        example: null
+                        nullable: true
+                      total:
+                        type: integer
+                        example: 0
+      tags:
+        - Proveedores
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: inactive
+                  enum:
+                    - active
+                    - inactive
+                  nullable: true
+                economic_activity:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: 'n'
+                  nullable: true
+                phone:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: gzmiyvdljnikhway
+                  nullable: true
+                desde:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-14T21:04:18'
+                  nullable: true
+                hasta:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
+                  example: '2052-12-07'
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: trade_name
+                  enum:
+                    - id
+                    - name
+                    - trade_name
+                    - status
+                    - created_at
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: DESC
+                  enum:
+                    - asc
+                    - desc
+                    - ASC
+                    - DESC
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
     post:
       summary: 'Registrar un nuevo proveedor.'
       operationId: registrarUnNuevoProveedor
@@ -8143,6 +9824,26 @@ paths:
                 - name
                 - phone
   '/api/v1/suppliers/{id}':
+    get:
+      summary: 'Consultar detalle de un proveedor.'
+      operationId: consultarDetalleDeUnProveedor
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Supplier] 16'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Supplier] 16'
+      tags:
+        - Proveedores
     put:
       summary: 'Actualizar información de un proveedor.'
       operationId: actualizarInformacinDeUnProveedor
@@ -8209,7 +9910,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: active
+                  example: inactive
                   enum:
                     - active
                     - inactive
@@ -8232,10 +9933,10 @@ paths:
         in: path
         name: id
         description: 'The ID of the supplier.'
-        example: architecto
+        example: 16
         required: true
         schema:
-          type: string
+          type: integer
   '/api/v1/suppliers/{supplier}/status':
     patch:
       summary: 'Cambiar estado de un proveedor.'
@@ -8263,11 +9964,295 @@ paths:
         in: path
         name: supplier
         description: 'The supplier.'
-        example: architecto
+        example: 16
         required: true
         schema:
-          type: string
+          type: integer
+  '/api/v1/customers/{customer}/subscriptions/current':
+    get:
+      summary: 'Consultar la suscripción activa actual del cliente.'
+      operationId: consultarLaSuscripcinActivaActualDelCliente
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Customer] 15'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Customer] 15'
+      tags:
+        - Suscripciones
+    parameters:
+      -
+        in: path
+        name: customer
+        description: 'ID del cliente.'
+        example: 15
+        required: true
+        schema:
+          type: integer
+  '/api/v1/customers/{customer}/subscriptions':
+    get:
+      summary: 'Listar las suscripciones de un cliente.'
+      operationId: listarLasSuscripcionesDeUnCliente
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cliente no encontrado'
+                  codigo: 404
+                properties:
+                  message:
+                    type: string
+                    example: 'Cliente no encontrado'
+                  codigo:
+                    type: integer
+                    example: 404
+      tags:
+        - Suscripciones
+    parameters:
+      -
+        in: path
+        name: customer
+        description: 'ID del cliente.'
+        example: 15
+        required: true
+        schema:
+          type: integer
+  '/api/v1/subscriptions/{subscription}':
+    get:
+      summary: 'Ver el detalle de una suscripción.'
+      operationId: verElDetalleDeUnaSuscripcin
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Subscription] 1'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Subscription] 1'
+      tags:
+        - Suscripciones
+    parameters:
+      -
+        in: path
+        name: subscription
+        description: 'ID de la suscripción.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   /api/v1/inspections:
+    get:
+      summary: 'Listar inspecciones de campo.'
+      operationId: listarInspeccionesDeCampo
+      description: ''
+      parameters:
+        -
+          in: query
+          name: search
+          description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
+          example: 'Jardín frontal'
+          required: false
+          schema:
+            type: string
+            description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
+            example: 'Jardín frontal'
+        -
+          in: query
+          name: status
+          description: 'Filtrar por estado (draft, submitted, reviewed).'
+          example: submitted
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por estado (draft, submitted, reviewed).'
+            example: submitted
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por ID de cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por ID de cliente.'
+            example: 1
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por técnico/empleado asignado.'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por técnico/empleado asignado.'
+            example: 2
+        -
+          in: query
+          name: start_date
+          description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: end_date
+          description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: sort_by
+          description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
+          example: inspection_date
+          required: false
+          schema:
+            type: string
+            description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
+            example: inspection_date
+        -
+          in: query
+          name: sort_direction
+          description: 'Dirección (asc o desc). Default: desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Dirección (asc o desc). Default: desc.'
+            example: desc
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página.'
+            example: 15
+      responses:
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected customer id is invalid. (and 1 more error)'
+                  errors:
+                    customer_id:
+                      - 'The selected customer id is invalid.'
+                    employee_id:
+                      - 'The selected employee id is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected customer id is invalid. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      customer_id:
+                        type: array
+                        example:
+                          - 'The selected customer id is invalid.'
+                        items:
+                          type: string
+                      employee_id:
+                        type: array
+                        example:
+                          - 'The selected employee id is invalid.'
+                        items:
+                          type: string
+      tags:
+        - 'Técnico de Campo'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                status:
+                  type: string
+                  description: ''
+                  example: draft
+                  enum:
+                    - draft
+                    - submitted
+                    - reviewed
+                start_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-11-14T21:04:18'
+                end_date:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-07'
+                search:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                sort_by:
+                  type: string
+                  description: ''
+                  example: inspection_date
+                  enum:
+                    - id
+                    - inspection_date
+                    - created_at
+                    - status
+                    - total_area
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: desc
+                  enum:
+                    - asc
+                    - desc
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 16
     post:
       summary: 'Registrar inspección de campo.'
       operationId: registrarInspeccinDeCampo
@@ -8385,6 +10370,26 @@ paths:
                 - customer_id
                 - inspection_date
   '/api/v1/inspections/{id}':
+    get:
+      summary: 'Ver detalle de inspección de campo.'
+      operationId: verDetalleDeInspeccinDeCampo
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - 'Técnico de Campo'
     put:
       summary: 'Actualizar inspección de campo.'
       operationId: actualizarInspeccinDeCampo
@@ -8417,7 +10422,7 @@ paths:
                 inspection_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-14T20:21:04'
+                  example: '2026-11-14T21:04:18'
                 findings:
                   type: string
                   description: ''
@@ -8450,7 +10455,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: submitted
+                  example: reviewed
                   enum:
                     - draft
                     - submitted

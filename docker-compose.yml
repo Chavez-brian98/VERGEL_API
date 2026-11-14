@@ -25,8 +25,6 @@ services:
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-laravel_db}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
-      MYSQL_USER: ${DB_USERNAME:-laravel_user}
     volumes:
       - db-data:/var/lib/mysql
     ports:

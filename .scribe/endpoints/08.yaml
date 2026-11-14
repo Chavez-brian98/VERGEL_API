@@ -1,277 +1,255 @@
-name: 'Técnico de Campo'
-description: |-
-
-  Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
+name: Tarifas
+description: ''
 endpoints:
   -
     custom: []
     httpMethods:
-      - POST
-    uri: api/v1/inspections
+      - GET
+    uri: api/v1/country-configs
     metadata:
       custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: Escritura
+      groupName: Tarifas
+      groupDescription: ''
+      subgroup: Consultas
       subgroupDescription: ''
-      title: 'Registrar inspección de campo.'
-      description: 'Crea una inspección realizada por el técnico de campo, registrando dimensiones del terreno, servicios requeridos y fotografías de referencia.'
+      title: 'Listar configuraciones de país (tarifas).'
+      description: 'Obtiene el listado de configuraciones por país con moneda, IVA y comisión de tarjeta.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: multipart/form-data
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "country": "El Salvador",
+                "currency": "USD",
+                "taxPercentage": 13.00,
+                "cardFeePercentage": 3.50,
+                "createdAt": "2026-10-08T22:58:33+00:00",
+                "updatedAt": "2026-10-08T22:58:33+00:00"
+              }
+            ]
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/country-configs
+    metadata:
+      custom: []
+      groupName: Tarifas
+      groupDescription: ''
+      subgroup: Escritura
+      subgroupDescription: ''
+      title: 'Registrar configuración de país (tarifa).'
+      description: 'Crea la configuración de tarifas para un país. El nombre del país debe ser único.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      customer_id:
+      country:
         custom: []
-        name: customer_id
-        description: 'ID del cliente visitado.'
+        name: country
+        description: 'Nombre del país.'
         required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      appointment_id:
-        custom: []
-        name: appointment_id
-        description: 'ID de la cita previa asociada si aplica.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'ID del técnico asignado (opcional, por defecto el usuario autenticado).'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      inspection_date:
-        custom: []
-        name: inspection_date
-        description: 'Fecha de la visita técnica (YYYY-MM-DD).'
-        required: true
-        example: '2026-11-11'
-        type: date
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      findings:
-        custom: []
-        name: findings
-        description: 'Hallazgos, observaciones generales del lugar y necesidades del cliente.'
-        required: false
-        example: 'Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.'
+        example: 'El Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
-        nullable: true
+        nullable: false
         deprecated: false
-      terrain_width:
+      currency:
         custom: []
-        name: terrain_width
-        description: 'Ancho del terreno.'
-        required: false
-        example: 15.5
+        name: currency
+        description: 'Moneda (código ISO 4217).'
+        required: true
+        example: USD
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      tax_percentage:
+        custom: []
+        name: tax_percentage
+        description: 'Porcentaje de IVA/impuesto.'
+        required: true
+        example: 13.0
         type: number
         enumValues: []
         exampleWasSpecified: true
-        nullable: true
+        nullable: false
         deprecated: false
-      terrain_length:
+      card_fee_percentage:
         custom: []
-        name: terrain_length
-        description: 'Largo del terreno.'
+        name: card_fee_percentage
+        description: 'Porcentaje de comisión por tarjeta.'
         required: false
-        example: 20.0
+        example: 3.5
         type: number
         enumValues: []
         exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      total_area:
-        custom: []
-        name: total_area
-        description: 'Área total (si no se especifica, se calcula multiplicando ancho x largo).'
-        required: false
-        example: 310.0
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      area_unit:
-        custom: []
-        name: area_unit
-        description: 'Unidad de medida del terreno (m2, v2, ha). Default: m2.'
-        required: false
-        example: m2
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      terrain_notes:
-        custom: []
-        name: terrain_notes
-        description: 'Notas sobre tipo de suelo, acceso o limitaciones físicas.'
-        required: false
-        example: 'Suelo arcilloso, toma de agua a 10 metros.'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: 'Estado de la inspección (draft, submitted, reviewed). Default: draft.'
-        required: false
-        example: submitted
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      services:
-        custom: []
-        name: services
-        description: 'Servicios recomendados para la cotización.'
-        required: false
-        example:
-          - []
-        type: 'object[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      photos:
-        custom: []
-        name: photos
-        description: 'Archivos de imagen (JPEG, PNG, WEBP, máx 10MB) de la inspección.'
-        required: false
-        example:
-          - null
-        type: 'file[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      photos_data:
-        custom: []
-        name: photos_data
-        description: ''
-        required: false
-        example: null
-        type: 'object[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'services[].service_id':
-        custom: []
-        name: 'services[].service_id'
-        description: 'ID del servicio.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      'services[].suggested_quantity':
-        custom: []
-        name: 'services[].suggested_quantity'
-        description: 'Cantidad sugerida.'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      'services[].notes':
-        custom: []
-        name: 'services[].notes'
-        description: 'Notas técnicas del servicio.'
-        required: false
-        example: 'Requiere fumigación previa.'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      'photos_data[].file':
-        custom: []
-        name: 'photos_data[].file'
-        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
-        required: true
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'photos_data[].caption':
-        custom: []
-        name: 'photos_data[].caption'
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: 'n'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      customer_id: 1
-      appointment_id: 1
-      employee_id: 2
-      inspection_date: '2026-11-11'
-      findings: 'Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.'
-      terrain_width: 15.5
-      terrain_length: 20.0
-      total_area: 310.0
-      area_unit: m2
-      terrain_notes: 'Suelo arcilloso, toma de agua a 10 metros.'
-      status: submitted
-      services:
-        -
-          service_id: 1
-          suggested_quantity: 2
-          notes: 'Requiere fumigación previa.'
-      photos_data:
-        -
-          caption: 'n'
-    fileParameters:
-      photos:
-        - null
-      photos_data:
-        -
-          file: null
-    responses: []
+      country: 'El Salvador'
+      currency: USD
+      tax_percentage: 13.0
+      card_fee_percentage: 3.5
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "country": "El Salvador",
+              "currency": "USD",
+              "taxPercentage": 13.00,
+              "cardFeePercentage": 3.50,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The country has already been taken.",
+            "errors": {
+              "country": ["The country has already been taken."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/country-configs/{id}'
+    metadata:
+      custom: []
+      groupName: Tarifas
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Obtener detalle de configuración de país (tarifa).'
+      description: 'Devuelve la configuración de tarifas para el país indicado.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the country config.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      country_config:
+        custom: []
+        name: country_config
+        description: 'ID de la configuración.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      country_config: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "country": "El Salvador",
+              "currency": "USD",
+              "taxPercentage": 13.00,
+              "cardFeePercentage": 3.50,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Configuración de país no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
     controller: null
     method: null
     route: null
@@ -280,303 +258,15 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/v1/inspections/{id}'
+    uri: 'api/v1/country-configs/{id}'
     metadata:
       custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
+      groupName: Tarifas
+      groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Actualizar inspección de campo.'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: multipart/form-data
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the inspection.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      customer_id:
-        custom: []
-        name: customer_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      appointment_id:
-        custom: []
-        name: appointment_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      inspection_date:
-        custom: []
-        name: inspection_date
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-11-14T20:21:04'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      findings:
-        custom: []
-        name: findings
-        description: ''
-        required: false
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      terrain_width:
-        custom: []
-        name: terrain_width
-        description: 'Must be at least 0.'
-        required: false
-        example: 39
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      terrain_length:
-        custom: []
-        name: terrain_length
-        description: 'Must be at least 0.'
-        required: false
-        example: 84
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      total_area:
-        custom: []
-        name: total_area
-        description: 'Must be at least 0.'
-        required: false
-        example: 12
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      area_unit:
-        custom: []
-        name: area_unit
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: miyvdljnikhwaykc
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      terrain_notes:
-        custom: []
-        name: terrain_notes
-        description: ''
-        required: false
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: submitted
-        type: string
-        enumValues:
-          - draft
-          - submitted
-          - reviewed
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      services:
-        custom: []
-        name: services
-        description: ''
-        required: false
-        example: null
-        type: 'object[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      photos:
-        custom: []
-        name: photos
-        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
-        required: false
-        example:
-          - null
-        type: 'file[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      photos_data:
-        custom: []
-        name: photos_data
-        description: ''
-        required: false
-        example: null
-        type: 'object[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'services[].service_id':
-        custom: []
-        name: 'services[].service_id'
-        description: 'This field is required when <code>services</code> is present. Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'services[].suggested_quantity':
-        custom: []
-        name: 'services[].suggested_quantity'
-        description: 'Must be at least 1.'
-        required: false
-        example: 22
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'services[].notes':
-        custom: []
-        name: 'services[].notes'
-        description: ''
-        required: false
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'photos_data[].file':
-        custom: []
-        name: 'photos_data[].file'
-        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
-        required: true
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'photos_data[].caption':
-        custom: []
-        name: 'photos_data[].caption'
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: 'n'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      customer_id: 16
-      appointment_id: 16
-      employee_id: 16
-      inspection_date: '2026-11-14T20:21:04'
-      findings: architecto
-      terrain_width: 39
-      terrain_length: 84
-      total_area: 12
-      area_unit: miyvdljnikhwaykc
-      terrain_notes: architecto
-      status: submitted
-      services:
-        -
-          service_id: 16
-          suggested_quantity: 22
-          notes: architecto
-      photos_data:
-        -
-          caption: 'n'
-    fileParameters:
-      photos:
-        - null
-      photos_data:
-        -
-          file: null
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/inspections/{id}'
-    metadata:
-      custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: Escritura
-      subgroupDescription: ''
-      title: 'Eliminar inspección técnica.'
-      description: ''
+      title: 'Actualizar configuración de país (tarifa).'
+      description: 'Actualiza de forma parcial los datos de tarifas de un país. Registra la operación en auditoría.'
       authenticated: true
       deprecated: false
     headers:
@@ -587,190 +277,126 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the inspection.'
+        description: 'The ID of the country config.'
         required: true
         example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      country_config:
+        custom: []
+        name: country_config
+        description: 'ID de la configuración.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
       id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PATCH
-    uri: 'api/v1/inspections/{inspection}/status'
-    metadata:
-      custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: Escritura
-      subgroupDescription: ''
-      title: 'Cambiar estado de la inspección.'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      inspection:
-        custom: []
-        name: inspection
-        description: 'The inspection.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      inspection: architecto
+      country_config: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      status:
+      country:
         custom: []
-        name: status
-        description: 'Nuevo estado (draft, submitted, reviewed).'
-        required: true
-        example: reviewed
+        name: country
+        description: 'Nombre del país.'
+        required: false
+        example: 'El Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanBodyParameters:
-      status: reviewed
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'api/v1/inspections/{inspection}/photos'
-    metadata:
-      custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: Escritura
-      subgroupDescription: ''
-      title: 'Subir fotos adicionales a la inspección.'
-      description: 'Permite subir más imágenes de referencia a una inspección ya creada.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: multipart/form-data
-      Accept: application/json
-    urlParameters:
-      inspection:
+      currency:
         custom: []
-        name: inspection
-        description: 'The inspection.'
-        required: true
-        example: architecto
+        name: currency
+        description: 'Moneda (código ISO 4217).'
+        required: false
+        example: USD
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanUrlParameters:
-      inspection: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      photos:
+      tax_percentage:
         custom: []
-        name: photos
-        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
+        name: tax_percentage
+        description: 'Porcentaje de IVA/impuesto.'
         required: false
-        example:
-          - null
-        type: 'file[]'
+        example: 13.0
+        type: number
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-      photos_data:
+      card_fee_percentage:
         custom: []
-        name: photos_data
-        description: 'This field is required when <code>photos</code> is not present.'
+        name: card_fee_percentage
+        description: 'Porcentaje de comisión por tarjeta.'
         required: false
-        example: null
-        type: 'object[]'
+        example: 3.5
+        type: number
         enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'photos_data[].file':
-        custom: []
-        name: 'photos_data[].file'
-        description: 'Must be a file. Must be an image. Must not be greater than 10240 kilobytes.'
-        required: true
-        example: null
-        type: file
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'photos_data[].caption':
-        custom: []
-        name: 'photos_data[].caption'
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: b
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      photos_data:
-        -
-          caption: b
-    fileParameters:
-      photos:
-        - null
-      photos_data:
-        -
-          file: null
-    responses: []
+      country: 'El Salvador'
+      currency: USD
+      tax_percentage: 13.0
+      card_fee_percentage: 3.5
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "country": "El Salvador",
+              "currency": "USD",
+              "taxPercentage": 13.00,
+              "cardFeePercentage": 3.50,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Configuración de país no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The country has already been taken.",
+            "errors": {
+              "country": ["The country has already been taken."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
     controller: null
     method: null
     route: null
@@ -778,17 +404,15 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/inspections/{inspection}/photos/{photo}'
+    uri: 'api/v1/country-configs/{id}'
     metadata:
       custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
+      groupName: Tarifas
+      groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Eliminar foto de inspección.'
-      description: ''
+      title: 'Eliminar configuración de país (tarifa).'
+      description: 'Elimina la configuración de tarifas para un país.'
       authenticated: true
       deprecated: false
     headers:
@@ -796,10 +420,10 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      inspection:
+      id:
         custom: []
-        name: inspection
-        description: 'The inspection.'
+        name: id
+        description: 'The ID of the country config.'
         required: true
         example: architecto
         type: string
@@ -807,31 +431,47 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      photo:
+      country_config:
         custom: []
-        name: photo
-        description: 'The photo.'
+        name: country_config
+        description: 'ID de la configuración.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      inspection: architecto
-      photo: architecto
+      id: architecto
+      country_config: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 204
+        content: ''
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Configuración de país no encontrada",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
     controller: null
     method: null
     route: null

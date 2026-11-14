@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "2ef76711-b9eb-485f-962b-43d10f366241",
+        "_postman_id": "832acfc3-398d-41b8-b945-23aaca239c18",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -119,7 +119,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 16,
                                             "description": "The ID of the customer."
                                         },
                                         {
@@ -300,7 +300,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 16,
                                             "description": "The ID of the customer."
                                         },
                                         {
@@ -367,7 +367,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 16,
                                             "description": "The ID of the customer."
                                         },
                                         {
@@ -537,6 +537,180 @@
             "name": "Cotizaciones",
             "description": "\nAPIs para la gesti\u00f3n de cotizaciones, \u00edtems de servicio\/planta y c\u00e1lculo autom\u00e1tico de montos.",
             "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar cotizaciones.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "COT-20261111",
+                                            "description": "B\u00fasqueda por n\u00famero de cotizaci\u00f3n o nombre del cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Filtrar por estado (`pending` o `paid`).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "Filtrar por cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "1",
+                                            "description": "Filtrar por empleado que registr\u00f3 la cotizaci\u00f3n.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "applied_plan_id",
+                                            "value": "1",
+                                            "description": "Filtrar por plan de suscripci\u00f3n aplicado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "created_at",
+                                            "description": "Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "desc",
+                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes?search=COT-20261111&status=pending&customer_id=1&employee_id=1&applied_plan_id=1&desde=2026-01-01&hasta=2026-12-31&sort_by=created_at&sort_direction=desc&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"paid\",\"customer_id\":16,\"employee_id\":16,\"applied_plan_id\":16,\"desde\":\"2026-11-14T21:04:18\",\"hasta\":\"2052-12-07\",\"sort_by\":\"created_at\",\"sort_direction\":\"asc\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas."
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 422,
+                                    "body": "{\"message\":\"The selected customer id is invalid. (and 2 more errors)\",\"errors\":{\"customer_id\":[\"The selected customer id is invalid.\"],\"employee_id\":[\"The selected employee id is invalid.\"],\"applied_plan_id\":[\"The selected applied plan id is invalid.\"]}}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar el detalle de una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the quote."
+                                        },
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Incluye cliente, empleado, plan aplicado e \u00edtems."
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 500,
+                                    "body": "{\n    \"message\": \"Server Error\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
                 {
                     "name": "Escritura",
                     "description": "",
@@ -1162,7 +1336,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 1,
                                             "description": "The ID of the employee."
                                         },
                                         {
@@ -1261,7 +1435,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 1,
                                             "description": "The ID of the employee."
                                         },
                                         {
@@ -1322,7 +1496,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 1,
                                             "description": "The ID of the employee."
                                         },
                                         {
@@ -2055,7 +2229,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"user_id\":16,\"employee_id\":16,\"action\":\"restore\",\"affected_table\":\"n\",\"table_name\":\"g\",\"affected_record_id\":66,\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"desde\":\"2026-11-14\",\"hasta\":\"2052-12-07\",\"limit\":22,\"per_page\":7}"
+                                    "raw": "{\"user_id\":16,\"employee_id\":16,\"action\":\"delete\",\"affected_table\":\"n\",\"table_name\":\"g\",\"affected_record_id\":66,\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"desde\":\"2026-11-14\",\"hasta\":\"2052-12-07\",\"limit\":22,\"per_page\":7}"
                                 },
                                 "description": "Obtiene una lista paginada de los registros y movimientos de auditor\u00eda del sistema (creaci\u00f3n, edici\u00f3n, eliminaci\u00f3n y accesos denegados). Requiere autenticaci\u00f3n con Sanctum y est\u00e1 restringido exclusivamente a colaboradores activos con rol de Administrador."
                             },
@@ -2261,6 +2435,340 @@
             ]
         },
         {
+            "name": "Cartera",
+            "description": "\nAPIs para consultar y gestionar la billetera, EcoPuntos y movimientos del cliente.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Consultar movimientos de cartera de todos los clientes.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/portfolio\/movements",
+                                    "query": [
+                                        {
+                                            "key": "type",
+                                            "value": "architecto",
+                                            "description": "Filtrar por origen: all, wallet o loyalty. Default: all.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "page",
+                                            "value": "16",
+                                            "description": "P\u00e1gina solicitada. Default: 1.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "16",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/portfolio\/movements?type=architecto&page=16&limit=16"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"wallet\",\"page\":16,\"limit\":22}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 200,
+                                    "body": "{\"data\":[],\"meta\":{\"currentPage\":16,\"totalPages\":1,\"totalItems\":0}}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Listar los res\u00famenes b\u00e1sicos de cartera de todos los clientes.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/portfolio",
+                                    "query": [
+                                        {
+                                            "key": "limit",
+                                            "value": "16",
+                                            "description": "Cantidad de resultados por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/portfolio?limit=16"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"limit\":1}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 200,
+                                    "body": "{\"data\":[],\"links\":{\"first\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/customers\\\/portfolio?page=1\",\"last\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/customers\\\/portfolio?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":null,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/customers\\\/portfolio?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/customers\\\/portfolio\",\"per_page\":1,\"to\":null,\"total\":0}}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el resumen consolidado de cartera del cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/portfolio",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/portfolio",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve los datos generales del cliente, plan actual e historial, saldos\nde billetera, EcoPuntos, deuda, suscripciones, citas y actividad reciente."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"customerId\": 15,\n  \"legalName\": \"Comercializadora San Jos\u01f8 S.A. de C.V.\",\n  \"tradeName\": \"San Jos\u01f8\",\n  \"taxId\": \"0614-260290-101-1\",\n  \"nrc\": \"123456-7\",\n  \"economicActivity\": \"Venta de servicios\",\n  \"address\": \"Colonia Centro, San Salvador\",\n  \"department\": \"San Salvador\",\n  \"municipality\": \"San Salvador\",\n  \"phone\": \"+50378901234\",\n  \"email\": \"cliente@example.com\",\n  \"status\": \"active\",\n  \"visitFrequency\": { \"value\": 30, \"unit\": \"days\" },\n  \"memberSince\": \"2026-01-15T10:00:00+00:00\",\n  \"hasPlan\": true,\n  \"currentPlan\": {\n    \"id\": 2,\n    \"planCode\": \"PREMIUM\",\n    \"planName\": \"Plan Premium\",\n    \"frequencyValue\": 30,\n    \"frequencyUnit\": \"days\",\n    \"visitCount\": 2,\n    \"maintenanceType\": \"Mensual\",\n    \"discountPercentage\": 10.00,\n    \"loyaltyPointsMultiplier\": 1.50,\n    \"active\": true,\n    \"startDate\": \"2026-10-01\",\n    \"endDate\": null\n  },\n  \"planHistory\": [\n    {\n      \"id\": 5,\n      \"planId\": 2,\n      \"planCode\": \"PREMIUM\",\n      \"planName\": \"Plan Premium\",\n      \"startDate\": \"2026-10-01\",\n      \"endDate\": null\n    }\n  ],\n  \"wallet\": {\n    \"cashBalance\": 150.00,\n    \"reservedSubscriptionBalance\": 50.00,\n    \"totalAvailable\": 200.00\n  },\n  \"loyalty\": { \"pointsBalance\": 320 },\n  \"totalBalance\": 200.00,\n  \"totalPoints\": 320,\n  \"debt\": {\n    \"pendingQuotesCount\": 1,\n    \"totalPendingAmount\": 85.50,\n    \"quotes\": [\n      {\n        \"id\": 1,\n        \"quoteNumber\": \"COT-2026-0001\",\n        \"total\": 100.00,\n        \"amountPaid\": 14.50,\n        \"pendingAmount\": 85.50,\n        \"createdAt\": \"2026-10-20T09:00:00+00:00\"\n      }\n    ]\n  },\n  \"subscriptions\": {\n    \"activeCount\": 1,\n    \"current\": {\n      \"id\": 1,\n      \"planId\": 2,\n      \"planCode\": \"PREMIUM\",\n      \"planName\": \"Plan Premium\",\n      \"paymentDate\": \"2026-10-01\",\n      \"amountPaid\": 100.00,\n      \"reservedBalance\": 50.00,\n      \"status\": \"active\"\n    }\n  },\n  \"appointments\": {\n    \"upcomingCount\": 1,\n    \"next\": {\n      \"id\": 10,\n      \"appointmentDate\": \"2026-11-10\",\n      \"appointmentTime\": \"09:00\",\n      \"status\": \"confirmed\",\n      \"origin\": \"automatic\",\n      \"serviceId\": 3,\n      \"service\": { \"id\": 3, \"name\": \"Mantenimiento\", \"price\": 25.00 },\n      \"employeeId\": 4,\n      \"employee\": { \"id\": 4, \"fullName\": \"T\u01f8cnico Campo\" }\n    },\n    \"lastCompletedDate\": \"2026-10-10\"\n  },\n  \"recentQuotes\": [\n    {\n      \"id\": 1,\n      \"quoteNumber\": \"COT-2026-0001\",\n      \"total\": 100.00,\n      \"status\": \"pending\",\n      \"loyaltyPointsUsed\": 0,\n      \"loyaltyPointsEarned\": 10,\n      \"createdAt\": \"2026-10-20T09:00:00+00:00\"\n    }\n  ],\n  \"recentPayments\": [\n    {\n      \"id\": 1,\n      \"quoteId\": 1,\n      \"quoteNumber\": \"COT-2026-0001\",\n      \"amountPaid\": 14.50,\n      \"paymentMethod\": \"cash\",\n      \"paymentDate\": \"2026-10-21T11:00:00+00:00\"\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar el historial unificado de movimientos del cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/portfolio\/movements",
+                                    "query": [
+                                        {
+                                            "key": "type",
+                                            "value": "all",
+                                            "description": "Filtro por origen del movimiento: all, wallet o loyalty. Default: all.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "page",
+                                            "value": "1",
+                                            "description": "P\u00e1gina solicitada. Default: 1.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/portfolio\/movements?type=all&page=1&limit=15",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"loyalty\",\"page\":16,\"limit\":22}"
+                                },
+                                "description": "Combina transacciones de dinero y EcoPuntos, ordenadas por fecha descendente."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 102,\n      \"source\": \"loyalty\",\n      \"transactionType\": \"earned_purchase\",\n      \"amount\": null,\n      \"points\": 50,\n      \"description\": \"Puntos ganados por Cotizaci\u00f3n #COT-2026-004\",\n      \"paymentMethod\": null,\n      \"createdAt\": \"2026-03-01T10:15:00+00:00\"\n    }\n  ],\n  \"meta\": {\n    \"currentPage\": 1,\n    \"totalPages\": 1,\n    \"totalItems\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Gesti\ufffd\ufffdn",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar una transacci\ufffd\ufffdn de billetera.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/wallet\/transactions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/wallet\/transactions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"transaction_type\":\"top_up\",\"amount\":\"100.00\",\"payment_method\":\"transfer\",\"is_annual_payment\":false}"
+                                },
+                                "description": "Tipos permitidos: top_up, annual_fee, maintenance_deduction, adjustment,\nreserve_funds y spend_reserved_funds.\n- reserve_funds: mueve saldo de cash a reservado para suscripci\u00f3n.\n- spend_reserved_funds: descuenta del saldo reservado.\nLas transacciones son inmutables; las correcciones se registran como ajustes."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 45,\n    \"transactionType\": \"top_up\",\n    \"amount\": 100.00,\n    \"paymentMethod\": \"transfer\",\n    \"isAnnualPayment\": false,\n    \"cashBalance\": 250.00,\n    \"reservedSubscriptionBalance\": 50.00,\n    \"totalAvailable\": 300.00,\n    \"createdAt\": \"2026-02-28T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Gesti\u00f3n",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar una transacci\u00f3n de EcoPuntos.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/loyalty-points\/transactions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/loyalty-points\/transactions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"transaction_type\":\"earned_purchase\",\"points\":50,\"description\":\"Puntos ganados por compra\",\"quote_id\":4}"
+                                },
+                                "description": "Tipos permitidos: earned_purchase, redeemed, referral, promotional y special_bonus.\nEl balance de puntos nunca puede quedar en negativo."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 102,\n    \"transactionType\": \"earned_purchase\",\n    \"points\": 50,\n    \"description\": \"Puntos ganados por compra\",\n    \"pointsBalance\": 370,\n    \"createdAt\": \"2026-03-01T10:15:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Citas y Agenda",
             "description": "\nEndpoints para la gesti\u00f3n y agendamiento de citas, visitas t\u00e9cnicas e inspecciones operativas.",
             "item": [
@@ -2363,7 +2871,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"date\":\"2026-11-14\",\"status\":\"pending\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"appointment_date\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
+                                    "raw": "{\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"date\":\"2026-11-14\",\"status\":\"cancelled\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"created_at\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7,\"all\":false}"
                                 },
                                 "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
                             },
@@ -2632,6 +3140,182 @@
             ]
         },
         {
+            "name": "EcoPuntos",
+            "description": "\nAPIs de consulta de canjes de recompensas de clientes.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar los canjes de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/loyalty-redemptions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/loyalty-redemptions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\"message\":\"Cliente no encontrado\",\"codigo\":404}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Listar recompensas.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/loyalty-rewards",
+                                    "query": [
+                                        {
+                                            "key": "available",
+                                            "value": "1",
+                                            "description": "Mostrar solo recompensas disponibles.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/loyalty-rewards?available=1"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 200,
+                                    "body": "{\"data\":[]}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Ver una recompensa.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/loyalty-rewards\/:loyalty_reward",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/loyalty-rewards\/:loyalty_reward",
+                                    "variable": [
+                                        {
+                                            "id": "loyalty_reward",
+                                            "key": "loyalty_reward",
+                                            "value": 16,
+                                            "description": ""
+                                        },
+                                        {
+                                            "id": "reward",
+                                            "key": "reward",
+                                            "value": 1,
+                                            "description": "ID de la recompensa."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\LoyaltyReward] 16\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Historial de Transacciones",
             "description": "\nEndpoints para consultar el registro hist\u00f3rico de trabajos de jardiner\u00eda efectuados (pagados)\ny trabajos declinados o cancelados por los clientes, excluyendo trabajos en curso.",
             "item": [
@@ -2722,7 +3406,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"customer_id\":16,\"client_id\":16,\"status_type\":\"all\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"sort_by\":\"total\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7}"
+                                    "raw": "{\"search\":\"b\",\"customer_id\":16,\"client_id\":16,\"status_type\":\"performed\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"sort_by\":\"id\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7}"
                                 },
                                 "description": "Devuelve una lista paginada de transacciones hist\u00f3ricas que ya fueron realizadas (pagadas)\no que fueron canceladas\/declinadas porque el cliente no acept\u00f3 la cotizaci\u00f3n.\nExcluye estrictamente los trabajos en curso o cotizaciones abiertas en estado pendiente.\n\nIncluye un buscador principal unificado (por ID de cliente, n\u00famero de referencia\/cotizaci\u00f3n\no nombre del cliente), filtro espec\u00edfico por cliente y la secci\u00f3n \"Resumen por cliente\"."
                             },
@@ -2906,7 +3590,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"movement_type\":\"all\",\"type\":\"ticket\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"search\":\"n\",\"entity_name\":\"g\",\"status\":\"all\",\"sort_by\":\"total\",\"sort_direction\":\"desc\",\"per_page\":16,\"limit\":17}"
+                                    "raw": "{\"movement_type\":\"all\",\"type\":\"purchase\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"search\":\"n\",\"entity_name\":\"g\",\"status\":\"all\",\"sort_by\":\"created_at\",\"sort_direction\":\"asc\",\"per_page\":16,\"limit\":17}"
                                 },
                                 "description": "Devuelve una lista paginada de todos los movimientos econ\u00f3micos registrados en el sistema,\ncalculando en tiempo real el resumen financiero de ingresos, compras, gastos y utilidad neta."
                             },
@@ -3008,7 +3692,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"name\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"price\",\"sort_direction\":\"asc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -3353,6 +4037,168 @@
             "description": "\nAPIs para la gesti\u00f3n de proveedores, compras y suministros de El Vergel.",
             "item": [
                 {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar proveedores.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Vivero",
+                                            "description": "B\u00fasqueda por nombre, nombre comercial, email, tel\u00e9fono, tax_id (NIT\/DUI), NRC o contacto.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "active",
+                                            "description": "Filtrar por estado (`active` o `inactive`).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "economic_activity",
+                                            "value": "Jardiner\u00eda",
+                                            "description": "Filtrar por giro o actividad econ\u00f3mica.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "phone",
+                                            "value": "78901234",
+                                            "description": "Filtrar por n\u00famero de tel\u00e9fono.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "Filtrar proveedores creados desde una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "name",
+                                            "description": "Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers?search=Vivero&status=active&economic_activity=Jardiner%C3%ADa&phone=78901234&desde=2026-01-01&hasta=2026-12-31&sort_by=name&sort_direction=asc&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-14T21:04:18\",\"hasta\":\"2052-12-07\",\"sort_by\":\"trade_name\",\"sort_direction\":\"DESC\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro econ\u00f3mico, tel\u00e9fono o rango de fechas."
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 200,
+                                    "body": "{\"data\":[],\"links\":{\"first\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/suppliers?page=1\",\"last\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/suppliers?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":null,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/suppliers?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"http:\\\/\\\/localhost\\\/api\\\/v1\\\/suppliers\",\"per_page\":22,\"to\":null,\"total\":0}}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar detalle de un proveedor.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 16,
+                                            "description": "The ID of the supplier."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Supplier] 16\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "name": "Escritura",
                     "description": "",
                     "item": [
@@ -3396,7 +4242,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 16,
                                             "description": "The ID of the supplier."
                                         }
                                     ]
@@ -3414,7 +4260,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"active\",\"notes\":\"architecto\"}"
+                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"inactive\",\"notes\":\"architecto\"}"
                                 },
                                 "description": ""
                             },
@@ -3432,7 +4278,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": 16,
                                             "description": "The ID of the supplier."
                                         }
                                     ]
@@ -3465,7 +4311,7 @@
                                         {
                                             "id": "supplier",
                                             "key": "supplier",
-                                            "value": "architecto",
+                                            "value": 16,
                                             "description": "The supplier."
                                         }
                                     ]
@@ -3494,9 +4340,342 @@
             ]
         },
         {
+            "name": "Suscripciones",
+            "description": "\nAPIs de consulta de las suscripciones de clientes.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Consultar la suscripci\u00f3n activa actual del cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/subscriptions\/current",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/subscriptions\/current",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Customer] 15\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Listar las suscripciones de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/subscriptions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/subscriptions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\"message\":\"Cliente no encontrado\",\"codigo\":404}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Ver el detalle de una suscripci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/subscriptions\/:subscription",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/subscriptions\/:subscription",
+                                    "variable": [
+                                        {
+                                            "id": "subscription",
+                                            "key": "subscription",
+                                            "value": 1,
+                                            "description": "ID de la suscripci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Subscription] 1\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "T\u00e9cnico de Campo",
             "description": "\nEndpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galer\u00eda de im\u00e1genes.",
             "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar inspecciones de campo.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Jard\u00edn frontal",
+                                            "description": "B\u00fasqueda en hallazgos, notas de terreno o nombre del cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "submitted",
+                                            "description": "Filtrar por estado (draft, submitted, reviewed).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "Filtrar por ID de cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "2",
+                                            "description": "Filtrar por t\u00e9cnico\/empleado asignado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-11-01",
+                                            "description": "date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-11-30",
+                                            "description": "date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "inspection_date",
+                                            "description": "Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "desc",
+                                            "description": "Direcci\u00f3n (asc o desc). Default: desc.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Registros por p\u00e1gina.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections?search=Jard%C3%ADn%20frontal&status=submitted&customer_id=1&employee_id=2&start_date=2026-11-01&end_date=2026-11-30&sort_by=inspection_date&sort_direction=desc&per_page=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":16,\"employee_id\":16,\"status\":\"draft\",\"start_date\":\"2026-11-14T21:04:18\",\"end_date\":\"2052-12-07\",\"search\":\"n\",\"sort_by\":\"inspection_date\",\"sort_direction\":\"desc\",\"per_page\":7,\"limit\":16}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 422,
+                                    "body": "{\"message\":\"The selected customer id is invalid. (and 1 more error)\",\"errors\":{\"customer_id\":[\"The selected customer id is invalid.\"],\"employee_id\":[\"The selected employee id is invalid.\"]}}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Ver detalle de inspecci\u00f3n de campo.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the inspection."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 500,
+                                    "body": "{\n    \"message\": \"Server Error\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
                 {
                     "name": "Escritura",
                     "description": "",
@@ -3681,7 +4860,7 @@
                                         },
                                         {
                                             "key": "inspection_date",
-                                            "value": "2026-11-14T20:21:04",
+                                            "value": "2026-11-14T21:04:18",
                                             "type": "text",
                                             "description": "Must be a valid date."
                                         },
@@ -3723,7 +4902,7 @@
                                         },
                                         {
                                             "key": "status",
-                                            "value": "submitted",
+                                            "value": "reviewed",
                                             "type": "text",
                                             "description": ""
                                         },

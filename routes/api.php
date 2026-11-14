@@ -12,10 +12,7 @@ use App\Http\Controllers\Api\V1\MovementController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\PortfolioController;
 use App\Http\Controllers\Api\V1\InspectionController;
-use App\Http\Controllers\Api\V1\MovementController;
-use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\QuoteController;
-
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;

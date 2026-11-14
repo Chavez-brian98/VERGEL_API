@@ -1,23 +1,136 @@
-name: Proveedores
-description: |-
-
-  APIs para la gestión de proveedores, compras y suministros de El Vergel.
+name: Empleados
+description: ''
 endpoints:
   -
     custom: []
     httpMethods:
-      - POST
-    uri: api/v1/suppliers
+      - GET
+    uri: api/v1/employees
     metadata:
       custom: []
-      groupName: Proveedores
-      groupDescription: |-
-
-        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Listar y filtrar empleados.'
+      description: 'Obtiene una lista paginada de empleados con opciones de búsqueda y filtros.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      search:
+        custom: []
+        name: search
+        description: 'Busca por nombre completo, DUI o teléfono.'
+        required: false
+        example: Carlos
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Filtrar por estado (true/activo o false/inactivo).'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      role_id:
+        custom: []
+        name: role_id
+        description: 'Filtrar por ID de rol.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Cantidad de resultados por página.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      search: Carlos
+      active: true
+      role_id: 1
+      limit: 15
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "fullName": "Carlos Mendoza",
+                "dui": "01234567-8",
+                "phone": "7000-0000",
+                "active": true,
+                "roleName": "Administrador",
+                "createdAt": "2026-10-08T22:58:33+00:00"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/employees?page=1",
+              "last": "http://localhost/api/v1/employees?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://localhost/api/v1/employees",
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/employees
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Registrar un nuevo proveedor.'
-      description: ''
+      title: 'Registrar un nuevo empleado.'
+      description: 'Crea un empleado asociado a un rol existente. El estado por defecto es activo.'
       authenticated: true
       deprecated: false
     headers:
@@ -29,78 +142,34 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
+      full_name:
         custom: []
-        name: name
-        description: 'Razón social o nombre del proveedor.'
+        name: full_name
+        description: 'Nombre completo del empleado.'
         required: true
-        example: 'Distribuidora Verde S.A. de C.V.'
+        example: 'Carlos Mendoza'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      trade_name:
+      role_id:
         custom: []
-        name: trade_name
-        description: 'Nombre comercial del proveedor.'
-        required: false
-        example: 'Vivero El Roble'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      tax_id:
-        custom: []
-        name: tax_id
-        description: 'NIT o DUI del proveedor.'
-        required: false
-        example: 0614-010190-101-1
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      nrc:
-        custom: []
-        name: nrc
-        description: 'Número de Registro de Contribuyente (NRC).'
-        required: false
-        example: 123456-7
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      economic_activity:
-        custom: []
-        name: economic_activity
-        description: 'Giro comercial.'
-        required: false
-        example: 'Venta de plantas y abonos'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      phone:
-        custom: []
-        name: phone
-        description: 'Teléfono principal de contacto.'
+        name: role_id
+        description: 'ID del rol asignado.'
         required: true
-        example: '22223333'
-        type: string
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      email:
+      dui:
         custom: []
-        name: email
-        description: 'Correo electrónico.'
+        name: dui
+        description: 'DUI del empleado (único).'
         required: false
-        example: ventas@elroble.com
+        example: 01234567-8
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -109,78 +178,231 @@ endpoints:
       address:
         custom: []
         name: address
-        description: 'Dirección física.'
+        description: Dirección.
         required: false
-        example: 'Calle Principal #123, San Salvador'
+        example: 'Colonia Centro, San Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      contact_name:
+      municipality:
         custom: []
-        name: contact_name
-        description: 'Nombre del contacto / vendedor.'
+        name: municipality
+        description: Municipio.
         required: false
-        example: 'Carlos Henríquez'
+        example: 'San Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      contact_phone:
+      department:
         custom: []
-        name: contact_phone
-        description: 'Teléfono del contacto.'
+        name: department
+        description: Departamento.
         required: false
-        example: '77778888'
+        example: 'San Salvador'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      status:
+      birth_date:
         custom: []
-        name: status
-        description: 'Estado inicial (`active` o `inactive`). Default: active.'
+        name: birth_date
+        description: 'Fecha de nacimiento (YYYY-MM-DD).'
         required: false
-        example: active
+        example: '1990-01-15'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      hire_date:
+        custom: []
+        name: hire_date
+        description: 'Fecha de contratación (YYYY-MM-DD).'
+        required: false
+        example: '2024-03-01'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: Teléfono.
+        required: false
+        example: 7000-0000
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      notes:
+      active:
         custom: []
-        name: notes
-        description: 'Notas u observaciones.'
+        name: active
+        description: 'Estado del empleado.'
         required: false
-        example: 'Proveedor mayorista de tierra y sustratos'
-        type: string
+        example: true
+        type: boolean
         enumValues: []
         exampleWasSpecified: true
-        nullable: true
+        nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: 'Distribuidora Verde S.A. de C.V.'
-      trade_name: 'Vivero El Roble'
-      tax_id: 0614-010190-101-1
-      nrc: 123456-7
-      economic_activity: 'Venta de plantas y abonos'
-      phone: '22223333'
-      email: ventas@elroble.com
-      address: 'Calle Principal #123, San Salvador'
-      contact_name: 'Carlos Henríquez'
-      contact_phone: '77778888'
-      status: active
-      notes: 'Proveedor mayorista de tierra y sustratos'
+      full_name: 'Carlos Mendoza'
+      role_id: 1
+      dui: 01234567-8
+      address: 'Colonia Centro, San Salvador'
+      municipality: 'San Salvador'
+      department: 'San Salvador'
+      birth_date: '1990-01-15'
+      hire_date: '2024-03-01'
+      phone: 7000-0000
+      active: true
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza",
+              "dui": "01234567-8",
+              "address": "Colonia Centro, San Salvador",
+              "municipality": "San Salvador",
+              "department": "San Salvador",
+              "birthDate": "1990-01-15",
+              "hireDate": "2024-03-01",
+              "phone": "7000-0000",
+              "active": true,
+              "role": {
+                "id": 1,
+                "roleName": "Administrador"
+              },
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The full name field is required.",
+            "errors": {
+              "full_name": ["The full name field is required."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/employees/{id}'
+    metadata:
+      custom: []
+      groupName: Empleados
+      groupDescription: ''
+      subgroup: Consultas
+      subgroupDescription: ''
+      title: 'Obtener detalle de un empleado.'
+      description: 'Devuelve los datos completos del empleado junto con su rol.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the employee.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      employee:
+        custom: []
+        name: employee
+        description: 'ID del empleado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      employee: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza",
+              "dui": "01234567-8",
+              "address": "Colonia Centro, San Salvador",
+              "municipality": "San Salvador",
+              "department": "San Salvador",
+              "birthDate": "1990-01-15",
+              "hireDate": "2024-03-01",
+              "phone": "7000-0000",
+              "active": true,
+              "role": {
+                "id": 1,
+                "roleName": "Administrador"
+              },
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Empleado no encontrado",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
     controller: null
     method: null
     route: null
@@ -189,17 +411,15 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/v1/suppliers/{id}'
+    uri: 'api/v1/employees/{id}'
     metadata:
       custom: []
-      groupName: Proveedores
-      groupDescription: |-
-
-        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      groupName: Empleados
+      groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Actualizar información de un proveedor.'
-      description: ''
+      title: 'Actualizar un empleado.'
+      description: 'Actualiza de forma parcial los datos editables del empleado. Registra la operación en auditoría.'
       authenticated: true
       deprecated: false
     headers:
@@ -210,173 +430,197 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the supplier.'
+        description: 'The ID of the employee.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      employee:
+        custom: []
+        name: employee
+        description: 'ID del empleado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 1
+      employee: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
+      full_name:
         custom: []
-        name: name
-        description: 'Must not be greater than 150 characters.'
+        name: full_name
+        description: 'Nombre completo del empleado.'
         required: false
-        example: b
+        example: 'Carlos Mendoza'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-      trade_name:
+      role_id:
         custom: []
-        name: trade_name
-        description: 'Must not be greater than 150 characters.'
+        name: role_id
+        description: 'ID del rol asignado.'
         required: false
-        example: 'n'
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      tax_id:
-        custom: []
-        name: tax_id
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: gzmiyvdljnikhway
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      nrc:
-        custom: []
-        name: nrc
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: kcmyuwpwlvqwrsit
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      economic_activity:
-        custom: []
-        name: economic_activity
-        description: 'Must not be greater than 150 characters.'
-        required: false
-        example: c
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      phone:
-        custom: []
-        name: phone
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: pscqldzsnrwtujwv
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-      email:
+      dui:
         custom: []
-        name: email
-        description: 'Must be a valid email address. Must not be greater than 120 characters.'
+        name: dui
+        description: 'DUI del empleado (único).'
         required: false
-        example: jhaag@example.net
+        example: 01234567-8
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       address:
         custom: []
         name: address
-        description: 'Must not be greater than 255 characters.'
+        description: Dirección.
         required: false
-        example: l
+        example: 'Colonia Centro, San Salvador'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
-      contact_name:
+      municipality:
         custom: []
-        name: contact_name
-        description: 'Must not be greater than 150 characters.'
+        name: municipality
+        description: Municipio.
         required: false
-        example: q
+        example: 'San Salvador'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
-      contact_phone:
+      department:
         custom: []
-        name: contact_phone
-        description: 'Must not be greater than 20 characters.'
+        name: department
+        description: Departamento.
         required: false
-        example: ppwqbewtnnoqitpx
+        example: 'San Salvador'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
-      status:
+      birth_date:
         custom: []
-        name: status
-        description: ''
+        name: birth_date
+        description: 'Fecha de nacimiento (YYYY-MM-DD).'
         required: false
-        example: active
-        type: string
-        enumValues:
-          - active
-          - inactive
-        exampleWasSpecified: false
+        example: '1990-01-15'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
-      notes:
+      hire_date:
         custom: []
-        name: notes
-        description: ''
+        name: hire_date
+        description: 'Fecha de contratación (YYYY-MM-DD).'
         required: false
-        example: architecto
+        example: '2024-03-01'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: Teléfono.
+        required: false
+        example: 7000-0000
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
+        deprecated: false
+      active:
+        custom: []
+        name: active
+        description: 'Estado del empleado.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: b
-      trade_name: 'n'
-      tax_id: gzmiyvdljnikhway
-      nrc: kcmyuwpwlvqwrsit
-      economic_activity: c
-      phone: pscqldzsnrwtujwv
-      email: jhaag@example.net
-      address: l
-      contact_name: q
-      contact_phone: ppwqbewtnnoqitpx
-      status: active
-      notes: architecto
+      full_name: 'Carlos Mendoza'
+      role_id: 1
+      dui: 01234567-8
+      address: 'Colonia Centro, San Salvador'
+      municipality: 'San Salvador'
+      department: 'San Salvador'
+      birth_date: '1990-01-15'
+      hire_date: '2024-03-01'
+      phone: 7000-0000
+      active: true
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza Actualizado",
+              "dui": "01234567-8",
+              "active": true,
+              "createdAt": "2026-10-08T22:58:33+00:00",
+              "updatedAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Empleado no encontrado",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The dui has already been taken.",
+            "errors": {
+              "dui": ["The dui has already been taken."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
     controller: null
     method: null
     route: null
@@ -384,17 +628,15 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/suppliers/{id}'
+    uri: 'api/v1/employees/{id}'
     metadata:
       custom: []
-      groupName: Proveedores
-      groupDescription: |-
-
-        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      groupName: Empleados
+      groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Eliminar proveedor (Borrado lógico).'
-      description: ''
+      title: 'Eliminar un empleado (soft delete).'
+      description: 'Marca al empleado como eliminado sin borrarlo físicamente de la base de datos.'
       authenticated: true
       deprecated: false
     headers:
@@ -405,27 +647,55 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the supplier.'
+        description: 'The ID of the employee.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      employee:
+        custom: []
+        name: employee
+        description: 'ID del empleado.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 1
+      employee: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 204
+        content: ''
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Empleado no encontrado",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
     controller: null
     method: null
     route: null
@@ -433,17 +703,15 @@ endpoints:
     custom: []
     httpMethods:
       - PATCH
-    uri: 'api/v1/suppliers/{supplier}/status'
+    uri: 'api/v1/employees/{employee}/status'
     metadata:
       custom: []
-      groupName: Proveedores
-      groupDescription: |-
-
-        APIs para la gestión de proveedores, compras y suministros de El Vergel.
+      groupName: Empleados
+      groupDescription: ''
       subgroup: Escritura
       subgroupDescription: ''
-      title: 'Cambiar estado de un proveedor.'
-      description: ''
+      title: 'Activar o desactivar un empleado.'
+      description: 'Cambia el estado (activo/inactivo) de un empleado existente.'
       authenticated: true
       deprecated: false
     headers:
@@ -451,42 +719,78 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      supplier:
+      employee:
         custom: []
-        name: supplier
-        description: 'The supplier.'
+        name: employee
+        description: 'ID del empleado.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      supplier: architecto
+      employee: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      status:
+      active:
         custom: []
-        name: status
-        description: 'Nuevo estado (`active` o `inactive`).'
+        name: active
+        description: 'Nuevo estado del empleado.'
         required: true
-        example: inactive
-        type: string
+        example: false
+        type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      status: inactive
+      active: false
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "fullName": "Carlos Mendoza",
+              "active": false,
+              "createdAt": "2026-10-08T22:58:33+00:00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Empleado no encontrado",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The active field is required.",
+            "errors": {
+              "active": ["The active field is required."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
     controller: null
     method: null
     route: null
