@@ -160,7 +160,7 @@ endpoints:
         name: active
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -242,7 +242,7 @@ endpoints:
     cleanBodyParameters:
       search: b
       category_type: 'n'
-      active: false
+      active: true
       min_price: 84
       max_price: 12
       per_page: 17

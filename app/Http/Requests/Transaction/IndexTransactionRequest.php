@@ -14,7 +14,7 @@ class IndexTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (bool) $this->user()?->can('viewAny', Quote::class);
+        return (bool) $this->user()?->can('viewAnyTransaction');
     }
 
     /**

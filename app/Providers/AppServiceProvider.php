@@ -60,5 +60,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPortfolio', fn (User $user) => app(PortfolioPolicy::class)->view($user));
         Gate::define('viewPortfolioMovements', fn (User $user) => app(PortfolioPolicy::class)->viewMovements($user));
         Gate::define('managePortfolio', fn (User $user) => app(PortfolioPolicy::class)->manage($user));
+        Gate::define('viewAnyTransaction', [TransactionPolicy::class, 'viewAny']);
+        Gate::define('viewTransaction', [TransactionPolicy::class, 'view']);
     }
 }

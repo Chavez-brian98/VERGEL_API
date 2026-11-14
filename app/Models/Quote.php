@@ -52,6 +52,11 @@ class Quote extends Model
         return $this->belongsTo(SubscriptionPlan::class, 'applied_plan_id');
     }
 
+    public function appliedPlan(): BelongsTo
+    {
+        return $this->belongsTo(SubscriptionPlan::class, 'applied_plan_id');
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(QuoteItem::class);

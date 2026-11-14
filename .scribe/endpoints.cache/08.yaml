@@ -8,290 +8,6 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/inspections
-    metadata:
-      custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Listar inspecciones de campo.'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      search:
-        custom: []
-        name: search
-        description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
-        required: false
-        example: 'Jardín frontal'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: 'Filtrar por estado (draft, submitted, reviewed).'
-        required: false
-        example: submitted
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      customer_id:
-        custom: []
-        name: customer_id
-        description: 'Filtrar por ID de cliente.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'Filtrar por técnico/empleado asignado.'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      start_date:
-        custom: []
-        name: start_date
-        description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
-        required: false
-        example: '2026-11-01'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      end_date:
-        custom: []
-        name: end_date
-        description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
-        required: false
-        example: '2026-11-30'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sort_by:
-        custom: []
-        name: sort_by
-        description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
-        required: false
-        example: inspection_date
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sort_direction:
-        custom: []
-        name: sort_direction
-        description: 'Dirección (asc o desc). Default: desc.'
-        required: false
-        example: desc
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Registros por página.'
-        required: false
-        example: 15
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      search: 'Jardín frontal'
-      status: submitted
-      customer_id: 1
-      employee_id: 2
-      start_date: '2026-11-01'
-      end_date: '2026-11-30'
-      sort_by: inspection_date
-      sort_direction: desc
-      per_page: 15
-    bodyParameters:
-      customer_id:
-        custom: []
-        name: customer_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      employee_id:
-        custom: []
-        name: employee_id
-        description: 'Must match an existing stored value.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: draft
-        type: string
-        enumValues:
-          - draft
-          - submitted
-          - reviewed
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      start_date:
-        custom: []
-        name: start_date
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-11-13T20:28:56'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      end_date:
-        custom: []
-        name: end_date
-        description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
-        required: false
-        example: '2052-12-06'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      search:
-        custom: []
-        name: search
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: 'n'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      sort_by:
-        custom: []
-        name: sort_by
-        description: ''
-        required: false
-        example: total_area
-        type: string
-        enumValues:
-          - id
-          - inspection_date
-          - created_at
-          - status
-          - total_area
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      sort_direction:
-        custom: []
-        name: sort_direction
-        description: ''
-        required: false
-        example: asc
-        type: string
-        enumValues:
-          - asc
-          - desc
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 7
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      limit:
-        custom: []
-        name: limit
-        description: 'Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      customer_id: 16
-      employee_id: 16
-      status: draft
-      start_date: '2026-11-13T20:28:56'
-      end_date: '2052-12-06'
-      search: 'n'
-      sort_by: total_area
-      sort_direction: asc
-      per_page: 7
-      limit: 16
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
       - POST
     uri: api/v1/inspections
     metadata:
@@ -300,7 +16,7 @@ endpoints:
       groupDescription: |-
 
         Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Registrar inspección de campo.'
       description: 'Crea una inspección realizada por el técnico de campo, registrando dimensiones del terreno, servicios requeridos y fotografías de referencia.'
@@ -564,64 +280,6 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: 'api/v1/inspections/{id}'
-    metadata:
-      custom: []
-      groupName: 'Técnico de Campo'
-      groupDescription: |-
-
-        Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Ver detalle de inspección de campo.'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the inspection.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
       - PUT
       - PATCH
     uri: 'api/v1/inspections/{id}'
@@ -631,7 +289,7 @@ endpoints:
       groupDescription: |-
 
         Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Actualizar inspección de campo.'
       description: ''
@@ -696,7 +354,7 @@ endpoints:
         name: inspection_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-13T20:28:56'
+        example: '2026-11-14T20:21:04'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -773,7 +431,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: reviewed
+        example: submitted
         type: string
         enumValues:
           - draft
@@ -875,14 +533,14 @@ endpoints:
       customer_id: 16
       appointment_id: 16
       employee_id: 16
-      inspection_date: '2026-11-13T20:28:56'
+      inspection_date: '2026-11-14T20:21:04'
       findings: architecto
       terrain_width: 39
       terrain_length: 84
       total_area: 12
       area_unit: miyvdljnikhwaykc
       terrain_notes: architecto
-      status: reviewed
+      status: submitted
       services:
         -
           service_id: 16
@@ -917,7 +575,7 @@ endpoints:
       groupDescription: |-
 
         Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Eliminar inspección técnica.'
       description: ''
@@ -966,7 +624,7 @@ endpoints:
       groupDescription: |-
 
         Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Cambiar estado de la inspección.'
       description: ''
@@ -1027,7 +685,7 @@ endpoints:
       groupDescription: |-
 
         Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Subir fotos adicionales a la inspección.'
       description: 'Permite subir más imágenes de referencia a una inspección ya creada.'
@@ -1129,7 +787,7 @@ endpoints:
       groupDescription: |-
 
         Endpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galería de imágenes.
-      subgroup: ''
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Eliminar foto de inspección.'
       description: ''
