@@ -59,7 +59,7 @@ class QuoteController extends Controller
      * el IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.
      * El empleado se toma del usuario autenticado.
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      *
      * @bodyParam customer_id integer ID del cliente asociado. Example: 1
      * @bodyParam applied_plan_id integer required ID del plan de suscripción aplicado. Example: 1
@@ -107,7 +107,7 @@ class QuoteController extends Controller
      *
      * Actualiza datos generales y, si se envía `items`, reemplaza el detalle completo y recalcula los montos.
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      *
      * @urlParam quote integer required ID de la cotización. Example: 1
      *
@@ -133,7 +133,7 @@ class QuoteController extends Controller
     /**
      * Cambiar el estado de una cotización.
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      *
      * @urlParam quote integer required ID de la cotización. Example: 1
      *
@@ -149,7 +149,7 @@ class QuoteController extends Controller
     /**
      * Eliminar una cotización (Borrado lógico).
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      *
      * @urlParam quote integer required ID de la cotización. Example: 1
      */

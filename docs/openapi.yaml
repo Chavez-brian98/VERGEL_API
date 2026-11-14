@@ -293,7 +293,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: inactive
+                  example: active
                   enum:
                     - active
                     - inactive
@@ -306,12 +306,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-13'
+                  example: '2026-11-14'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-06'
+                  example: '2052-12-07'
                   nullable: true
                 limit:
                   type: integer
@@ -1247,202 +1247,6 @@ paths:
         schema:
           type: integer
   /api/v1/quotes:
-    get:
-      summary: 'Listar y filtrar cotizaciones.'
-      operationId: listarYFiltrarCotizaciones
-      description: 'Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas.'
-      parameters:
-        -
-          in: query
-          name: search
-          description: 'Búsqueda por número de cotización o nombre del cliente.'
-          example: COT-20261111
-          required: false
-          schema:
-            type: string
-            description: 'Búsqueda por número de cotización o nombre del cliente.'
-            example: COT-20261111
-        -
-          in: query
-          name: status
-          description: 'Filtrar por estado (`pending` o `paid`).'
-          example: pending
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar por estado (`pending` o `paid`).'
-            example: pending
-        -
-          in: query
-          name: customer_id
-          description: 'Filtrar por cliente.'
-          example: 1
-          required: false
-          schema:
-            type: integer
-            description: 'Filtrar por cliente.'
-            example: 1
-        -
-          in: query
-          name: employee_id
-          description: 'Filtrar por empleado que registró la cotización.'
-          example: 1
-          required: false
-          schema:
-            type: integer
-            description: 'Filtrar por empleado que registró la cotización.'
-            example: 1
-        -
-          in: query
-          name: applied_plan_id
-          description: 'Filtrar por plan de suscripción aplicado.'
-          example: 1
-          required: false
-          schema:
-            type: integer
-            description: 'Filtrar por plan de suscripción aplicado.'
-            example: 1
-        -
-          in: query
-          name: desde
-          description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
-          example: '2026-01-01'
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).'
-            example: '2026-01-01'
-        -
-          in: query
-          name: hasta
-          description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
-          example: '2026-12-31'
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).'
-            example: '2026-12-31'
-        -
-          in: query
-          name: sort_by
-          description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
-          example: created_at
-          required: false
-          schema:
-            type: string
-            description: 'Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.'
-            example: created_at
-        -
-          in: query
-          name: sort_direction
-          description: 'Dirección (`asc` o `desc`). Default: `desc`.'
-          example: desc
-          required: false
-          schema:
-            type: string
-            description: 'Dirección (`asc` o `desc`). Default: `desc`.'
-            example: desc
-        -
-          in: query
-          name: limit
-          description: 'Cantidad de registros por página (1-100). Default: 15.'
-          example: 15
-          required: false
-          schema:
-            type: integer
-            description: 'Cantidad de registros por página (1-100). Default: 15.'
-            example: 15
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - Cotizaciones
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                search:
-                  type: string
-                  description: 'Must not be greater than 150 characters.'
-                  example: b
-                  nullable: true
-                status:
-                  type: string
-                  description: ''
-                  example: pending
-                  enum:
-                    - pending
-                    - paid
-                  nullable: true
-                customer_id:
-                  type: integer
-                  description: 'Must match an existing stored value.'
-                  example: 16
-                  nullable: true
-                employee_id:
-                  type: integer
-                  description: 'Must match an existing stored value.'
-                  example: 16
-                  nullable: true
-                applied_plan_id:
-                  type: integer
-                  description: 'Must match an existing stored value.'
-                  example: 16
-                  nullable: true
-                desde:
-                  type: string
-                  description: 'Must be a valid date.'
-                  example: '2026-11-13T20:28:56'
-                  nullable: true
-                hasta:
-                  type: string
-                  description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-06'
-                  nullable: true
-                sort_by:
-                  type: string
-                  description: ''
-                  example: status
-                  enum:
-                    - id
-                    - quote_number
-                    - status
-                    - total
-                    - created_at
-                  nullable: true
-                sort_direction:
-                  type: string
-                  description: ''
-                  example: DESC
-                  enum:
-                    - asc
-                    - desc
-                    - ASC
-                    - DESC
-                  nullable: true
-                limit:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 100.'
-                  example: 22
-                  nullable: true
-                per_page:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 100.'
-                  example: 7
-                  nullable: true
     post:
       summary: 'Registrar una nueva cotización.'
       operationId: registrarUnaNuevaCotizacin
@@ -1519,26 +1323,6 @@ paths:
                 - applied_plan_id
                 - items
   '/api/v1/quotes/{id}':
-    get:
-      summary: 'Consultar el detalle de una cotización.'
-      operationId: consultarElDetalleDeUnaCotizacin
-      description: 'Incluye cliente, empleado, plan aplicado e ítems.'
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - Cotizaciones
     put:
       summary: 'Actualizar una cotización.'
       operationId: actualizarUnaCotizacin
@@ -4499,7 +4283,7 @@ paths:
                 action:
                   type: string
                   description: ''
-                  example: insert
+                  example: restore
                   enum:
                     - insert
                     - update
@@ -4525,22 +4309,22 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-13'
+                  example: '2026-11-14'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-06'
+                  example: '2052-12-07'
                   nullable: true
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-13'
+                  example: '2026-11-14'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-06'
+                  example: '2052-12-07'
                   nullable: true
                 limit:
                   type: integer
@@ -5240,22 +5024,22 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-13'
+                  example: '2026-11-14'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-06'
+                  example: '2052-12-07'
                   nullable: true
                 date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-13'
+                  example: '2026-11-14'
                   nullable: true
                 status:
                   type: string
                   description: ''
-                  example: annulled
+                  example: pending
                   enum:
                     - pending
                     - confirmed
@@ -6779,12 +6563,12 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-13'
+                  example: '2026-11-14'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-06'
+                  example: '2052-12-07'
                   nullable: true
                 sort_by:
                   type: string
@@ -7463,7 +7247,7 @@ paths:
                 movement_type:
                   type: string
                   description: ''
-                  example: purchase
+                  example: all
                   enum:
                     - all
                     - sale
@@ -7474,7 +7258,7 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: expense
+                  example: ticket
                   enum:
                     - all
                     - sale
@@ -7485,12 +7269,12 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-13'
+                  example: '2026-11-14'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-06'
+                  example: '2052-12-07'
                   nullable: true
                 search:
                   type: string
@@ -7505,7 +7289,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: completed
+                  example: all
                   enum:
                     - all
                     - completed
@@ -7514,7 +7298,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: id
+                  example: total
                   enum:
                     - id
                     - movement_date
@@ -7776,7 +7560,7 @@ paths:
                 active:
                   type: boolean
                   description: ''
-                  example: false
+                  example: true
                   nullable: true
                 min_price:
                   type: number
@@ -8282,187 +8066,6 @@ paths:
         schema:
           type: integer
   /api/v1/suppliers:
-    get:
-      summary: 'Listar y filtrar proveedores.'
-      operationId: listarYFiltrarProveedores
-      description: 'Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro económico, teléfono o rango de fechas.'
-      parameters:
-        -
-          in: query
-          name: search
-          description: 'Búsqueda por nombre, nombre comercial, email, teléfono, tax_id (NIT/DUI), NRC o contacto.'
-          example: Vivero
-          required: false
-          schema:
-            type: string
-            description: 'Búsqueda por nombre, nombre comercial, email, teléfono, tax_id (NIT/DUI), NRC o contacto.'
-            example: Vivero
-        -
-          in: query
-          name: status
-          description: 'Filtrar por estado (`active` o `inactive`).'
-          example: active
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar por estado (`active` o `inactive`).'
-            example: active
-        -
-          in: query
-          name: economic_activity
-          description: 'Filtrar por giro o actividad económica.'
-          example: Jardinería
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar por giro o actividad económica.'
-            example: Jardinería
-        -
-          in: query
-          name: phone
-          description: 'Filtrar por número de teléfono.'
-          example: '78901234'
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar por número de teléfono.'
-            example: '78901234'
-        -
-          in: query
-          name: desde
-          description: 'Filtrar proveedores creados desde una fecha (YYYY-MM-DD).'
-          example: '2026-01-01'
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar proveedores creados desde una fecha (YYYY-MM-DD).'
-            example: '2026-01-01'
-        -
-          in: query
-          name: hasta
-          description: 'Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).'
-          example: '2026-12-31'
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).'
-            example: '2026-12-31'
-        -
-          in: query
-          name: sort_by
-          description: 'Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.'
-          example: name
-          required: false
-          schema:
-            type: string
-            description: 'Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.'
-            example: name
-        -
-          in: query
-          name: sort_direction
-          description: 'Dirección (`asc` o `desc`). Default: `desc`.'
-          example: asc
-          required: false
-          schema:
-            type: string
-            description: 'Dirección (`asc` o `desc`). Default: `desc`.'
-            example: asc
-        -
-          in: query
-          name: limit
-          description: 'Cantidad de registros por página (1-100). Default: 15.'
-          example: 15
-          required: false
-          schema:
-            type: integer
-            description: 'Cantidad de registros por página (1-100). Default: 15.'
-            example: 15
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - Proveedores
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                search:
-                  type: string
-                  description: 'Must not be greater than 150 characters.'
-                  example: b
-                  nullable: true
-                status:
-                  type: string
-                  description: ''
-                  example: active
-                  enum:
-                    - active
-                    - inactive
-                  nullable: true
-                economic_activity:
-                  type: string
-                  description: 'Must not be greater than 150 characters.'
-                  example: 'n'
-                  nullable: true
-                phone:
-                  type: string
-                  description: 'Must not be greater than 20 characters.'
-                  example: gzmiyvdljnikhway
-                  nullable: true
-                desde:
-                  type: string
-                  description: 'Must be a valid date.'
-                  example: '2026-11-13T20:28:55'
-                  nullable: true
-                hasta:
-                  type: string
-                  description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-06'
-                  nullable: true
-                sort_by:
-                  type: string
-                  description: ''
-                  example: name
-                  enum:
-                    - id
-                    - name
-                    - trade_name
-                    - status
-                    - created_at
-                  nullable: true
-                sort_direction:
-                  type: string
-                  description: ''
-                  example: desc
-                  enum:
-                    - asc
-                    - desc
-                    - ASC
-                    - DESC
-                  nullable: true
-                limit:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 100.'
-                  example: 22
-                  nullable: true
-                per_page:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 100.'
-                  example: 7
-                  nullable: true
     post:
       summary: 'Registrar un nuevo proveedor.'
       operationId: registrarUnNuevoProveedor
@@ -8540,26 +8143,6 @@ paths:
                 - name
                 - phone
   '/api/v1/suppliers/{id}':
-    get:
-      summary: 'Consultar detalle de un proveedor.'
-      operationId: consultarDetalleDeUnProveedor
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - Proveedores
     put:
       summary: 'Actualizar información de un proveedor.'
       operationId: actualizarInformacinDeUnProveedor
@@ -8626,7 +8209,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: inactive
+                  example: active
                   enum:
                     - active
                     - inactive
@@ -8685,176 +8268,6 @@ paths:
         schema:
           type: string
   /api/v1/inspections:
-    get:
-      summary: 'Listar inspecciones de campo.'
-      operationId: listarInspeccionesDeCampo
-      description: ''
-      parameters:
-        -
-          in: query
-          name: search
-          description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
-          example: 'Jardín frontal'
-          required: false
-          schema:
-            type: string
-            description: 'Búsqueda en hallazgos, notas de terreno o nombre del cliente.'
-            example: 'Jardín frontal'
-        -
-          in: query
-          name: status
-          description: 'Filtrar por estado (draft, submitted, reviewed).'
-          example: submitted
-          required: false
-          schema:
-            type: string
-            description: 'Filtrar por estado (draft, submitted, reviewed).'
-            example: submitted
-        -
-          in: query
-          name: customer_id
-          description: 'Filtrar por ID de cliente.'
-          example: 1
-          required: false
-          schema:
-            type: integer
-            description: 'Filtrar por ID de cliente.'
-            example: 1
-        -
-          in: query
-          name: employee_id
-          description: 'Filtrar por técnico/empleado asignado.'
-          example: 2
-          required: false
-          schema:
-            type: integer
-            description: 'Filtrar por técnico/empleado asignado.'
-            example: 2
-        -
-          in: query
-          name: start_date
-          description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
-          example: '2026-11-01'
-          required: false
-          schema:
-            type: string
-            description: 'date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).'
-            example: '2026-11-01'
-        -
-          in: query
-          name: end_date
-          description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
-          example: '2026-11-30'
-          required: false
-          schema:
-            type: string
-            description: 'date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).'
-            example: '2026-11-30'
-        -
-          in: query
-          name: sort_by
-          description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
-          example: inspection_date
-          required: false
-          schema:
-            type: string
-            description: 'Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.'
-            example: inspection_date
-        -
-          in: query
-          name: sort_direction
-          description: 'Dirección (asc o desc). Default: desc.'
-          example: desc
-          required: false
-          schema:
-            type: string
-            description: 'Dirección (asc o desc). Default: desc.'
-            example: desc
-        -
-          in: query
-          name: per_page
-          description: 'Registros por página.'
-          example: 15
-          required: false
-          schema:
-            type: integer
-            description: 'Registros por página.'
-            example: 15
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - 'Técnico de Campo'
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                customer_id:
-                  type: integer
-                  description: 'Must match an existing stored value.'
-                  example: 16
-                employee_id:
-                  type: integer
-                  description: 'Must match an existing stored value.'
-                  example: 16
-                status:
-                  type: string
-                  description: ''
-                  example: draft
-                  enum:
-                    - draft
-                    - submitted
-                    - reviewed
-                start_date:
-                  type: string
-                  description: 'Must be a valid date.'
-                  example: '2026-11-13T20:28:56'
-                end_date:
-                  type: string
-                  description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-06'
-                search:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: 'n'
-                sort_by:
-                  type: string
-                  description: ''
-                  example: total_area
-                  enum:
-                    - id
-                    - inspection_date
-                    - created_at
-                    - status
-                    - total_area
-                sort_direction:
-                  type: string
-                  description: ''
-                  example: asc
-                  enum:
-                    - asc
-                    - desc
-                per_page:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 100.'
-                  example: 7
-                limit:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 100.'
-                  example: 16
     post:
       summary: 'Registrar inspección de campo.'
       operationId: registrarInspeccinDeCampo
@@ -8972,26 +8385,6 @@ paths:
                 - customer_id
                 - inspection_date
   '/api/v1/inspections/{id}':
-    get:
-      summary: 'Ver detalle de inspección de campo.'
-      operationId: verDetalleDeInspeccinDeCampo
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - 'Técnico de Campo'
     put:
       summary: 'Actualizar inspección de campo.'
       operationId: actualizarInspeccinDeCampo
@@ -9024,7 +8417,7 @@ paths:
                 inspection_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-13T20:28:56'
+                  example: '2026-11-14T20:21:04'
                 findings:
                   type: string
                   description: ''
@@ -9057,7 +8450,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: reviewed
+                  example: submitted
                   enum:
                     - draft
                     - submitted

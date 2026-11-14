@@ -182,7 +182,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-13'
+        example: '2026-11-14'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -193,7 +193,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-06'
+        example: '2052-12-07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -204,7 +204,7 @@ endpoints:
         name: date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-13'
+        example: '2026-11-14'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -215,7 +215,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: annulled
+        example: pending
         type: string
         enumValues:
           - pending
@@ -333,10 +333,10 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      start_date: '2026-11-13'
-      end_date: '2052-12-06'
-      date: '2026-11-13'
-      status: annulled
+      start_date: '2026-11-14'
+      end_date: '2052-12-07'
+      date: '2026-11-14'
+      status: pending
       customer_id: 16
       client_id: 16
       employee_id: 16

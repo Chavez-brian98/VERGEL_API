@@ -198,7 +198,7 @@ endpoints:
         name: action
         description: ''
         required: false
-        example: insert
+        example: restore
         type: string
         enumValues:
           - insert
@@ -247,7 +247,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-13'
+        example: '2026-11-14'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -258,7 +258,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-06'
+        example: '2052-12-07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -269,7 +269,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-13'
+        example: '2026-11-14'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -280,7 +280,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-12-06'
+        example: '2052-12-07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -311,14 +311,14 @@ endpoints:
     cleanBodyParameters:
       user_id: 16
       employee_id: 16
-      action: insert
+      action: restore
       affected_table: 'n'
       table_name: g
       affected_record_id: 66
-      start_date: '2026-11-13'
-      end_date: '2052-12-06'
-      desde: '2026-11-13'
-      hasta: '2052-12-06'
+      start_date: '2026-11-14'
+      end_date: '2052-12-07'
+      desde: '2026-11-14'
+      hasta: '2052-12-07'
       limit: 22
       per_page: 7
     fileParameters: []

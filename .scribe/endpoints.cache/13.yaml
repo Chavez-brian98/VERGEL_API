@@ -174,7 +174,7 @@ endpoints:
         name: movement_type
         description: ''
         required: false
-        example: purchase
+        example: all
         type: string
         enumValues:
           - all
@@ -190,7 +190,7 @@ endpoints:
         name: type
         description: ''
         required: false
-        example: expense
+        example: ticket
         type: string
         enumValues:
           - all
@@ -206,7 +206,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-13'
+        example: '2026-11-14'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -217,7 +217,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-06'
+        example: '2052-12-07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -250,7 +250,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: completed
+        example: all
         type: string
         enumValues:
           - all
@@ -264,7 +264,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: id
+        example: total
         type: string
         enumValues:
           - id
@@ -312,14 +312,14 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      movement_type: purchase
-      type: expense
-      start_date: '2026-11-13'
-      end_date: '2052-12-06'
+      movement_type: all
+      type: ticket
+      start_date: '2026-11-14'
+      end_date: '2052-12-07'
       search: 'n'
       entity_name: g
-      status: completed
-      sort_by: id
+      status: all
+      sort_by: total
       sort_direction: desc
       per_page: 16
       limit: 17

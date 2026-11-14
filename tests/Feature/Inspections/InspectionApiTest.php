@@ -36,16 +36,16 @@ class InspectionApiTest extends TestCase
 
         $this->seed(RoleSeeder::class);
 
-        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
-        $colaboradorRole = Role::where('role_name', 'Colaborador')->firstOrFail();
+        $adminRole = Role::where('role_name', 'Administrador')->firstOrFail();
+        $colaboradorRole = Role::create([
+            'role_name' => 'Colaborador',
+            'description' => 'Rol de colaborador.',
+        ]);
         $consultaRole = Role::create([
             'role_name' => 'Consulta',
             'description' => 'Rol de solo lectura.',
         ]);
-        $tecnicoRole = Role::create([
-            'role_name' => 'Tecnico de campo',
-            'description' => 'Técnico de campo encargado de visitas e inspecciones.',
-        ]);
+        $tecnicoRole = Role::where('role_name', 'Tecnico de campo')->firstOrFail();
 
         $this->adminUser = $this->createUserWithRole('Admin Field', $adminRole);
         $this->tecnicoUser = $this->createUserWithRole('Tecnico Field', $tecnicoRole);
