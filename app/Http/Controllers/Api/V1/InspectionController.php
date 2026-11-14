@@ -29,6 +29,8 @@ class InspectionController extends Controller
     /**
      * Listar inspecciones de campo.
      *
+     * @subgroup Consultas
+     *
      * @queryParam search string Búsqueda en hallazgos, notas de terreno o nombre del cliente. Example: Jardín frontal
      * @queryParam status string Filtrar por estado (draft, submitted, reviewed). Example: submitted
      * @queryParam customer_id integer Filtrar por ID de cliente. Example: 1
@@ -50,6 +52,8 @@ class InspectionController extends Controller
      * Registrar inspección de campo.
      *
      * Crea una inspección realizada por el técnico de campo, registrando dimensiones del terreno, servicios requeridos y fotografías de referencia.
+     *
+     * @subgroup Escritura
      *
      * @bodyParam customer_id integer required ID del cliente visitado. Example: 1
      * @bodyParam appointment_id integer ID de la cita previa asociada si aplica. Example: 1
@@ -82,6 +86,8 @@ class InspectionController extends Controller
 
     /**
      * Ver detalle de inspección de campo.
+     *
+     * @subgroup Consultas
      */
     public function show(int $id): InspectionResource
     {
@@ -94,6 +100,8 @@ class InspectionController extends Controller
 
     /**
      * Actualizar inspección de campo.
+     *
+     * @subgroup Escritura
      */
     public function update(UpdateInspectionRequest $request, int $id): InspectionResource
     {
@@ -108,6 +116,8 @@ class InspectionController extends Controller
     /**
      * Cambiar estado de la inspección.
      *
+     * @subgroup Escritura
+     *
      * @bodyParam status string required Nuevo estado (draft, submitted, reviewed). Example: reviewed
      */
     public function updateStatus(UpdateInspectionStatusRequest $request, int $id): InspectionResource
@@ -121,6 +131,8 @@ class InspectionController extends Controller
      * Subir fotos adicionales a la inspección.
      *
      * Permite subir más imágenes de referencia a una inspección ya creada.
+     *
+     * @subgroup Escritura
      */
     public function uploadPhotos(UploadPhotosRequest $request, int $id): InspectionResource
     {
@@ -132,6 +144,8 @@ class InspectionController extends Controller
 
     /**
      * Eliminar foto de inspección.
+     *
+     * @subgroup Escritura
      */
     public function deletePhoto(int $inspectionId, int $photoId): JsonResponse
     {
@@ -146,6 +160,8 @@ class InspectionController extends Controller
 
     /**
      * Eliminar inspección técnica.
+     *
+     * @subgroup Escritura
      */
     public function destroy(int $id): JsonResponse
     {
