@@ -50,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         // Autorización del módulo de Bitácoras de Auditoría (RBAC).
         Gate::policy(AuditLog::class, AuditLogPolicy::class);
         // Autorización del módulo de Historial de Transacciones (RBAC).
-        Gate::policy(Quote::class, TransactionPolicy::class);
+        Gate::define('viewAnyTransaction', [TransactionPolicy::class, 'viewAny']);
+        Gate::define('viewTransaction', [TransactionPolicy::class, 'view']);
     }
 }

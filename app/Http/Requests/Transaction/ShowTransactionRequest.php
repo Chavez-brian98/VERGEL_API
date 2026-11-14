@@ -17,7 +17,7 @@ class ShowTransactionRequest extends FormRequest
             ? $quoteParam
             : Quote::withTrashed()->find($quoteParam);
 
-        return (bool) $this->user()?->can('view', $quote ?? Quote::class);
+        return (bool) $this->user()?->can('viewTransaction', $quote);
     }
 
     /**

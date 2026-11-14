@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "5c449317-17e6-4a50-9cdd-55ac40c4c7d6",
+        "_postman_id": "2ef76711-b9eb-485f-962b-43d10f366241",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -82,7 +82,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"inactive\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-13\",\"hasta\":\"2052-12-06\",\"limit\":22}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-14\",\"hasta\":\"2052-12-07\",\"limit\":22}"
                                 },
                                 "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
                             },
@@ -538,181 +538,7 @@
             "description": "\nAPIs para la gesti\u00f3n de cotizaciones, \u00edtems de servicio\/planta y c\u00e1lculo autom\u00e1tico de montos.",
             "item": [
                 {
-                    "name": "Consultas",
-                    "description": "",
-                    "item": [
-                        {
-                            "name": "Listar y filtrar cotizaciones.",
-                            "request": {
-                                "url": {
-                                    "host": "{{baseUrl}}",
-                                    "path": "api\/v1\/quotes",
-                                    "query": [
-                                        {
-                                            "key": "search",
-                                            "value": "COT-20261111",
-                                            "description": "B\u00fasqueda por n\u00famero de cotizaci\u00f3n o nombre del cliente.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "status",
-                                            "value": "pending",
-                                            "description": "Filtrar por estado (`pending` o `paid`).",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "customer_id",
-                                            "value": "1",
-                                            "description": "Filtrar por cliente.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "employee_id",
-                                            "value": "1",
-                                            "description": "Filtrar por empleado que registr\u00f3 la cotizaci\u00f3n.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "applied_plan_id",
-                                            "value": "1",
-                                            "description": "Filtrar por plan de suscripci\u00f3n aplicado.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "desde",
-                                            "value": "2026-01-01",
-                                            "description": "Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "hasta",
-                                            "value": "2026-12-31",
-                                            "description": "Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "sort_by",
-                                            "value": "created_at",
-                                            "description": "Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "sort_direction",
-                                            "value": "desc",
-                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "limit",
-                                            "value": "15",
-                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
-                                            "disabled": false
-                                        }
-                                    ],
-                                    "raw": "{{baseUrl}}\/api\/v1\/quotes?search=COT-20261111&status=pending&customer_id=1&employee_id=1&applied_plan_id=1&desde=2026-01-01&hasta=2026-12-31&sort_by=created_at&sort_direction=desc&limit=15"
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application\/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application\/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"pending\",\"customer_id\":16,\"employee_id\":16,\"applied_plan_id\":16,\"desde\":\"2026-11-13T20:28:56\",\"hasta\":\"2052-12-06\",\"sort_by\":\"status\",\"sort_direction\":\"DESC\",\"limit\":22,\"per_page\":7}"
-                                },
-                                "description": "Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas."
-                            },
-                            "response": [
-                                {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "access-control-allow-origin",
-                                            "value": "*"
-                                        }
-                                    ],
-                                    "code": 401,
-                                    "body": "{\"message\":\"Unauthenticated.\"}",
-                                    "name": ""
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Consultar el detalle de una cotizaci\u00f3n.",
-                            "request": {
-                                "url": {
-                                    "host": "{{baseUrl}}",
-                                    "path": "api\/v1\/quotes\/:id",
-                                    "query": [],
-                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
-                                    "variable": [
-                                        {
-                                            "id": "id",
-                                            "key": "id",
-                                            "value": "architecto",
-                                            "description": "The ID of the quote."
-                                        },
-                                        {
-                                            "id": "quote",
-                                            "key": "quote",
-                                            "value": 1,
-                                            "description": "ID de la cotizaci\u00f3n."
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application\/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application\/json"
-                                    }
-                                ],
-                                "body": null,
-                                "description": "Incluye cliente, empleado, plan aplicado e \u00edtems."
-                            },
-                            "response": [
-                                {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "access-control-allow-origin",
-                                            "value": "*"
-                                        }
-                                    ],
-                                    "code": 401,
-                                    "body": "{\"message\":\"Unauthenticated.\"}",
-                                    "name": ""
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Gesti\u00f3n",
+                    "name": "Escritura",
                     "description": "",
                     "item": [
                         {
@@ -2229,7 +2055,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"user_id\":16,\"employee_id\":16,\"action\":\"insert\",\"affected_table\":\"n\",\"table_name\":\"g\",\"affected_record_id\":66,\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"desde\":\"2026-11-13\",\"hasta\":\"2052-12-06\",\"limit\":22,\"per_page\":7}"
+                                    "raw": "{\"user_id\":16,\"employee_id\":16,\"action\":\"restore\",\"affected_table\":\"n\",\"table_name\":\"g\",\"affected_record_id\":66,\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"desde\":\"2026-11-14\",\"hasta\":\"2052-12-07\",\"limit\":22,\"per_page\":7}"
                                 },
                                 "description": "Obtiene una lista paginada de los registros y movimientos de auditor\u00eda del sistema (creaci\u00f3n, edici\u00f3n, eliminaci\u00f3n y accesos denegados). Requiere autenticaci\u00f3n con Sanctum y est\u00e1 restringido exclusivamente a colaboradores activos con rol de Administrador."
                             },
@@ -2537,7 +2363,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"date\":\"2026-11-13\",\"status\":\"annulled\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"appointment_date\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
+                                    "raw": "{\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"date\":\"2026-11-14\",\"status\":\"pending\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"appointment_date\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
                                 },
                                 "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
                             },
@@ -2896,7 +2722,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"customer_id\":16,\"client_id\":16,\"status_type\":\"all\",\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"sort_by\":\"total\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7}"
+                                    "raw": "{\"search\":\"b\",\"customer_id\":16,\"client_id\":16,\"status_type\":\"all\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"sort_by\":\"total\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7}"
                                 },
                                 "description": "Devuelve una lista paginada de transacciones hist\u00f3ricas que ya fueron realizadas (pagadas)\no que fueron canceladas\/declinadas porque el cliente no acept\u00f3 la cotizaci\u00f3n.\nExcluye estrictamente los trabajos en curso o cotizaciones abiertas en estado pendiente.\n\nIncluye un buscador principal unificado (por ID de cliente, n\u00famero de referencia\/cotizaci\u00f3n\no nombre del cliente), filtro espec\u00edfico por cliente y la secci\u00f3n \"Resumen por cliente\"."
                             },
@@ -3080,7 +2906,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"movement_type\":\"purchase\",\"type\":\"expense\",\"start_date\":\"2026-11-13\",\"end_date\":\"2052-12-06\",\"search\":\"n\",\"entity_name\":\"g\",\"status\":\"completed\",\"sort_by\":\"id\",\"sort_direction\":\"desc\",\"per_page\":16,\"limit\":17}"
+                                    "raw": "{\"movement_type\":\"all\",\"type\":\"ticket\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"search\":\"n\",\"entity_name\":\"g\",\"status\":\"all\",\"sort_by\":\"total\",\"sort_direction\":\"desc\",\"per_page\":16,\"limit\":17}"
                                 },
                                 "description": "Devuelve una lista paginada de todos los movimientos econ\u00f3micos registrados en el sistema,\ncalculando en tiempo real el resumen financiero de ingresos, compras, gastos y utilidad neta."
                             },
@@ -3182,7 +3008,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":false,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"name\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"name\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -3527,168 +3353,6 @@
             "description": "\nAPIs para la gesti\u00f3n de proveedores, compras y suministros de El Vergel.",
             "item": [
                 {
-                    "name": "Consultas",
-                    "description": "",
-                    "item": [
-                        {
-                            "name": "Listar y filtrar proveedores.",
-                            "request": {
-                                "url": {
-                                    "host": "{{baseUrl}}",
-                                    "path": "api\/v1\/suppliers",
-                                    "query": [
-                                        {
-                                            "key": "search",
-                                            "value": "Vivero",
-                                            "description": "B\u00fasqueda por nombre, nombre comercial, email, tel\u00e9fono, tax_id (NIT\/DUI), NRC o contacto.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "status",
-                                            "value": "active",
-                                            "description": "Filtrar por estado (`active` o `inactive`).",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "economic_activity",
-                                            "value": "Jardiner\u00eda",
-                                            "description": "Filtrar por giro o actividad econ\u00f3mica.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "phone",
-                                            "value": "78901234",
-                                            "description": "Filtrar por n\u00famero de tel\u00e9fono.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "desde",
-                                            "value": "2026-01-01",
-                                            "description": "Filtrar proveedores creados desde una fecha (YYYY-MM-DD).",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "hasta",
-                                            "value": "2026-12-31",
-                                            "description": "Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "sort_by",
-                                            "value": "name",
-                                            "description": "Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "sort_direction",
-                                            "value": "asc",
-                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
-                                            "disabled": false
-                                        },
-                                        {
-                                            "key": "limit",
-                                            "value": "15",
-                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
-                                            "disabled": false
-                                        }
-                                    ],
-                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers?search=Vivero&status=active&economic_activity=Jardiner%C3%ADa&phone=78901234&desde=2026-01-01&hasta=2026-12-31&sort_by=name&sort_direction=asc&limit=15"
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application\/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application\/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-13T20:28:55\",\"hasta\":\"2052-12-06\",\"sort_by\":\"name\",\"sort_direction\":\"desc\",\"limit\":22,\"per_page\":7}"
-                                },
-                                "description": "Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro econ\u00f3mico, tel\u00e9fono o rango de fechas."
-                            },
-                            "response": [
-                                {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "access-control-allow-origin",
-                                            "value": "*"
-                                        }
-                                    ],
-                                    "code": 401,
-                                    "body": "{\"message\":\"Unauthenticated.\"}",
-                                    "name": ""
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Consultar detalle de un proveedor.",
-                            "request": {
-                                "url": {
-                                    "host": "{{baseUrl}}",
-                                    "path": "api\/v1\/suppliers\/:id",
-                                    "query": [],
-                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:id",
-                                    "variable": [
-                                        {
-                                            "id": "id",
-                                            "key": "id",
-                                            "value": "architecto",
-                                            "description": "The ID of the supplier."
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application\/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application\/json"
-                                    }
-                                ],
-                                "body": null,
-                                "description": ""
-                            },
-                            "response": [
-                                {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "access-control-allow-origin",
-                                            "value": "*"
-                                        }
-                                    ],
-                                    "code": 401,
-                                    "body": "{\"message\":\"Unauthenticated.\"}",
-                                    "name": ""
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
                     "name": "Escritura",
                     "description": "",
                     "item": [
@@ -3750,7 +3414,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"inactive\",\"notes\":\"architecto\"}"
+                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"active\",\"notes\":\"architecto\"}"
                                 },
                                 "description": ""
                             },
@@ -3834,592 +3498,442 @@
             "description": "\nEndpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galer\u00eda de im\u00e1genes.",
             "item": [
                 {
-                    "name": "Listar inspecciones de campo.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections",
-                            "query": [
-                                {
-                                    "key": "search",
-                                    "value": "Jard\u00edn frontal",
-                                    "description": "B\u00fasqueda en hallazgos, notas de terreno o nombre del cliente.",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "status",
-                                    "value": "submitted",
-                                    "description": "Filtrar por estado (draft, submitted, reviewed).",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "customer_id",
-                                    "value": "1",
-                                    "description": "Filtrar por ID de cliente.",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "employee_id",
-                                    "value": "2",
-                                    "description": "Filtrar por t\u00e9cnico\/empleado asignado.",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "start_date",
-                                    "value": "2026-11-01",
-                                    "description": "date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "end_date",
-                                    "value": "2026-11-30",
-                                    "description": "date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "sort_by",
-                                    "value": "inspection_date",
-                                    "description": "Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "sort_direction",
-                                    "value": "desc",
-                                    "description": "Direcci\u00f3n (asc o desc). Default: desc.",
-                                    "disabled": false
-                                },
-                                {
-                                    "key": "per_page",
-                                    "value": "15",
-                                    "description": "Registros por p\u00e1gina.",
-                                    "disabled": false
-                                }
-                            ],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections?search=Jard%C3%ADn%20frontal&status=submitted&customer_id=1&employee_id=2&start_date=2026-11-01&end_date=2026-11-30&sort_by=inspection_date&sort_direction=desc&per_page=15"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"customer_id\":16,\"employee_id\":16,\"status\":\"draft\",\"start_date\":\"2026-11-13T20:28:56\",\"end_date\":\"2052-12-06\",\"search\":\"n\",\"sort_by\":\"total_area\",\"sort_direction\":\"asc\",\"per_page\":7,\"limit\":16}"
-                        },
-                        "description": ""
-                    },
-                    "response": [
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
                         {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
+                            "name": "Registrar inspecci\u00f3n de campo.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections"
                                 },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "type": "text",
+                                            "description": "ID del cliente visitado."
+                                        },
+                                        {
+                                            "key": "appointment_id",
+                                            "value": "1",
+                                            "type": "text",
+                                            "description": "ID de la cita previa asociada si aplica."
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "2",
+                                            "type": "text",
+                                            "description": "ID del t\u00e9cnico asignado (opcional, por defecto el usuario autenticado)."
+                                        },
+                                        {
+                                            "key": "inspection_date",
+                                            "value": "2026-11-11",
+                                            "type": "text",
+                                            "description": "Fecha de la visita t\u00e9cnica (YYYY-MM-DD)."
+                                        },
+                                        {
+                                            "key": "findings",
+                                            "value": "Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelaci\u00f3n.",
+                                            "type": "text",
+                                            "description": "Hallazgos, observaciones generales del lugar y necesidades del cliente."
+                                        },
+                                        {
+                                            "key": "terrain_width",
+                                            "value": "15.5",
+                                            "type": "text",
+                                            "description": "Ancho del terreno."
+                                        },
+                                        {
+                                            "key": "terrain_length",
+                                            "value": "20",
+                                            "type": "text",
+                                            "description": "Largo del terreno."
+                                        },
+                                        {
+                                            "key": "total_area",
+                                            "value": "310",
+                                            "type": "text",
+                                            "description": "\u00c1rea total (si no se especifica, se calcula multiplicando ancho x largo)."
+                                        },
+                                        {
+                                            "key": "area_unit",
+                                            "value": "m2",
+                                            "type": "text",
+                                            "description": "Unidad de medida del terreno (m2, v2, ha). Default: m2."
+                                        },
+                                        {
+                                            "key": "terrain_notes",
+                                            "value": "Suelo arcilloso, toma de agua a 10 metros.",
+                                            "type": "text",
+                                            "description": "Notas sobre tipo de suelo, acceso o limitaciones f\u00edsicas."
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "submitted",
+                                            "type": "text",
+                                            "description": "Estado de la inspecci\u00f3n (draft, submitted, reviewed). Default: draft."
+                                        },
+                                        {
+                                            "key": "services[0][service_id]",
+                                            "value": "1",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "services[0][suggested_quantity]",
+                                            "value": "2",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "services[0][notes]",
+                                            "value": "Requiere fumigaci\u00f3n previa.",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "photos_data[0][caption]",
+                                            "value": "n",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "photos[]",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "photos_data[][file]",
+                                            "src": [],
+                                            "type": "file"
+                                        }
+                                    ]
                                 },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"message\":\"Unauthenticated.\"}",
-                            "name": ""
+                                "description": "Crea una inspecci\u00f3n realizada por el t\u00e9cnico de campo, registrando dimensiones del terreno, servicios requeridos y fotograf\u00edas de referencia."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Actualizar inspecci\u00f3n de campo.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the inspection."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "customer_id",
+                                            "value": "16",
+                                            "type": "text",
+                                            "description": "Must match an existing stored value."
+                                        },
+                                        {
+                                            "key": "appointment_id",
+                                            "value": "16",
+                                            "type": "text",
+                                            "description": "Must match an existing stored value."
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "16",
+                                            "type": "text",
+                                            "description": "Must match an existing stored value."
+                                        },
+                                        {
+                                            "key": "inspection_date",
+                                            "value": "2026-11-14T20:21:04",
+                                            "type": "text",
+                                            "description": "Must be a valid date."
+                                        },
+                                        {
+                                            "key": "findings",
+                                            "value": "architecto",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "terrain_width",
+                                            "value": "39",
+                                            "type": "text",
+                                            "description": "Must be at least 0."
+                                        },
+                                        {
+                                            "key": "terrain_length",
+                                            "value": "84",
+                                            "type": "text",
+                                            "description": "Must be at least 0."
+                                        },
+                                        {
+                                            "key": "total_area",
+                                            "value": "12",
+                                            "type": "text",
+                                            "description": "Must be at least 0."
+                                        },
+                                        {
+                                            "key": "area_unit",
+                                            "value": "miyvdljnikhwaykc",
+                                            "type": "text",
+                                            "description": "Must not be greater than 20 characters."
+                                        },
+                                        {
+                                            "key": "terrain_notes",
+                                            "value": "architecto",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "submitted",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "services[0][service_id]",
+                                            "value": "16",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "services[0][suggested_quantity]",
+                                            "value": "22",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "services[0][notes]",
+                                            "value": "architecto",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "photos_data[0][caption]",
+                                            "value": "n",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "photos[]",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "photos_data[][file]",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "_method",
+                                            "value": "PUT",
+                                            "type": "text"
+                                        }
+                                    ]
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Eliminar inspecci\u00f3n t\u00e9cnica.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the inspection."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Cambiar estado de la inspecci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections\/:inspection\/status",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/status",
+                                    "variable": [
+                                        {
+                                            "id": "inspection",
+                                            "key": "inspection",
+                                            "value": "architecto",
+                                            "description": "The inspection."
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"status\":\"reviewed\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Subir fotos adicionales a la inspecci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections\/:inspection\/photos",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/photos",
+                                    "variable": [
+                                        {
+                                            "id": "inspection",
+                                            "key": "inspection",
+                                            "value": "architecto",
+                                            "description": "The inspection."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "photos_data[0][caption]",
+                                            "value": "b",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "photos[]",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "photos_data[][file]",
+                                            "src": [],
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                "description": "Permite subir m\u00e1s im\u00e1genes de referencia a una inspecci\u00f3n ya creada."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Eliminar foto de inspecci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections\/:inspection\/photos\/:photo",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/photos\/:photo",
+                                    "variable": [
+                                        {
+                                            "id": "inspection",
+                                            "key": "inspection",
+                                            "value": "architecto",
+                                            "description": "The inspection."
+                                        },
+                                        {
+                                            "id": "photo",
+                                            "key": "photo",
+                                            "value": "architecto",
+                                            "description": "The photo."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
                         }
                     ]
-                },
-                {
-                    "name": "Registrar inspecci\u00f3n de campo.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "multipart\/form-data"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "customer_id",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": "ID del cliente visitado."
-                                },
-                                {
-                                    "key": "appointment_id",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": "ID de la cita previa asociada si aplica."
-                                },
-                                {
-                                    "key": "employee_id",
-                                    "value": "2",
-                                    "type": "text",
-                                    "description": "ID del t\u00e9cnico asignado (opcional, por defecto el usuario autenticado)."
-                                },
-                                {
-                                    "key": "inspection_date",
-                                    "value": "2026-11-11",
-                                    "type": "text",
-                                    "description": "Fecha de la visita t\u00e9cnica (YYYY-MM-DD)."
-                                },
-                                {
-                                    "key": "findings",
-                                    "value": "Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelaci\u00f3n.",
-                                    "type": "text",
-                                    "description": "Hallazgos, observaciones generales del lugar y necesidades del cliente."
-                                },
-                                {
-                                    "key": "terrain_width",
-                                    "value": "15.5",
-                                    "type": "text",
-                                    "description": "Ancho del terreno."
-                                },
-                                {
-                                    "key": "terrain_length",
-                                    "value": "20",
-                                    "type": "text",
-                                    "description": "Largo del terreno."
-                                },
-                                {
-                                    "key": "total_area",
-                                    "value": "310",
-                                    "type": "text",
-                                    "description": "\u00c1rea total (si no se especifica, se calcula multiplicando ancho x largo)."
-                                },
-                                {
-                                    "key": "area_unit",
-                                    "value": "m2",
-                                    "type": "text",
-                                    "description": "Unidad de medida del terreno (m2, v2, ha). Default: m2."
-                                },
-                                {
-                                    "key": "terrain_notes",
-                                    "value": "Suelo arcilloso, toma de agua a 10 metros.",
-                                    "type": "text",
-                                    "description": "Notas sobre tipo de suelo, acceso o limitaciones f\u00edsicas."
-                                },
-                                {
-                                    "key": "status",
-                                    "value": "submitted",
-                                    "type": "text",
-                                    "description": "Estado de la inspecci\u00f3n (draft, submitted, reviewed). Default: draft."
-                                },
-                                {
-                                    "key": "services[0][service_id]",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "services[0][suggested_quantity]",
-                                    "value": "2",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "services[0][notes]",
-                                    "value": "Requiere fumigaci\u00f3n previa.",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "photos_data[0][caption]",
-                                    "value": "n",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "photos[]",
-                                    "src": [],
-                                    "type": "file"
-                                },
-                                {
-                                    "key": "photos_data[][file]",
-                                    "src": [],
-                                    "type": "file"
-                                }
-                            ]
-                        },
-                        "description": "Crea una inspecci\u00f3n realizada por el t\u00e9cnico de campo, registrando dimensiones del terreno, servicios requeridos y fotograf\u00edas de referencia."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Ver detalle de inspecci\u00f3n de campo.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the inspection."
-                                }
-                            ]
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"message\":\"Unauthenticated.\"}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Actualizar inspecci\u00f3n de campo.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the inspection."
-                                }
-                            ]
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "multipart\/form-data"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "customer_id",
-                                    "value": "16",
-                                    "type": "text",
-                                    "description": "Must match an existing stored value."
-                                },
-                                {
-                                    "key": "appointment_id",
-                                    "value": "16",
-                                    "type": "text",
-                                    "description": "Must match an existing stored value."
-                                },
-                                {
-                                    "key": "employee_id",
-                                    "value": "16",
-                                    "type": "text",
-                                    "description": "Must match an existing stored value."
-                                },
-                                {
-                                    "key": "inspection_date",
-                                    "value": "2026-11-13T20:28:56",
-                                    "type": "text",
-                                    "description": "Must be a valid date."
-                                },
-                                {
-                                    "key": "findings",
-                                    "value": "architecto",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "terrain_width",
-                                    "value": "39",
-                                    "type": "text",
-                                    "description": "Must be at least 0."
-                                },
-                                {
-                                    "key": "terrain_length",
-                                    "value": "84",
-                                    "type": "text",
-                                    "description": "Must be at least 0."
-                                },
-                                {
-                                    "key": "total_area",
-                                    "value": "12",
-                                    "type": "text",
-                                    "description": "Must be at least 0."
-                                },
-                                {
-                                    "key": "area_unit",
-                                    "value": "miyvdljnikhwaykc",
-                                    "type": "text",
-                                    "description": "Must not be greater than 20 characters."
-                                },
-                                {
-                                    "key": "terrain_notes",
-                                    "value": "architecto",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "status",
-                                    "value": "reviewed",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "services[0][service_id]",
-                                    "value": "16",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "services[0][suggested_quantity]",
-                                    "value": "22",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "services[0][notes]",
-                                    "value": "architecto",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "photos_data[0][caption]",
-                                    "value": "n",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "photos[]",
-                                    "src": [],
-                                    "type": "file"
-                                },
-                                {
-                                    "key": "photos_data[][file]",
-                                    "src": [],
-                                    "type": "file"
-                                },
-                                {
-                                    "key": "_method",
-                                    "value": "PUT",
-                                    "type": "text"
-                                }
-                            ]
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Eliminar inspecci\u00f3n t\u00e9cnica.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the inspection."
-                                }
-                            ]
-                        },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Cambiar estado de la inspecci\u00f3n.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections\/:inspection\/status",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/status",
-                            "variable": [
-                                {
-                                    "id": "inspection",
-                                    "key": "inspection",
-                                    "value": "architecto",
-                                    "description": "The inspection."
-                                }
-                            ]
-                        },
-                        "method": "PATCH",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"status\":\"reviewed\"}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Subir fotos adicionales a la inspecci\u00f3n.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections\/:inspection\/photos",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/photos",
-                            "variable": [
-                                {
-                                    "id": "inspection",
-                                    "key": "inspection",
-                                    "value": "architecto",
-                                    "description": "The inspection."
-                                }
-                            ]
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "multipart\/form-data"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "photos_data[0][caption]",
-                                    "value": "b",
-                                    "type": "text",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "photos[]",
-                                    "src": [],
-                                    "type": "file"
-                                },
-                                {
-                                    "key": "photos_data[][file]",
-                                    "src": [],
-                                    "type": "file"
-                                }
-                            ]
-                        },
-                        "description": "Permite subir m\u00e1s im\u00e1genes de referencia a una inspecci\u00f3n ya creada."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Eliminar foto de inspecci\u00f3n.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/inspections\/:inspection\/photos\/:photo",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/inspections\/:inspection\/photos\/:photo",
-                            "variable": [
-                                {
-                                    "id": "inspection",
-                                    "key": "inspection",
-                                    "value": "architecto",
-                                    "description": "The inspection."
-                                },
-                                {
-                                    "id": "photo",
-                                    "key": "photo",
-                                    "value": "architecto",
-                                    "description": "The photo."
-                                }
-                            ]
-                        },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
                 }
             ]
         }

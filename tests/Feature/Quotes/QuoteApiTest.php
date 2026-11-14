@@ -37,12 +37,12 @@ class QuoteApiTest extends TestCase
 
         $this->seed(RoleSeeder::class);
 
-        $adminRole = Role::where('role_name', 'Admin')->firstOrFail();
-        $colaboradorRole = Role::where('role_name', 'Colaborador')->firstOrFail();
-        $recepcionistaRole = Role::create([
-            'role_name' => 'Recepcionista',
-            'description' => 'Atención al cliente y gestión de cotizaciones.',
+        $adminRole = Role::where('role_name', 'Administrador')->firstOrFail();
+        $colaboradorRole = Role::create([
+            'role_name' => 'Colaborador',
+            'description' => 'Rol operativo de solo lectura.',
         ]);
+        $recepcionistaRole = Role::where('role_name', 'Recepcionista')->firstOrFail();
 
         $this->adminUser = $this->createUserWithRole('Admin User', $adminRole);
         $this->recepcionistaUser = $this->createUserWithRole('Recepcionista User', $recepcionistaRole);
