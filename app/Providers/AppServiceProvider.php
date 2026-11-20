@@ -17,6 +17,7 @@ use App\Policies\FinancePolicy;
 use App\Policies\InspectionPolicy;
 use App\Policies\PortfolioPolicy;
 use App\Policies\QuotePolicy;
+use App\Policies\ReportsPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SupplierPolicy;
 use App\Policies\TransactionPolicy;
@@ -54,6 +55,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(AuditLog::class, AuditLogPolicy::class);
         // Autorización del módulo de Finanzas (RBAC), solo Admin / Administrador.
         Gate::define('viewFinance', [FinancePolicy::class, 'view']);
+        // Autorización del módulo de Reportes (RBAC), solo Admin / Administrador.
+        Gate::define('viewReports', [ReportsPolicy::class, 'view']);
 
         // Autorización del módulo de Cartera (RBAC), con el mismo esquema que Clientes.
         Gate::define('viewPortfolio', fn (User $user) => app(PortfolioPolicy::class)->view($user));
