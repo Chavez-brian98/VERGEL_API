@@ -1,0 +1,874 @@
+{
+  "info": {
+    "_postman_id": "b7e4c2a9-5d31-4f68-9a12-6f0c3d8e4a71",
+    "name": "VERGEL API - Módulo Reportes",
+    "description": "Colección para probar los 8 reportes de solo lectura: ventas, clientes, plantas, cobros, estado de cotizaciones, compras, rentabilidad y suscripciones.\n\nUso:\n1. Ejecutar 'Autenticación > Login' con admin@vergel.com / password123. El script guarda el token en la variable 'token'.\n2. Ajustar 'apiUrl' si la API no está en http://localhost:8000.\n3. Ajustar 'customerId', 'plantId', 'employeeId' y 'planId' con registros existentes.\n4. Opcional: llenar 'tokenConsulta' con el token de un rol no admin para probar el 403.\n\nTodos los endpoints están bajo /api/v1/reports, requieren Bearer token y están restringidos a Admin/Administrador activo. Los intentos denegados se registran en audit_log con affected_table=reports.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "apiUrl",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "baseUrl",
+      "value": "{{apiUrl}}/v1",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tokenConsulta",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "customerId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "plantId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "employeeId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "planId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Autenticación",
+      "description": "Obtener el token de Sanctum. La ruta /api/login es pública; el resto requiere el token.",
+      "item": [
+        {
+          "name": "Login (guarda token en la colección)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Token de acceso obtenido', function () {",
+                  "  pm.expect(json.data).to.have.property('access_token');",
+                  "  pm.collectionVariables.set('token', json.data.access_token);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@vergel.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/login",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Inicia sesión con el administrador sembrado y almacena el access_token para las siguientes peticiones."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/logout",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            },
+            "description": "Cierra la sesión del token actual (POST /api/logout). Ejecutar al final."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "1. Reportes",
+      "description": "Los 8 reportes. Cada respuesta incluye 'data' y 'meta.summary' con los totales del periodo filtrado.",
+      "item": [
+        {
+          "name": "01. Ventas mensuales",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Reporte de ventas', function () {",
+                  "  pm.expect(json).to.have.property('data');",
+                  "  pm.expect(json.meta.summary).to.have.property('totalSales');",
+                  "  pm.expect(json.meta.summary).to.have.property('totalPaid');",
+                  "  pm.expect(json.meta.summary).to.have.property('averageTicket');",
+                  "  if (json.data.length > 0) {",
+                  "    pm.expect(json.data[0]).to.have.property('period');",
+                  "    pm.expect(json.data[0]).to.have.property('totalPending');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/sales?from=2026-11-01&to=2026-11-30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "sales"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-30"
+                }
+              ]
+            },
+            "description": "Cotizaciones agrupadas por mes (YYYY-MM): facturación, cobrado, pendiente y ticket promedio. Acepta customer_id y los alias desde/hasta."
+          },
+          "response": []
+        },
+        {
+          "name": "02. Ranking de clientes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Ranking de clientes', function () {",
+                  "  pm.expect(json).to.have.property('data');",
+                  "  pm.expect(json.meta.summary).to.have.property('customersCount');",
+                  "  if (json.data.length > 0) {",
+                  "    pm.expect(json.data[0]).to.have.property('customerId');",
+                  "    pm.expect(json.data[0]).to.have.property('totalBilled');",
+                  "    pm.expect(json.data[0]).to.have.property('lastSaleDate');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/customers?per_page=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "15"
+                }
+              ]
+            },
+            "description": "Clientes ordenados por facturación, con cobrado, pendiente y fecha de última venta. Filtros: from, to, customer_id, per_page."
+          },
+          "response": []
+        },
+        {
+          "name": "03. Ranking de plantas vendidas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Ranking de plantas', function () {",
+                  "  pm.expect(json).to.have.property('data');",
+                  "  pm.expect(json.meta.summary).to.have.property('unitsSold');",
+                  "  if (json.data.length > 0) {",
+                  "    pm.expect(json.data[0]).to.have.property('plantId');",
+                  "    pm.expect(json.data[0]).to.have.property('salesTotal');",
+                  "    pm.expect(json.data[0]).to.have.property('quotesCount');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/plants?from=2026-11-01&to=2026-11-30&per_page=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "plants"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-30"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15"
+                }
+              ]
+            },
+            "description": "Unidades vendidas, monto, cotizaciones y precio unitario promedio por planta. Filtros: from, to, plant_id, per_page."
+          },
+          "response": []
+        },
+        {
+          "name": "04. Cobros por empleado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Cobros y métodos de pago', function () {",
+                  "  pm.expect(json).to.have.property('data');",
+                  "  pm.expect(json.meta.summary).to.have.property('totalCollected');",
+                  "  if (json.data.length > 0) {",
+                  "    pm.expect(json.data[0]).to.have.property('employeeId');",
+                  "    pm.expect(json.data[0]).to.have.property('methods');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/collections?from=2026-11-01&to=2026-11-30&per_page=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "collections"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-30"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15"
+                }
+              ]
+            },
+            "description": "Abonos agrupados por empleado con desglose en 'methods' (transfer, cash, etc.). Filtros: from, to, employee_id, per_page."
+          },
+          "response": []
+        },
+        {
+          "name": "05. Estado de cotizaciones",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Tres estados de pago', function () {",
+                  "  pm.expect(json.data.length).to.eql(3);",
+                  "  pm.expect(json.data[0]).to.have.property('key');",
+                  "  pm.expect(json.data[0]).to.have.property('label');",
+                  "  pm.expect(json.data[0]).to.have.property('badge');",
+                  "  pm.expect(json.meta.summary).to.have.property('paidPercentage');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/quotes-status?from=2026-11-01&to=2026-11-30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "quotes-status"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-30"
+                }
+              ]
+            },
+            "description": "Siempre devuelve paid, partial y pending (aunque estén en cero) comparando abonos contra el total de cada cotización. Filtros: from, to, customer_id."
+          },
+          "response": []
+        },
+        {
+          "name": "06. Compras por proveedor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Compras agrupadas', function () {",
+                  "  pm.expect(json).to.have.property('data');",
+                  "  pm.expect(json.meta.summary).to.have.property('totalPurchases');",
+                  "  if (json.data.length > 0) {",
+                  "    pm.expect(json.data[0].supplier).to.have.property('name');",
+                  "    pm.expect(json.data[0].amounts).to.have.property('total');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/purchases?from=2026-11-01&to=2026-11-30&per_page=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "purchases"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-30"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15"
+                }
+              ]
+            },
+            "description": "Documentos, base gravada e IVA por proveedor. Filtros: from, to, supplier, per_page."
+          },
+          "response": []
+        },
+        {
+          "name": "07. Rentabilidad mensual",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Rentabilidad y utilidad', function () {",
+                  "  pm.expect(json).to.have.property('data');",
+                  "  pm.expect(json.meta.summary).to.have.property('totalUtility');",
+                  "  pm.expect(json.meta.summary).to.have.property('profitMarginPercentage');",
+                  "  if (json.data.length > 0) {",
+                  "    pm.expect(json.data[0]).to.have.property('period');",
+                  "    pm.expect(json.data[0]).to.have.property('utility');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/profitability?from=2026-11-01&to=2026-11-30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "profitability"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-30"
+                }
+              ]
+            },
+            "description": "Ventas, compras, gastos, utilidad y margen por mes, calculados desde los movimientos con estado completed. Filtros: from, to."
+          },
+          "response": []
+        },
+        {
+          "name": "08. Suscripciones por plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Suscripciones por plan', function () {",
+                  "  pm.expect(json).to.have.property('data');",
+                  "  pm.expect(json.meta.summary).to.have.property('subscriptionsCount');",
+                  "  if (json.data.length > 0) {",
+                  "    pm.expect(json.data[0].plan).to.have.property('name');",
+                  "    pm.expect(json.data[0]).to.have.property('activeCount');",
+                  "    pm.expect(json.data[0]).to.have.property('reservedBalance');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/subscriptions?from=2026-11-01&to=2026-11-30&per_page=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "subscriptions"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-30"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15"
+                }
+              ]
+            },
+            "description": "Altas, activas, pendientes de pago, completadas y canceladas por plan, con monto pagado y saldo reservado. Filtros: from, to, plan_id, per_page."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Filtros y casos de validación",
+      "item": [
+        {
+          "name": "Alias en español (desde/hasta)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/sales?desde=2026-11-01&hasta=2026-11-30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "sales"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-11-30"
+                }
+              ]
+            },
+            "description": "Los alias startDate/start_date/desde y endDate/end_date/hasta se normalizan a from/to."
+          },
+          "response": []
+        },
+        {
+          "name": "Rango de fechas inválido (422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 422', function () {",
+                  "  pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "pm.test('Error en el campo to', function () {",
+                  "  pm.expect(pm.response.json().errors).to.have.property('to');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/sales?from=2026-11-30&to=2026-11-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "sales"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-30"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-01"
+                }
+              ]
+            },
+            "description": "La fecha final debe ser mayor o igual a la inicial."
+          },
+          "response": []
+        },
+        {
+          "name": "per_page fuera de rango (422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 422', function () {",
+                  "  pm.response.to.have.status(422);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/customers?per_page=101",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "101"
+                }
+              ]
+            },
+            "description": "per_page acepta de 1 a 100."
+          },
+          "response": []
+        },
+        {
+          "name": "Cliente inexistente (422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 422', function () {",
+                  "  pm.response.to.have.status(422);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/quotes-status?customer_id=999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "quotes-status"
+              ],
+              "query": [
+                {
+                  "key": "customer_id",
+                  "value": "999999"
+                }
+              ]
+            },
+            "description": "Valida exists:customers,id."
+          },
+          "response": []
+        },
+        {
+          "name": "Acceso denegado con rol no admin (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 403', function () {",
+                  "  pm.response.to.have.status(403);",
+                  "});",
+                  "",
+                  "pm.test('Mensaje uniforme', function () {",
+                  "  pm.expect(pm.response.json().message).to.eql('No tiene permisos para realizar esta acción.');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenConsulta}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reports/sales",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "sales"
+              ]
+            },
+            "description": "Configura 'tokenConsulta' con el token de un usuario no admin. El intento se guarda en audit_log con action=denied y affected_table=reports."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

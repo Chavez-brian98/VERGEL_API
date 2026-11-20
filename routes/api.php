@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\V1\MovementController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\PortfolioController;
 use App\Http\Controllers\Api\V1\QuoteController;
+use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
@@ -100,6 +101,18 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('quotes/{quote}/payments', [FinanceController::class, 'payments']);
             Route::get('plants/{plant}/sales', [FinanceController::class, 'plantSales']);
             Route::get('purchases', [FinanceController::class, 'purchases']);
+        });
+
+        // Módulo de Reportes (solo lectura, restringido a Admin / Administrador).
+        Route::prefix('reports')->group(function () {
+            Route::get('sales', [ReportController::class, 'sales']);
+            Route::get('customers', [ReportController::class, 'customers']);
+            Route::get('plants', [ReportController::class, 'plants']);
+            Route::get('collections', [ReportController::class, 'collections']);
+            Route::get('quotes-status', [ReportController::class, 'quotesStatus']);
+            Route::get('purchases', [ReportController::class, 'purchases']);
+            Route::get('profitability', [ReportController::class, 'profitability']);
+            Route::get('subscriptions', [ReportController::class, 'subscriptions']);
         });
     });
 });
