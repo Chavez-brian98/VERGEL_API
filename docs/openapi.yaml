@@ -315,12 +315,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-14'
+                  example: '2026-11-20'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 limit:
                   type: integer
@@ -904,10 +904,10 @@ paths:
         in: path
         name: id
         description: 'The ID of the customer.'
-        example: 16
+        example: architecto
         required: true
         schema:
-          type: integer
+          type: string
       -
         in: path
         name: customer
@@ -1362,46 +1362,147 @@ paths:
             description: 'Cantidad de registros por página (1-100). Default: 15.'
             example: 15
       responses:
-        422:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'The selected customer id is invalid. (and 2 more errors)'
-                  errors:
-                    customer_id:
-                      - 'The selected customer id is invalid.'
-                    employee_id:
-                      - 'The selected employee id is invalid.'
-                    applied_plan_id:
-                      - 'The selected applied plan id is invalid.'
+                  data:
+                    -
+                      id: 1
+                      quoteNumber: COT-202611140001
+                      customerName: 'Cliente Ejemplo S.A. de C.V.'
+                      employeeName: 'Carlos Mendoza'
+                      appliedPlanName: 'Plan Residencial'
+                      basePrice: 100.0
+                      total: 101.7
+                      status: pending
+                      itemsCount: 2
+                      createdAt: '2026-11-14T10:00:00.000000Z'
+                  links:
+                    first: 'http://localhost/api/v1/quotes?page=1'
+                    last: 'http://localhost/api/v1/quotes?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    per_page: 15
+                    to: 1
+                    total: 1
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        quoteNumber: COT-202611140001
+                        customerName: 'Cliente Ejemplo S.A. de C.V.'
+                        employeeName: 'Carlos Mendoza'
+                        appliedPlanName: 'Plan Residencial'
+                        basePrice: 100
+                        total: 101.7
+                        status: pending
+                        itemsCount: 2
+                        createdAt: '2026-11-14T10:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        quoteNumber:
+                          type: string
+                          example: COT-202611140001
+                        customerName:
+                          type: string
+                          example: 'Cliente Ejemplo S.A. de C.V.'
+                        employeeName:
+                          type: string
+                          example: 'Carlos Mendoza'
+                        appliedPlanName:
+                          type: string
+                          example: 'Plan Residencial'
+                        basePrice:
+                          type: number
+                          example: 100.0
+                        total:
+                          type: number
+                          example: 101.7
+                        status:
+                          type: string
+                          example: pending
+                        itemsCount:
+                          type: integer
+                          example: 2
+                        createdAt:
+                          type: string
+                          example: '2026-11-14T10:00:00.000000Z'
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://localhost/api/v1/quotes?page=1'
+                      last:
+                        type: string
+                        example: 'http://localhost/api/v1/quotes?page=1'
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                      next:
+                        type: string
+                        example: null
+                        nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      per_page:
+                        type: integer
+                        example: 15
+                      to:
+                        type: integer
+                        example: 1
+                      total:
+                        type: integer
+                        example: 1
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'The selected customer id is invalid. (and 2 more errors)'
-                  errors:
-                    type: object
-                    properties:
-                      customer_id:
-                        type: array
-                        example:
-                          - 'The selected customer id is invalid.'
-                        items:
-                          type: string
-                      employee_id:
-                        type: array
-                        example:
-                          - 'The selected employee id is invalid.'
-                        items:
-                          type: string
-                      applied_plan_id:
-                        type: array
-                        example:
-                          - 'The selected applied plan id is invalid.'
-                        items:
-                          type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No tiene permisos para realizar esta acción.'
+                properties:
+                  message:
+                    type: string
+                    example: 'No tiene permisos para realizar esta acción.'
       tags:
         - Cotizaciones
       requestBody:
@@ -1419,7 +1520,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: paid
+                  example: pending
                   enum:
                     - pending
                     - paid
@@ -1442,12 +1543,12 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-14T21:04:18'
+                  example: '2026-11-20T03:20:40'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 sort_by:
                   type: string
@@ -1485,7 +1586,198 @@ paths:
       operationId: registrarUnaNuevaCotizacin
       description: "El backend calcula el total de cada ítem (`quantity * unit_price`), el subtotal con descuento del plan,\nel IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.\nEl empleado se toma del usuario autenticado."
       parameters: []
-      responses: {  }
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    quoteNumber: COT-202611140001
+                    customer:
+                      id: 1
+                      legalName: 'Cliente Ejemplo S.A. de C.V.'
+                      tradeName: 'Cliente Ejemplo'
+                    employee:
+                      id: 1
+                      fullName: 'Carlos Mendoza'
+                    appliedPlan:
+                      id: 1
+                      planCode: RESIDENCIAL
+                      planName: 'Plan Residencial'
+                    basePrice: 51.0
+                    discountedSubtotal: 45.9
+                    includesVat: false
+                    loyaltyPointsUsed: 0
+                    loyaltyPointsEarned: 45
+                    total: 51.87
+                    status: pending
+                    items:
+                      -
+                        id: 1
+                        itemType: service
+                        service:
+                          id: 1
+                          name: 'Poda de árbol'
+                        plant: null
+                        quantity: 2.0
+                        unitPrice: 25.5
+                        total: 51.0
+                    createdAt: '2026-11-14T10:00:00.000000Z'
+                    updatedAt: '2026-11-14T10:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      quoteNumber:
+                        type: string
+                        example: COT-202611140001
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Cliente Ejemplo S.A. de C.V.'
+                          tradeName:
+                            type: string
+                            example: 'Cliente Ejemplo'
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          fullName:
+                            type: string
+                            example: 'Carlos Mendoza'
+                      appliedPlan:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          planCode:
+                            type: string
+                            example: RESIDENCIAL
+                          planName:
+                            type: string
+                            example: 'Plan Residencial'
+                      basePrice:
+                        type: number
+                        example: 51.0
+                      discountedSubtotal:
+                        type: number
+                        example: 45.9
+                      includesVat:
+                        type: boolean
+                        example: false
+                      loyaltyPointsUsed:
+                        type: integer
+                        example: 0
+                      loyaltyPointsEarned:
+                        type: integer
+                        example: 45
+                      total:
+                        type: number
+                        example: 51.87
+                      status:
+                        type: string
+                        example: pending
+                      items:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            itemType: service
+                            service:
+                              id: 1
+                              name: 'Poda de árbol'
+                            plant: null
+                            quantity: 2
+                            unitPrice: 25.5
+                            total: 51
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            itemType:
+                              type: string
+                              example: service
+                            service:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  example: 1
+                                name:
+                                  type: string
+                                  example: 'Poda de árbol'
+                            plant:
+                              type: string
+                              example: null
+                              nullable: true
+                            quantity:
+                              type: number
+                              example: 2.0
+                            unitPrice:
+                              type: number
+                              example: 25.5
+                            total:
+                              type: number
+                              example: 51.0
+                      createdAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No tiene permisos para realizar esta acción.'
+                properties:
+                  message:
+                    type: string
+                    example: 'No tiene permisos para realizar esta acción.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Los datos proporcionados no son válidos.'
+                  errors:
+                    items:
+                      - 'El campo items es obligatorio.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Los datos proporcionados no son válidos.'
+                  errors:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        example:
+                          - 'El campo items es obligatorio.'
+                        items:
+                          type: string
       tags:
         - Cotizaciones
       requestBody:
@@ -1548,8 +1840,6 @@ paths:
                         example: 25.5
                     required:
                       - item_type
-                      - service_id
-                      - plant_id
                       - quantity
                       - unit_price
               required:
@@ -1562,18 +1852,173 @@ paths:
       description: 'Incluye cliente, empleado, plan aplicado e ítems.'
       parameters: []
       responses:
-        500:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'Server Error'
+                  data:
+                    id: 1
+                    quoteNumber: COT-202611140001
+                    customer:
+                      id: 1
+                      legalName: 'Cliente Ejemplo S.A. de C.V.'
+                      tradeName: 'Cliente Ejemplo'
+                    employee:
+                      id: 1
+                      fullName: 'Carlos Mendoza'
+                    appliedPlan:
+                      id: 1
+                      planCode: RESIDENCIAL
+                      planName: 'Plan Residencial'
+                    basePrice: 51.0
+                    discountedSubtotal: 45.9
+                    includesVat: false
+                    loyaltyPointsUsed: 0
+                    loyaltyPointsEarned: 45
+                    total: 51.87
+                    status: pending
+                    items:
+                      -
+                        id: 1
+                        itemType: service
+                        service:
+                          id: 1
+                          name: 'Poda de árbol'
+                        plant: null
+                        quantity: 2.0
+                        unitPrice: 25.5
+                        total: 51.0
+                    createdAt: '2026-11-14T10:00:00.000000Z'
+                    updatedAt: '2026-11-14T10:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      quoteNumber:
+                        type: string
+                        example: COT-202611140001
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Cliente Ejemplo S.A. de C.V.'
+                          tradeName:
+                            type: string
+                            example: 'Cliente Ejemplo'
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          fullName:
+                            type: string
+                            example: 'Carlos Mendoza'
+                      appliedPlan:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          planCode:
+                            type: string
+                            example: RESIDENCIAL
+                          planName:
+                            type: string
+                            example: 'Plan Residencial'
+                      basePrice:
+                        type: number
+                        example: 51.0
+                      discountedSubtotal:
+                        type: number
+                        example: 45.9
+                      includesVat:
+                        type: boolean
+                        example: false
+                      loyaltyPointsUsed:
+                        type: integer
+                        example: 0
+                      loyaltyPointsEarned:
+                        type: integer
+                        example: 45
+                      total:
+                        type: number
+                        example: 51.87
+                      status:
+                        type: string
+                        example: pending
+                      items:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            itemType: service
+                            service:
+                              id: 1
+                              name: 'Poda de árbol'
+                            plant: null
+                            quantity: 2
+                            unitPrice: 25.5
+                            total: 51
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            itemType:
+                              type: string
+                              example: service
+                            service:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  example: 1
+                                name:
+                                  type: string
+                                  example: 'Poda de árbol'
+                            plant:
+                              type: string
+                              example: null
+                              nullable: true
+                            quantity:
+                              type: number
+                              example: 2.0
+                            unitPrice:
+                              type: number
+                              example: 25.5
+                            total:
+                              type: number
+                              example: 51.0
+                      createdAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cotización no encontrada.'
                 properties:
                   message:
                     type: string
-                    example: 'Server Error'
+                    example: 'Cotización no encontrada.'
       tags:
         - Cotizaciones
     put:
@@ -1581,7 +2026,123 @@ paths:
       operationId: actualizarUnaCotizacin
       description: 'Actualiza datos generales y, si se envía `items`, reemplaza el detalle completo y recalcula los montos.'
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    quoteNumber: COT-202611140001
+                    customer:
+                      id: 1
+                      legalName: 'Cliente Ejemplo S.A. de C.V.'
+                      tradeName: 'Cliente Ejemplo'
+                    employee:
+                      id: 1
+                      fullName: 'Carlos Mendoza'
+                    appliedPlan:
+                      id: 1
+                      planCode: RESIDENCIAL
+                      planName: 'Plan Residencial'
+                    basePrice: 60.0
+                    discountedSubtotal: 54.0
+                    includesVat: true
+                    loyaltyPointsUsed: 0
+                    loyaltyPointsEarned: 54
+                    total: 54.0
+                    status: pending
+                    items: []
+                    createdAt: '2026-11-14T10:00:00.000000Z'
+                    updatedAt: '2026-11-14T11:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      quoteNumber:
+                        type: string
+                        example: COT-202611140001
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Cliente Ejemplo S.A. de C.V.'
+                          tradeName:
+                            type: string
+                            example: 'Cliente Ejemplo'
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          fullName:
+                            type: string
+                            example: 'Carlos Mendoza'
+                      appliedPlan:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          planCode:
+                            type: string
+                            example: RESIDENCIAL
+                          planName:
+                            type: string
+                            example: 'Plan Residencial'
+                      basePrice:
+                        type: number
+                        example: 60.0
+                      discountedSubtotal:
+                        type: number
+                        example: 54.0
+                      includesVat:
+                        type: boolean
+                        example: true
+                      loyaltyPointsUsed:
+                        type: integer
+                        example: 0
+                      loyaltyPointsEarned:
+                        type: integer
+                        example: 54
+                      total:
+                        type: number
+                        example: 54.0
+                      status:
+                        type: string
+                        example: pending
+                      items:
+                        type: array
+                        example: []
+                      createdAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T11:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cotización no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Cotización no encontrada.'
       tags:
         - Cotizaciones
       requestBody:
@@ -1644,8 +2205,6 @@ paths:
                         example: 25.5
                     required:
                       - item_type
-                      - service_id
-                      - plant_id
                       - quantity
                       - unit_price
     delete:
@@ -1653,7 +2212,43 @@ paths:
       operationId: eliminarUnaCotizacinBorradoLgico
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cotización eliminada correctamente.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Cotización eliminada correctamente.'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No tiene permisos para realizar esta acción.'
+                properties:
+                  message:
+                    type: string
+                    example: 'No tiene permisos para realizar esta acción.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cotización no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Cotización no encontrada.'
       tags:
         - Cotizaciones
     parameters:
@@ -1679,7 +2274,51 @@ paths:
       operationId: cambiarElEstadoDeUnaCotizacin
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    quoteNumber: COT-202611140001
+                    status: paid
+                    total: 54.0
+                    updatedAt: '2026-11-14T12:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      quoteNumber:
+                        type: string
+                        example: COT-202611140001
+                      status:
+                        type: string
+                        example: paid
+                      total:
+                        type: number
+                        example: 54.0
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T12:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cotización no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Cotización no encontrada.'
       tags:
         - Cotizaciones
       requestBody:
@@ -3223,10 +3862,10 @@ paths:
         in: path
         name: id
         description: 'The ID of the employee.'
-        example: 1
+        example: architecto
         required: true
         schema:
-          type: integer
+          type: string
       -
         in: path
         name: employee
@@ -4536,7 +5175,7 @@ paths:
                 action:
                   type: string
                   description: ''
-                  example: delete
+                  example: insert
                   enum:
                     - insert
                     - update
@@ -4562,22 +5201,22 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-14'
+                  example: '2026-11-20'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 desde:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-14'
+                  example: '2026-11-20'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 limit:
                   type: integer
@@ -5023,27 +5662,62 @@ paths:
               schema:
                 type: object
                 example:
-                  data: []
+                  data:
+                    -
+                      id: 1
+                      customerId: 1
+                      type: wallet
+                      concept: 'Recarga de saldo'
+                      amount: 100.0
+                      createdAt: '2026-11-01T10:00:00.000000Z'
                   meta:
-                    currentPage: 16
+                    currentPage: 1
                     totalPages: 1
-                    totalItems: 0
+                    totalItems: 1
                 properties:
                   data:
                     type: array
-                    example: []
+                    example:
+                      -
+                        id: 1
+                        customerId: 1
+                        type: wallet
+                        concept: 'Recarga de saldo'
+                        amount: 100
+                        createdAt: '2026-11-01T10:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        customerId:
+                          type: integer
+                          example: 1
+                        type:
+                          type: string
+                          example: wallet
+                        concept:
+                          type: string
+                          example: 'Recarga de saldo'
+                        amount:
+                          type: number
+                          example: 100.0
+                        createdAt:
+                          type: string
+                          example: '2026-11-01T10:00:00.000000Z'
                   meta:
                     type: object
                     properties:
                       currentPage:
                         type: integer
-                        example: 16
+                        example: 1
                       totalPages:
                         type: integer
                         example: 1
                       totalItems:
                         type: integer
-                        example: 0
+                        example: 1
       tags:
         - Cartera
       requestBody:
@@ -5056,7 +5730,7 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: wallet
+                  example: loyalty
                   enum:
                     - all
                     - wallet
@@ -5096,118 +5770,56 @@ paths:
               schema:
                 type: object
                 example:
-                  data: []
-                  links:
-                    first: 'http://localhost/api/v1/customers/portfolio?page=1'
-                    last: 'http://localhost/api/v1/customers/portfolio?page=1'
-                    prev: null
-                    next: null
-                  meta:
-                    current_page: 1
-                    from: null
-                    last_page: 1
-                    links:
-                      -
-                        url: null
-                        label: '&laquo; Previous'
-                        page: null
-                        active: false
-                      -
-                        url: 'http://localhost/api/v1/customers/portfolio?page=1'
-                        label: '1'
-                        page: 1
-                        active: true
-                      -
-                        url: null
-                        label: 'Next &raquo;'
-                        page: null
-                        active: false
-                    path: 'http://localhost/api/v1/customers/portfolio'
-                    per_page: 1
-                    to: null
-                    total: 0
+                  data:
+                    -
+                      customerId: 1
+                      customerName: 'Cliente Ejemplo S.A. de C.V.'
+                      wallet:
+                        cashBalance: 150.0
+                        reservedSubscriptionBalance: 50.0
+                        totalAvailable: 200.0
+                      loyaltyPoints:
+                        pointsBalance: 350
                 properties:
                   data:
                     type: array
-                    example: []
-                  links:
-                    type: object
-                    properties:
-                      first:
-                        type: string
-                        example: 'http://localhost/api/v1/customers/portfolio?page=1'
-                      last:
-                        type: string
-                        example: 'http://localhost/api/v1/customers/portfolio?page=1'
-                      prev:
-                        type: string
-                        example: null
-                        nullable: true
-                      next:
-                        type: string
-                        example: null
-                        nullable: true
-                  meta:
-                    type: object
-                    properties:
-                      current_page:
-                        type: integer
-                        example: 1
-                      from:
-                        type: string
-                        example: null
-                        nullable: true
-                      last_page:
-                        type: integer
-                        example: 1
-                      links:
-                        type: array
-                        example:
-                          -
-                            url: null
-                            label: '&laquo; Previous'
-                            page: null
-                            active: false
-                          -
-                            url: 'http://localhost/api/v1/customers/portfolio?page=1'
-                            label: '1'
-                            page: 1
-                            active: true
-                          -
-                            url: null
-                            label: 'Next &raquo;'
-                            page: null
-                            active: false
-                        items:
+                    example:
+                      -
+                        customerId: 1
+                        customerName: 'Cliente Ejemplo S.A. de C.V.'
+                        wallet:
+                          cashBalance: 150
+                          reservedSubscriptionBalance: 50
+                          totalAvailable: 200
+                        loyaltyPoints:
+                          pointsBalance: 350
+                    items:
+                      type: object
+                      properties:
+                        customerId:
+                          type: integer
+                          example: 1
+                        customerName:
+                          type: string
+                          example: 'Cliente Ejemplo S.A. de C.V.'
+                        wallet:
                           type: object
                           properties:
-                            url:
-                              type: string
-                              example: null
-                              nullable: true
-                            label:
-                              type: string
-                              example: '&laquo; Previous'
-                            page:
-                              type: string
-                              example: null
-                              nullable: true
-                            active:
-                              type: boolean
-                              example: false
-                      path:
-                        type: string
-                        example: 'http://localhost/api/v1/customers/portfolio'
-                      per_page:
-                        type: integer
-                        example: 1
-                      to:
-                        type: string
-                        example: null
-                        nullable: true
-                      total:
-                        type: integer
-                        example: 0
+                            cashBalance:
+                              type: number
+                              example: 150.0
+                            reservedSubscriptionBalance:
+                              type: number
+                              example: 50.0
+                            totalAvailable:
+                              type: number
+                              example: 200.0
+                        loyaltyPoints:
+                          type: object
+                          properties:
+                            pointsBalance:
+                              type: integer
+                              example: 350
       tags:
         - Cartera
       requestBody:
@@ -5842,7 +6454,7 @@ paths:
           type: integer
   '/api/v1/customers/{customer}/wallet/transactions':
     post:
-      summary: 'Registrar una transacci��n de billetera.'
+      summary: 'Registrar una transacción de billetera.'
       operationId: registrarUnaTransaccinDeBilletera
       description: "Tipos permitidos: top_up, annual_fee, maintenance_deduction, adjustment,\nreserve_funds y spend_reserved_funds.\n- reserve_funds: mueve saldo de cash a reservado para suscripción.\n- spend_reserved_funds: descuenta del saldo reservado.\nLas transacciones son inmutables; las correcciones se registran como ajustes."
       parameters: []
@@ -5906,15 +6518,15 @@ paths:
               properties:
                 transaction_type:
                   type: string
-                  description: 'Tipo de transacci��n.'
+                  description: 'Tipo de transacción.'
                   example: top_up
                 amount:
                   type: numeric
-                  description: 'Monto de la transacci��n. Para adjustment puede ser negativo.'
+                  description: 'Monto de la transacción. Para adjustment puede ser negativo.'
                   example: '100.00'
                 payment_method:
                   type: string
-                  description: 'MǸtodo de pago.'
+                  description: 'Método de pago.'
                   example: transfer
                   nullable: true
                 is_annual_payment:
@@ -6314,22 +6926,22 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-14'
+                  example: '2026-11-20'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-14'
+                  example: '2026-11-20'
                   nullable: true
                 status:
                   type: string
                   description: ''
-                  example: cancelled
+                  example: pending
                   enum:
                     - pending
                     - confirmed
@@ -6360,7 +6972,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: appointment_time
                   enum:
                     - id
                     - appointment_date
@@ -6371,7 +6983,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -6389,7 +7001,7 @@ paths:
                 all:
                   type: boolean
                   description: ''
-                  example: false
+                  example: true
                   nullable: true
     post:
       summary: 'Agendar cita manualmente.'
@@ -7342,6 +7954,68 @@ paths:
       description: ''
       parameters: []
       responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      customerId: 15
+                      reward:
+                        id: 2
+                        name: 'Fumigación de jardín'
+                        pointsCost: 150
+                      pointsRedeemed: 150
+                      status: completed
+                      requestedAt: '2026-11-01T10:00:00.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        customerId: 15
+                        reward:
+                          id: 2
+                          name: 'Fumigación de jardín'
+                          pointsCost: 150
+                        pointsRedeemed: 150
+                        status: completed
+                        requestedAt: '2026-11-01T10:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        customerId:
+                          type: integer
+                          example: 15
+                        reward:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            name:
+                              type: string
+                              example: 'Fumigación de jardín'
+                            pointsCost:
+                              type: integer
+                              example: 150
+                        pointsRedeemed:
+                          type: integer
+                          example: 150
+                        status:
+                          type: string
+                          example: completed
+                        requestedAt:
+                          type: string
+                          example: '2026-11-01T10:00:00.000000Z'
         404:
           description: ''
           content:
@@ -7393,11 +8067,51 @@ paths:
               schema:
                 type: object
                 example:
-                  data: []
+                  data:
+                    -
+                      id: 1
+                      name: 'Fertilización orgánica de jardín'
+                      pointsCost: 100
+                      active: true
+                      service:
+                        id: 2
+                        name: Fertilización
                 properties:
                   data:
                     type: array
-                    example: []
+                    example:
+                      -
+                        id: 1
+                        name: 'Fertilización orgánica de jardín'
+                        pointsCost: 100
+                        active: true
+                        service:
+                          id: 2
+                          name: Fertilización
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Fertilización orgánica de jardín'
+                        pointsCost:
+                          type: integer
+                          example: 100
+                        active:
+                          type: boolean
+                          example: true
+                        service:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            name:
+                              type: string
+                              example: Fertilización
       tags:
         - EcoPuntos
   '/api/v1/loyalty-rewards/{loyalty_reward}':
@@ -7407,6 +8121,42 @@ paths:
       description: ''
       parameters: []
       responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'Fertilización orgánica de jardín'
+                  pointsCost: 100
+                  active: true
+                  service:
+                    id: 2
+                    name: Fertilización
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'Fertilización orgánica de jardín'
+                  pointsCost:
+                    type: integer
+                    example: 100
+                  active:
+                    type: boolean
+                    example: true
+                  service:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      name:
+                        type: string
+                        example: Fertilización
         404:
           description: ''
           content:
@@ -7414,25 +8164,17 @@ paths:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\LoyaltyReward] 16'
+                  message: 'Recompensa no encontrada.'
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\LoyaltyReward] 16'
+                    example: 'Recompensa no encontrada.'
       tags:
         - EcoPuntos
     parameters:
       -
         in: path
         name: loyalty_reward
-        description: ''
-        example: 16
-        required: true
-        schema:
-          type: integer
-      -
-        in: path
-        name: reward
         description: 'ID de la recompensa.'
         example: 1
         required: true
@@ -7947,7 +8689,7 @@ paths:
                 status_type:
                   type: string
                   description: ''
-                  example: performed
+                  example: declined
                   enum:
                     - all
                     - performed
@@ -7956,17 +8698,17 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-14'
+                  example: '2026-11-20'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 sort_by:
                   type: string
                   description: ''
-                  example: id
+                  example: total
                   enum:
                     - id
                     - quote_number
@@ -8640,7 +9382,7 @@ paths:
                 movement_type:
                   type: string
                   description: ''
-                  example: all
+                  example: sale
                   enum:
                     - all
                     - sale
@@ -8651,7 +9393,7 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: purchase
+                  example: sale
                   enum:
                     - all
                     - sale
@@ -8662,12 +9404,12 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-11-14'
+                  example: '2026-11-20'
                   nullable: true
                 end_date:
                   type: string
                   description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 search:
                   type: string
@@ -8691,7 +9433,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: document_number
                   enum:
                     - id
                     - movement_date
@@ -8703,7 +9445,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -8978,7 +9720,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: price
+                  example: created_at
                   enum:
                     - id
                     - name
@@ -8989,7 +9731,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -9562,7 +10304,17 @@ paths:
               schema:
                 type: object
                 example:
-                  data: []
+                  data:
+                    -
+                      id: 1
+                      name: 'Distribuidora Verde S.A. de C.V.'
+                      tradeName: 'Vivero El Roble'
+                      phone: '22223333'
+                      email: ventas@elroble.com
+                      status: active
+                      economicActivity: 'Venta de plantas y abonos'
+                      contactName: 'Carlos Henríquez'
+                      createdAt: '2026-11-14T10:00:00.000000Z'
                   links:
                     first: 'http://localhost/api/v1/suppliers?page=1'
                     last: 'http://localhost/api/v1/suppliers?page=1'
@@ -9570,32 +10322,55 @@ paths:
                     next: null
                   meta:
                     current_page: 1
-                    from: null
+                    from: 1
                     last_page: 1
-                    links:
-                      -
-                        url: null
-                        label: '&laquo; Previous'
-                        page: null
-                        active: false
-                      -
-                        url: 'http://localhost/api/v1/suppliers?page=1'
-                        label: '1'
-                        page: 1
-                        active: true
-                      -
-                        url: null
-                        label: 'Next &raquo;'
-                        page: null
-                        active: false
-                    path: 'http://localhost/api/v1/suppliers'
-                    per_page: 22
-                    to: null
-                    total: 0
+                    per_page: 15
+                    to: 1
+                    total: 1
                 properties:
                   data:
                     type: array
-                    example: []
+                    example:
+                      -
+                        id: 1
+                        name: 'Distribuidora Verde S.A. de C.V.'
+                        tradeName: 'Vivero El Roble'
+                        phone: '22223333'
+                        email: ventas@elroble.com
+                        status: active
+                        economicActivity: 'Venta de plantas y abonos'
+                        contactName: 'Carlos Henríquez'
+                        createdAt: '2026-11-14T10:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Distribuidora Verde S.A. de C.V.'
+                        tradeName:
+                          type: string
+                          example: 'Vivero El Roble'
+                        phone:
+                          type: string
+                          example: '22223333'
+                        email:
+                          type: string
+                          example: ventas@elroble.com
+                        status:
+                          type: string
+                          example: active
+                        economicActivity:
+                          type: string
+                          example: 'Venta de plantas y abonos'
+                        contactName:
+                          type: string
+                          example: 'Carlos Henríquez'
+                        createdAt:
+                          type: string
+                          example: '2026-11-14T10:00:00.000000Z'
                   links:
                     type: object
                     properties:
@@ -9620,60 +10395,44 @@ paths:
                         type: integer
                         example: 1
                       from:
-                        type: string
-                        example: null
-                        nullable: true
+                        type: integer
+                        example: 1
                       last_page:
                         type: integer
                         example: 1
-                      links:
-                        type: array
-                        example:
-                          -
-                            url: null
-                            label: '&laquo; Previous'
-                            page: null
-                            active: false
-                          -
-                            url: 'http://localhost/api/v1/suppliers?page=1'
-                            label: '1'
-                            page: 1
-                            active: true
-                          -
-                            url: null
-                            label: 'Next &raquo;'
-                            page: null
-                            active: false
-                        items:
-                          type: object
-                          properties:
-                            url:
-                              type: string
-                              example: null
-                              nullable: true
-                            label:
-                              type: string
-                              example: '&laquo; Previous'
-                            page:
-                              type: string
-                              example: null
-                              nullable: true
-                            active:
-                              type: boolean
-                              example: false
-                      path:
-                        type: string
-                        example: 'http://localhost/api/v1/suppliers'
                       per_page:
                         type: integer
-                        example: 22
+                        example: 15
                       to:
-                        type: string
-                        example: null
-                        nullable: true
+                        type: integer
+                        example: 1
                       total:
                         type: integer
-                        example: 0
+                        example: 1
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No tiene permisos para realizar esta acción.'
+                properties:
+                  message:
+                    type: string
+                    example: 'No tiene permisos para realizar esta acción.'
       tags:
         - Proveedores
       requestBody:
@@ -9691,7 +10450,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: inactive
+                  example: active
                   enum:
                     - active
                     - inactive
@@ -9709,17 +10468,17 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-14T21:04:18'
+                  example: '2026-11-20T03:20:40'
                   nullable: true
                 hasta:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                   nullable: true
                 sort_by:
                   type: string
                   description: ''
-                  example: trade_name
+                  example: status
                   enum:
                     - id
                     - name
@@ -9730,7 +10489,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: DESC
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -9752,7 +10511,115 @@ paths:
       operationId: registrarUnNuevoProveedor
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Distribuidora Verde S.A. de C.V.'
+                    tradeName: 'Vivero El Roble'
+                    taxId: 0614-010190-101-1
+                    nrc: 123456-7
+                    economicActivity: 'Venta de plantas y abonos'
+                    phone: '22223333'
+                    email: ventas@elroble.com
+                    address: 'Calle Principal #123, San Salvador'
+                    contactName: 'Carlos Henríquez'
+                    contactPhone: '77778888'
+                    status: active
+                    notes: 'Proveedor mayorista de tierra y sustratos'
+                    createdAt: '2026-11-14T10:00:00.000000Z'
+                    updatedAt: '2026-11-14T10:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Distribuidora Verde S.A. de C.V.'
+                      tradeName:
+                        type: string
+                        example: 'Vivero El Roble'
+                      taxId:
+                        type: string
+                        example: 0614-010190-101-1
+                      nrc:
+                        type: string
+                        example: 123456-7
+                      economicActivity:
+                        type: string
+                        example: 'Venta de plantas y abonos'
+                      phone:
+                        type: string
+                        example: '22223333'
+                      email:
+                        type: string
+                        example: ventas@elroble.com
+                      address:
+                        type: string
+                        example: 'Calle Principal #123, San Salvador'
+                      contactName:
+                        type: string
+                        example: 'Carlos Henríquez'
+                      contactPhone:
+                        type: string
+                        example: '77778888'
+                      status:
+                        type: string
+                        example: active
+                      notes:
+                        type: string
+                        example: 'Proveedor mayorista de tierra y sustratos'
+                      createdAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No tiene permisos para realizar esta acción.'
+                properties:
+                  message:
+                    type: string
+                    example: 'No tiene permisos para realizar esta acción.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Los datos proporcionados no son válidos.'
+                  errors:
+                    phone:
+                      - 'El campo phone ya ha sido registrado.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Los datos proporcionados no son válidos.'
+                  errors:
+                    type: object
+                    properties:
+                      phone:
+                        type: array
+                        example:
+                          - 'El campo phone ya ha sido registrado.'
+                        items:
+                          type: string
       tags:
         - Proveedores
       requestBody:
@@ -9830,6 +10697,78 @@ paths:
       description: ''
       parameters: []
       responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Distribuidora Verde S.A. de C.V.'
+                    tradeName: 'Vivero El Roble'
+                    taxId: 0614-010190-101-1
+                    nrc: 123456-7
+                    economicActivity: 'Venta de plantas y abonos'
+                    phone: '22223333'
+                    email: ventas@elroble.com
+                    address: 'Calle Principal #123, San Salvador'
+                    contactName: 'Carlos Henríquez'
+                    contactPhone: '77778888'
+                    status: active
+                    notes: 'Proveedor mayorista de tierra y sustratos'
+                    createdAt: '2026-11-14T10:00:00.000000Z'
+                    updatedAt: '2026-11-14T10:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Distribuidora Verde S.A. de C.V.'
+                      tradeName:
+                        type: string
+                        example: 'Vivero El Roble'
+                      taxId:
+                        type: string
+                        example: 0614-010190-101-1
+                      nrc:
+                        type: string
+                        example: 123456-7
+                      economicActivity:
+                        type: string
+                        example: 'Venta de plantas y abonos'
+                      phone:
+                        type: string
+                        example: '22223333'
+                      email:
+                        type: string
+                        example: ventas@elroble.com
+                      address:
+                        type: string
+                        example: 'Calle Principal #123, San Salvador'
+                      contactName:
+                        type: string
+                        example: 'Carlos Henríquez'
+                      contactPhone:
+                        type: string
+                        example: '77778888'
+                      status:
+                        type: string
+                        example: active
+                      notes:
+                        type: string
+                        example: 'Proveedor mayorista de tierra y sustratos'
+                      createdAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T10:00:00.000000Z'
         404:
           description: ''
           content:
@@ -9837,11 +10776,11 @@ paths:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\Supplier] 16'
+                  message: 'Proveedor no encontrado.'
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\Supplier] 16'
+                    example: 'Proveedor no encontrado.'
       tags:
         - Proveedores
     put:
@@ -9849,11 +10788,63 @@ paths:
       operationId: actualizarInformacinDeUnProveedor
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Distribuidora Verde S.A. de C.V.'
+                    tradeName: 'Vivero El Roble Central'
+                    phone: '22223333'
+                    email: info@elroble.com
+                    status: active
+                    updatedAt: '2026-11-14T11:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Distribuidora Verde S.A. de C.V.'
+                      tradeName:
+                        type: string
+                        example: 'Vivero El Roble Central'
+                      phone:
+                        type: string
+                        example: '22223333'
+                      email:
+                        type: string
+                        example: info@elroble.com
+                      status:
+                        type: string
+                        example: active
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T11:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Proveedor no encontrado.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Proveedor no encontrado.'
       tags:
         - Proveedores
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
@@ -9861,12 +10852,12 @@ paths:
               properties:
                 name:
                   type: string
-                  description: 'Must not be greater than 150 characters.'
-                  example: b
+                  description: 'Razón social o nombre del proveedor.'
+                  example: 'Distribuidora Verde S.A. de C.V.'
                 trade_name:
                   type: string
-                  description: 'Must not be greater than 150 characters.'
-                  example: 'n'
+                  description: 'Nombre comercial.'
+                  example: 'Vivero El Roble Central'
                   nullable: true
                 tax_id:
                   type: string
@@ -9885,12 +10876,12 @@ paths:
                   nullable: true
                 phone:
                   type: string
-                  description: 'Must not be greater than 20 characters.'
-                  example: pscqldzsnrwtujwv
+                  description: 'Teléfono principal.'
+                  example: '22223333'
                 email:
                   type: string
-                  description: 'Must be a valid email address. Must not be greater than 120 characters.'
-                  example: jhaag@example.net
+                  description: 'Correo electrónico.'
+                  example: info@elroble.com
                   nullable: true
                 address:
                   type: string
@@ -9909,31 +10900,67 @@ paths:
                   nullable: true
                 status:
                   type: string
-                  description: ''
-                  example: inactive
-                  enum:
-                    - active
-                    - inactive
+                  description: 'Estado (`active` o `inactive`).'
+                  example: active
                   nullable: true
                 notes:
                   type: string
                   description: ''
                   example: architecto
                   nullable: true
+              required:
+                - name
+                - phone
     delete:
       summary: 'Eliminar proveedor (Borrado lógico).'
       operationId: eliminarProveedorBorradoLgico
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Proveedor eliminado correctamente.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Proveedor eliminado correctamente.'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No tiene permisos para realizar esta acción.'
+                properties:
+                  message:
+                    type: string
+                    example: 'No tiene permisos para realizar esta acción.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Proveedor no encontrado.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Proveedor no encontrado.'
       tags:
         - Proveedores
     parameters:
       -
         in: path
         name: id
-        description: 'The ID of the supplier.'
-        example: 16
+        description: 'ID del proveedor.'
+        example: 1
         required: true
         schema:
           type: integer
@@ -9943,7 +10970,47 @@ paths:
       operationId: cambiarEstadoDeUnProveedor
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Distribuidora Verde S.A. de C.V.'
+                    status: inactive
+                    updatedAt: '2026-11-14T12:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Distribuidora Verde S.A. de C.V.'
+                      status:
+                        type: string
+                        example: inactive
+                      updatedAt:
+                        type: string
+                        example: '2026-11-14T12:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Proveedor no encontrado.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Proveedor no encontrado.'
       tags:
         - Proveedores
       requestBody:
@@ -9964,7 +11031,15 @@ paths:
         in: path
         name: supplier
         description: 'The supplier.'
-        example: 16
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: id
+        description: 'ID del proveedor.'
+        example: 1
         required: true
         schema:
           type: integer
@@ -9975,6 +11050,54 @@ paths:
       description: ''
       parameters: []
       responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    customerId: 15
+                    plan:
+                      id: 2
+                      planName: 'Plan Residencial Plus'
+                      planCode: RES-PLUS
+                    status: active
+                    startDate: '2026-01-01'
+                    endDate: '2026-12-31'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      customerId:
+                        type: integer
+                        example: 15
+                      plan:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 2
+                          planName:
+                            type: string
+                            example: 'Plan Residencial Plus'
+                          planCode:
+                            type: string
+                            example: RES-PLUS
+                      status:
+                        type: string
+                        example: active
+                      startDate:
+                        type: string
+                        example: '2026-01-01'
+                      endDate:
+                        type: string
+                        example: '2026-12-31'
         404:
           description: ''
           content:
@@ -9982,11 +11105,11 @@ paths:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\Customer] 15'
+                  message: 'Cliente no encontrado.'
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\Customer] 15'
+                    example: 'Cliente no encontrado.'
       tags:
         - Suscripciones
     parameters:
@@ -10005,6 +11128,73 @@ paths:
       description: ''
       parameters: []
       responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      customerId: 15
+                      plan:
+                        id: 2
+                        planName: 'Plan Residencial Plus'
+                        planCode: RES-PLUS
+                      status: active
+                      startDate: '2026-01-01'
+                      endDate: '2026-12-31'
+                      paymentDate: '2026-01-01'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        customerId: 15
+                        plan:
+                          id: 2
+                          planName: 'Plan Residencial Plus'
+                          planCode: RES-PLUS
+                        status: active
+                        startDate: '2026-01-01'
+                        endDate: '2026-12-31'
+                        paymentDate: '2026-01-01'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        customerId:
+                          type: integer
+                          example: 15
+                        plan:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            planName:
+                              type: string
+                              example: 'Plan Residencial Plus'
+                            planCode:
+                              type: string
+                              example: RES-PLUS
+                        status:
+                          type: string
+                          example: active
+                        startDate:
+                          type: string
+                          example: '2026-01-01'
+                        endDate:
+                          type: string
+                          example: '2026-12-31'
+                        paymentDate:
+                          type: string
+                          example: '2026-01-01'
         404:
           description: ''
           content:
@@ -10039,6 +11229,62 @@ paths:
       description: ''
       parameters: []
       responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  customerId: 15
+                  plan:
+                    id: 2
+                    planName: 'Plan Residencial Plus'
+                    planCode: RES-PLUS
+                  status: active
+                  startDate: '2026-01-01'
+                  endDate: '2026-12-31'
+                  paymentDate: '2026-01-01'
+                  payments: []
+                  consumptions: []
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  customerId:
+                    type: integer
+                    example: 15
+                  plan:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      planName:
+                        type: string
+                        example: 'Plan Residencial Plus'
+                      planCode:
+                        type: string
+                        example: RES-PLUS
+                  status:
+                    type: string
+                    example: active
+                  startDate:
+                    type: string
+                    example: '2026-01-01'
+                  endDate:
+                    type: string
+                    example: '2026-12-31'
+                  paymentDate:
+                    type: string
+                    example: '2026-01-01'
+                  payments:
+                    type: array
+                    example: []
+                  consumptions:
+                    type: array
+                    example: []
         404:
           description: ''
           content:
@@ -10046,11 +11292,11 @@ paths:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\Subscription] 1'
+                  message: 'Suscripción no encontrada.'
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\Subscription] 1'
+                    example: 'Suscripción no encontrada.'
       tags:
         - Suscripciones
     parameters:
@@ -10159,38 +11405,88 @@ paths:
             description: 'Registros por página.'
             example: 15
       responses:
-        422:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'The selected customer id is invalid. (and 1 more error)'
-                  errors:
-                    customer_id:
-                      - 'The selected customer id is invalid.'
-                    employee_id:
-                      - 'The selected employee id is invalid.'
+                  data:
+                    -
+                      id: 1
+                      inspectionDate: '2026-11-11'
+                      findings: 'Terreno con desnivel pronunciado y maleza alta.'
+                      status: submitted
+                      totalArea: 310.0
+                      areaUnit: m2
+                      customer:
+                        id: 1
+                        legalName: 'Cliente Ejemplo S.A. de C.V.'
+                      employee:
+                        id: 2
+                        fullName: 'Juan Técnico'
+                      createdAt: '2026-11-11T14:30:00.000000Z'
                 properties:
-                  message:
-                    type: string
-                    example: 'The selected customer id is invalid. (and 1 more error)'
-                  errors:
-                    type: object
-                    properties:
-                      customer_id:
-                        type: array
-                        example:
-                          - 'The selected customer id is invalid.'
-                        items:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        inspectionDate: '2026-11-11'
+                        findings: 'Terreno con desnivel pronunciado y maleza alta.'
+                        status: submitted
+                        totalArea: 310
+                        areaUnit: m2
+                        customer:
+                          id: 1
+                          legalName: 'Cliente Ejemplo S.A. de C.V.'
+                        employee:
+                          id: 2
+                          fullName: 'Juan Técnico'
+                        createdAt: '2026-11-11T14:30:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        inspectionDate:
                           type: string
-                      employee_id:
-                        type: array
-                        example:
-                          - 'The selected employee id is invalid.'
-                        items:
+                          example: '2026-11-11'
+                        findings:
                           type: string
+                          example: 'Terreno con desnivel pronunciado y maleza alta.'
+                        status:
+                          type: string
+                          example: submitted
+                        totalArea:
+                          type: number
+                          example: 310.0
+                        areaUnit:
+                          type: string
+                          example: m2
+                        customer:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            legalName:
+                              type: string
+                              example: 'Cliente Ejemplo S.A. de C.V.'
+                        employee:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            fullName:
+                              type: string
+                              example: 'Juan Técnico'
+                        createdAt:
+                          type: string
+                          example: '2026-11-11T14:30:00.000000Z'
       tags:
         - 'Técnico de Campo'
       requestBody:
@@ -10211,7 +11507,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: draft
+                  example: reviewed
                   enum:
                     - draft
                     - submitted
@@ -10219,11 +11515,11 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-14T21:04:18'
+                  example: '2026-11-20T03:20:40'
                 end_date:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
-                  example: '2052-12-07'
+                  example: '2052-12-13'
                 search:
                   type: string
                   description: 'Must not be greater than 255 characters.'
@@ -10231,7 +11527,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: inspection_date
+                  example: id
                   enum:
                     - id
                     - inspection_date
@@ -10258,7 +11554,116 @@ paths:
       operationId: registrarInspeccinDeCampo
       description: 'Crea una inspección realizada por el técnico de campo, registrando dimensiones del terreno, servicios requeridos y fotografías de referencia.'
       parameters: []
-      responses: {  }
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    inspectionDate: '2026-11-11'
+                    findings: 'Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.'
+                    terrainWidth: 15.5
+                    terrainLength: 20.0
+                    totalArea: 310.0
+                    areaUnit: m2
+                    terrainNotes: 'Suelo arcilloso, toma de agua a 10 metros.'
+                    status: submitted
+                    customer:
+                      id: 1
+                      legalName: 'Cliente Ejemplo S.A. de C.V.'
+                    employee:
+                      id: 2
+                      fullName: 'Juan Técnico'
+                    services:
+                      -
+                        id: 1
+                        name: 'Poda y Desmonte'
+                        suggestedQuantity: 2
+                        notes: 'Requiere fumigación previa.'
+                    photos: []
+                    createdAt: '2026-11-11T14:30:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      inspectionDate:
+                        type: string
+                        example: '2026-11-11'
+                      findings:
+                        type: string
+                        example: 'Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.'
+                      terrainWidth:
+                        type: number
+                        example: 15.5
+                      terrainLength:
+                        type: number
+                        example: 20.0
+                      totalArea:
+                        type: number
+                        example: 310.0
+                      areaUnit:
+                        type: string
+                        example: m2
+                      terrainNotes:
+                        type: string
+                        example: 'Suelo arcilloso, toma de agua a 10 metros.'
+                      status:
+                        type: string
+                        example: submitted
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Cliente Ejemplo S.A. de C.V.'
+                      employee:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 2
+                          fullName:
+                            type: string
+                            example: 'Juan Técnico'
+                      services:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            name: 'Poda y Desmonte'
+                            suggestedQuantity: 2
+                            notes: 'Requiere fumigación previa.'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Poda y Desmonte'
+                            suggestedQuantity:
+                              type: integer
+                              example: 2
+                            notes:
+                              type: string
+                              example: 'Requiere fumigación previa.'
+                      photos:
+                        type: array
+                        example: []
+                      createdAt:
+                        type: string
+                        example: '2026-11-11T14:30:00.000000Z'
       tags:
         - 'Técnico de Campo'
       requestBody:
@@ -10376,18 +11781,78 @@ paths:
       description: ''
       parameters: []
       responses:
-        500:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'Server Error'
+                  data:
+                    id: 1
+                    inspectionDate: '2026-11-11'
+                    findings: 'Terreno con desnivel pronunciado y maleza alta.'
+                    terrainWidth: 15.5
+                    terrainLength: 20.0
+                    totalArea: 310.0
+                    areaUnit: m2
+                    status: submitted
+                    customer:
+                      id: 1
+                      legalName: 'Cliente Ejemplo S.A. de C.V.'
+                    photos: []
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      inspectionDate:
+                        type: string
+                        example: '2026-11-11'
+                      findings:
+                        type: string
+                        example: 'Terreno con desnivel pronunciado y maleza alta.'
+                      terrainWidth:
+                        type: number
+                        example: 15.5
+                      terrainLength:
+                        type: number
+                        example: 20.0
+                      totalArea:
+                        type: number
+                        example: 310.0
+                      areaUnit:
+                        type: string
+                        example: m2
+                      status:
+                        type: string
+                        example: submitted
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          legalName:
+                            type: string
+                            example: 'Cliente Ejemplo S.A. de C.V.'
+                      photos:
+                        type: array
+                        example: []
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Inspección no encontrada.'
                 properties:
                   message:
                     type: string
-                    example: 'Server Error'
+                    example: 'Inspección no encontrada.'
       tags:
         - 'Técnico de Campo'
     put:
@@ -10395,7 +11860,47 @@ paths:
       operationId: actualizarInspeccinDeCampo
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    findings: 'Terreno nivelado parcialmente.'
+                    status: reviewed
+                    updatedAt: '2026-11-11T16:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      findings:
+                        type: string
+                        example: 'Terreno nivelado parcialmente.'
+                      status:
+                        type: string
+                        example: reviewed
+                      updatedAt:
+                        type: string
+                        example: '2026-11-11T16:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Inspección no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Inspección no encontrada.'
       tags:
         - 'Técnico de Campo'
       requestBody:
@@ -10422,11 +11927,11 @@ paths:
                 inspection_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-14T21:04:18'
+                  example: '2026-11-20T03:20:40'
                 findings:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'Observaciones actualizadas.'
+                  example: 'Terreno nivelado parcialmente.'
                   nullable: true
                 terrain_width:
                   type: number
@@ -10454,12 +11959,8 @@ paths:
                   nullable: true
                 status:
                   type: string
-                  description: ''
+                  description: 'Estado (draft, submitted, reviewed).'
                   example: reviewed
-                  enum:
-                    - draft
-                    - submitted
-                    - reviewed
                 services:
                   type: array
                   description: ''
@@ -10509,25 +12010,85 @@ paths:
       operationId: eliminarInspeccinTcnica
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Inspección eliminada correctamente.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Inspección eliminada correctamente.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Inspección no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Inspección no encontrada.'
       tags:
         - 'Técnico de Campo'
     parameters:
       -
         in: path
         name: id
-        description: 'The ID of the inspection.'
-        example: architecto
+        description: 'ID de la inspección.'
+        example: 1
         required: true
         schema:
-          type: string
+          type: integer
   '/api/v1/inspections/{inspection}/status':
     patch:
       summary: 'Cambiar estado de la inspección.'
       operationId: cambiarEstadoDeLaInspeccin
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    status: reviewed
+                    updatedAt: '2026-11-11T16:00:00.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      status:
+                        type: string
+                        example: reviewed
+                      updatedAt:
+                        type: string
+                        example: '2026-11-11T16:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Inspección no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Inspección no encontrada.'
       tags:
         - 'Técnico de Campo'
       requestBody:
@@ -10552,13 +12113,73 @@ paths:
         required: true
         schema:
           type: string
+      -
+        in: path
+        name: id
+        description: 'ID de la inspección.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   '/api/v1/inspections/{inspection}/photos':
     post:
       summary: 'Subir fotos adicionales a la inspección.'
       operationId: subirFotosAdicionalesALaInspeccin
       description: 'Permite subir más imágenes de referencia a una inspección ya creada.'
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    photos:
+                      -
+                        id: 5
+                        imagePath: inspections/foto_ejemplo.jpg
+                        caption: 'Vista panorámica lateral'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      photos:
+                        type: array
+                        example:
+                          -
+                            id: 5
+                            imagePath: inspections/foto_ejemplo.jpg
+                            caption: 'Vista panorámica lateral'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 5
+                            imagePath:
+                              type: string
+                              example: inspections/foto_ejemplo.jpg
+                            caption:
+                              type: string
+                              example: 'Vista panorámica lateral'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Inspección no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Inspección no encontrada.'
       tags:
         - 'Técnico de Campo'
       requestBody:
@@ -10601,29 +12222,61 @@ paths:
         required: true
         schema:
           type: string
+      -
+        in: path
+        name: id
+        description: 'ID de la inspección.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   '/api/v1/inspections/{inspection}/photos/{photo}':
     delete:
       summary: 'Eliminar foto de inspección.'
       operationId: eliminarFotoDeInspeccin
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Fotografía eliminada correctamente.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Fotografía eliminada correctamente.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Fotografía no encontrada.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Fotografía no encontrada.'
       tags:
         - 'Técnico de Campo'
     parameters:
       -
         in: path
         name: inspection
-        description: 'The inspection.'
-        example: architecto
+        description: 'ID de la inspección.'
+        example: 1
         required: true
         schema:
-          type: string
+          type: integer
       -
         in: path
         name: photo
-        description: 'The photo.'
-        example: architecto
+        description: 'ID de la foto.'
+        example: 5
         required: true
         schema:
-          type: string
+          type: integer

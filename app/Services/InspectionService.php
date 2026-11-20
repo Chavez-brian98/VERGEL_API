@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Helpers\FileUploadHelper;
-use App\Models\AuditLog;
 use App\Models\Inspection;
 use App\Models\InspectionPhoto;
+use App\Services\Concerns\LogsAudit;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class InspectionService
 {
+    use LogsAudit;
+
     /**
      * Listar inspecciones con filtros y paginación.
      */
@@ -47,7 +49,7 @@ class InspectionService
                     ->orWhere('terrain_notes', 'like', "%{$search}%")
                     ->orWhereHas('customer', function ($customerQuery) use ($search) {
                         $customerQuery->where('legal_name', 'like', "%{$search}%")
-                            ->orWhere('commercial_name', 'like', "%{$search}%");
+                            ->orWhere('trade_name', 'like', "%{$search}%");
                     });
             });
         }
@@ -97,37 +99,8 @@ class InspectionService
 
             $inspection = Inspection::create($data);
 
-            // Asociar servicios sugeridos
-            if (! empty($services)) {
-                $syncData = [];
-                foreach ($services as $service) {
-                    $serviceId = is_array($service) ? $service['service_id'] : $service;
-                    $quantity = is_array($service) ? ($service['suggested_quantity'] ?? 1) : 1;
-                    $notes = is_array($service) ? ($service['notes'] ?? null) : null;
-
-                    $syncData[$serviceId] = [
-                        'suggested_quantity' => $quantity,
-                        'notes' => $notes,
-                    ];
-                }
-                $inspection->services()->sync($syncData);
-            }
-
-            // Guardar fotos de referencia visual
-            foreach ($photos as $photoItem) {
-                if ($photoItem instanceof UploadedFile) {
-                    $path = FileUploadHelper::upload($photoItem, 'inspections');
-                    $inspection->photos()->create([
-                        'image_path' => $path,
-                    ]);
-                } elseif (is_array($photoItem) && isset($photoItem['file']) && $photoItem['file'] instanceof UploadedFile) {
-                    $path = FileUploadHelper::upload($photoItem['file'], 'inspections');
-                    $inspection->photos()->create([
-                        'image_path' => $path,
-                        'caption' => $photoItem['caption'] ?? null,
-                    ]);
-                }
-            }
+            $this->syncSuggestedServices($inspection, $services);
+            $this->storeInspectionPhotos($inspection, $photos);
 
             $this->logAudit('insert', 'inspections', $inspection->id, null, $inspection->toArray());
 
@@ -157,34 +130,10 @@ class InspectionService
             $inspection->update($data);
 
             if ($services !== null) {
-                $syncData = [];
-                foreach ($services as $service) {
-                    $serviceId = is_array($service) ? $service['service_id'] : $service;
-                    $quantity = is_array($service) ? ($service['suggested_quantity'] ?? 1) : 1;
-                    $notes = is_array($service) ? ($service['notes'] ?? null) : null;
-
-                    $syncData[$serviceId] = [
-                        'suggested_quantity' => $quantity,
-                        'notes' => $notes,
-                    ];
-                }
-                $inspection->services()->sync($syncData);
+                $this->syncSuggestedServices($inspection, $services);
             }
 
-            foreach ($newPhotos as $photoItem) {
-                if ($photoItem instanceof UploadedFile) {
-                    $path = FileUploadHelper::upload($photoItem, 'inspections');
-                    $inspection->photos()->create([
-                        'image_path' => $path,
-                    ]);
-                } elseif (is_array($photoItem) && isset($photoItem['file']) && $photoItem['file'] instanceof UploadedFile) {
-                    $path = FileUploadHelper::upload($photoItem['file'], 'inspections');
-                    $inspection->photos()->create([
-                        'image_path' => $path,
-                        'caption' => $photoItem['caption'] ?? null,
-                    ]);
-                }
-            }
+            $this->storeInspectionPhotos($inspection, $newPhotos);
 
             $this->logAudit('update', 'inspections', $inspection->id, $oldData, $inspection->fresh()->toArray());
 
@@ -200,25 +149,57 @@ class InspectionService
         return DB::transaction(function () use ($inspectionId, $photos) {
             $inspection = Inspection::findOrFail($inspectionId);
 
-            foreach ($photos as $photoItem) {
-                if ($photoItem instanceof UploadedFile) {
-                    $path = FileUploadHelper::upload($photoItem, 'inspections');
-                    $inspection->photos()->create([
-                        'image_path' => $path,
-                    ]);
-                } elseif (is_array($photoItem) && isset($photoItem['file']) && $photoItem['file'] instanceof UploadedFile) {
-                    $path = FileUploadHelper::upload($photoItem['file'], 'inspections');
-                    $inspection->photos()->create([
-                        'image_path' => $path,
-                        'caption' => $photoItem['caption'] ?? null,
-                    ]);
-                }
-            }
+            $this->storeInspectionPhotos($inspection, $photos);
 
             $this->logAudit('update', 'inspections', $inspection->id, [], ['action' => 'photos_added']);
 
             return $inspection->load(['customer', 'employee', 'services', 'photos']);
         });
+    }
+
+    /**
+     * Sincronizar servicios sugeridos con sus detalles (cantidad y notas).
+     *
+     * @param  array<int, mixed>  $services
+     */
+    private function syncSuggestedServices(Inspection $inspection, array $services): void
+    {
+        $syncData = [];
+        foreach ($services as $service) {
+            $serviceId = is_array($service) ? $service['service_id'] : $service;
+            $quantity = is_array($service) ? ($service['suggested_quantity'] ?? 1) : 1;
+            $notes = is_array($service) ? ($service['notes'] ?? null) : null;
+
+            $syncData[$serviceId] = [
+                'suggested_quantity' => $quantity,
+                'notes' => $notes,
+            ];
+        }
+
+        $inspection->services()->sync($syncData);
+    }
+
+    /**
+     * Almacenar fotos de referencia visual para una inspección.
+     *
+     * @param  array<int, mixed>  $photos
+     */
+    private function storeInspectionPhotos(Inspection $inspection, array $photos): void
+    {
+        foreach ($photos as $photoItem) {
+            if ($photoItem instanceof UploadedFile) {
+                $path = FileUploadHelper::upload($photoItem, 'inspections');
+                $inspection->photos()->create([
+                    'image_path' => $path,
+                ]);
+            } elseif (is_array($photoItem) && isset($photoItem['file']) && $photoItem['file'] instanceof UploadedFile) {
+                $path = FileUploadHelper::upload($photoItem['file'], 'inspections');
+                $inspection->photos()->create([
+                    'image_path' => $path,
+                    'caption' => $photoItem['caption'] ?? null,
+                ]);
+            }
+        }
     }
 
     /**
@@ -270,26 +251,5 @@ class InspectionService
 
             return true;
         });
-    }
-
-    /**
-     * Registra auditoría interna.
-     */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
-    {
-        $employeeId = Auth::user()?->employee_id;
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'action' => $action,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()?->ip(),
-        ]);
     }
 }

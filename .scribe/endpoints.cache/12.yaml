@@ -217,7 +217,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: price
+        example: created_at
         type: string
         enumValues:
           - id
@@ -233,7 +233,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: asc
+        example: desc
         type: string
         enumValues:
           - asc
@@ -249,8 +249,8 @@ endpoints:
       max_price: 12
       per_page: 17
       limit: 15
-      sort_by: price
-      sort_direction: asc
+      sort_by: created_at
+      sort_direction: desc
     fileParameters: []
     responses:
       -
@@ -293,7 +293,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -443,7 +443,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -541,7 +541,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -739,7 +739,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -839,7 +839,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

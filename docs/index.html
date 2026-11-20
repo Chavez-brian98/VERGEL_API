@@ -337,18 +337,13 @@
                                             <a href="#cartera-GETapi-v1-customers--customer--portfolio-movements">Consultar el historial unificado de movimientos del cliente.</a>
                                         </li>
                                                                     </ul>
-                                                                                <li class="tocify-item level-2" data-unique="cartera-gestin">
-                                <a href="#cartera-gestin">Gesti��n</a>
+                                                                                <li class="tocify-item level-2" data-unique="cartera-escritura">
+                                <a href="#cartera-escritura">Escritura</a>
                             </li>
-                                                            <ul id="tocify-subheader-cartera-gestin" class="tocify-subheader">
+                                                            <ul id="tocify-subheader-cartera-escritura" class="tocify-subheader">
                                                                             <li class="tocify-item level-3" data-unique="cartera-POSTapi-v1-customers--customer--wallet-transactions">
-                                            <a href="#cartera-POSTapi-v1-customers--customer--wallet-transactions">Registrar una transacci��n de billetera.</a>
+                                            <a href="#cartera-POSTapi-v1-customers--customer--wallet-transactions">Registrar una transacción de billetera.</a>
                                         </li>
-                                                                    </ul>
-                                                                                <li class="tocify-item level-2" data-unique="cartera-gestion">
-                                <a href="#cartera-gestion">Gestión</a>
-                            </li>
-                                                            <ul id="tocify-subheader-cartera-gestion" class="tocify-subheader">
                                                                             <li class="tocify-item level-3" data-unique="cartera-POSTapi-v1-customers--customer--loyalty-points-transactions">
                                             <a href="#cartera-POSTapi-v1-customers--customer--loyalty-points-transactions">Registrar una transacción de EcoPuntos.</a>
                                         </li>
@@ -579,7 +574,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: November 14, 2026</li>
+        <li>Last updated: November 20, 2026</li>
     </ul>
 </div>
 
@@ -627,8 +622,8 @@
     \"search\": \"b\",
     \"status\": \"active\",
     \"phone\": \"ngzmiyvdljnikhwa\",
-    \"desde\": \"2026-11-14\",
-    \"hasta\": \"2052-12-07\",
+    \"desde\": \"2026-11-20\",
+    \"hasta\": \"2052-12-13\",
     \"limit\": 22
 }"
 </code></pre></div>
@@ -660,8 +655,8 @@ let body = {
     "search": "b",
     "status": "active",
     "phone": "ngzmiyvdljnikhwa",
-    "desde": "2026-11-14",
-    "hasta": "2052-12-07",
+    "desde": "2026-11-20",
+    "hasta": "2052-12-13",
     "limit": 22
 };
 
@@ -933,10 +928,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-customers"
-               value="2026-11-14"
+               value="2026-11-20"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-14</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-20</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -945,10 +940,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-customers"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -978,7 +973,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://vergel-front.pages.dev/api/v1/customers/16" \
+    --get "https://vergel-front.pages.dev/api/v1/customers/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -986,7 +981,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/customers/16"
+    "https://vergel-front.pages.dev/api/v1/customers/architecto"
 );
 
 const headers = {
@@ -1158,15 +1153,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="id"                data-endpoint="GETapi-v1-customers--id-"
-               value="16"
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-v1-customers--id-"
+               value="architecto"
                data-component="url">
     <br>
-<p>The ID of the customer. Example: <code>16</code></p>
+<p>The ID of the customer. Example: <code>architecto</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>customer</code></b>&nbsp;&nbsp;
@@ -1763,7 +1758,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "https://vergel-front.pages.dev/api/v1/customers/16" \
+    "https://vergel-front.pages.dev/api/v1/customers/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1786,7 +1781,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/customers/16"
+    "https://vergel-front.pages.dev/api/v1/customers/architecto"
 );
 
 const headers = {
@@ -1956,15 +1951,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="id"                data-endpoint="PUTapi-v1-customers--id-"
-               value="16"
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PUTapi-v1-customers--id-"
+               value="architecto"
                data-component="url">
     <br>
-<p>The ID of the customer. Example: <code>16</code></p>
+<p>The ID of the customer. Example: <code>architecto</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>customer</code></b>&nbsp;&nbsp;
@@ -2139,7 +2134,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://vergel-front.pages.dev/api/v1/customers/16" \
+    "https://vergel-front.pages.dev/api/v1/customers/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2147,7 +2142,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/customers/16"
+    "https://vergel-front.pages.dev/api/v1/customers/architecto"
 );
 
 const headers = {
@@ -2276,15 +2271,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="id"                data-endpoint="DELETEapi-v1-customers--id-"
-               value="16"
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="DELETEapi-v1-customers--id-"
+               value="architecto"
                data-component="url">
     <br>
-<p>The ID of the customer. Example: <code>16</code></p>
+<p>The ID of the customer. Example: <code>architecto</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>customer</code></b>&nbsp;&nbsp;
@@ -2733,12 +2728,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"search\": \"b\",
-    \"status\": \"paid\",
+    \"status\": \"pending\",
     \"customer_id\": 16,
     \"employee_id\": 16,
     \"applied_plan_id\": 16,
-    \"desde\": \"2026-11-14T21:04:18\",
-    \"hasta\": \"2052-12-07\",
+    \"desde\": \"2026-11-20T03:20:40\",
+    \"hasta\": \"2052-12-13\",
     \"sort_by\": \"created_at\",
     \"sort_direction\": \"asc\",
     \"limit\": 22,
@@ -2775,12 +2770,12 @@ const headers = {
 
 let body = {
     "search": "b",
-    "status": "paid",
+    "status": "pending",
     "customer_id": 16,
     "employee_id": 16,
     "applied_plan_id": 16,
-    "desde": "2026-11-14T21:04:18",
-    "hasta": "2052-12-07",
+    "desde": "2026-11-20T03:20:40",
+    "hasta": "2052-12-13",
     "sort_by": "created_at",
     "sort_direction": "asc",
     "limit": 22,
@@ -2797,30 +2792,57 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-quotes">
             <blockquote>
-            <p>Example response (422):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The selected customer id is invalid. (and 2 more errors)&quot;,
-    &quot;errors&quot;: {
-        &quot;customer_id&quot;: [
-            &quot;The selected customer id is invalid.&quot;
-        ],
-        &quot;employee_id&quot;: [
-            &quot;The selected employee id is invalid.&quot;
-        ],
-        &quot;applied_plan_id&quot;: [
-            &quot;The selected applied plan id is invalid.&quot;
-        ]
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;quoteNumber&quot;: &quot;COT-202611140001&quot;,
+            &quot;customerName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;,
+            &quot;employeeName&quot;: &quot;Carlos Mendoza&quot;,
+            &quot;appliedPlanName&quot;: &quot;Plan Residencial&quot;,
+            &quot;basePrice&quot;: 100,
+            &quot;total&quot;: 101.7,
+            &quot;status&quot;: &quot;pending&quot;,
+            &quot;itemsCount&quot;: 2,
+            &quot;createdAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/api/v1/quotes?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/api/v1/quotes?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
 }</code>
  </pre>
     </span>
@@ -3048,10 +3070,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-v1-quotes"
-               value="paid"
+               value="pending"
                data-component="body">
     <br>
-<p>Example: <code>paid</code></p>
+<p>Example: <code>pending</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>paid</code></li></ul>
         </div>
@@ -3098,10 +3120,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-quotes"
-               value="2026-11-14T21:04:18"
+               value="2026-11-20T03:20:40"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-14T21:04:18</code></p>
+<p>Must be a valid date. Example: <code>2026-11-20T03:20:40</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -3110,10 +3132,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-quotes"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
@@ -3210,19 +3232,61 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-quotes--id-">
             <blockquote>
-            <p>Example response (500):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Server Error&quot;
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;quoteNumber&quot;: &quot;COT-202611140001&quot;,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;,
+            &quot;tradeName&quot;: &quot;Cliente Ejemplo&quot;
+        },
+        &quot;employee&quot;: {
+            &quot;id&quot;: 1,
+            &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+        },
+        &quot;appliedPlan&quot;: {
+            &quot;id&quot;: 1,
+            &quot;planCode&quot;: &quot;RESIDENCIAL&quot;,
+            &quot;planName&quot;: &quot;Plan Residencial&quot;
+        },
+        &quot;basePrice&quot;: 51,
+        &quot;discountedSubtotal&quot;: 45.9,
+        &quot;includesVat&quot;: false,
+        &quot;loyaltyPointsUsed&quot;: 0,
+        &quot;loyaltyPointsEarned&quot;: 45,
+        &quot;total&quot;: 51.87,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;items&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;itemType&quot;: &quot;service&quot;,
+                &quot;service&quot;: {
+                    &quot;id&quot;: 1,
+                    &quot;name&quot;: &quot;Poda de &aacute;rbol&quot;
+                },
+                &quot;plant&quot;: null,
+                &quot;quantity&quot;: 2,
+                &quot;unitPrice&quot;: 25.5,
+                &quot;total&quot;: 51
+            }
+        ],
+        &quot;createdAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cotizaci&oacute;n no encontrada.&quot;
 }</code>
  </pre>
     </span>
@@ -3413,7 +3477,79 @@ fetch(url, {
 </span>
 
 <span id="example-responses-POSTapi-v1-quotes">
-</span>
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;quoteNumber&quot;: &quot;COT-202611140001&quot;,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;,
+            &quot;tradeName&quot;: &quot;Cliente Ejemplo&quot;
+        },
+        &quot;employee&quot;: {
+            &quot;id&quot;: 1,
+            &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+        },
+        &quot;appliedPlan&quot;: {
+            &quot;id&quot;: 1,
+            &quot;planCode&quot;: &quot;RESIDENCIAL&quot;,
+            &quot;planName&quot;: &quot;Plan Residencial&quot;
+        },
+        &quot;basePrice&quot;: 51,
+        &quot;discountedSubtotal&quot;: 45.9,
+        &quot;includesVat&quot;: false,
+        &quot;loyaltyPointsUsed&quot;: 0,
+        &quot;loyaltyPointsEarned&quot;: 45,
+        &quot;total&quot;: 51.87,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;items&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;itemType&quot;: &quot;service&quot;,
+                &quot;service&quot;: {
+                    &quot;id&quot;: 1,
+                    &quot;name&quot;: &quot;Poda de &aacute;rbol&quot;
+                },
+                &quot;plant&quot;: null,
+                &quot;quantity&quot;: 2,
+                &quot;unitPrice&quot;: 25.5,
+                &quot;total&quot;: 51
+            }
+        ],
+        &quot;createdAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Los datos proporcionados no son v&aacute;lidos.&quot;,
+    &quot;errors&quot;: {
+        &quot;items&quot;: [
+            &quot;El campo items es obligatorio.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-quotes" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-quotes"></span>:
@@ -3593,7 +3729,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
 <small>integer</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="items.0.service_id"                data-endpoint="POSTapi-v1-quotes"
@@ -3605,7 +3741,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>plant_id</code></b>&nbsp;&nbsp;
 <small>integer</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="items.0.plant_id"                data-endpoint="POSTapi-v1-quotes"
@@ -3716,7 +3852,52 @@ fetch(url, {
 </span>
 
 <span id="example-responses-PUTapi-v1-quotes--id-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;quoteNumber&quot;: &quot;COT-202611140001&quot;,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;,
+            &quot;tradeName&quot;: &quot;Cliente Ejemplo&quot;
+        },
+        &quot;employee&quot;: {
+            &quot;id&quot;: 1,
+            &quot;fullName&quot;: &quot;Carlos Mendoza&quot;
+        },
+        &quot;appliedPlan&quot;: {
+            &quot;id&quot;: 1,
+            &quot;planCode&quot;: &quot;RESIDENCIAL&quot;,
+            &quot;planName&quot;: &quot;Plan Residencial&quot;
+        },
+        &quot;basePrice&quot;: 60,
+        &quot;discountedSubtotal&quot;: 54,
+        &quot;includesVat&quot;: true,
+        &quot;loyaltyPointsUsed&quot;: 0,
+        &quot;loyaltyPointsEarned&quot;: 54,
+        &quot;total&quot;: 54,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;items&quot;: [],
+        &quot;createdAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-14T11:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cotizaci&oacute;n no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PUTapi-v1-quotes--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PUTapi-v1-quotes--id-"></span>:
@@ -3925,7 +4106,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>service_id</code></b>&nbsp;&nbsp;
 <small>integer</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="items.0.service_id"                data-endpoint="PUTapi-v1-quotes--id-"
@@ -3937,7 +4118,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>plant_id</code></b>&nbsp;&nbsp;
 <small>integer</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="items.0.plant_id"                data-endpoint="PUTapi-v1-quotes--id-"
@@ -4014,7 +4195,34 @@ fetch(url, {
 </span>
 
 <span id="example-responses-DELETEapi-v1-quotes--id-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cotizaci&oacute;n eliminada correctamente.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cotizaci&oacute;n no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-DELETEapi-v1-quotes--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-DELETEapi-v1-quotes--id-"></span>:
@@ -4173,7 +4381,31 @@ fetch(url, {
 </span>
 
 <span id="example-responses-PATCHapi-v1-quotes--quote--status">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;quoteNumber&quot;: &quot;COT-202611140001&quot;,
+        &quot;status&quot;: &quot;paid&quot;,
+        &quot;total&quot;: 54,
+        &quot;updatedAt&quot;: &quot;2026-11-14T12:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cotizaci&oacute;n no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PATCHapi-v1-quotes--quote--status" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PATCHapi-v1-quotes--quote--status"></span>:
@@ -6206,7 +6438,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://vergel-front.pages.dev/api/v1/employees/1" \
+    --get "https://vergel-front.pages.dev/api/v1/employees/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6214,7 +6446,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/employees/1"
+    "https://vergel-front.pages.dev/api/v1/employees/architecto"
 );
 
 const headers = {
@@ -6355,15 +6587,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="id"                data-endpoint="GETapi-v1-employees--id-"
-               value="1"
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-v1-employees--id-"
+               value="architecto"
                data-component="url">
     <br>
-<p>The ID of the employee. Example: <code>1</code></p>
+<p>The ID of the employee. Example: <code>architecto</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>employee</code></b>&nbsp;&nbsp;
@@ -6717,7 +6949,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "https://vergel-front.pages.dev/api/v1/employees/1" \
+    "https://vergel-front.pages.dev/api/v1/employees/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -6738,7 +6970,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/employees/1"
+    "https://vergel-front.pages.dev/api/v1/employees/architecto"
 );
 
 const headers = {
@@ -6900,15 +7132,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="id"                data-endpoint="PUTapi-v1-employees--id-"
-               value="1"
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PUTapi-v1-employees--id-"
+               value="architecto"
                data-component="url">
     <br>
-<p>The ID of the employee. Example: <code>1</code></p>
+<p>The ID of the employee. Example: <code>architecto</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>employee</code></b>&nbsp;&nbsp;
@@ -7069,7 +7301,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://vergel-front.pages.dev/api/v1/employees/1" \
+    "https://vergel-front.pages.dev/api/v1/employees/architecto" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7077,7 +7309,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/employees/1"
+    "https://vergel-front.pages.dev/api/v1/employees/architecto"
 );
 
 const headers = {
@@ -7198,15 +7430,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="id"                data-endpoint="DELETEapi-v1-employees--id-"
-               value="1"
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="DELETEapi-v1-employees--id-"
+               value="architecto"
                data-component="url">
     <br>
-<p>The ID of the employee. Example: <code>1</code></p>
+<p>The ID of the employee. Example: <code>architecto</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>employee</code></b>&nbsp;&nbsp;
@@ -9407,14 +9639,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"user_id\": 16,
     \"employee_id\": 16,
-    \"action\": \"delete\",
+    \"action\": \"insert\",
     \"affected_table\": \"n\",
     \"table_name\": \"g\",
     \"affected_record_id\": 66,
-    \"start_date\": \"2026-11-14\",
-    \"end_date\": \"2052-12-07\",
-    \"desde\": \"2026-11-14\",
-    \"hasta\": \"2052-12-07\",
+    \"start_date\": \"2026-11-20\",
+    \"end_date\": \"2052-12-13\",
+    \"desde\": \"2026-11-20\",
+    \"hasta\": \"2052-12-13\",
     \"limit\": 22,
     \"per_page\": 7
 }"
@@ -9452,14 +9684,14 @@ const headers = {
 let body = {
     "user_id": 16,
     "employee_id": 16,
-    "action": "delete",
+    "action": "insert",
     "affected_table": "n",
     "table_name": "g",
     "affected_record_id": 66,
-    "start_date": "2026-11-14",
-    "end_date": "2052-12-07",
-    "desde": "2026-11-14",
-    "hasta": "2052-12-07",
+    "start_date": "2026-11-20",
+    "end_date": "2052-12-13",
+    "desde": "2026-11-20",
+    "hasta": "2052-12-13",
     "limit": 22,
     "per_page": 7
 };
@@ -9816,10 +10048,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="action"                data-endpoint="GETapi-v1-audit-logs"
-               value="delete"
+               value="insert"
                data-component="body">
     <br>
-<p>Example: <code>delete</code></p>
+<p>Example: <code>insert</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>insert</code></li> <li><code>update</code></li> <li><code>delete</code></li> <li><code>restore</code></li> <li><code>denied</code></li></ul>
         </div>
@@ -9866,10 +10098,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-v1-audit-logs"
-               value="2026-11-14"
+               value="2026-11-20"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-14</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-20</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
@@ -9878,10 +10110,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="end_date"                data-endpoint="GETapi-v1-audit-logs"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>desde</code></b>&nbsp;&nbsp;
@@ -9890,10 +10122,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-audit-logs"
-               value="2026-11-14"
+               value="2026-11-20"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-14</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-20</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -9902,10 +10134,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-audit-logs"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -10531,7 +10763,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"type\": \"wallet\",
+    \"type\": \"loyalty\",
     \"page\": 16,
     \"limit\": 22
 }"
@@ -10558,7 +10790,7 @@ const headers = {
 };
 
 let body = {
-    "type": "wallet",
+    "type": "loyalty",
     "page": 16,
     "limit": 22
 };
@@ -10575,21 +10807,23 @@ fetch(url, {
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: [],
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;customerId&quot;: 1,
+            &quot;type&quot;: &quot;wallet&quot;,
+            &quot;concept&quot;: &quot;Recarga de saldo&quot;,
+            &quot;amount&quot;: 100,
+            &quot;createdAt&quot;: &quot;2026-11-01T10:00:00.000000Z&quot;
+        }
+    ],
     &quot;meta&quot;: {
-        &quot;currentPage&quot;: 16,
+        &quot;currentPage&quot;: 1,
         &quot;totalPages&quot;: 1,
-        &quot;totalItems&quot;: 0
+        &quot;totalItems&quot;: 1
     }
 }</code>
  </pre>
@@ -10722,10 +10956,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="type"                data-endpoint="GETapi-v1-customers-portfolio-movements"
-               value="wallet"
+               value="loyalty"
                data-component="body">
     <br>
-<p>Example: <code>wallet</code></p>
+<p>Example: <code>loyalty</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>all</code></li> <li><code>wallet</code></li> <li><code>loyalty</code></li></ul>
         </div>
@@ -10812,52 +11046,23 @@ fetch(url, {
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: [],
-    &quot;links&quot;: {
-        &quot;first&quot;: &quot;http://localhost/api/v1/customers/portfolio?page=1&quot;,
-        &quot;last&quot;: &quot;http://localhost/api/v1/customers/portfolio?page=1&quot;,
-        &quot;prev&quot;: null,
-        &quot;next&quot;: null
-    },
-    &quot;meta&quot;: {
-        &quot;current_page&quot;: 1,
-        &quot;from&quot;: null,
-        &quot;last_page&quot;: 1,
-        &quot;links&quot;: [
-            {
-                &quot;url&quot;: null,
-                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
-                &quot;page&quot;: null,
-                &quot;active&quot;: false
+    &quot;data&quot;: [
+        {
+            &quot;customerId&quot;: 1,
+            &quot;customerName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;,
+            &quot;wallet&quot;: {
+                &quot;cashBalance&quot;: 150,
+                &quot;reservedSubscriptionBalance&quot;: 50,
+                &quot;totalAvailable&quot;: 200
             },
-            {
-                &quot;url&quot;: &quot;http://localhost/api/v1/customers/portfolio?page=1&quot;,
-                &quot;label&quot;: &quot;1&quot;,
-                &quot;page&quot;: 1,
-                &quot;active&quot;: true
-            },
-            {
-                &quot;url&quot;: null,
-                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
-                &quot;page&quot;: null,
-                &quot;active&quot;: false
+            &quot;loyaltyPoints&quot;: {
+                &quot;pointsBalance&quot;: 350
             }
-        ],
-        &quot;path&quot;: &quot;http://localhost/api/v1/customers/portfolio&quot;,
-        &quot;per_page&quot;: 1,
-        &quot;to&quot;: null,
-        &quot;total&quot;: 0
-    }
+        }
+    ]
 }</code>
  </pre>
     </span>
@@ -11502,8 +11707,8 @@ Must be one of:
         </div>
         </form>
 
-                                <h2 id="cartera-gestin">Gesti��n</h2>
-                                                    <h2 id="cartera-POSTapi-v1-customers--customer--wallet-transactions">Registrar una transacci��n de billetera.</h2>
+                                <h2 id="cartera-escritura">Escritura</h2>
+                                                    <h2 id="cartera-POSTapi-v1-customers--customer--wallet-transactions">Registrar una transacción de billetera.</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -11690,7 +11895,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="top_up"
                data-component="body">
     <br>
-<p>Tipo de transacci��n. Example: <code>top_up</code></p>
+<p>Tipo de transacción. Example: <code>top_up</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>amount</code></b>&nbsp;&nbsp;
@@ -11702,7 +11907,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="100.00"
                data-component="body">
     <br>
-<p>Monto de la transacci��n. Para adjustment puede ser negativo. Example: <code>100.00</code></p>
+<p>Monto de la transacción. Para adjustment puede ser negativo. Example: <code>100.00</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>payment_method</code></b>&nbsp;&nbsp;
@@ -11714,7 +11919,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="transfer"
                data-component="body">
     <br>
-<p>MǸtodo de pago. Example: <code>transfer</code></p>
+<p>Método de pago. Example: <code>transfer</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_annual_payment</code></b>&nbsp;&nbsp;
@@ -11740,8 +11945,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                                <h2 id="cartera-gestion">Gestión</h2>
-                                                    <h2 id="cartera-POSTapi-v1-customers--customer--loyalty-points-transactions">Registrar una transacción de EcoPuntos.</h2>
+                    <h2 id="cartera-POSTapi-v1-customers--customer--loyalty-points-transactions">Registrar una transacción de EcoPuntos.</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -11986,19 +12190,19 @@ filtrado por estado, cliente, técnico asignado y paginación o listado completo
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"start_date\": \"2026-11-14\",
-    \"end_date\": \"2052-12-07\",
-    \"date\": \"2026-11-14\",
-    \"status\": \"cancelled\",
+    \"start_date\": \"2026-11-20\",
+    \"end_date\": \"2052-12-13\",
+    \"date\": \"2026-11-20\",
+    \"status\": \"pending\",
     \"customer_id\": 16,
     \"client_id\": 16,
     \"employee_id\": 16,
     \"service_id\": 16,
-    \"sort_by\": \"created_at\",
-    \"sort_direction\": \"asc\",
+    \"sort_by\": \"appointment_time\",
+    \"sort_direction\": \"desc\",
     \"per_page\": 22,
     \"limit\": 7,
-    \"all\": false
+    \"all\": true
 }"
 </code></pre></div>
 
@@ -12032,19 +12236,19 @@ const headers = {
 };
 
 let body = {
-    "start_date": "2026-11-14",
-    "end_date": "2052-12-07",
-    "date": "2026-11-14",
-    "status": "cancelled",
+    "start_date": "2026-11-20",
+    "end_date": "2052-12-13",
+    "date": "2026-11-20",
+    "status": "pending",
     "customer_id": 16,
     "client_id": 16,
     "employee_id": 16,
     "service_id": 16,
-    "sort_by": "created_at",
-    "sort_direction": "asc",
+    "sort_by": "appointment_time",
+    "sort_direction": "desc",
     "per_page": 22,
     "limit": 7,
-    "all": false
+    "all": true
 };
 
 fetch(url, {
@@ -12346,10 +12550,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-v1-appointments"
-               value="2026-11-14"
+               value="2026-11-20"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-14</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-20</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
@@ -12358,10 +12562,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="end_date"                data-endpoint="GETapi-v1-appointments"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>date</code></b>&nbsp;&nbsp;
@@ -12370,10 +12574,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="date"                data-endpoint="GETapi-v1-appointments"
-               value="2026-11-14"
+               value="2026-11-20"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-14</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-20</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
@@ -12382,10 +12586,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-v1-appointments"
-               value="cancelled"
+               value="pending"
                data-component="body">
     <br>
-<p>Example: <code>cancelled</code></p>
+<p>Example: <code>pending</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>completed</code></li> <li><code>cancelled</code></li> <li><code>annulled</code></li></ul>
         </div>
@@ -12444,10 +12648,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-appointments"
-               value="created_at"
+               value="appointment_time"
                data-component="body">
     <br>
-<p>Example: <code>created_at</code></p>
+<p>Example: <code>appointment_time</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>appointment_date</code></li> <li><code>appointment_time</code></li> <li><code>status</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -12458,10 +12662,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-appointments"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -12509,7 +12713,7 @@ Must be one of:
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 
@@ -13863,16 +14067,31 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-customers--customer--loyalty-redemptions">
             <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;customerId&quot;: 15,
+            &quot;reward&quot;: {
+                &quot;id&quot;: 2,
+                &quot;name&quot;: &quot;Fumigaci&oacute;n de jard&iacute;n&quot;,
+                &quot;pointsCost&quot;: 150
+            },
+            &quot;pointsRedeemed&quot;: 150,
+            &quot;status&quot;: &quot;completed&quot;,
+            &quot;requestedAt&quot;: &quot;2026-11-01T10:00:00.000000Z&quot;
+        }
+    ]
+}</code>
+ </pre>
+            <blockquote>
             <p>Example response (404):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;message&quot;: &quot;Cliente no encontrado&quot;,
@@ -14027,17 +14246,21 @@ fetch(url, {
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: []
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Fertilizaci&oacute;n org&aacute;nica de jard&iacute;n&quot;,
+            &quot;pointsCost&quot;: 100,
+            &quot;active&quot;: true,
+            &quot;service&quot;: {
+                &quot;id&quot;: 2,
+                &quot;name&quot;: &quot;Fertilizaci&oacute;n&quot;
+            }
+        }
+    ]
 }</code>
  </pre>
     </span>
@@ -14163,7 +14386,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://vergel-front.pages.dev/api/v1/loyalty-rewards/16" \
+    --get "https://vergel-front.pages.dev/api/v1/loyalty-rewards/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -14171,7 +14394,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/loyalty-rewards/16"
+    "https://vergel-front.pages.dev/api/v1/loyalty-rewards/1"
 );
 
 const headers = {
@@ -14190,19 +14413,28 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-loyalty-rewards--loyalty_reward-">
             <blockquote>
-            <p>Example response (404):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\LoyaltyReward] 16&quot;
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Fertilizaci&oacute;n org&aacute;nica de jard&iacute;n&quot;,
+    &quot;pointsCost&quot;: 100,
+    &quot;active&quot;: true,
+    &quot;service&quot;: {
+        &quot;id&quot;: 2,
+        &quot;name&quot;: &quot;Fertilizaci&oacute;n&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Recompensa no encontrada.&quot;
 }</code>
  </pre>
     </span>
@@ -14297,18 +14529,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="loyalty_reward"                data-endpoint="GETapi-v1-loyalty-rewards--loyalty_reward-"
-               value="16"
-               data-component="url">
-    <br>
-<p>Example: <code>16</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>reward</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="reward"                data-endpoint="GETapi-v1-loyalty-rewards--loyalty_reward-"
                value="1"
                data-component="url">
     <br>
@@ -14348,10 +14568,10 @@ o nombre del cliente), filtro específico por cliente y la sección "Resumen por
     \"search\": \"b\",
     \"customer_id\": 16,
     \"client_id\": 16,
-    \"status_type\": \"performed\",
-    \"start_date\": \"2026-11-14\",
-    \"end_date\": \"2052-12-07\",
-    \"sort_by\": \"id\",
+    \"status_type\": \"declined\",
+    \"start_date\": \"2026-11-20\",
+    \"end_date\": \"2052-12-13\",
+    \"sort_by\": \"total\",
     \"sort_direction\": \"desc\",
     \"per_page\": 22,
     \"limit\": 7
@@ -14389,10 +14609,10 @@ let body = {
     "search": "b",
     "customer_id": 16,
     "client_id": 16,
-    "status_type": "performed",
-    "start_date": "2026-11-14",
-    "end_date": "2052-12-07",
-    "sort_by": "id",
+    "status_type": "declined",
+    "start_date": "2026-11-20",
+    "end_date": "2052-12-13",
+    "sort_by": "total",
     "sort_direction": "desc",
     "per_page": 22,
     "limit": 7
@@ -14764,10 +14984,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status_type"                data-endpoint="GETapi-v1-transactions"
-               value="performed"
+               value="declined"
                data-component="body">
     <br>
-<p>Example: <code>performed</code></p>
+<p>Example: <code>declined</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>all</code></li> <li><code>performed</code></li> <li><code>declined</code></li></ul>
         </div>
@@ -14778,10 +14998,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-v1-transactions"
-               value="2026-11-14"
+               value="2026-11-20"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-14</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-20</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
@@ -14790,10 +15010,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="end_date"                data-endpoint="GETapi-v1-transactions"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
@@ -14802,10 +15022,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-transactions"
-               value="id"
+               value="total"
                data-component="body">
     <br>
-<p>Example: <code>id</code></p>
+<p>Example: <code>total</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>quote_number</code></li> <li><code>total</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -15113,15 +15333,15 @@ calculando en tiempo real el resumen financiero de ingresos, compras, gastos y u
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"movement_type\": \"all\",
-    \"type\": \"purchase\",
-    \"start_date\": \"2026-11-14\",
-    \"end_date\": \"2052-12-07\",
+    \"movement_type\": \"sale\",
+    \"type\": \"sale\",
+    \"start_date\": \"2026-11-20\",
+    \"end_date\": \"2052-12-13\",
     \"search\": \"n\",
     \"entity_name\": \"g\",
     \"status\": \"all\",
-    \"sort_by\": \"created_at\",
-    \"sort_direction\": \"asc\",
+    \"sort_by\": \"document_number\",
+    \"sort_direction\": \"desc\",
     \"per_page\": 16,
     \"limit\": 17
 }"
@@ -15156,15 +15376,15 @@ const headers = {
 };
 
 let body = {
-    "movement_type": "all",
-    "type": "purchase",
-    "start_date": "2026-11-14",
-    "end_date": "2052-12-07",
+    "movement_type": "sale",
+    "type": "sale",
+    "start_date": "2026-11-20",
+    "end_date": "2052-12-13",
     "search": "n",
     "entity_name": "g",
     "status": "all",
-    "sort_by": "created_at",
-    "sort_direction": "asc",
+    "sort_by": "document_number",
+    "sort_direction": "desc",
     "per_page": 16,
     "limit": 17
 };
@@ -15470,10 +15690,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="movement_type"                data-endpoint="GETapi-v1-movements"
-               value="all"
+               value="sale"
                data-component="body">
     <br>
-<p>Example: <code>all</code></p>
+<p>Example: <code>sale</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>all</code></li> <li><code>sale</code></li> <li><code>purchase</code></li> <li><code>expense</code></li> <li><code>ticket</code></li></ul>
         </div>
@@ -15484,10 +15704,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="type"                data-endpoint="GETapi-v1-movements"
-               value="purchase"
+               value="sale"
                data-component="body">
     <br>
-<p>Example: <code>purchase</code></p>
+<p>Example: <code>sale</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>all</code></li> <li><code>sale</code></li> <li><code>purchase</code></li> <li><code>expense</code></li> <li><code>ticket</code></li></ul>
         </div>
@@ -15498,10 +15718,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-v1-movements"
-               value="2026-11-14"
+               value="2026-11-20"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-14</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2026-11-20</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
@@ -15510,10 +15730,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="end_date"                data-endpoint="GETapi-v1-movements"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
@@ -15560,10 +15780,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-movements"
-               value="created_at"
+               value="document_number"
                data-component="body">
     <br>
-<p>Example: <code>created_at</code></p>
+<p>Example: <code>document_number</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>movement_date</code></li> <li><code>total</code></li> <li><code>amount</code></li> <li><code>created_at</code></li> <li><code>document_number</code></li></ul>
         </div>
@@ -15574,10 +15794,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-movements"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -15638,8 +15858,8 @@ Must be one of:
     \"max_price\": 12,
     \"per_page\": 17,
     \"limit\": 15,
-    \"sort_by\": \"price\",
-    \"sort_direction\": \"asc\"
+    \"sort_by\": \"created_at\",
+    \"sort_direction\": \"desc\"
 }"
 </code></pre></div>
 
@@ -15677,8 +15897,8 @@ let body = {
     "max_price": 12,
     "per_page": 17,
     "limit": 15,
-    "sort_by": "price",
-    "sort_direction": "asc"
+    "sort_by": "created_at",
+    "sort_direction": "desc"
 };
 
 fetch(url, {
@@ -16031,10 +16251,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-plants"
-               value="price"
+               value="created_at"
                data-component="body">
     <br>
-<p>Example: <code>price</code></p>
+<p>Example: <code>created_at</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>price</code></li> <li><code>category_type</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -16045,10 +16265,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-plants"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -16267,8 +16487,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "price=24.5"\
     --form "category_type=Interior"\
     --form "active=1"\
-    --form "image=@C:\Users\Brian\AppData\Local\Temp\phpAE40.tmp" \
-    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\phpAE3F.tmp" </code></pre></div>
+    --form "image=@C:\Users\Brian\AppData\Local\Temp\php996D.tmp" \
+    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php996C.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -16473,7 +16693,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\phpAE40.tmp</code></p>
+<p>Archivo de imagen de la planta (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php996D.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -16485,7 +16705,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\phpAE3F.tmp</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php996C.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -16534,8 +16754,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "category_type=Interior"\
     --form "active=1"\
     --form "remove_image="\
-    --form "image=@C:\Users\Brian\AppData\Local\Temp\phpAE72.tmp" \
-    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\phpAE62.tmp" </code></pre></div>
+    --form "image=@C:\Users\Brian\AppData\Local\Temp\php999F.tmp" \
+    --form "image_url=@C:\Users\Brian\AppData\Local\Temp\php999E.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -16784,7 +17004,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\phpAE72.tmp</code></p>
+<p>optional Nueva imagen para reemplazar la existente (formatos permitidos: jpeg, png, jpg, webp; máx: 5MB). Example: <code>C:\Users\Brian\AppData\Local\Temp\php999F.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image_url</code></b>&nbsp;&nbsp;
@@ -16796,7 +17016,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\phpAE62.tmp</code></p>
+<p>Must be an image. Must not be greater than 5120 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php999E.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>active</code></b>&nbsp;&nbsp;
@@ -17061,13 +17281,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"search\": \"b\",
-    \"status\": \"inactive\",
+    \"status\": \"active\",
     \"economic_activity\": \"n\",
     \"phone\": \"gzmiyvdljnikhway\",
-    \"desde\": \"2026-11-14T21:04:18\",
-    \"hasta\": \"2052-12-07\",
-    \"sort_by\": \"trade_name\",
-    \"sort_direction\": \"DESC\",
+    \"desde\": \"2026-11-20T03:20:40\",
+    \"hasta\": \"2052-12-13\",
+    \"sort_by\": \"status\",
+    \"sort_direction\": \"asc\",
     \"limit\": 22,
     \"per_page\": 7
 }"
@@ -17101,13 +17321,13 @@ const headers = {
 
 let body = {
     "search": "b",
-    "status": "inactive",
+    "status": "active",
     "economic_activity": "n",
     "phone": "gzmiyvdljnikhway",
-    "desde": "2026-11-14T21:04:18",
-    "hasta": "2052-12-07",
-    "sort_by": "trade_name",
-    "sort_direction": "DESC",
+    "desde": "2026-11-20T03:20:40",
+    "hasta": "2052-12-13",
+    "sort_by": "status",
+    "sort_direction": "asc",
     "limit": 22,
     "per_page": 7
 };
@@ -17124,17 +17344,22 @@ fetch(url, {
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: [],
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Distribuidora Verde S.A. de C.V.&quot;,
+            &quot;tradeName&quot;: &quot;Vivero El Roble&quot;,
+            &quot;phone&quot;: &quot;22223333&quot;,
+            &quot;email&quot;: &quot;ventas@elroble.com&quot;,
+            &quot;status&quot;: &quot;active&quot;,
+            &quot;economicActivity&quot;: &quot;Venta de plantas y abonos&quot;,
+            &quot;contactName&quot;: &quot;Carlos Henr&iacute;quez&quot;,
+            &quot;createdAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;
+        }
+    ],
     &quot;links&quot;: {
         &quot;first&quot;: &quot;http://localhost/api/v1/suppliers?page=1&quot;,
         &quot;last&quot;: &quot;http://localhost/api/v1/suppliers?page=1&quot;,
@@ -17143,33 +17368,30 @@ access-control-allow-origin: *
     },
     &quot;meta&quot;: {
         &quot;current_page&quot;: 1,
-        &quot;from&quot;: null,
+        &quot;from&quot;: 1,
         &quot;last_page&quot;: 1,
-        &quot;links&quot;: [
-            {
-                &quot;url&quot;: null,
-                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
-                &quot;page&quot;: null,
-                &quot;active&quot;: false
-            },
-            {
-                &quot;url&quot;: &quot;http://localhost/api/v1/suppliers?page=1&quot;,
-                &quot;label&quot;: &quot;1&quot;,
-                &quot;page&quot;: 1,
-                &quot;active&quot;: true
-            },
-            {
-                &quot;url&quot;: null,
-                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
-                &quot;page&quot;: null,
-                &quot;active&quot;: false
-            }
-        ],
-        &quot;path&quot;: &quot;http://localhost/api/v1/suppliers&quot;,
-        &quot;per_page&quot;: 22,
-        &quot;to&quot;: null,
-        &quot;total&quot;: 0
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
 }</code>
  </pre>
     </span>
@@ -17385,10 +17607,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-v1-suppliers"
-               value="inactive"
+               value="active"
                data-component="body">
     <br>
-<p>Example: <code>inactive</code></p>
+<p>Example: <code>active</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>active</code></li> <li><code>inactive</code></li></ul>
         </div>
@@ -17423,10 +17645,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="desde"                data-endpoint="GETapi-v1-suppliers"
-               value="2026-11-14T21:04:18"
+               value="2026-11-20T03:20:40"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-14T21:04:18</code></p>
+<p>Must be a valid date. Example: <code>2026-11-20T03:20:40</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>hasta</code></b>&nbsp;&nbsp;
@@ -17435,10 +17657,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="hasta"                data-endpoint="GETapi-v1-suppliers"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date. Must be a date after or equal to <code>desde</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
@@ -17447,10 +17669,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-suppliers"
-               value="trade_name"
+               value="status"
                data-component="body">
     <br>
-<p>Example: <code>trade_name</code></p>
+<p>Example: <code>status</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>name</code></li> <li><code>trade_name</code></li> <li><code>status</code></li> <li><code>created_at</code></li></ul>
         </div>
@@ -17461,10 +17683,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-suppliers"
-               value="DESC"
+               value="asc"
                data-component="body">
     <br>
-<p>Example: <code>DESC</code></p>
+<p>Example: <code>asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li> <li><code>ASC</code></li> <li><code>DESC</code></li></ul>
         </div>
@@ -17508,7 +17730,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://vergel-front.pages.dev/api/v1/suppliers/16" \
+    --get "https://vergel-front.pages.dev/api/v1/suppliers/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -17516,7 +17738,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/suppliers/16"
+    "https://vergel-front.pages.dev/api/v1/suppliers/1"
 );
 
 const headers = {
@@ -17535,19 +17757,37 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-suppliers--id-">
             <blockquote>
-            <p>Example response (404):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\Supplier] 16&quot;
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Distribuidora Verde S.A. de C.V.&quot;,
+        &quot;tradeName&quot;: &quot;Vivero El Roble&quot;,
+        &quot;taxId&quot;: &quot;0614-010190-101-1&quot;,
+        &quot;nrc&quot;: &quot;123456-7&quot;,
+        &quot;economicActivity&quot;: &quot;Venta de plantas y abonos&quot;,
+        &quot;phone&quot;: &quot;22223333&quot;,
+        &quot;email&quot;: &quot;ventas@elroble.com&quot;,
+        &quot;address&quot;: &quot;Calle Principal #123, San Salvador&quot;,
+        &quot;contactName&quot;: &quot;Carlos Henr&iacute;quez&quot;,
+        &quot;contactPhone&quot;: &quot;77778888&quot;,
+        &quot;status&quot;: &quot;active&quot;,
+        &quot;notes&quot;: &quot;Proveedor mayorista de tierra y sustratos&quot;,
+        &quot;createdAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Proveedor no encontrado.&quot;
 }</code>
  </pre>
     </span>
@@ -17642,10 +17882,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="id"                data-endpoint="GETapi-v1-suppliers--id-"
-               value="16"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the supplier. Example: <code>16</code></p>
+<p>ID del proveedor. Example: <code>1</code></p>
             </div>
                     </form>
 
@@ -17720,7 +17960,55 @@ fetch(url, {
 </span>
 
 <span id="example-responses-POSTapi-v1-suppliers">
-</span>
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Distribuidora Verde S.A. de C.V.&quot;,
+        &quot;tradeName&quot;: &quot;Vivero El Roble&quot;,
+        &quot;taxId&quot;: &quot;0614-010190-101-1&quot;,
+        &quot;nrc&quot;: &quot;123456-7&quot;,
+        &quot;economicActivity&quot;: &quot;Venta de plantas y abonos&quot;,
+        &quot;phone&quot;: &quot;22223333&quot;,
+        &quot;email&quot;: &quot;ventas@elroble.com&quot;,
+        &quot;address&quot;: &quot;Calle Principal #123, San Salvador&quot;,
+        &quot;contactName&quot;: &quot;Carlos Henr&iacute;quez&quot;,
+        &quot;contactPhone&quot;: &quot;77778888&quot;,
+        &quot;status&quot;: &quot;active&quot;,
+        &quot;notes&quot;: &quot;Proveedor mayorista de tierra y sustratos&quot;,
+        &quot;createdAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-14T10:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Los datos proporcionados no son v&aacute;lidos.&quot;,
+    &quot;errors&quot;: {
+        &quot;phone&quot;: [
+            &quot;El campo phone ya ha sido registrado.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-suppliers" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-suppliers"></span>:
@@ -17965,22 +18253,22 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "https://vergel-front.pages.dev/api/v1/suppliers/16" \
+    "https://vergel-front.pages.dev/api/v1/suppliers/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"b\",
-    \"trade_name\": \"n\",
+    \"name\": \"Distribuidora Verde S.A. de C.V.\",
+    \"trade_name\": \"Vivero El Roble Central\",
     \"tax_id\": \"gzmiyvdljnikhway\",
     \"nrc\": \"kcmyuwpwlvqwrsit\",
     \"economic_activity\": \"c\",
-    \"phone\": \"pscqldzsnrwtujwv\",
-    \"email\": \"jhaag@example.net\",
+    \"phone\": \"22223333\",
+    \"email\": \"info@elroble.com\",
     \"address\": \"l\",
     \"contact_name\": \"q\",
     \"contact_phone\": \"ppwqbewtnnoqitpx\",
-    \"status\": \"inactive\",
+    \"status\": \"active\",
     \"notes\": \"architecto\"
 }"
 </code></pre></div>
@@ -17988,7 +18276,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/suppliers/16"
+    "https://vergel-front.pages.dev/api/v1/suppliers/1"
 );
 
 const headers = {
@@ -17998,17 +18286,17 @@ const headers = {
 };
 
 let body = {
-    "name": "b",
-    "trade_name": "n",
+    "name": "Distribuidora Verde S.A. de C.V.",
+    "trade_name": "Vivero El Roble Central",
     "tax_id": "gzmiyvdljnikhway",
     "nrc": "kcmyuwpwlvqwrsit",
     "economic_activity": "c",
-    "phone": "pscqldzsnrwtujwv",
-    "email": "jhaag@example.net",
+    "phone": "22223333",
+    "email": "info@elroble.com",
     "address": "l",
     "contact_name": "q",
     "contact_phone": "ppwqbewtnnoqitpx",
-    "status": "inactive",
+    "status": "active",
     "notes": "architecto"
 };
 
@@ -18021,7 +18309,33 @@ fetch(url, {
 </span>
 
 <span id="example-responses-PUTapi-v1-suppliers--id-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Distribuidora Verde S.A. de C.V.&quot;,
+        &quot;tradeName&quot;: &quot;Vivero El Roble Central&quot;,
+        &quot;phone&quot;: &quot;22223333&quot;,
+        &quot;email&quot;: &quot;info@elroble.com&quot;,
+        &quot;status&quot;: &quot;active&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-14T11:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Proveedor no encontrado.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PUTapi-v1-suppliers--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PUTapi-v1-suppliers--id-"></span>:
@@ -18117,23 +18431,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="id"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="16"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the supplier. Example: <code>16</code></p>
+<p>ID del proveedor. Example: <code>1</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
-<i>optional</i> &nbsp;
+ &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="b"
+               value="Distribuidora Verde S.A. de C.V."
                data-component="body">
     <br>
-<p>Must not be greater than 150 characters. Example: <code>b</code></p>
+<p>Razón social o nombre del proveedor. Example: <code>Distribuidora Verde S.A. de C.V.</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>trade_name</code></b>&nbsp;&nbsp;
@@ -18142,10 +18456,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="trade_name"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="n"
+               value="Vivero El Roble Central"
                data-component="body">
     <br>
-<p>Must not be greater than 150 characters. Example: <code>n</code></p>
+<p>Nombre comercial. Example: <code>Vivero El Roble Central</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>tax_id</code></b>&nbsp;&nbsp;
@@ -18186,14 +18500,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
-<i>optional</i> &nbsp;
+ &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="pscqldzsnrwtujwv"
+               value="22223333"
                data-component="body">
     <br>
-<p>Must not be greater than 20 characters. Example: <code>pscqldzsnrwtujwv</code></p>
+<p>Teléfono principal. Example: <code>22223333</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
@@ -18202,10 +18516,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="jhaag@example.net"
+               value="info@elroble.com"
                data-component="body">
     <br>
-<p>Must be a valid email address. Must not be greater than 120 characters. Example: <code>jhaag@example.net</code></p>
+<p>Correo electrónico. Example: <code>info@elroble.com</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
@@ -18250,12 +18564,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="inactive"
+               value="active"
                data-component="body">
     <br>
-<p>Example: <code>inactive</code></p>
-Must be one of:
-<ul style="list-style-type: square;"><li><code>active</code></li> <li><code>inactive</code></li></ul>
+<p>Estado (<code>active</code> o <code>inactive</code>). Example: <code>active</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;
@@ -18285,7 +18597,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://vergel-front.pages.dev/api/v1/suppliers/16" \
+    "https://vergel-front.pages.dev/api/v1/suppliers/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -18293,7 +18605,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/suppliers/16"
+    "https://vergel-front.pages.dev/api/v1/suppliers/1"
 );
 
 const headers = {
@@ -18311,7 +18623,34 @@ fetch(url, {
 </span>
 
 <span id="example-responses-DELETEapi-v1-suppliers--id-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Proveedor eliminado correctamente.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No tiene permisos para realizar esta acci&oacute;n.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Proveedor no encontrado.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-DELETEapi-v1-suppliers--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-DELETEapi-v1-suppliers--id-"></span>:
@@ -18403,10 +18742,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="id"                data-endpoint="DELETEapi-v1-suppliers--id-"
-               value="16"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the supplier. Example: <code>16</code></p>
+<p>ID del proveedor. Example: <code>1</code></p>
             </div>
                     </form>
 
@@ -18424,7 +18763,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "https://vergel-front.pages.dev/api/v1/suppliers/16/status" \
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto/status" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -18436,7 +18775,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/suppliers/16/status"
+    "https://vergel-front.pages.dev/api/v1/suppliers/architecto/status"
 );
 
 const headers = {
@@ -18458,7 +18797,30 @@ fetch(url, {
 </span>
 
 <span id="example-responses-PATCHapi-v1-suppliers--supplier--status">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Distribuidora Verde S.A. de C.V.&quot;,
+        &quot;status&quot;: &quot;inactive&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-14T12:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Proveedor no encontrado.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PATCHapi-v1-suppliers--supplier--status" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PATCHapi-v1-suppliers--supplier--status"></span>:
@@ -18545,15 +18907,27 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>supplier</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="supplier"                data-endpoint="PATCHapi-v1-suppliers--supplier--status"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The supplier. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
 <small>integer</small>&nbsp;
  &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="supplier"                data-endpoint="PATCHapi-v1-suppliers--supplier--status"
-               value="16"
+               step="any"               name="id"                data-endpoint="PATCHapi-v1-suppliers--supplier--status"
+               value="1"
                data-component="url">
     <br>
-<p>The supplier. Example: <code>16</code></p>
+<p>ID del proveedor. Example: <code>1</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -18616,19 +18990,32 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-customers--customer--subscriptions-current">
             <blockquote>
-            <p>Example response (404):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\Customer] 15&quot;
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;customerId&quot;: 15,
+        &quot;plan&quot;: {
+            &quot;id&quot;: 2,
+            &quot;planName&quot;: &quot;Plan Residencial Plus&quot;,
+            &quot;planCode&quot;: &quot;RES-PLUS&quot;
+        },
+        &quot;status&quot;: &quot;active&quot;,
+        &quot;startDate&quot;: &quot;2026-01-01&quot;,
+        &quot;endDate&quot;: &quot;2026-12-31&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cliente no encontrado.&quot;
 }</code>
  </pre>
     </span>
@@ -18771,16 +19158,32 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-customers--customer--subscriptions">
             <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;customerId&quot;: 15,
+            &quot;plan&quot;: {
+                &quot;id&quot;: 2,
+                &quot;planName&quot;: &quot;Plan Residencial Plus&quot;,
+                &quot;planCode&quot;: &quot;RES-PLUS&quot;
+            },
+            &quot;status&quot;: &quot;active&quot;,
+            &quot;startDate&quot;: &quot;2026-01-01&quot;,
+            &quot;endDate&quot;: &quot;2026-12-31&quot;,
+            &quot;paymentDate&quot;: &quot;2026-01-01&quot;
+        }
+    ]
+}</code>
+ </pre>
+            <blockquote>
             <p>Example response (404):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;message&quot;: &quot;Cliente no encontrado&quot;,
@@ -18927,19 +19330,33 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-subscriptions--subscription-">
             <blockquote>
-            <p>Example response (404):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\Subscription] 1&quot;
+    &quot;id&quot;: 1,
+    &quot;customerId&quot;: 15,
+    &quot;plan&quot;: {
+        &quot;id&quot;: 2,
+        &quot;planName&quot;: &quot;Plan Residencial Plus&quot;,
+        &quot;planCode&quot;: &quot;RES-PLUS&quot;
+    },
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;startDate&quot;: &quot;2026-01-01&quot;,
+    &quot;endDate&quot;: &quot;2026-12-31&quot;,
+    &quot;paymentDate&quot;: &quot;2026-01-01&quot;,
+    &quot;payments&quot;: [],
+    &quot;consumptions&quot;: []
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Suscripci&oacute;n no encontrada.&quot;
 }</code>
  </pre>
     </span>
@@ -19067,11 +19484,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"customer_id\": 16,
     \"employee_id\": 16,
-    \"status\": \"draft\",
-    \"start_date\": \"2026-11-14T21:04:18\",
-    \"end_date\": \"2052-12-07\",
+    \"status\": \"reviewed\",
+    \"start_date\": \"2026-11-20T03:20:40\",
+    \"end_date\": \"2052-12-13\",
     \"search\": \"n\",
-    \"sort_by\": \"inspection_date\",
+    \"sort_by\": \"id\",
     \"sort_direction\": \"desc\",
     \"per_page\": 7,
     \"limit\": 16
@@ -19107,11 +19524,11 @@ const headers = {
 let body = {
     "customer_id": 16,
     "employee_id": 16,
-    "status": "draft",
-    "start_date": "2026-11-14T21:04:18",
-    "end_date": "2052-12-07",
+    "status": "reviewed",
+    "start_date": "2026-11-20T03:20:40",
+    "end_date": "2052-12-13",
     "search": "n",
-    "sort_by": "inspection_date",
+    "sort_by": "id",
     "sort_direction": "desc",
     "per_page": 7,
     "limit": 16
@@ -19127,27 +19544,30 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-inspections">
             <blockquote>
-            <p>Example response (422):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The selected customer id is invalid. (and 1 more error)&quot;,
-    &quot;errors&quot;: {
-        &quot;customer_id&quot;: [
-            &quot;The selected customer id is invalid.&quot;
-        ],
-        &quot;employee_id&quot;: [
-            &quot;The selected employee id is invalid.&quot;
-        ]
-    }
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;inspectionDate&quot;: &quot;2026-11-11&quot;,
+            &quot;findings&quot;: &quot;Terreno con desnivel pronunciado y maleza alta.&quot;,
+            &quot;status&quot;: &quot;submitted&quot;,
+            &quot;totalArea&quot;: 310,
+            &quot;areaUnit&quot;: &quot;m2&quot;,
+            &quot;customer&quot;: {
+                &quot;id&quot;: 1,
+                &quot;legalName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;
+            },
+            &quot;employee&quot;: {
+                &quot;id&quot;: 2,
+                &quot;fullName&quot;: &quot;Juan T&eacute;cnico&quot;
+            },
+            &quot;createdAt&quot;: &quot;2026-11-11T14:30:00.000000Z&quot;
+        }
+    ]
 }</code>
  </pre>
     </span>
@@ -19375,10 +19795,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-v1-inspections"
-               value="draft"
+               value="reviewed"
                data-component="body">
     <br>
-<p>Example: <code>draft</code></p>
+<p>Example: <code>reviewed</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>draft</code></li> <li><code>submitted</code></li> <li><code>reviewed</code></li></ul>
         </div>
@@ -19389,10 +19809,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-v1-inspections"
-               value="2026-11-14T21:04:18"
+               value="2026-11-20T03:20:40"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-14T21:04:18</code></p>
+<p>Must be a valid date. Example: <code>2026-11-20T03:20:40</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>end_date</code></b>&nbsp;&nbsp;
@@ -19401,10 +19821,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="end_date"                data-endpoint="GETapi-v1-inspections"
-               value="2052-12-07"
+               value="2052-12-13"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-07</code></p>
+<p>Must be a valid date. Must be a date after or equal to <code>start_date</code>. Example: <code>2052-12-13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
@@ -19425,10 +19845,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-inspections"
-               value="inspection_date"
+               value="id"
                data-component="body">
     <br>
-<p>Example: <code>inspection_date</code></p>
+<p>Example: <code>id</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>id</code></li> <li><code>inspection_date</code></li> <li><code>created_at</code></li> <li><code>status</code></li> <li><code>total_area</code></li></ul>
         </div>
@@ -19486,7 +19906,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://vergel-front.pages.dev/api/v1/inspections/architecto" \
+    --get "https://vergel-front.pages.dev/api/v1/inspections/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -19494,7 +19914,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/inspections/architecto"
+    "https://vergel-front.pages.dev/api/v1/inspections/1"
 );
 
 const headers = {
@@ -19513,19 +19933,35 @@ fetch(url, {
 
 <span id="example-responses-GETapi-v1-inspections--id-">
             <blockquote>
-            <p>Example response (500):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Server Error&quot;
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;inspectionDate&quot;: &quot;2026-11-11&quot;,
+        &quot;findings&quot;: &quot;Terreno con desnivel pronunciado y maleza alta.&quot;,
+        &quot;terrainWidth&quot;: 15.5,
+        &quot;terrainLength&quot;: 20,
+        &quot;totalArea&quot;: 310,
+        &quot;areaUnit&quot;: &quot;m2&quot;,
+        &quot;status&quot;: &quot;submitted&quot;,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;
+        },
+        &quot;photos&quot;: []
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Inspecci&oacute;n no encontrada.&quot;
 }</code>
  </pre>
     </span>
@@ -19615,15 +20051,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="id"                data-endpoint="GETapi-v1-inspections--id-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="GETapi-v1-inspections--id-"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the inspection. Example: <code>architecto</code></p>
+<p>ID de la inspección. Example: <code>1</code></p>
             </div>
                     </form>
 
@@ -19661,8 +20097,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "services[][suggested_quantity]=2"\
     --form "services[][notes]=Requiere fumigación previa."\
     --form "photos_data[][caption]=n"\
-    --form "photos[]=@C:\Users\Brian\AppData\Local\Temp\phpAD5F.tmp" \
-    --form "photos_data[][file]=@C:\Users\Brian\AppData\Local\Temp\phpAD5E.tmp" </code></pre></div>
+    --form "photos[]=@C:\Users\Brian\AppData\Local\Temp\php9869.tmp" \
+    --form "photos_data[][file]=@C:\Users\Brian\AppData\Local\Temp\php9868.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -19704,7 +20140,44 @@ fetch(url, {
 </span>
 
 <span id="example-responses-POSTapi-v1-inspections">
-</span>
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;inspectionDate&quot;: &quot;2026-11-11&quot;,
+        &quot;findings&quot;: &quot;Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelaci&oacute;n.&quot;,
+        &quot;terrainWidth&quot;: 15.5,
+        &quot;terrainLength&quot;: 20,
+        &quot;totalArea&quot;: 310,
+        &quot;areaUnit&quot;: &quot;m2&quot;,
+        &quot;terrainNotes&quot;: &quot;Suelo arcilloso, toma de agua a 10 metros.&quot;,
+        &quot;status&quot;: &quot;submitted&quot;,
+        &quot;customer&quot;: {
+            &quot;id&quot;: 1,
+            &quot;legalName&quot;: &quot;Cliente Ejemplo S.A. de C.V.&quot;
+        },
+        &quot;employee&quot;: {
+            &quot;id&quot;: 2,
+            &quot;fullName&quot;: &quot;Juan T&eacute;cnico&quot;
+        },
+        &quot;services&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;name&quot;: &quot;Poda y Desmonte&quot;,
+                &quot;suggestedQuantity&quot;: 2,
+                &quot;notes&quot;: &quot;Requiere fumigaci&oacute;n previa.&quot;
+            }
+        ],
+        &quot;photos&quot;: [],
+        &quot;createdAt&quot;: &quot;2026-11-11T14:30:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-inspections" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-inspections"></span>:
@@ -20003,7 +20476,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\phpAD5E.tmp</code></p>
+<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php9868.tmp</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>caption</code></b>&nbsp;&nbsp;
@@ -20035,15 +20508,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "https://vergel-front.pages.dev/api/v1/inspections/architecto" \
+    "https://vergel-front.pages.dev/api/v1/inspections/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "customer_id=16"\
     --form "appointment_id=16"\
     --form "employee_id=16"\
-    --form "inspection_date=2026-11-14T21:04:18"\
-    --form "findings=architecto"\
+    --form "inspection_date=2026-11-20T03:20:40"\
+    --form "findings=Terreno nivelado parcialmente."\
     --form "terrain_width=39"\
     --form "terrain_length=84"\
     --form "total_area=12"\
@@ -20054,13 +20527,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "services[][suggested_quantity]=22"\
     --form "services[][notes]=architecto"\
     --form "photos_data[][caption]=n"\
-    --form "photos[]=@C:\Users\Brian\AppData\Local\Temp\phpAD9E.tmp" \
-    --form "photos_data[][file]=@C:\Users\Brian\AppData\Local\Temp\phpAD9F.tmp" </code></pre></div>
+    --form "photos[]=@C:\Users\Brian\AppData\Local\Temp\php98A9.tmp" \
+    --form "photos_data[][file]=@C:\Users\Brian\AppData\Local\Temp\php98BA.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/inspections/architecto"
+    "https://vergel-front.pages.dev/api/v1/inspections/1"
 );
 
 const headers = {
@@ -20073,8 +20546,8 @@ const body = new FormData();
 body.append('customer_id', '16');
 body.append('appointment_id', '16');
 body.append('employee_id', '16');
-body.append('inspection_date', '2026-11-14T21:04:18');
-body.append('findings', 'architecto');
+body.append('inspection_date', '2026-11-20T03:20:40');
+body.append('findings', 'Terreno nivelado parcialmente.');
 body.append('terrain_width', '39');
 body.append('terrain_length', '84');
 body.append('total_area', '12');
@@ -20097,7 +20570,30 @@ fetch(url, {
 </span>
 
 <span id="example-responses-PUTapi-v1-inspections--id-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;findings&quot;: &quot;Terreno nivelado parcialmente.&quot;,
+        &quot;status&quot;: &quot;reviewed&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-11T16:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Inspecci&oacute;n no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PUTapi-v1-inspections--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PUTapi-v1-inspections--id-"></span>:
@@ -20188,15 +20684,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="id"                data-endpoint="PUTapi-v1-inspections--id-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="PUTapi-v1-inspections--id-"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the inspection. Example: <code>architecto</code></p>
+<p>ID de la inspección. Example: <code>1</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -20242,10 +20738,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="inspection_date"                data-endpoint="PUTapi-v1-inspections--id-"
-               value="2026-11-14T21:04:18"
+               value="2026-11-20T03:20:40"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-11-14T21:04:18</code></p>
+<p>Must be a valid date. Example: <code>2026-11-20T03:20:40</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>findings</code></b>&nbsp;&nbsp;
@@ -20254,10 +20750,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="findings"                data-endpoint="PUTapi-v1-inspections--id-"
-               value="architecto"
+               value="Terreno nivelado parcialmente."
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>Observaciones actualizadas. Example: <code>Terreno nivelado parcialmente.</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>terrain_width</code></b>&nbsp;&nbsp;
@@ -20329,9 +20825,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="reviewed"
                data-component="body">
     <br>
-<p>Example: <code>reviewed</code></p>
-Must be one of:
-<ul style="list-style-type: square;"><li><code>draft</code></li> <li><code>submitted</code></li> <li><code>reviewed</code></li></ul>
+<p>Estado (draft, submitted, reviewed). Example: <code>reviewed</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -20415,7 +20909,7 @@ Must be one of:
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\phpAD9F.tmp</code></p>
+<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php98BA.tmp</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>caption</code></b>&nbsp;&nbsp;
@@ -20447,7 +20941,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://vergel-front.pages.dev/api/v1/inspections/architecto" \
+    "https://vergel-front.pages.dev/api/v1/inspections/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -20455,7 +20949,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/inspections/architecto"
+    "https://vergel-front.pages.dev/api/v1/inspections/1"
 );
 
 const headers = {
@@ -20473,7 +20967,25 @@ fetch(url, {
 </span>
 
 <span id="example-responses-DELETEapi-v1-inspections--id-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Inspecci&oacute;n eliminada correctamente.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Inspecci&oacute;n no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-DELETEapi-v1-inspections--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-DELETEapi-v1-inspections--id-"></span>:
@@ -20560,15 +21072,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="id"                data-endpoint="DELETEapi-v1-inspections--id-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="DELETEapi-v1-inspections--id-"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the inspection. Example: <code>architecto</code></p>
+<p>ID de la inspección. Example: <code>1</code></p>
             </div>
                     </form>
 
@@ -20620,7 +21132,29 @@ fetch(url, {
 </span>
 
 <span id="example-responses-PATCHapi-v1-inspections--inspection--status">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;status&quot;: &quot;reviewed&quot;,
+        &quot;updatedAt&quot;: &quot;2026-11-11T16:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Inspecci&oacute;n no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PATCHapi-v1-inspections--inspection--status" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PATCHapi-v1-inspections--inspection--status"></span>:
@@ -20717,6 +21251,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>The inspection. Example: <code>architecto</code></p>
             </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="PATCHapi-v1-inspections--inspection--status"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la inspección. Example: <code>1</code></p>
+            </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
@@ -20751,8 +21297,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "photos_data[][caption]=b"\
-    --form "photos[]=@C:\Users\Brian\AppData\Local\Temp\phpADDF.tmp" \
-    --form "photos_data[][file]=@C:\Users\Brian\AppData\Local\Temp\phpADE0.tmp" </code></pre></div>
+    --form "photos[]=@C:\Users\Brian\AppData\Local\Temp\php98FB.tmp" \
+    --form "photos_data[][file]=@C:\Users\Brian\AppData\Local\Temp\php98FC.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -20780,7 +21326,34 @@ fetch(url, {
 </span>
 
 <span id="example-responses-POSTapi-v1-inspections--inspection--photos">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;photos&quot;: [
+            {
+                &quot;id&quot;: 5,
+                &quot;imagePath&quot;: &quot;inspections/foto_ejemplo.jpg&quot;,
+                &quot;caption&quot;: &quot;Vista panor&aacute;mica lateral&quot;
+            }
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Inspecci&oacute;n no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-inspections--inspection--photos" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-inspections--inspection--photos"></span>:
@@ -20877,6 +21450,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>The inspection. Example: <code>architecto</code></p>
             </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="POSTapi-v1-inspections--inspection--photos"
+               value="1"
+               data-component="url">
+    <br>
+<p>ID de la inspección. Example: <code>1</code></p>
+            </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>photos</code></b>&nbsp;&nbsp;
@@ -20912,7 +21497,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\phpADE0.tmp</code></p>
+<p>Must be a file. Must be an image. Must not be greater than 10240 kilobytes. Example: <code>C:\Users\Brian\AppData\Local\Temp\php98FC.tmp</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>caption</code></b>&nbsp;&nbsp;
@@ -20944,7 +21529,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://vergel-front.pages.dev/api/v1/inspections/architecto/photos/architecto" \
+    "https://vergel-front.pages.dev/api/v1/inspections/1/photos/5" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -20952,7 +21537,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://vergel-front.pages.dev/api/v1/inspections/architecto/photos/architecto"
+    "https://vergel-front.pages.dev/api/v1/inspections/1/photos/5"
 );
 
 const headers = {
@@ -20970,7 +21555,25 @@ fetch(url, {
 </span>
 
 <span id="example-responses-DELETEapi-v1-inspections--inspection--photos--photo-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Fotograf&iacute;a eliminada correctamente.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Fotograf&iacute;a no encontrada.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-DELETEapi-v1-inspections--inspection--photos--photo-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-DELETEapi-v1-inspections--inspection--photos--photo-"></span>:
@@ -21057,27 +21660,27 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>inspection</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="inspection"                data-endpoint="DELETEapi-v1-inspections--inspection--photos--photo-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="inspection"                data-endpoint="DELETEapi-v1-inspections--inspection--photos--photo-"
+               value="1"
                data-component="url">
     <br>
-<p>The inspection. Example: <code>architecto</code></p>
+<p>ID de la inspección. Example: <code>1</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>photo</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="photo"                data-endpoint="DELETEapi-v1-inspections--inspection--photos--photo-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="photo"                data-endpoint="DELETEapi-v1-inspections--inspection--photos--photo-"
+               value="5"
                data-component="url">
     <br>
-<p>The photo. Example: <code>architecto</code></p>
+<p>ID de la foto. Example: <code>5</code></p>
             </div>
                     </form>
 

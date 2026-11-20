@@ -172,7 +172,7 @@ endpoints:
         name: movement_type
         description: ''
         required: false
-        example: all
+        example: sale
         type: string
         enumValues:
           - all
@@ -188,7 +188,7 @@ endpoints:
         name: type
         description: ''
         required: false
-        example: purchase
+        example: sale
         type: string
         enumValues:
           - all
@@ -204,7 +204,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-14'
+        example: '2026-11-20'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -215,7 +215,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -262,7 +262,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: created_at
+        example: document_number
         type: string
         enumValues:
           - id
@@ -279,7 +279,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: asc
+        example: desc
         type: string
         enumValues:
           - asc
@@ -310,15 +310,15 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      movement_type: all
-      type: purchase
-      start_date: '2026-11-14'
-      end_date: '2052-12-07'
+      movement_type: sale
+      type: sale
+      start_date: '2026-11-20'
+      end_date: '2052-12-13'
       search: 'n'
       entity_name: g
       status: all
-      sort_by: created_at
-      sort_direction: asc
+      sort_by: document_number
+      sort_direction: desc
       per_page: 16
       limit: 17
     fileParameters: []
@@ -394,7 +394,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

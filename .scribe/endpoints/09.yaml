@@ -153,7 +153,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: inactive
+        example: active
         type: string
         enumValues:
           - active
@@ -188,7 +188,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-14T21:04:18'
+        example: '2026-11-20T03:20:40'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -199,7 +199,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -210,7 +210,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: trade_name
+        example: status
         type: string
         enumValues:
           - id
@@ -226,7 +226,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: DESC
+        example: asc
         type: string
         enumValues:
           - asc
@@ -260,13 +260,13 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       search: b
-      status: inactive
+      status: active
       economic_activity: 'n'
       phone: gzmiyvdljnikhway
-      desde: '2026-11-14T21:04:18'
-      hasta: '2052-12-07'
-      sort_by: trade_name
-      sort_direction: DESC
+      desde: '2026-11-20T03:20:40'
+      hasta: '2052-12-13'
+      sort_by: status
+      sort_direction: asc
       limit: 22
       per_page: 7
     fileParameters: []
@@ -274,17 +274,61 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/v1\/suppliers?page=1","last":"http:\/\/localhost\/api\/v1\/suppliers?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"http:\/\/localhost\/api\/v1\/suppliers?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"http:\/\/localhost\/api\/v1\/suppliers","per_page":22,"to":null,"total":0}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "name": "Distribuidora Verde S.A. de C.V.",
+                "tradeName": "Vivero El Roble",
+                "phone": "22223333",
+                "email": "ventas@elroble.com",
+                "status": "active",
+                "economicActivity": "Venta de plantas y abonos",
+                "contactName": "Carlos Henríquez",
+                "createdAt": "2026-11-14T10:00:00.000000Z"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/suppliers?page=1",
+              "last": "http://localhost/api/v1/suppliers?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -460,12 +504,58 @@ endpoints:
       status: active
       notes: 'Proveedor mayorista de tierra y sustratos'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Distribuidora Verde S.A. de C.V.",
+              "tradeName": "Vivero El Roble",
+              "taxId": "0614-010190-101-1",
+              "nrc": "123456-7",
+              "economicActivity": "Venta de plantas y abonos",
+              "phone": "22223333",
+              "email": "ventas@elroble.com",
+              "address": "Calle Principal #123, San Salvador",
+              "contactName": "Carlos Henríquez",
+              "contactPhone": "77778888",
+              "status": "active",
+              "notes": "Proveedor mayorista de tierra y sustratos",
+              "createdAt": "2026-11-14T10:00:00.000000Z",
+              "updatedAt": "2026-11-14T10:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Los datos proporcionados no son válidos.",
+            "errors": {
+              "phone": ["El campo phone ya ha sido registrado."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -494,16 +584,16 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the supplier.'
+        description: 'ID del proveedor.'
         required: true
-        example: 16
+        example: 1
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 16
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -512,21 +602,43 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Distribuidora Verde S.A. de C.V.",
+              "tradeName": "Vivero El Roble",
+              "taxId": "0614-010190-101-1",
+              "nrc": "123456-7",
+              "economicActivity": "Venta de plantas y abonos",
+              "phone": "22223333",
+              "email": "ventas@elroble.com",
+              "address": "Calle Principal #123, San Salvador",
+              "contactName": "Carlos Henríquez",
+              "contactPhone": "77778888",
+              "status": "active",
+              "notes": "Proveedor mayorista de tierra y sustratos",
+              "createdAt": "2026-11-14T10:00:00.000000Z",
+              "updatedAt": "2026-11-14T10:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 404
         content: |-
           {
-              "message": "No query results for model [App\\Models\\Supplier] 16"
+            "message": "Proveedor no encontrado."
           }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -556,39 +668,39 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the supplier.'
+        description: 'ID del proveedor.'
         required: true
-        example: 16
+        example: 1
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 16
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 150 characters.'
-        required: false
-        example: b
+        description: 'Razón social o nombre del proveedor.'
+        required: true
+        example: 'Distribuidora Verde S.A. de C.V.'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       trade_name:
         custom: []
         name: trade_name
-        description: 'Must not be greater than 150 characters.'
+        description: 'Nombre comercial.'
         required: false
-        example: 'n'
+        example: 'Vivero El Roble Central'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       tax_id:
@@ -627,23 +739,23 @@ endpoints:
       phone:
         custom: []
         name: phone
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: pscqldzsnrwtujwv
+        description: 'Teléfono principal.'
+        required: true
+        example: '22223333'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       email:
         custom: []
         name: email
-        description: 'Must be a valid email address. Must not be greater than 120 characters.'
+        description: 'Correo electrónico.'
         required: false
-        example: jhaag@example.net
+        example: info@elroble.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       address:
@@ -682,14 +794,12 @@ endpoints:
       status:
         custom: []
         name: status
-        description: ''
+        description: 'Estado (`active` o `inactive`).'
         required: false
-        example: inactive
+        example: active
         type: string
-        enumValues:
-          - active
-          - inactive
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       notes:
@@ -704,25 +814,51 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      name: b
-      trade_name: 'n'
+      name: 'Distribuidora Verde S.A. de C.V.'
+      trade_name: 'Vivero El Roble Central'
       tax_id: gzmiyvdljnikhway
       nrc: kcmyuwpwlvqwrsit
       economic_activity: c
-      phone: pscqldzsnrwtujwv
-      email: jhaag@example.net
+      phone: '22223333'
+      email: info@elroble.com
       address: l
       contact_name: q
       contact_phone: ppwqbewtnnoqitpx
-      status: inactive
+      status: active
       notes: architecto
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Distribuidora Verde S.A. de C.V.",
+              "tradeName": "Vivero El Roble Central",
+              "phone": "22223333",
+              "email": "info@elroble.com",
+              "status": "active",
+              "updatedAt": "2026-11-14T11:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Proveedor no encontrado."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -751,27 +887,54 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the supplier.'
+        description: 'ID del proveedor.'
         required: true
-        example: 16
+        example: 1
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 16
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Proveedor eliminado correctamente."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Proveedor no encontrado."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -802,14 +965,26 @@ endpoints:
         name: supplier
         description: 'The supplier.'
         required: true
-        example: 16
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      id:
+        custom: []
+        name: id
+        description: 'ID del proveedor.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanUrlParameters:
-      supplier: 16
+      supplier: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -827,12 +1002,35 @@ endpoints:
     cleanBodyParameters:
       status: inactive
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Distribuidora Verde S.A. de C.V.",
+              "status": "inactive",
+              "updatedAt": "2026-11-14T12:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Proveedor no encontrado."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

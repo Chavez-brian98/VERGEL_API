@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use App\Models\Appointment;
-use App\Models\AuditLog;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Inspection;
 use App\Models\Payment;
 use App\Models\Quote;
 use App\Models\User;
+use App\Services\Concerns\LogsAudit;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,6 +19,8 @@ use Illuminate\Validation\ValidationException;
 
 class AppointmentService
 {
+    use LogsAudit;
+
     public function __construct(
         private readonly CustomerService $customerService
     ) {}
@@ -604,26 +606,5 @@ class AppointmentService
                 ]);
             }
         }
-    }
-
-    /**
-     * Registra un evento en la bitácora de auditoría.
-     */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
-    {
-        $employeeId = auth()->user()?->employee_id ?? Employee::first()?->id;
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

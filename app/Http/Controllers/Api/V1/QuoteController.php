@@ -43,6 +43,43 @@ class QuoteController extends Controller
      * @queryParam sort_by string Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`. Example: created_at
      * @queryParam sort_direction string Dirección (`asc` o `desc`). Default: `desc`. Example: desc
      * @queryParam limit integer Cantidad de registros por página (1-100). Default: 15. Example: 15
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "quoteNumber": "COT-202611140001",
+     *       "customerName": "Cliente Ejemplo S.A. de C.V.",
+     *       "employeeName": "Carlos Mendoza",
+     *       "appliedPlanName": "Plan Residencial",
+     *       "basePrice": 100.00,
+     *       "total": 101.70,
+     *       "status": "pending",
+     *       "itemsCount": 2,
+     *       "createdAt": "2026-11-14T10:00:00.000000Z"
+     *     }
+     *   ],
+     *   "links": {
+     *     "first": "http://localhost/api/v1/quotes?page=1",
+     *     "last": "http://localhost/api/v1/quotes?page=1",
+     *     "prev": null,
+     *     "next": null
+     *   },
+     *   "meta": {
+     *     "current_page": 1,
+     *     "from": 1,
+     *     "last_page": 1,
+     *     "per_page": 15,
+     *     "to": 1,
+     *     "total": 1
+     *   }
+     * }
+     * @response status=401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
+     * }
      */
     public function index(IndexQuoteRequest $request): AnonymousResourceCollection
     {
@@ -68,10 +105,63 @@ class QuoteController extends Controller
      * @bodyParam status string Estado inicial (`pending` o `paid`). Default: pending. Example: pending
      * @bodyParam items object[] required Lista de ítems de la cotización.
      * @bodyParam items[].item_type string required Tipo de ítem (`service` o `plant`). Example: service
-     * @bodyParam items[].service_id integer required ID del servicio cuando `item_type` es `service`. Example: 1
-     * @bodyParam items[].plant_id integer required ID de la planta cuando `item_type` es `plant`. Example: 1
+     * @bodyParam items[].service_id integer ID del servicio cuando `item_type` es `service`. Example: 1
+     * @bodyParam items[].plant_id integer ID de la planta cuando `item_type` es `plant`. Example: 1
      * @bodyParam items[].quantity number required Cantidad. Example: 2
      * @bodyParam items[].unit_price number required Precio unitario. Example: 25.50
+     *
+     * @response status=201 {
+     *   "data": {
+     *     "id": 1,
+     *     "quoteNumber": "COT-202611140001",
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Cliente Ejemplo S.A. de C.V.",
+     *       "tradeName": "Cliente Ejemplo"
+     *     },
+     *     "employee": {
+     *       "id": 1,
+     *       "fullName": "Carlos Mendoza"
+     *     },
+     *     "appliedPlan": {
+     *       "id": 1,
+     *       "planCode": "RESIDENCIAL",
+     *       "planName": "Plan Residencial"
+     *     },
+     *     "basePrice": 51.00,
+     *     "discountedSubtotal": 45.90,
+     *     "includesVat": false,
+     *     "loyaltyPointsUsed": 0,
+     *     "loyaltyPointsEarned": 45,
+     *     "total": 51.87,
+     *     "status": "pending",
+     *     "items": [
+     *       {
+     *         "id": 1,
+     *         "itemType": "service",
+     *         "service": {
+     *           "id": 1,
+     *           "name": "Poda de árbol"
+     *         },
+     *         "plant": null,
+     *         "quantity": 2.0,
+     *         "unitPrice": 25.50,
+     *         "total": 51.00
+     *       }
+     *     ],
+     *     "createdAt": "2026-11-14T10:00:00.000000Z",
+     *     "updatedAt": "2026-11-14T10:00:00.000000Z"
+     *   }
+     * }
+     * @response status=422 {
+     *   "message": "Los datos proporcionados no son válidos.",
+     *   "errors": {
+     *     "items": ["El campo items es obligatorio."]
+     *   }
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
+     * }
      */
     public function store(StoreQuoteRequest $request): JsonResponse
     {
@@ -92,6 +182,53 @@ class QuoteController extends Controller
      * @subgroup Consultas
      *
      * @urlParam quote integer required ID de la cotización. Example: 1
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "quoteNumber": "COT-202611140001",
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Cliente Ejemplo S.A. de C.V.",
+     *       "tradeName": "Cliente Ejemplo"
+     *     },
+     *     "employee": {
+     *       "id": 1,
+     *       "fullName": "Carlos Mendoza"
+     *     },
+     *     "appliedPlan": {
+     *       "id": 1,
+     *       "planCode": "RESIDENCIAL",
+     *       "planName": "Plan Residencial"
+     *     },
+     *     "basePrice": 51.00,
+     *     "discountedSubtotal": 45.90,
+     *     "includesVat": false,
+     *     "loyaltyPointsUsed": 0,
+     *     "loyaltyPointsEarned": 45,
+     *     "total": 51.87,
+     *     "status": "pending",
+     *     "items": [
+     *       {
+     *         "id": 1,
+     *         "itemType": "service",
+     *         "service": {
+     *           "id": 1,
+     *           "name": "Poda de árbol"
+     *         },
+     *         "plant": null,
+     *         "quantity": 2.0,
+     *         "unitPrice": 25.50,
+     *         "total": 51.00
+     *       }
+     *     ],
+     *     "createdAt": "2026-11-14T10:00:00.000000Z",
+     *     "updatedAt": "2026-11-14T10:00:00.000000Z"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Cotización no encontrada."
+     * }
      */
     public function show(int $id): QuoteResource
     {
@@ -118,10 +255,44 @@ class QuoteController extends Controller
      * @bodyParam status string Estado (`pending` o `paid`). Example: pending
      * @bodyParam items object[] Lista de ítems; si se envía, reemplaza los existentes.
      * @bodyParam items[].item_type string required Tipo de ítem (`service` o `plant`). Example: service
-     * @bodyParam items[].service_id integer required ID del servicio cuando `item_type` es `service`. Example: 1
-     * @bodyParam items[].plant_id integer required ID de la planta cuando `item_type` es `plant`. Example: 1
+     * @bodyParam items[].service_id integer ID del servicio cuando `item_type` es `service`. Example: 1
+     * @bodyParam items[].plant_id integer ID de la planta cuando `item_type` es `plant`. Example: 1
      * @bodyParam items[].quantity number required Cantidad. Example: 2
      * @bodyParam items[].unit_price number required Precio unitario. Example: 25.50
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "quoteNumber": "COT-202611140001",
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Cliente Ejemplo S.A. de C.V.",
+     *       "tradeName": "Cliente Ejemplo"
+     *     },
+     *     "employee": {
+     *       "id": 1,
+     *       "fullName": "Carlos Mendoza"
+     *     },
+     *     "appliedPlan": {
+     *       "id": 1,
+     *       "planCode": "RESIDENCIAL",
+     *       "planName": "Plan Residencial"
+     *     },
+     *     "basePrice": 60.00,
+     *     "discountedSubtotal": 54.00,
+     *     "includesVat": true,
+     *     "loyaltyPointsUsed": 0,
+     *     "loyaltyPointsEarned": 54,
+     *     "total": 54.00,
+     *     "status": "pending",
+     *     "items": [],
+     *     "createdAt": "2026-11-14T10:00:00.000000Z",
+     *     "updatedAt": "2026-11-14T11:00:00.000000Z"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Cotización no encontrada."
+     * }
      */
     public function update(UpdateQuoteRequest $request, int $id): QuoteResource
     {
@@ -138,6 +309,19 @@ class QuoteController extends Controller
      * @urlParam quote integer required ID de la cotización. Example: 1
      *
      * @bodyParam status string required Nuevo estado (`pending` o `paid`). Example: paid
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "quoteNumber": "COT-202611140001",
+     *     "status": "paid",
+     *     "total": 54.00,
+     *     "updatedAt": "2026-11-14T12:00:00.000000Z"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Cotización no encontrada."
+     * }
      */
     public function updateStatus(UpdateQuoteStatusRequest $request, int $id): QuoteResource
     {
@@ -152,6 +336,16 @@ class QuoteController extends Controller
      * @subgroup Escritura
      *
      * @urlParam quote integer required ID de la cotización. Example: 1
+     *
+     * @response {
+     *   "message": "Cotización eliminada correctamente."
+     * }
+     * @response status=404 {
+     *   "message": "Cotización no encontrada."
+     * }
+     * @response status=403 {
+     *   "message": "No tiene permisos para realizar esta acción."
+     * }
      */
     public function destroy(int $id): JsonResponse
     {

@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use App\Helpers\FileUploadHelper;
-use App\Models\AuditLog;
-use App\Models\Employee;
 use App\Models\Plant;
+use App\Services\Concerns\LogsAudit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,6 +13,8 @@ use Illuminate\Validation\ValidationException;
 
 class PlantService
 {
+    use LogsAudit;
+
     /**
      * Obtiene el listado paginado de plantas aplicando filtros dinámicos con when().
      *
@@ -155,26 +156,5 @@ class PlantService
             $plant->delete();
             $this->logAudit('delete', 'plants', $plant->id, $oldData, null);
         });
-    }
-
-    /**
-     * Registra un evento en la bitácora de auditoría.
-     */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
-    {
-        $employeeId = auth()->user()?->employee_id ?? request()->user()?->employee_id ?? Employee::first()?->id;
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

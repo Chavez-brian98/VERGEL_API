@@ -48,18 +48,41 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "customerId": 15,
+                "reward": {
+                  "id": 2,
+                  "name": "Fumigación de jardín",
+                  "pointsCost": 150
+                },
+                "pointsRedeemed": 150,
+                "status": "completed",
+                "requestedAt": "2026-11-01T10:00:00.000000Z"
+              }
+            ]
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 404
-        content: '{"message":"Cliente no encontrado","codigo":404}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: |-
+          {
+            "message": "Cliente no encontrado",
+            "codigo": 404
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -107,17 +130,28 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data":[]}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "name": "Fertilización orgánica de jardín",
+                "pointsCost": 100,
+                "active": true,
+                "service": {
+                  "id": 2,
+                  "name": "Fertilización"
+                }
+              }
+            ]
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -146,17 +180,6 @@ endpoints:
       loyalty_reward:
         custom: []
         name: loyalty_reward
-        description: ''
-        required: true
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      reward:
-        custom: []
-        name: reward
         description: 'ID de la recompensa.'
         required: true
         example: 1
@@ -166,8 +189,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      loyalty_reward: 16
-      reward: 1
+      loyalty_reward: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -176,21 +198,34 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "name": "Fertilización orgánica de jardín",
+            "pointsCost": 100,
+            "active": true,
+            "service": {
+              "id": 2,
+              "name": "Fertilización"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 404
         content: |-
           {
-              "message": "No query results for model [App\\Models\\LoyaltyReward] 16"
+            "message": "Recompensa no encontrada."
           }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

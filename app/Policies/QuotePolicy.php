@@ -4,9 +4,12 @@ namespace App\Policies;
 
 use App\Models\Quote;
 use App\Models\User;
+use App\Policies\Concerns\AuthorizesEmployeeRoles;
 
 class QuotePolicy
 {
+    use AuthorizesEmployeeRoles;
+
     /**
      * Determina si el usuario puede listar cotizaciones.
      */
@@ -64,34 +67,10 @@ class QuotePolicy
     }
 
     /**
-     * Regla de lectura: cualquier empleado activo con rol asignado.
-     */
-    private function canView(User $user): bool
-    {
-        $employee = $user->employee;
-
-        if (! $employee || ! $employee->role_id) {
-            return false;
-        }
-
-        if (isset($employee->active) && ! $employee->active) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Administrador o Recepcionista (gestión de cotizaciones).
      */
     private function isAdminOrRecepcionista(User $user): bool
     {
-        if (! $this->canView($user)) {
-            return false;
-        }
-
-        $roleName = $user->employee?->role?->role_name;
-
-        return in_array($roleName, ['Admin', 'Administrador', 'Recepcionista'], true);
+        return $this->hasAnyRole($user, ['Admin', 'Administrador', 'Recepcionista']);
     }
 }

@@ -166,7 +166,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: draft
+        example: reviewed
         type: string
         enumValues:
           - draft
@@ -180,7 +180,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-14T21:04:18'
+        example: '2026-11-20T03:20:40'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -191,7 +191,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -213,7 +213,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: inspection_date
+        example: id
         type: string
         enumValues:
           - id
@@ -262,11 +262,11 @@ endpoints:
     cleanBodyParameters:
       customer_id: 16
       employee_id: 16
-      status: draft
-      start_date: '2026-11-14T21:04:18'
-      end_date: '2052-12-07'
+      status: reviewed
+      start_date: '2026-11-20T03:20:40'
+      end_date: '2052-12-13'
       search: 'n'
-      sort_by: inspection_date
+      sort_by: id
       sort_direction: desc
       per_page: 7
       limit: 16
@@ -274,18 +274,36 @@ endpoints:
     responses:
       -
         custom: []
-        status: 422
-        content: '{"message":"The selected customer id is invalid. (and 1 more error)","errors":{"customer_id":["The selected customer id is invalid."],"employee_id":["The selected employee id is invalid."]}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "inspectionDate": "2026-11-11",
+                "findings": "Terreno con desnivel pronunciado y maleza alta.",
+                "status": "submitted",
+                "totalArea": 310.00,
+                "areaUnit": "m2",
+                "customer": {
+                  "id": 1,
+                  "legalName": "Cliente Ejemplo S.A. de C.V."
+                },
+                "employee": {
+                  "id": 2,
+                  "fullName": "Juan Técnico"
+                },
+                "createdAt": "2026-11-11T14:30:00.000000Z"
+              }
+            ]
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -552,12 +570,49 @@ endpoints:
       photos_data:
         -
           file: null
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "inspectionDate": "2026-11-11",
+              "findings": "Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.",
+              "terrainWidth": 15.50,
+              "terrainLength": 20.00,
+              "totalArea": 310.00,
+              "areaUnit": "m2",
+              "terrainNotes": "Suelo arcilloso, toma de agua a 10 metros.",
+              "status": "submitted",
+              "customer": {
+                "id": 1,
+                "legalName": "Cliente Ejemplo S.A. de C.V."
+              },
+              "employee": {
+                "id": 2,
+                "fullName": "Juan Técnico"
+              },
+              "services": [
+                {
+                  "id": 1,
+                  "name": "Poda y Desmonte",
+                  "suggestedQuantity": 2,
+                  "notes": "Requiere fumigación previa."
+                }
+              ],
+              "photos": [],
+              "createdAt": "2026-11-11T14:30:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -586,16 +641,16 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the inspection.'
+        description: 'ID de la inspección.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -604,21 +659,41 @@ endpoints:
     responses:
       -
         custom: []
-        status: 500
+        status: 200
         content: |-
           {
-              "message": "Server Error"
+            "data": {
+              "id": 1,
+              "inspectionDate": "2026-11-11",
+              "findings": "Terreno con desnivel pronunciado y maleza alta.",
+              "terrainWidth": 15.50,
+              "terrainLength": 20.00,
+              "totalArea": 310.00,
+              "areaUnit": "m2",
+              "status": "submitted",
+              "customer": {
+                "id": 1,
+                "legalName": "Cliente Ejemplo S.A. de C.V."
+              },
+              "photos": []
+            }
           }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Inspección no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -648,16 +723,16 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the inspection.'
+        description: 'ID de la inspección.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -699,7 +774,7 @@ endpoints:
         name: inspection_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-14T21:04:18'
+        example: '2026-11-20T03:20:40'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -708,12 +783,12 @@ endpoints:
       findings:
         custom: []
         name: findings
-        description: ''
+        description: 'Observaciones actualizadas.'
         required: false
-        example: architecto
+        example: 'Terreno nivelado parcialmente.'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       terrain_width:
@@ -774,15 +849,12 @@ endpoints:
       status:
         custom: []
         name: status
-        description: ''
+        description: 'Estado (draft, submitted, reviewed).'
         required: false
         example: reviewed
         type: string
-        enumValues:
-          - draft
-          - submitted
-          - reviewed
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       services:
@@ -878,8 +950,8 @@ endpoints:
       customer_id: 16
       appointment_id: 16
       employee_id: 16
-      inspection_date: '2026-11-14T21:04:18'
-      findings: architecto
+      inspection_date: '2026-11-20T03:20:40'
+      findings: 'Terreno nivelado parcialmente.'
       terrain_width: 39
       terrain_length: 84
       total_area: 12
@@ -900,12 +972,35 @@ endpoints:
       photos_data:
         -
           file: null
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "findings": "Terreno nivelado parcialmente.",
+              "status": "reviewed",
+              "updatedAt": "2026-11-11T16:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Inspección no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -934,27 +1029,45 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the inspection.'
+        description: 'ID de la inspección.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Inspección eliminada correctamente."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Inspección no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -991,8 +1104,20 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      id:
+        custom: []
+        name: id
+        description: 'ID de la inspección.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanUrlParameters:
       inspection: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -1010,12 +1135,34 @@ endpoints:
     cleanBodyParameters:
       status: reviewed
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "status": "reviewed",
+              "updatedAt": "2026-11-11T16:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Inspección no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -1052,8 +1199,20 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      id:
+        custom: []
+        name: id
+        description: 'ID de la inspección.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanUrlParameters:
       inspection: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -1112,12 +1271,39 @@ endpoints:
       photos_data:
         -
           file: null
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "photos": [
+                {
+                  "id": 5,
+                  "imagePath": "inspections/foto_ejemplo.jpg",
+                  "caption": "Vista panorámica lateral"
+                }
+              ]
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Inspección no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -1146,39 +1332,57 @@ endpoints:
       inspection:
         custom: []
         name: inspection
-        description: 'The inspection.'
+        description: 'ID de la inspección.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       photo:
         custom: []
         name: photo
-        description: 'The photo.'
+        description: 'ID de la foto.'
         required: true
-        example: architecto
-        type: string
+        example: 5
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      inspection: architecto
-      photo: architecto
+      inspection: 1
+      photo: 5
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Fotografía eliminada correctamente."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Fotografía no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

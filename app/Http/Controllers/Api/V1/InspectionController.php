@@ -40,6 +40,28 @@ class InspectionController extends Controller
      * @queryParam sort_by string Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id. Example: inspection_date
      * @queryParam sort_direction string Dirección (asc o desc). Default: desc. Example: desc
      * @queryParam per_page integer Registros por página. Example: 15
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "inspectionDate": "2026-11-11",
+     *       "findings": "Terreno con desnivel pronunciado y maleza alta.",
+     *       "status": "submitted",
+     *       "totalArea": 310.00,
+     *       "areaUnit": "m2",
+     *       "customer": {
+     *         "id": 1,
+     *         "legalName": "Cliente Ejemplo S.A. de C.V."
+     *       },
+     *       "employee": {
+     *         "id": 2,
+     *         "fullName": "Juan Técnico"
+     *       },
+     *       "createdAt": "2026-11-11T14:30:00.000000Z"
+     *     }
+     *   ]
+     * }
      */
     public function index(IndexInspectionRequest $request): AnonymousResourceCollection
     {
@@ -71,6 +93,38 @@ class InspectionController extends Controller
      * @bodyParam services[].suggested_quantity integer Cantidad sugerida. Example: 2
      * @bodyParam services[].notes string Notas técnicas del servicio. Example: Requiere fumigación previa.
      * @bodyParam photos file[] Archivos de imagen (JPEG, PNG, WEBP, máx 10MB) de la inspección.
+     *
+     * @response status=201 {
+     *   "data": {
+     *     "id": 1,
+     *     "inspectionDate": "2026-11-11",
+     *     "findings": "Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelación.",
+     *     "terrainWidth": 15.50,
+     *     "terrainLength": 20.00,
+     *     "totalArea": 310.00,
+     *     "areaUnit": "m2",
+     *     "terrainNotes": "Suelo arcilloso, toma de agua a 10 metros.",
+     *     "status": "submitted",
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Cliente Ejemplo S.A. de C.V."
+     *     },
+     *     "employee": {
+     *       "id": 2,
+     *       "fullName": "Juan Técnico"
+     *     },
+     *     "services": [
+     *       {
+     *         "id": 1,
+     *         "name": "Poda y Desmonte",
+     *         "suggestedQuantity": 2,
+     *         "notes": "Requiere fumigación previa."
+     *       }
+     *     ],
+     *     "photos": [],
+     *     "createdAt": "2026-11-11T14:30:00.000000Z"
+     *   }
+     * }
      */
     public function store(StoreInspectionRequest $request): JsonResponse
     {
@@ -88,6 +142,29 @@ class InspectionController extends Controller
      * Ver detalle de inspección de campo.
      *
      * @subgroup Consultas
+     *
+     * @urlParam id integer required ID de la inspección. Example: 1
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "inspectionDate": "2026-11-11",
+     *     "findings": "Terreno con desnivel pronunciado y maleza alta.",
+     *     "terrainWidth": 15.50,
+     *     "terrainLength": 20.00,
+     *     "totalArea": 310.00,
+     *     "areaUnit": "m2",
+     *     "status": "submitted",
+     *     "customer": {
+     *       "id": 1,
+     *       "legalName": "Cliente Ejemplo S.A. de C.V."
+     *     },
+     *     "photos": []
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Inspección no encontrada."
+     * }
      */
     public function show(int $id): InspectionResource
     {
@@ -102,6 +179,23 @@ class InspectionController extends Controller
      * Actualizar inspección de campo.
      *
      * @subgroup Escritura
+     *
+     * @urlParam id integer required ID de la inspección. Example: 1
+     *
+     * @bodyParam findings string Observaciones actualizadas. Example: Terreno nivelado parcialmente.
+     * @bodyParam status string Estado (draft, submitted, reviewed). Example: reviewed
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "findings": "Terreno nivelado parcialmente.",
+     *     "status": "reviewed",
+     *     "updatedAt": "2026-11-11T16:00:00.000000Z"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Inspección no encontrada."
+     * }
      */
     public function update(UpdateInspectionRequest $request, int $id): InspectionResource
     {
@@ -118,7 +212,20 @@ class InspectionController extends Controller
      *
      * @subgroup Escritura
      *
+     * @urlParam id integer required ID de la inspección. Example: 1
+     *
      * @bodyParam status string required Nuevo estado (draft, submitted, reviewed). Example: reviewed
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "status": "reviewed",
+     *     "updatedAt": "2026-11-11T16:00:00.000000Z"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Inspección no encontrada."
+     * }
      */
     public function updateStatus(UpdateInspectionStatusRequest $request, int $id): InspectionResource
     {
@@ -133,6 +240,24 @@ class InspectionController extends Controller
      * Permite subir más imágenes de referencia a una inspección ya creada.
      *
      * @subgroup Escritura
+     *
+     * @urlParam id integer required ID de la inspección. Example: 1
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "photos": [
+     *       {
+     *         "id": 5,
+     *         "imagePath": "inspections/foto_ejemplo.jpg",
+     *         "caption": "Vista panorámica lateral"
+     *       }
+     *     ]
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Inspección no encontrada."
+     * }
      */
     public function uploadPhotos(UploadPhotosRequest $request, int $id): InspectionResource
     {
@@ -146,6 +271,16 @@ class InspectionController extends Controller
      * Eliminar foto de inspección.
      *
      * @subgroup Escritura
+     *
+     * @urlParam inspection integer required ID de la inspección. Example: 1
+     * @urlParam photo integer required ID de la foto. Example: 5
+     *
+     * @response {
+     *   "message": "Fotografía eliminada correctamente."
+     * }
+     * @response status=404 {
+     *   "message": "Fotografía no encontrada."
+     * }
      */
     public function deletePhoto(int $inspectionId, int $photoId): JsonResponse
     {
@@ -162,6 +297,15 @@ class InspectionController extends Controller
      * Eliminar inspección técnica.
      *
      * @subgroup Escritura
+     *
+     * @urlParam id integer required ID de la inspección. Example: 1
+     *
+     * @response {
+     *   "message": "Inspección eliminada correctamente."
+     * }
+     * @response status=404 {
+     *   "message": "Inspección no encontrada."
+     * }
      */
     public function destroy(int $id): JsonResponse
     {

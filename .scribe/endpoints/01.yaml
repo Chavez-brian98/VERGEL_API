@@ -70,7 +70,7 @@ endpoints:
         name: type
         description: ''
         required: false
-        example: wallet
+        example: loyalty
         type: string
         enumValues:
           - all
@@ -102,7 +102,7 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      type: wallet
+      type: loyalty
       page: 16
       limit: 22
     fileParameters: []
@@ -110,17 +110,31 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data":[],"meta":{"currentPage":16,"totalPages":1,"totalItems":0}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "customerId": 1,
+                "type": "wallet",
+                "concept": "Recarga de saldo",
+                "amount": 100.00,
+                "createdAt": "2026-11-01T10:00:00.000000Z"
+              }
+            ],
+            "meta": {
+              "currentPage": 1,
+              "totalPages": 1,
+              "totalItems": 1
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -180,17 +194,30 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/v1\/customers\/portfolio?page=1","last":"http:\/\/localhost\/api\/v1\/customers\/portfolio?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"http:\/\/localhost\/api\/v1\/customers\/portfolio?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"http:\/\/localhost\/api\/v1\/customers\/portfolio","per_page":1,"to":null,"total":0}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: |-
+          {
+            "data": [
+              {
+                "customerId": 1,
+                "customerName": "Cliente Ejemplo S.A. de C.V.",
+                "wallet": {
+                  "cashBalance": 150.00,
+                  "reservedSubscriptionBalance": 50.00,
+                  "totalAvailable": 200.00
+                },
+                "loyaltyPoints": {
+                  "pointsBalance": 350
+                }
+              }
+            ]
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -359,7 +386,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -508,7 +535,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -523,9 +550,9 @@ endpoints:
       groupDescription: |-
 
         APIs para consultar y gestionar la billetera, EcoPuntos y movimientos del cliente.
-      subgroup: Gesti��n
+      subgroup: Escritura
       subgroupDescription: ''
-      title: 'Registrar una transacci��n de billetera.'
+      title: 'Registrar una transacción de billetera.'
       description: |-
         Tipos permitidos: top_up, annual_fee, maintenance_deduction, adjustment,
         reserve_funds y spend_reserved_funds.
@@ -558,7 +585,7 @@ endpoints:
       transaction_type:
         custom: []
         name: transaction_type
-        description: 'Tipo de transacci��n.'
+        description: 'Tipo de transacción.'
         required: true
         example: top_up
         type: string
@@ -569,7 +596,7 @@ endpoints:
       amount:
         custom: []
         name: amount
-        description: 'Monto de la transacci��n. Para adjustment puede ser negativo.'
+        description: 'Monto de la transacción. Para adjustment puede ser negativo.'
         required: true
         example: '100.00'
         type: numeric
@@ -580,7 +607,7 @@ endpoints:
       payment_method:
         custom: []
         name: payment_method
-        description: 'MǸtodo de pago.'
+        description: 'Método de pago.'
         required: false
         example: transfer
         type: string
@@ -629,7 +656,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -644,7 +671,7 @@ endpoints:
       groupDescription: |-
 
         APIs para consultar y gestionar la billetera, EcoPuntos y movimientos del cliente.
-      subgroup: Gestión
+      subgroup: Escritura
       subgroupDescription: ''
       title: 'Registrar una transacción de EcoPuntos.'
       description: |-
@@ -744,7 +771,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

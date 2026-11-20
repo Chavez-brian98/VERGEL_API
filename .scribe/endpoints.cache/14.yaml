@@ -198,7 +198,7 @@ endpoints:
         name: action
         description: ''
         required: false
-        example: delete
+        example: insert
         type: string
         enumValues:
           - insert
@@ -247,7 +247,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-14'
+        example: '2026-11-20'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -258,7 +258,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -269,7 +269,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-14'
+        example: '2026-11-20'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -280,7 +280,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -311,14 +311,14 @@ endpoints:
     cleanBodyParameters:
       user_id: 16
       employee_id: 16
-      action: delete
+      action: insert
       affected_table: 'n'
       table_name: g
       affected_record_id: 66
-      start_date: '2026-11-14'
-      end_date: '2052-12-07'
-      desde: '2026-11-14'
-      hasta: '2052-12-07'
+      start_date: '2026-11-20'
+      end_date: '2052-12-13'
+      desde: '2026-11-20'
+      hasta: '2052-12-13'
       limit: 22
       per_page: 7
     fileParameters: []
@@ -409,7 +409,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -529,7 +529,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

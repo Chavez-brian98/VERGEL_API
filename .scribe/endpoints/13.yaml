@@ -182,7 +182,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-14'
+        example: '2026-11-20'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -193,7 +193,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -204,7 +204,7 @@ endpoints:
         name: date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-14'
+        example: '2026-11-20'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -215,7 +215,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: cancelled
+        example: pending
         type: string
         enumValues:
           - pending
@@ -275,7 +275,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: created_at
+        example: appointment_time
         type: string
         enumValues:
           - id
@@ -291,7 +291,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: asc
+        example: desc
         type: string
         enumValues:
           - asc
@@ -326,26 +326,26 @@ endpoints:
         name: all
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      start_date: '2026-11-14'
-      end_date: '2052-12-07'
-      date: '2026-11-14'
-      status: cancelled
+      start_date: '2026-11-20'
+      end_date: '2052-12-13'
+      date: '2026-11-20'
+      status: pending
       customer_id: 16
       client_id: 16
       employee_id: 16
       service_id: 16
-      sort_by: created_at
-      sort_direction: asc
+      sort_by: appointment_time
+      sort_direction: desc
       per_page: 22
       limit: 7
-      all: false
+      all: true
     fileParameters: []
     responses:
       -
@@ -395,7 +395,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -689,7 +689,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -808,7 +808,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -1023,7 +1023,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -1242,7 +1242,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

@@ -139,7 +139,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-14'
+        example: '2026-11-20'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -150,7 +150,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -171,8 +171,8 @@ endpoints:
       search: b
       status: active
       phone: ngzmiyvdljnikhwa
-      desde: '2026-11-14'
-      hasta: '2052-12-07'
+      desde: '2026-11-20'
+      hasta: '2052-12-13'
       limit: 22
     fileParameters: []
     responses:
@@ -236,7 +236,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -487,7 +487,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -516,8 +516,8 @@ endpoints:
         name: id
         description: 'The ID of the customer.'
         required: true
-        example: 16
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -534,7 +534,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 16
+      id: architecto
       customer: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -613,7 +613,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -643,8 +643,8 @@ endpoints:
         name: id
         description: 'The ID of the customer.'
         required: true
-        example: 16
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -661,7 +661,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 16
+      id: architecto
       customer: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -861,7 +861,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -890,8 +890,8 @@ endpoints:
         name: id
         description: 'The ID of the customer.'
         required: true
-        example: 16
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -908,7 +908,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 16
+      id: architecto
       customer: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -944,7 +944,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -1047,7 +1047,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -1144,7 +1144,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -1243,7 +1243,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

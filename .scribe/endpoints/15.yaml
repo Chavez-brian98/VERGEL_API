@@ -195,7 +195,7 @@ endpoints:
         name: status_type
         description: ''
         required: false
-        example: performed
+        example: declined
         type: string
         enumValues:
           - all
@@ -209,7 +209,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>.'
         required: false
-        example: '2026-11-14'
+        example: '2026-11-20'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -220,7 +220,7 @@ endpoints:
         name: end_date
         description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -231,7 +231,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: id
+        example: total
         type: string
         enumValues:
           - id
@@ -280,10 +280,10 @@ endpoints:
       search: b
       customer_id: 16
       client_id: 16
-      status_type: performed
-      start_date: '2026-11-14'
-      end_date: '2052-12-07'
-      sort_by: id
+      status_type: declined
+      start_date: '2026-11-20'
+      end_date: '2052-12-13'
+      sort_by: total
       sort_direction: desc
       per_page: 22
       limit: 7
@@ -401,7 +401,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -550,7 +550,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

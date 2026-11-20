@@ -165,7 +165,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: paid
+        example: pending
         type: string
         enumValues:
           - pending
@@ -211,7 +211,7 @@ endpoints:
         name: desde
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-14T21:04:18'
+        example: '2026-11-20T03:20:40'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -222,7 +222,7 @@ endpoints:
         name: hasta
         description: 'Must be a valid date. Must be a date after or equal to <code>desde</code>.'
         required: false
-        example: '2052-12-07'
+        example: '2052-12-13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -283,12 +283,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       search: b
-      status: paid
+      status: pending
       customer_id: 16
       employee_id: 16
       applied_plan_id: 16
-      desde: '2026-11-14T21:04:18'
-      hasta: '2052-12-07'
+      desde: '2026-11-20T03:20:40'
+      hasta: '2052-12-13'
       sort_by: created_at
       sort_direction: asc
       limit: 22
@@ -297,18 +297,63 @@ endpoints:
     responses:
       -
         custom: []
-        status: 422
-        content: '{"message":"The selected customer id is invalid. (and 2 more errors)","errors":{"customer_id":["The selected customer id is invalid."],"employee_id":["The selected employee id is invalid."],"applied_plan_id":["The selected applied plan id is invalid."]}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "quoteNumber": "COT-202611140001",
+                "customerName": "Cliente Ejemplo S.A. de C.V.",
+                "employeeName": "Carlos Mendoza",
+                "appliedPlanName": "Plan Residencial",
+                "basePrice": 100.00,
+                "total": 101.70,
+                "status": "pending",
+                "itemsCount": 2,
+                "createdAt": "2026-11-14T10:00:00.000000Z"
+              }
+            ],
+            "links": {
+              "first": "http://localhost/api/v1/quotes?page=1",
+              "last": "http://localhost/api/v1/quotes?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "per_page": 15,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -423,7 +468,7 @@ endpoints:
         custom: []
         name: 'items[].service_id'
         description: 'ID del servicio cuando `item_type` es `service`.'
-        required: true
+        required: false
         example: 1
         type: integer
         enumValues: []
@@ -434,7 +479,7 @@ endpoints:
         custom: []
         name: 'items[].plant_id'
         description: 'ID de la planta cuando `item_type` es `plant`.'
-        required: true
+        required: false
         example: 1
         type: integer
         enumValues: []
@@ -477,12 +522,82 @@ endpoints:
           quantity: 2.0
           unit_price: 25.5
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "quoteNumber": "COT-202611140001",
+              "customer": {
+                "id": 1,
+                "legalName": "Cliente Ejemplo S.A. de C.V.",
+                "tradeName": "Cliente Ejemplo"
+              },
+              "employee": {
+                "id": 1,
+                "fullName": "Carlos Mendoza"
+              },
+              "appliedPlan": {
+                "id": 1,
+                "planCode": "RESIDENCIAL",
+                "planName": "Plan Residencial"
+              },
+              "basePrice": 51.00,
+              "discountedSubtotal": 45.90,
+              "includesVat": false,
+              "loyaltyPointsUsed": 0,
+              "loyaltyPointsEarned": 45,
+              "total": 51.87,
+              "status": "pending",
+              "items": [
+                {
+                  "id": 1,
+                  "itemType": "service",
+                  "service": {
+                    "id": 1,
+                    "name": "Poda de árbol"
+                  },
+                  "plant": null,
+                  "quantity": 2.0,
+                  "unitPrice": 25.50,
+                  "total": 51.00
+                }
+              ],
+              "createdAt": "2026-11-14T10:00:00.000000Z",
+              "updatedAt": "2026-11-14T10:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Los datos proporcionados no son válidos.",
+            "errors": {
+              "items": ["El campo items es obligatorio."]
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -541,21 +656,67 @@ endpoints:
     responses:
       -
         custom: []
-        status: 500
+        status: 200
         content: |-
           {
-              "message": "Server Error"
+            "data": {
+              "id": 1,
+              "quoteNumber": "COT-202611140001",
+              "customer": {
+                "id": 1,
+                "legalName": "Cliente Ejemplo S.A. de C.V.",
+                "tradeName": "Cliente Ejemplo"
+              },
+              "employee": {
+                "id": 1,
+                "fullName": "Carlos Mendoza"
+              },
+              "appliedPlan": {
+                "id": 1,
+                "planCode": "RESIDENCIAL",
+                "planName": "Plan Residencial"
+              },
+              "basePrice": 51.00,
+              "discountedSubtotal": 45.90,
+              "includesVat": false,
+              "loyaltyPointsUsed": 0,
+              "loyaltyPointsEarned": 45,
+              "total": 51.87,
+              "status": "pending",
+              "items": [
+                {
+                  "id": 1,
+                  "itemType": "service",
+                  "service": {
+                    "id": 1,
+                    "name": "Poda de árbol"
+                  },
+                  "plant": null,
+                  "quantity": 2.0,
+                  "unitPrice": 25.50,
+                  "total": 51.00
+                }
+              ],
+              "createdAt": "2026-11-14T10:00:00.000000Z",
+              "updatedAt": "2026-11-14T10:00:00.000000Z"
+            }
           }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Cotización no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -692,7 +853,7 @@ endpoints:
         custom: []
         name: 'items[].service_id'
         description: 'ID del servicio cuando `item_type` es `service`.'
-        required: true
+        required: false
         example: 1
         type: integer
         enumValues: []
@@ -703,7 +864,7 @@ endpoints:
         custom: []
         name: 'items[].plant_id'
         description: 'ID de la planta cuando `item_type` es `plant`.'
-        required: true
+        required: false
         example: 1
         type: integer
         enumValues: []
@@ -746,12 +907,57 @@ endpoints:
           quantity: 2.0
           unit_price: 25.5
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "quoteNumber": "COT-202611140001",
+              "customer": {
+                "id": 1,
+                "legalName": "Cliente Ejemplo S.A. de C.V.",
+                "tradeName": "Cliente Ejemplo"
+              },
+              "employee": {
+                "id": 1,
+                "fullName": "Carlos Mendoza"
+              },
+              "appliedPlan": {
+                "id": 1,
+                "planCode": "RESIDENCIAL",
+                "planName": "Plan Residencial"
+              },
+              "basePrice": 60.00,
+              "discountedSubtotal": 54.00,
+              "includesVat": true,
+              "loyaltyPointsUsed": 0,
+              "loyaltyPointsEarned": 54,
+              "total": 54.00,
+              "status": "pending",
+              "items": [],
+              "createdAt": "2026-11-14T10:00:00.000000Z",
+              "updatedAt": "2026-11-14T11:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Cotización no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -807,12 +1013,39 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Cotización eliminada correctamente."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "No tiene permisos para realizar esta acción."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Cotización no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -868,12 +1101,36 @@ endpoints:
     cleanBodyParameters:
       status: paid
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "quoteNumber": "COT-202611140001",
+              "status": "paid",
+              "total": 54.00,
+              "updatedAt": "2026-11-14T12:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Cotización no encontrada."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1|acbUEgb8YTT7sVmvYDCc7p2u8UXTQo4qwZ2tqoDIacb156b8'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
