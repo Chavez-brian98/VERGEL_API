@@ -24,6 +24,8 @@ class CreateEmployeeRequest extends FormRequest
             'hire_date' => 'nullable|date',
             'phone' => 'nullable|string|max:20',
             'active' => 'sometimes|boolean',
+            'email' => 'filled|email|max:255|unique:users,email',
+            'password' => 'nullable|string|min:8',
         ];
     }
 }

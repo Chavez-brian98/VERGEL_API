@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Models\Employee;
+use App\Models\User;
 use App\Services\Concerns\LogsAudit;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeService
 {
@@ -53,7 +55,20 @@ class EmployeeService
     {
         return DB::transaction(function () use ($data) {
             $data['active'] = $data['active'] ?? true;
+            $email = $data['email'] ?? null;
+            $password = $data['password'] ?? null;
+            unset($data['email'], $data['password']);
+
             $employee = Employee::create($data);
+
+            if ($email) {
+                User::create([
+                    'name' => $employee->full_name,
+                    'email' => $email,
+                    'password' => Hash::make($password ?? 'Secret123!'),
+                    'employee_id' => $employee->id,
+                ]);
+            }
 
             $this->logAudit('insert', 'employees', $employee->id, null, $employee->toArray());
 
