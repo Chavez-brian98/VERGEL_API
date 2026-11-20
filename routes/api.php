@@ -6,16 +6,14 @@ use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\FinanceController;
+use App\Http\Controllers\Api\V1\InspectionController;
 use App\Http\Controllers\Api\V1\LoyaltyRedemptionController;
 use App\Http\Controllers\Api\V1\LoyaltyRewardController;
 use App\Http\Controllers\Api\V1\MovementController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\PortfolioController;
-use App\Http\Controllers\Api\V1\InspectionController;
-use App\Http\Controllers\Api\V1\MovementController;
-use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\QuoteController;
-
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;
@@ -93,5 +91,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('transactions/{id}', [TransactionController::class, 'show']);
 
         Route::get('movements', [MovementController::class, 'index']);
+
+        // Módulo de Finanzas (solo lectura, restringido a Admin / Administrador).
+        Route::prefix('finance')->group(function () {
+            Route::get('movements', [FinanceController::class, 'movements']);
+            Route::get('summary', [FinanceController::class, 'summary']);
+            Route::get('quotes', [FinanceController::class, 'index']);
+            Route::get('quotes/{quote}/payments', [FinanceController::class, 'payments']);
+            Route::get('plants/{plant}/sales', [FinanceController::class, 'plantSales']);
+            Route::get('purchases', [FinanceController::class, 'purchases']);
+        });
     });
 });
