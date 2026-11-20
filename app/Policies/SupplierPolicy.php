@@ -4,9 +4,12 @@ namespace App\Policies;
 
 use App\Models\Supplier;
 use App\Models\User;
+use App\Policies\Concerns\AuthorizesEmployeeRoles;
 
 class SupplierPolicy
 {
+    use AuthorizesEmployeeRoles;
+
     /**
      * Determina si el usuario puede listar proveedores.
      */
@@ -64,48 +67,10 @@ class SupplierPolicy
     }
 
     /**
-     * Regla de lectura: cualquier empleado activo con rol asignado.
-     */
-    private function canView(User $user): bool
-    {
-        $employee = $user->employee;
-
-        if (! $employee || ! $employee->role_id) {
-            return false;
-        }
-
-        if (isset($employee->status) && $employee->status !== 'active') {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Administrador.
-     */
-    private function isAdmin(User $user): bool
-    {
-        if (! $this->canView($user)) {
-            return false;
-        }
-
-        $roleName = $user->employee?->role?->role_name;
-
-        return in_array($roleName, ['Admin', 'Administrador'], true);
-    }
-
-    /**
      * Administrador o Contador (gestión de compras y proveedores).
      */
     private function isAdminOrContador(User $user): bool
     {
-        if (! $this->canView($user)) {
-            return false;
-        }
-
-        $roleName = $user->employee?->role?->role_name;
-
-        return in_array($roleName, ['Admin', 'Administrador', 'Contador'], true);
+        return $this->hasAnyRole($user, ['Admin', 'Administrador', 'Contador']);
     }
 }

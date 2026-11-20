@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\Models\Appointment;
-use App\Models\AuditLog;
 use App\Models\Customer;
-use App\Models\Employee;
 use App\Models\LoyaltyPoint;
 use App\Models\LoyaltyPointTransaction;
 use App\Models\Payment;
@@ -13,6 +11,7 @@ use App\Models\Quote;
 use App\Models\Subscription;
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
+use App\Services\Concerns\LogsAudit;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -24,6 +23,8 @@ use Illuminate\Validation\ValidationException;
 
 class PortfolioService
 {
+    use LogsAudit;
+
     /**
      * Obtiene el resumen consolidado de la cartera del cliente: datos
      * generales, plan actual e historial, saldos, EcoPuntos, deuda,
@@ -459,27 +460,5 @@ class PortfolioService
         }
 
         return Carbon::parse($value)->toIso8601String();
-    }
-
-    /**
-     * Registra un evento en la bitácora de auditoría.
-     */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
-    {
-        $employeeId = request()->user()?->employee_id ?? Employee::first()?->id;
-
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

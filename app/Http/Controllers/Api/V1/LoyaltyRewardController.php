@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Loyalty\LoyaltyRewardResource;
-use App\Models\LoyaltyReward;
 use App\Services\Portfolio\RewardCatalogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,6 +26,21 @@ class LoyaltyRewardController extends Controller
      * @subgroup Consultas
      *
      * @queryParam available boolean Mostrar solo recompensas disponibles. Example: true
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "name": "Fertilización orgánica de jardín",
+     *       "pointsCost": 100,
+     *       "active": true,
+     *       "service": {
+     *         "id": 2,
+     *         "name": "Fertilización"
+     *       }
+     *     }
+     *   ]
+     * }
      */
     public function index(Request $request): JsonResponse
     {
@@ -46,12 +60,28 @@ class LoyaltyRewardController extends Controller
      *
      * @subgroup Consultas
      *
-     * @urlParam reward integer required ID de la recompensa. Example: 1
+     * @urlParam loyalty_reward integer required ID de la recompensa. Example: 1
+     *
+     * @response {
+     *   "id": 1,
+     *   "name": "Fertilización orgánica de jardín",
+     *   "pointsCost": 100,
+     *   "active": true,
+     *   "service": {
+     *     "id": 2,
+     *     "name": "Fertilización"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Recompensa no encontrada."
+     * }
      */
     public function show(int $loyalty_reward): JsonResponse
     {
         Gate::authorize('viewPortfolio');
 
-        return response()->json(new LoyaltyRewardResource(LoyaltyReward::with('service')->findOrFail($loyalty_reward)));
+        $reward = $this->rewardCatalogService->getById($loyalty_reward);
+
+        return response()->json(new LoyaltyRewardResource($reward));
     }
 }

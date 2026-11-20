@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\AuditLog;
-use App\Models\Employee;
 use App\Models\Payment;
 use App\Models\Quote;
+use App\Services\Concerns\LogsAudit;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +14,10 @@ use Illuminate\Validation\ValidationException;
 
 class TransactionService
 {
+    use LogsAudit;
+
     public function __construct(
-        private readonly ?MovementService $movementService = null
+        private readonly MovementService $movementService
     ) {}
 
     /**
@@ -196,8 +197,7 @@ class TransactionService
             $quote->update(['status' => 'paid']);
 
             // Módulo 5.13: Generar automáticamente el movimiento de venta en el libro contable general
-            $movementService = $this->movementService ?? app(MovementService::class);
-            $movementService->recordSaleFromQuote($quote, $payment);
+            $this->movementService->recordSaleFromQuote($quote, $payment);
 
             $this->logAudit('insert', 'quotes', $quote->id, $oldData, $quote->fresh()->toArray());
 
@@ -210,26 +210,5 @@ class TransactionService
                 'payments',
             ]);
         });
-    }
-
-    /**
-     * Registra un evento en la bitácora de auditoría (audit_log).
-     */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
-    {
-        $employeeId = auth()->user()?->employee_id ?? Employee::first()?->id;
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

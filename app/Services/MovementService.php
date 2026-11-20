@@ -2,17 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\AuditLog;
 use App\Models\Employee;
 use App\Models\ExpenseTicket;
 use App\Models\Movement;
 use App\Models\Payment;
 use App\Models\Purchase;
 use App\Models\Quote;
+use App\Services\Concerns\LogsAudit;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class MovementService
 {
+    use LogsAudit;
+
     /**
      * Consulta y filtra el libro general de movimientos (Ventas, Compras y Gastos).
      * Calcula en tiempo real las métricas financieras (Ingresos, Egresos y Utilidad neta).
@@ -250,26 +252,5 @@ class MovementService
         $this->logAudit('insert', 'movements', $movement->id, null, $movement->toArray());
 
         return $movement;
-    }
-
-    /**
-     * Registra un evento en la bitácora de auditoría (audit_log).
-     */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
-    {
-        $employeeId = auth()->user()?->employee_id ?? Employee::first()?->id;
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

@@ -2,15 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\AuditLog;
 use App\Models\Customer;
-use App\Models\Employee;
+use App\Services\Concerns\LogsAudit;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class CustomerService
 {
+    use LogsAudit;
+
     /**
      * Get paginated customers with filters (search, status, phone, date).
      */
@@ -181,25 +183,12 @@ class CustomerService
     }
 
     /**
-     * Audit log helper
+     * Get plan history for a customer
      */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
+    public function getPlanHistory(int $id): Collection
     {
-        // La bitácora referencia al empleado (employees.id), no al usuario de autenticación.
-        $employeeId = auth()->user()?->employee_id ?? request()->user()?->employee_id ?? Employee::first()?->id;
+        $customer = Customer::findOrFail($id);
 
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()->ip(),
-        ]);
+        return $customer->planHistories()->with('plan')->orderBy('start_date', 'desc')->get();
     }
 }
