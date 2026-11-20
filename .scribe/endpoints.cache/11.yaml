@@ -180,7 +180,7 @@ endpoints:
         name: start_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-20T03:20:40'
+        example: '2026-11-20T06:03:11'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -213,7 +213,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: id
+        example: status
         type: string
         enumValues:
           - id
@@ -263,10 +263,10 @@ endpoints:
       customer_id: 16
       employee_id: 16
       status: reviewed
-      start_date: '2026-11-20T03:20:40'
+      start_date: '2026-11-20T06:03:11'
       end_date: '2052-12-13'
       search: 'n'
-      sort_by: id
+      sort_by: status
       sort_direction: desc
       per_page: 7
       limit: 16
@@ -774,7 +774,7 @@ endpoints:
         name: inspection_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-11-20T03:20:40'
+        example: '2026-11-20T06:03:11'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -950,7 +950,7 @@ endpoints:
       customer_id: 16
       appointment_id: 16
       employee_id: 16
-      inspection_date: '2026-11-20T03:20:40'
+      inspection_date: '2026-11-20T06:03:11'
       findings: 'Terreno nivelado parcialmente.'
       terrain_width: 39
       terrain_length: 84

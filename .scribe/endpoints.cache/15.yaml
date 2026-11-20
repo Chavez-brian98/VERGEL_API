@@ -197,7 +197,7 @@ endpoints:
         name: status_type
         description: ''
         required: false
-        example: declined
+        example: all
         type: string
         enumValues:
           - all
@@ -233,7 +233,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: total
+        example: quote_number
         type: string
         enumValues:
           - id
@@ -282,10 +282,10 @@ endpoints:
       search: b
       customer_id: 16
       client_id: 16
-      status_type: declined
+      status_type: all
       start_date: '2026-11-20'
       end_date: '2052-12-13'
-      sort_by: total
+      sort_by: quote_number
       sort_direction: desc
       per_page: 22
       limit: 7

@@ -70,7 +70,7 @@ endpoints:
         name: type
         description: ''
         required: false
-        example: loyalty
+        example: wallet
         type: string
         enumValues:
           - all
@@ -102,7 +102,7 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      type: loyalty
+      type: wallet
       page: 16
       limit: 22
     fileParameters: []

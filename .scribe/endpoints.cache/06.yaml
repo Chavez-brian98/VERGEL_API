@@ -254,6 +254,28 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        required: false
+        example: marquardt.noah@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'Must be at least 8 characters.'
+        required: false
+        example: '<m5L[)~'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     cleanBodyParameters:
       full_name: 'Carlos Mendoza'
       role_id: 1
@@ -265,6 +287,8 @@ endpoints:
       hire_date: '2024-03-01'
       phone: 7000-0000
       active: true
+      email: marquardt.noah@example.com
+      password: '<m5L[)~'
     fileParameters: []
     responses:
       -

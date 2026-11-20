@@ -41,6 +41,9 @@ tags:
     name: EcoPuntos
     description: "\nAPIs de consulta de canjes de recompensas de clientes."
   -
+    name: Finanzas
+    description: "\nConsultas de solo lectura sobre producción, cobros y compras. Acceso exclusivo para Admin / Administrador."
+  -
     name: 'Historial de Transacciones'
     description: "\nEndpoints para consultar el registro histórico de trabajos de jardinería efectuados (pagados)\ny trabajos declinados o cancelados por los clientes, excluyendo trabajos en curso."
   -
@@ -52,6 +55,9 @@ tags:
   -
     name: Proveedores
     description: "\nAPIs para la gestión de proveedores, compras y suministros de El Vergel."
+  -
+    name: Reportes
+    description: "\nReportes de solo lectura sobre ventas, cobros, compras y suscripciones. Acceso exclusivo para Admin / Administrador."
   -
     name: Suscripciones
     description: "\nAPIs de consulta de las suscripciones de clientes."
@@ -1520,7 +1526,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: pending
+                  example: paid
                   enum:
                     - pending
                     - paid
@@ -1543,7 +1549,7 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-20T03:20:40'
+                  example: '2026-11-20T06:03:11'
                   nullable: true
                 hasta:
                   type: string
@@ -1553,7 +1559,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: status
                   enum:
                     - id
                     - quote_number
@@ -1564,7 +1570,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: desc
                   enum:
                     - asc
                     - desc
@@ -3588,6 +3594,15 @@ paths:
                   type: boolean
                   description: 'Estado del empleado.'
                   example: true
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: marquardt.noah@example.com
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: '<m5L[)~'
+                  nullable: true
               required:
                 - full_name
                 - role_id
@@ -5730,7 +5745,7 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: loyalty
+                  example: wallet
                   enum:
                     - all
                     - wallet
@@ -6941,7 +6956,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: pending
+                  example: completed
                   enum:
                     - pending
                     - confirmed
@@ -6972,7 +6987,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: appointment_time
+                  example: appointment_date
                   enum:
                     - id
                     - appointment_date
@@ -8180,6 +8195,1060 @@ paths:
         required: true
         schema:
           type: integer
+  /api/v1/finance/movements:
+    get:
+      summary: 'Listar todos los movimientos de compra, venta y gasto.'
+      operationId: listarTodosLosMovimientosDeCompraVentaYGasto
+      description: 'Reutiliza el libro general de movimientos con el permiso exclusivo de Finanzas.'
+      parameters:
+        -
+          in: query
+          name: movement_type
+          description: 'Tipo de movimiento (all, sale, purchase, expense).'
+          example: purchase
+          required: false
+          schema:
+            type: string
+            description: 'Tipo de movimiento (all, sale, purchase, expense).'
+            example: purchase
+        -
+          in: query
+          name: type
+          description: 'Alias de movement_type.'
+          example: venta
+          required: false
+          schema:
+            type: string
+            description: 'Alias de movement_type.'
+            example: venta
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: search
+          description: 'Buscar por cliente, proveedor, documento o NIT.'
+          example: Vivero
+          required: false
+          schema:
+            type: string
+            description: 'Buscar por cliente, proveedor, documento o NIT.'
+            example: Vivero
+        -
+          in: query
+          name: status
+          description: 'Estado (all, completed, cancelled).'
+          example: completed
+          required: false
+          schema:
+            type: string
+            description: 'Estado (all, completed, cancelled).'
+            example: completed
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      type: sale
+                      typeLabel: Venta
+                      documentNumber: COT-2026-0001
+                      entity:
+                        name: 'Juan Pérez'
+                        role: customer
+                      date: '2026-11-05'
+                      amounts:
+                        total: 108.0
+                  summary:
+                    totalSales: 108.0
+                    totalPurchases: 50.0
+                    utility: 58.0
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        type: sale
+                        typeLabel: Venta
+                        documentNumber: COT-2026-0001
+                        entity:
+                          name: 'Juan Pérez'
+                          role: customer
+                        date: '2026-11-05'
+                        amounts:
+                          total: 108
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        type:
+                          type: string
+                          example: sale
+                        typeLabel:
+                          type: string
+                          example: Venta
+                        documentNumber:
+                          type: string
+                          example: COT-2026-0001
+                        entity:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: 'Juan Pérez'
+                            role:
+                              type: string
+                              example: customer
+                        date:
+                          type: string
+                          example: '2026-11-05'
+                        amounts:
+                          type: object
+                          properties:
+                            total:
+                              type: number
+                              example: 108.0
+                  summary:
+                    type: object
+                    properties:
+                      totalSales:
+                        type: number
+                        example: 108.0
+                      totalPurchases:
+                        type: number
+                        example: 50.0
+                      utility:
+                        type: number
+                        example: 58.0
+      tags:
+        - Finanzas
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movement_type:
+                  type: string
+                  description: ''
+                  example: purchase
+                  enum:
+                    - all
+                    - sale
+                    - purchase
+                    - expense
+                    - ticket
+                  nullable: true
+                type:
+                  type: string
+                  description: ''
+                  example: all
+                  enum:
+                    - all
+                    - sale
+                    - purchase
+                    - expense
+                    - ticket
+                  nullable: true
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>start_date</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                search:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: 'n'
+                  nullable: true
+                entity_name:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: g
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: cancelled
+                  enum:
+                    - all
+                    - completed
+                    - cancelled
+                  nullable: true
+                sort_by:
+                  type: string
+                  description: ''
+                  example: movement_date
+                  enum:
+                    - id
+                    - movement_date
+                    - total
+                    - amount
+                    - created_at
+                    - document_number
+                  nullable: true
+                sort_direction:
+                  type: string
+                  description: ''
+                  example: asc
+                  enum:
+                    - asc
+                    - desc
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 16
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 17
+                  nullable: true
+  /api/v1/finance/summary:
+    get:
+      summary: 'Consultar indicadores financieros.'
+      operationId: consultarIndicadoresFinancieros
+      description: 'Calcula producción total, cobrado, pendiente, abonos parciales y rentabilidad para el rango indicado.'
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    totalProduction: 12500.5
+                    totalCollected: 9800.0
+                    totalPending: 2700.5
+                    totalPurchases: 4200.0
+                    partialPaymentsCount: 12
+                    profitability: 8300.5
+                    profitabilityMarginPercentage: 66.4
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalProduction:
+                        type: number
+                        example: 12500.5
+                      totalCollected:
+                        type: number
+                        example: 9800.0
+                      totalPending:
+                        type: number
+                        example: 2700.5
+                      totalPurchases:
+                        type: number
+                        example: 4200.0
+                      partialPaymentsCount:
+                        type: integer
+                        example: 12
+                      profitability:
+                        type: number
+                        example: 8300.5
+                      profitabilityMarginPercentage:
+                        type: number
+                        example: 66.4
+      tags:
+        - Finanzas
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+  /api/v1/finance/quotes:
+    get:
+      summary: 'Listar cotizaciones con su estado de pago.'
+      operationId: listarCotizacionesConSuEstadoDePago
+      description: 'El estado se calcula comparando la suma de abonos contra el total de la cotización.'
+      parameters:
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por cliente.'
+            example: 1
+        -
+          in: query
+          name: quote_number
+          description: 'Filtrar por número de cotización.'
+          example: COT-2026
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por número de cotización.'
+            example: COT-2026
+        -
+          in: query
+          name: payment_status
+          description: 'Estado de pago (all, paid, partial, pending).'
+          example: partial
+          required: false
+          schema:
+            type: string
+            description: 'Estado de pago (all, paid, partial, pending).'
+            example: partial
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      quoteNumber: COT-2026-0001
+                      customerName: 'Juan Pérez'
+                      total: 180.0
+                      paidAmount: 80.0
+                      pendingAmount: 100.0
+                      paymentStatus:
+                        key: partial
+                        label: Parcial
+                        badge: warning
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        quoteNumber: COT-2026-0001
+                        customerName: 'Juan Pérez'
+                        total: 180
+                        paidAmount: 80
+                        pendingAmount: 100
+                        paymentStatus:
+                          key: partial
+                          label: Parcial
+                          badge: warning
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        quoteNumber:
+                          type: string
+                          example: COT-2026-0001
+                        customerName:
+                          type: string
+                          example: 'Juan Pérez'
+                        total:
+                          type: number
+                          example: 180.0
+                        paidAmount:
+                          type: number
+                          example: 80.0
+                        pendingAmount:
+                          type: number
+                          example: 100.0
+                        paymentStatus:
+                          type: object
+                          properties:
+                            key:
+                              type: string
+                              example: partial
+                            label:
+                              type: string
+                              example: Parcial
+                            badge:
+                              type: string
+                              example: warning
+      tags:
+        - Finanzas
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+                quote_number:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: ngzmiyvdljnikhwa
+                  nullable: true
+                payment_status:
+                  type: string
+                  description: ''
+                  example: pending
+                  enum:
+                    - all
+                    - paid
+                    - partial
+                    - pending
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 24
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 18
+                  nullable: true
+  '/api/v1/finance/quotes/{quote}/payments':
+    get:
+      summary: 'Ver el historial de abonos de una cotización.'
+      operationId: verElHistorialDeAbonosDeUnaCotizacin
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      quoteId: 1
+                      amount: 80.0
+                      paymentMethod: transfer
+                      paymentDate: '2026-11-10T14:30:00.000000Z'
+                      employee:
+                        id: 2
+                        fullName: 'Carlos Mendoza'
+                  meta:
+                    quote:
+                      id: 1
+                      quoteNumber: COT-2026-0001
+                      customerName: 'Juan Pérez'
+                      total: 180.0
+                      paidAmount: 80.0
+                      pendingAmount: 100.0
+                      paymentStatus:
+                        key: partial
+                        label: Parcial
+                        badge: warning
+                  message: 'Abonos de la cotización obtenidos exitosamente.'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        quoteId: 1
+                        amount: 80
+                        paymentMethod: transfer
+                        paymentDate: '2026-11-10T14:30:00.000000Z'
+                        employee:
+                          id: 2
+                          fullName: 'Carlos Mendoza'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        quoteId:
+                          type: integer
+                          example: 1
+                        amount:
+                          type: number
+                          example: 80.0
+                        paymentMethod:
+                          type: string
+                          example: transfer
+                        paymentDate:
+                          type: string
+                          example: '2026-11-10T14:30:00.000000Z'
+                        employee:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            fullName:
+                              type: string
+                              example: 'Carlos Mendoza'
+                  meta:
+                    type: object
+                    properties:
+                      quote:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          quoteNumber:
+                            type: string
+                            example: COT-2026-0001
+                          customerName:
+                            type: string
+                            example: 'Juan Pérez'
+                          total:
+                            type: number
+                            example: 180.0
+                          paidAmount:
+                            type: number
+                            example: 80.0
+                          pendingAmount:
+                            type: number
+                            example: 100.0
+                          paymentStatus:
+                            type: object
+                            properties:
+                              key:
+                                type: string
+                                example: partial
+                              label:
+                                type: string
+                                example: Parcial
+                              badge:
+                                type: string
+                                example: warning
+                  message:
+                    type: string
+                    example: 'Abonos de la cotización obtenidos exitosamente.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Quote] 99'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Quote] 99'
+      tags:
+        - Finanzas
+    parameters:
+      -
+        in: path
+        name: quote
+        description: 'ID de la cotización.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/finance/plants/{plant}/sales':
+    get:
+      summary: 'Ver el historial de ventas de una planta.'
+      operationId: verElHistorialDeVentasDeUnaPlanta
+      description: 'Devuelve los datos de la planta, las cotizaciones donde aparece y totales de unidades y monto vendido.'
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      quoteId: 3
+                      quoteNumber: COT-2026-0003
+                      customerName: 'Juan Pérez'
+                      saleDate: '2026-11-02T10:00:00.000000Z'
+                      quantity: 2
+                      unitPrice: 25.0
+                      total: 50.0
+                      paymentStatus:
+                        key: partial
+                        label: Parcial
+                        badge: warning
+                  meta:
+                    plant:
+                      id: 1
+                      name: Palma
+                      price: 25.0
+                      categoryType: ornamental
+                      active: true
+                    totals:
+                      unitsSold: 2
+                      salesTotal: 50.0
+                      quotesCount: 1
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        quoteId: 3
+                        quoteNumber: COT-2026-0003
+                        customerName: 'Juan Pérez'
+                        saleDate: '2026-11-02T10:00:00.000000Z'
+                        quantity: 2
+                        unitPrice: 25
+                        total: 50
+                        paymentStatus:
+                          key: partial
+                          label: Parcial
+                          badge: warning
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        quoteId:
+                          type: integer
+                          example: 3
+                        quoteNumber:
+                          type: string
+                          example: COT-2026-0003
+                        customerName:
+                          type: string
+                          example: 'Juan Pérez'
+                        saleDate:
+                          type: string
+                          example: '2026-11-02T10:00:00.000000Z'
+                        quantity:
+                          type: integer
+                          example: 2
+                        unitPrice:
+                          type: number
+                          example: 25.0
+                        total:
+                          type: number
+                          example: 50.0
+                        paymentStatus:
+                          type: object
+                          properties:
+                            key:
+                              type: string
+                              example: partial
+                            label:
+                              type: string
+                              example: Parcial
+                            badge:
+                              type: string
+                              example: warning
+                  meta:
+                    type: object
+                    properties:
+                      plant:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: Palma
+                          price:
+                            type: number
+                            example: 25.0
+                          categoryType:
+                            type: string
+                            example: ornamental
+                          active:
+                            type: boolean
+                            example: true
+                      totals:
+                        type: object
+                        properties:
+                          unitsSold:
+                            type: integer
+                            example: 2
+                          salesTotal:
+                            type: number
+                            example: 50.0
+                          quotesCount:
+                            type: integer
+                            example: 1
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Plant] 99'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Plant] 99'
+      tags:
+        - Finanzas
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+    parameters:
+      -
+        in: path
+        name: plant
+        description: 'ID de la planta.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/finance/purchases:
+    get:
+      summary: 'Listar compras registradas.'
+      operationId: listarComprasRegistradas
+      description: ''
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: supplier
+          description: 'Filtrar por nombre del proveedor.'
+          example: Vivero
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por nombre del proveedor.'
+            example: Vivero
+        -
+          in: query
+          name: supplier_tax_id
+          description: 'Filtrar por NIT del proveedor.'
+          example: 0614-150885-102-3
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por NIT del proveedor.'
+            example: 0614-150885-102-3
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      purchaseDate: '2026-11-12T09:00:00.000000Z'
+                      supplier:
+                        id: 1
+                        name: 'Vivero El Edén S.A. de C.V.'
+                        taxId: 0614-150885-102-3
+                      amount: 250.0
+                      vatAmount: 32.5
+                      total: 282.5
+                      invoiceNumber: CCF-00124
+                      paymentMethod: transfer
+                      employee:
+                        id: 2
+                        fullName: 'Carlos Mendoza'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        purchaseDate: '2026-11-12T09:00:00.000000Z'
+                        supplier:
+                          id: 1
+                          name: 'Vivero El Edén S.A. de C.V.'
+                          taxId: 0614-150885-102-3
+                        amount: 250
+                        vatAmount: 32.5
+                        total: 282.5
+                        invoiceNumber: CCF-00124
+                        paymentMethod: transfer
+                        employee:
+                          id: 2
+                          fullName: 'Carlos Mendoza'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        purchaseDate:
+                          type: string
+                          example: '2026-11-12T09:00:00.000000Z'
+                        supplier:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Vivero El Edén S.A. de C.V.'
+                            taxId:
+                              type: string
+                              example: 0614-150885-102-3
+                        amount:
+                          type: number
+                          example: 250.0
+                        vatAmount:
+                          type: number
+                          example: 32.5
+                        total:
+                          type: number
+                          example: 282.5
+                        invoiceNumber:
+                          type: string
+                          example: CCF-00124
+                        paymentMethod:
+                          type: string
+                          example: transfer
+                        employee:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            fullName:
+                              type: string
+                              example: 'Carlos Mendoza'
+      tags:
+        - Finanzas
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                supplier:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: 'n'
+                  nullable: true
+                supplier_tax_id:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: gzmiyvdljnikhway
+                  nullable: true
+                document_number:
+                  type: string
+                  description: 'Must not be greater than 40 characters.'
+                  example: k
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 8
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 24
+                  nullable: true
   /api/v1/transactions:
     get:
       summary: 'Listar y filtrar historial de transacciones.'
@@ -8689,7 +9758,7 @@ paths:
                 status_type:
                   type: string
                   description: ''
-                  example: declined
+                  example: all
                   enum:
                     - all
                     - performed
@@ -8708,7 +9777,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: total
+                  example: quote_number
                   enum:
                     - id
                     - quote_number
@@ -9382,7 +10451,7 @@ paths:
                 movement_type:
                   type: string
                   description: ''
-                  example: sale
+                  example: all
                   enum:
                     - all
                     - sale
@@ -9393,7 +10462,7 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: sale
+                  example: all
                   enum:
                     - all
                     - sale
@@ -9424,7 +10493,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: all
+                  example: completed
                   enum:
                     - all
                     - completed
@@ -9433,7 +10502,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: document_number
+                  example: id
                   enum:
                     - id
                     - movement_date
@@ -9695,7 +10764,7 @@ paths:
                 active:
                   type: boolean
                   description: ''
-                  example: true
+                  example: false
                   nullable: true
                 min_price:
                   type: number
@@ -9720,7 +10789,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: created_at
+                  example: price
                   enum:
                     - id
                     - name
@@ -9731,7 +10800,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: desc
+                  example: asc
                   enum:
                     - asc
                     - desc
@@ -10468,7 +11537,7 @@ paths:
                 desde:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-20T03:20:40'
+                  example: '2026-11-20T06:03:11'
                   nullable: true
                 hasta:
                   type: string
@@ -10478,7 +11547,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: status
+                  example: trade_name
                   enum:
                     - id
                     - name
@@ -10489,7 +11558,7 @@ paths:
                 sort_direction:
                   type: string
                   description: ''
-                  example: asc
+                  example: DESC
                   enum:
                     - asc
                     - desc
@@ -11043,6 +12112,811 @@ paths:
         required: true
         schema:
           type: integer
+  /api/v1/reports/sales:
+    get:
+      summary: 'Reporte de ventas mensuales.'
+      operationId: reporteDeVentasMensuales
+      description: 'Agrupa las cotizaciones por mes con facturación, cobrado, pendiente y ticket promedio.'
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por cliente.'
+            example: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      period: 2026-11
+                      quotesCount: 2
+                      totalSales: 300
+                      totalPaid: 200
+                      totalPending: 100
+                      averageTicket: 150
+                  meta:
+                    summary:
+                      totalQuotes: 2
+                      totalSales: 300
+                      totalPaid: 200
+                      totalPending: 100
+                      averageTicket: 150
+                  message: 'Reporte de ventas generado exitosamente.'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        period: 2026-11
+                        quotesCount: 2
+                        totalSales: 300
+                        totalPaid: 200
+                        totalPending: 100
+                        averageTicket: 150
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: string
+                          example: 2026-11
+                        quotesCount:
+                          type: integer
+                          example: 2
+                        totalSales:
+                          type: integer
+                          example: 300
+                        totalPaid:
+                          type: integer
+                          example: 200
+                        totalPending:
+                          type: integer
+                          example: 100
+                        averageTicket:
+                          type: integer
+                          example: 150
+                  meta:
+                    type: object
+                    properties:
+                      summary:
+                        type: object
+                        properties:
+                          totalQuotes:
+                            type: integer
+                            example: 2
+                          totalSales:
+                            type: integer
+                            example: 300
+                          totalPaid:
+                            type: integer
+                            example: 200
+                          totalPending:
+                            type: integer
+                            example: 100
+                          averageTicket:
+                            type: integer
+                            example: 150
+                  message:
+                    type: string
+                    example: 'Reporte de ventas generado exitosamente.'
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+  /api/v1/reports/customers:
+    get:
+      summary: 'Ranking de clientes por facturación.'
+      operationId: rankingDeClientesPorFacturacin
+      description: ''
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por cliente.'
+            example: 1
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      customerId: 1
+                      legalName: 'Juan Pérez'
+                      quotesCount: 2
+                      totalBilled: 300
+                      totalPaid: 200
+                      totalPending: 100
+                  meta:
+                    summary:
+                      customersCount: 1
+                      totalBilled: 300
+                      totalPaid: 200
+                      totalPending: 100
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        customerId: 1
+                        legalName: 'Juan Pérez'
+                        quotesCount: 2
+                        totalBilled: 300
+                        totalPaid: 200
+                        totalPending: 100
+                    items:
+                      type: object
+                      properties:
+                        customerId:
+                          type: integer
+                          example: 1
+                        legalName:
+                          type: string
+                          example: 'Juan Pérez'
+                        quotesCount:
+                          type: integer
+                          example: 2
+                        totalBilled:
+                          type: integer
+                          example: 300
+                        totalPaid:
+                          type: integer
+                          example: 200
+                        totalPending:
+                          type: integer
+                          example: 100
+                  meta:
+                    type: object
+                    properties:
+                      summary:
+                        type: object
+                        properties:
+                          customersCount:
+                            type: integer
+                            example: 1
+                          totalBilled:
+                            type: integer
+                            example: 300
+                          totalPaid:
+                            type: integer
+                            example: 200
+                          totalPending:
+                            type: integer
+                            example: 100
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+  /api/v1/reports/plants:
+    get:
+      summary: 'Ranking de plantas vendidas.'
+      operationId: rankingDePlantasVendidas
+      description: ''
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: plant_id
+          description: 'Filtrar por planta.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por planta.'
+            example: 1
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+                plant_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+  /api/v1/reports/collections:
+    get:
+      summary: 'Cobros agrupados por empleado.'
+      operationId: cobrosAgrupadosPorEmpleado
+      description: 'Incluye el desglose de cada método de pago dentro de `methods`.'
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: employee_id
+          description: 'Filtrar por empleado.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por empleado.'
+            example: 1
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+                employee_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+  /api/v1/reports/quotes-status:
+    get:
+      summary: 'Estado de pago de las cotizaciones.'
+      operationId: estadoDePagoDeLasCotizaciones
+      description: 'Devuelve siempre las tres categorías: pagado, parcial y pendiente.'
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: customer_id
+          description: 'Filtrar por cliente.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por cliente.'
+            example: 1
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                customer_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
+  /api/v1/reports/purchases:
+    get:
+      summary: 'Compras agrupadas por proveedor.'
+      operationId: comprasAgrupadasPorProveedor
+      description: ''
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: supplier
+          description: 'Filtrar por nombre del proveedor.'
+          example: Vivero
+          required: false
+          schema:
+            type: string
+            description: 'Filtrar por nombre del proveedor.'
+            example: Vivero
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+                supplier:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: z
+                  nullable: true
+  /api/v1/reports/profitability:
+    get:
+      summary: 'Rentabilidad mensual por ventas, compras y gastos.'
+      operationId: rentabilidadMensualPorVentasComprasYGastos
+      description: 'Utiliza los movimientos contables con estado completado.'
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+  /api/v1/reports/subscriptions:
+    get:
+      summary: 'Suscripciones agrupadas por plan.'
+      operationId: suscripcionesAgrupadasPorPlan
+      description: ''
+      parameters:
+        -
+          in: query
+          name: from
+          description: 'Fecha inicial (AAAA-MM-DD).'
+          example: '2026-11-01'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha inicial (AAAA-MM-DD).'
+            example: '2026-11-01'
+        -
+          in: query
+          name: to
+          description: 'Fecha final (AAAA-MM-DD).'
+          example: '2026-11-30'
+          required: false
+          schema:
+            type: string
+            description: 'Fecha final (AAAA-MM-DD).'
+            example: '2026-11-30'
+        -
+          in: query
+          name: plan_id
+          description: 'Filtrar por plan.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filtrar por plan.'
+            example: 1
+        -
+          in: query
+          name: per_page
+          description: 'Registros por página (1-100).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'Registros por página (1-100).'
+            example: 15
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reportes
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-11-20'
+                  nullable: true
+                to:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>from</code>.'
+                  example: '2052-12-13'
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 7
+                  nullable: true
+                plan_id:
+                  type: integer
+                  description: 'Must match an existing stored value.'
+                  example: 16
+                  nullable: true
   '/api/v1/customers/{customer}/subscriptions/current':
     get:
       summary: 'Consultar la suscripción activa actual del cliente.'
@@ -11515,7 +13389,7 @@ paths:
                 start_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-20T03:20:40'
+                  example: '2026-11-20T06:03:11'
                 end_date:
                   type: string
                   description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
@@ -11527,7 +13401,7 @@ paths:
                 sort_by:
                   type: string
                   description: ''
-                  example: id
+                  example: status
                   enum:
                     - id
                     - inspection_date
@@ -11927,7 +13801,7 @@ paths:
                 inspection_date:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-11-20T03:20:40'
+                  example: '2026-11-20T06:03:11'
                 findings:
                   type: string
                   description: 'Observaciones actualizadas.'
