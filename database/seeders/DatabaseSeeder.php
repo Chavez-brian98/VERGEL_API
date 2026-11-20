@@ -19,6 +19,12 @@ class DatabaseSeeder extends Seeder
             AuthTestUserSeeder::class,
             RolesAndUsersSeeder::class,
             CountryConfigSeeder::class,
+            EmployeeAndUserSeeder::class,
+            ServiceCatalogSeeder::class,
+            PlantCatalogSeeder::class,
+            SubscriptionPlanCatalogSeeder::class,
+            SupplierCatalogSeeder::class,
+            CustomerOperationalSeeder::class,
         ]);
     }
 }
