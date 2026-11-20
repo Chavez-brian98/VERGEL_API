@@ -11,7 +11,7 @@ class SubscriptionPlanCatalogSeeder extends Seeder
     {
         $plans = [
             [
-                'plan_code' => 'BAS-MENS',
+                'plan_code' => 'BASICO-MENSUAL',
                 'plan_name' => 'Plan Verde Esencial (1 Visita/mes)',
                 'maintenance_type' => 'Poda básica de césped y deshierbe manual',
                 'frequency_value' => 30,
@@ -23,7 +23,7 @@ class SubscriptionPlanCatalogSeeder extends Seeder
                 'active' => true,
             ],
             [
-                'plan_code' => 'RES-QUINC',
+                'plan_code' => 'RESIDENCIAL-QUINCENAL',
                 'plan_name' => 'Plan Hogar Verde Quincenal (2 Visitas/mes)',
                 'maintenance_type' => 'Corte de césped, orillado, setos y fertilización',
                 'frequency_value' => 15,
@@ -35,7 +35,7 @@ class SubscriptionPlanCatalogSeeder extends Seeder
                 'active' => true,
             ],
             [
-                'plan_code' => 'PREM-SEM',
+                'plan_code' => 'PREMIUM-SEMANAL',
                 'plan_name' => 'Plan Jardín Impecable Semanal (4 Visitas/mes)',
                 'maintenance_type' => 'Mantenimiento integral, fitosanitario y nutrición foliar',
                 'frequency_value' => 7,
@@ -47,7 +47,7 @@ class SubscriptionPlanCatalogSeeder extends Seeder
                 'active' => true,
             ],
             [
-                'plan_code' => 'COM-EMP',
+                'plan_code' => 'COMERCIAL-EMPRESARIAL',
                 'plan_name' => 'Plan Corporativo & Centros Comerciales',
                 'maintenance_type' => 'Áreas verdes comerciales con tractor y motodesbrozadora',
                 'frequency_value' => 15,
@@ -59,7 +59,7 @@ class SubscriptionPlanCatalogSeeder extends Seeder
                 'active' => true,
             ],
             [
-                'plan_code' => 'XERO-SOST',
+                'plan_code' => 'XERO-SOSTENIBLE',
                 'plan_name' => 'Plan Jardín Seco & Suculentas',
                 'maintenance_type' => 'Xerojardinería, rocallas y sustratos especiales',
                 'frequency_value' => 30,
@@ -71,7 +71,7 @@ class SubscriptionPlanCatalogSeeder extends Seeder
                 'active' => true,
             ],
             [
-                'plan_code' => 'COND-VIP',
+                'plan_code' => 'CONDOMINIO-VIP',
                 'plan_name' => 'Plan Condominios y Residenciales Privadas',
                 'maintenance_type' => 'Zonas comunes, redondeles y parques internos comunitarios',
                 'frequency_value' => 7,
