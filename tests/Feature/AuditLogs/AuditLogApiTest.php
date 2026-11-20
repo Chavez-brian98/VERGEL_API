@@ -17,6 +17,8 @@ class AuditLogApiTest extends TestCase
 
     private User $auditorUser;
 
+    private User $colaboradorUser;
+
     private Employee $adminEmployee;
 
     protected function setUp(): void
@@ -25,6 +27,7 @@ class AuditLogApiTest extends TestCase
 
         $adminRole = Role::create(['role_name' => 'Administrador']);
         $auditorRole = Role::create(['role_name' => 'Auditor']);
+        $colaboradorRole = Role::create(['role_name' => 'Colaborador']);
 
         $this->adminEmployee = Employee::create([
             'full_name' => 'Admin Test',
@@ -47,6 +50,17 @@ class AuditLogApiTest extends TestCase
             'employee_id' => $auditorEmployee->id,
             'email' => 'auditor@test.com',
         ]);
+
+        $colaboradorEmployee = Employee::create([
+            'full_name' => 'Colaborador Test',
+            'role_id' => $colaboradorRole->id,
+            'active' => true,
+        ]);
+
+        $this->colaboradorUser = User::factory()->create([
+            'employee_id' => $colaboradorEmployee->id,
+            'email' => 'colaborador@test.com',
+        ]);
     }
 
     public function test_unauthenticated_user_cannot_access_audit_logs(): void
@@ -56,13 +70,22 @@ class AuditLogApiTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function test_non_admin_user_is_forbidden_from_viewing_audit_logs(): void
+    public function test_non_admin_non_auditor_user_is_forbidden_from_viewing_audit_logs(): void
+    {
+        $this->actingAs($this->colaboradorUser, 'sanctum');
+
+        $response = $this->getJson('/api/v1/audit-logs');
+
+        $response->assertForbidden();
+    }
+
+    public function test_auditor_user_can_list_audit_logs(): void
     {
         $this->actingAs($this->auditorUser, 'sanctum');
 
         $response = $this->getJson('/api/v1/audit-logs');
 
-        $response->assertForbidden();
+        $response->assertOk();
     }
 
     public function test_admin_can_list_audit_logs_with_pagination(): void
@@ -155,7 +178,25 @@ class AuditLogApiTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function test_non_admin_cannot_view_single_audit_log_detail(): void
+    public function test_non_admin_non_auditor_cannot_view_single_audit_log_detail(): void
+    {
+        $this->actingAs($this->colaboradorUser, 'sanctum');
+
+        $log = AuditLog::create([
+            'employee_id' => $this->adminEmployee->id,
+            'affected_table' => 'plants',
+            'affected_record_id' => 10,
+            'action' => 'insert',
+            'old_data' => null,
+            'new_data' => ['name' => 'Ficus'],
+        ]);
+
+        $response = $this->getJson('/api/v1/audit-logs/'.$log->id);
+
+        $response->assertForbidden();
+    }
+
+    public function test_auditor_can_view_single_audit_log_detail(): void
     {
         $this->actingAs($this->auditorUser, 'sanctum');
 
@@ -170,7 +211,7 @@ class AuditLogApiTest extends TestCase
 
         $response = $this->getJson('/api/v1/audit-logs/'.$log->id);
 
-        $response->assertForbidden();
+        $response->assertOk();
     }
 
     public function test_admin_can_view_single_audit_log_detail(): void
