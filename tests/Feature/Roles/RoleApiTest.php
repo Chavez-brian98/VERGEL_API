@@ -141,7 +141,7 @@ class RoleApiTest extends TestCase
 
     public function test_it_blocks_deleting_a_role_with_employees(): void
     {
-        $role = Role::create(['role_name' => 'ConEmpleados' . uniqid()]);
+        $role = Role::create(['role_name' => 'ConEmpleados'.uniqid()]);
         Employee::create(['full_name' => 'Empleado Uno', 'role_id' => $role->id, 'active' => true]);
 
         $response = $this->deleteJson("/api/v1/roles/{$role->id}");

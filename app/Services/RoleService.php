@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Models\AuditLog;
-use App\Models\Employee;
 use App\Models\Role;
+use App\Services\Concerns\LogsAudit;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class RoleService
 {
+    use LogsAudit;
+
     /**
      * List roles with filters (search).
      */
@@ -88,26 +89,5 @@ class RoleService
             $role->delete();
             $this->logAudit('delete', 'roles', $role->id, $oldData, null);
         });
-    }
-
-    /**
-     * Audit log helper.
-     */
-    private function logAudit(string $action, string $table, int $recordId, ?array $oldData, ?array $newData): void
-    {
-        $employeeId = auth()->user()?->employee_id ?? request()->user()?->employee_id ?? Employee::first()?->id;
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $table,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => $oldData,
-            'new_data' => $newData,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

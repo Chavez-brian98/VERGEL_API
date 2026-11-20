@@ -4,9 +4,12 @@ namespace App\Policies;
 
 use App\Models\Customer;
 use App\Models\User;
+use App\Policies\Concerns\AuthorizesEmployeeRoles;
 
 class CustomerPolicy
 {
+    use AuthorizesEmployeeRoles;
+
     /**
      * Determina si el usuario puede listar clientes.
      */
@@ -77,28 +80,5 @@ class CustomerPolicy
     public function forceDelete(User $user, ?Customer $customer = null): bool
     {
         return $this->isAdmin($user);
-    }
-
-    /**
-     * Verifica si el usuario es un empleado activo con un rol asignado en el sistema.
-     * Al ser dinámico, cualquier rol existente en la base de datos permite la consulta de clientes.
-     */
-    private function canView(User $user): bool
-    {
-        return (bool) ($user->employee?->active && $user->employee?->role_id);
-    }
-
-    /**
-     * Verifica si el usuario tiene el rol de Administrador.
-     */
-    private function isAdmin(User $user): bool
-    {
-        if (! $user->employee?->active) {
-            return false;
-        }
-
-        $roleName = $user->employee?->role?->role_name;
-
-        return in_array($roleName, ['Admin', 'Administrador'], true);
     }
 }

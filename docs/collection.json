@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VERGEL API Documentation",
-        "_postman_id": "2ef76711-b9eb-485f-962b-43d10f366241",
+        "_postman_id": "a2b19e69-61e4-4e59-9ced-58602e1b7a4e",
         "description": "API REST de VERGEL para la gesti\u00f3n de clientes, suscripciones, servicios, cotizaciones, billeteras y puntos de lealtad. Operaciones orientadas a El Salvador (DTE, DUI, NRC, IVA).",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -82,7 +82,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-14\",\"hasta\":\"2052-12-07\",\"limit\":22}"
+                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"phone\":\"ngzmiyvdljnikhwa\",\"desde\":\"2026-11-20\",\"hasta\":\"2052-12-13\",\"limit\":22}"
                                 },
                                 "description": "Obtiene una lista paginada de clientes con opciones de b\u00fasqueda y filtros."
                             },
@@ -538,6 +538,172 @@
             "description": "\nAPIs para la gesti\u00f3n de cotizaciones, \u00edtems de servicio\/planta y c\u00e1lculo autom\u00e1tico de montos.",
             "item": [
                 {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar cotizaciones.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "COT-20261111",
+                                            "description": "B\u00fasqueda por n\u00famero de cotizaci\u00f3n o nombre del cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "pending",
+                                            "description": "Filtrar por estado (`pending` o `paid`).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "Filtrar por cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "1",
+                                            "description": "Filtrar por empleado que registr\u00f3 la cotizaci\u00f3n.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "applied_plan_id",
+                                            "value": "1",
+                                            "description": "Filtrar por plan de suscripci\u00f3n aplicado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "Filtrar cotizaciones creadas desde una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "Filtrar cotizaciones creadas hasta una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "created_at",
+                                            "description": "Campo de ordenamiento (`id`, `quote_number`, `status`, `total`, `created_at`). Default: `id`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "desc",
+                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes?search=COT-20261111&status=pending&customer_id=1&employee_id=1&applied_plan_id=1&desde=2026-01-01&hasta=2026-12-31&sort_by=created_at&sort_direction=desc&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"pending\",\"customer_id\":16,\"employee_id\":16,\"applied_plan_id\":16,\"desde\":\"2026-11-20T03:20:40\",\"hasta\":\"2052-12-13\",\"sort_by\":\"created_at\",\"sort_direction\":\"asc\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Devuelve las cotizaciones paginadas con filtros por texto, estado, cliente, empleado, plan y rango de fechas."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"quoteNumber\": \"COT-202611140001\",\n      \"customerName\": \"Cliente Ejemplo S.A. de C.V.\",\n      \"employeeName\": \"Carlos Mendoza\",\n      \"appliedPlanName\": \"Plan Residencial\",\n      \"basePrice\": 100.00,\n      \"total\": 101.70,\n      \"status\": \"pending\",\n      \"itemsCount\": 2,\n      \"createdAt\": \"2026-11-14T10:00:00.000000Z\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/quotes?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/quotes?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar el detalle de una cotizaci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/quotes\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/quotes\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "architecto",
+                                            "description": "The ID of the quote."
+                                        },
+                                        {
+                                            "id": "quote",
+                                            "key": "quote",
+                                            "value": 1,
+                                            "description": "ID de la cotizaci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Incluye cliente, empleado, plan aplicado e \u00edtems."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"quoteNumber\": \"COT-202611140001\",\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n      \"tradeName\": \"Cliente Ejemplo\"\n    },\n    \"employee\": {\n      \"id\": 1,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"appliedPlan\": {\n      \"id\": 1,\n      \"planCode\": \"RESIDENCIAL\",\n      \"planName\": \"Plan Residencial\"\n    },\n    \"basePrice\": 51.00,\n    \"discountedSubtotal\": 45.90,\n    \"includesVat\": false,\n    \"loyaltyPointsUsed\": 0,\n    \"loyaltyPointsEarned\": 45,\n    \"total\": 51.87,\n    \"status\": \"pending\",\n    \"items\": [\n      {\n        \"id\": 1,\n        \"itemType\": \"service\",\n        \"service\": {\n          \"id\": 1,\n          \"name\": \"Poda de \u00e1rbol\"\n        },\n        \"plant\": null,\n        \"quantity\": 2.0,\n        \"unitPrice\": 25.50,\n        \"total\": 51.00\n      }\n    ],\n    \"createdAt\": \"2026-11-14T10:00:00.000000Z\",\n    \"updatedAt\": \"2026-11-14T10:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "name": "Escritura",
                     "description": "",
                     "item": [
@@ -567,7 +733,26 @@
                                 },
                                 "description": "El backend calcula el total de cada \u00edtem (`quantity * unit_price`), el subtotal con descuento del plan,\nel IVA (13% de El Salvador cuando `includes_vat` es false) y los puntos de lealtad ganados.\nEl empleado se toma del usuario autenticado."
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"quoteNumber\": \"COT-202611140001\",\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n      \"tradeName\": \"Cliente Ejemplo\"\n    },\n    \"employee\": {\n      \"id\": 1,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"appliedPlan\": {\n      \"id\": 1,\n      \"planCode\": \"RESIDENCIAL\",\n      \"planName\": \"Plan Residencial\"\n    },\n    \"basePrice\": 51.00,\n    \"discountedSubtotal\": 45.90,\n    \"includesVat\": false,\n    \"loyaltyPointsUsed\": 0,\n    \"loyaltyPointsEarned\": 45,\n    \"total\": 51.87,\n    \"status\": \"pending\",\n    \"items\": [\n      {\n        \"id\": 1,\n        \"itemType\": \"service\",\n        \"service\": {\n          \"id\": 1,\n          \"name\": \"Poda de \u00e1rbol\"\n        },\n        \"plant\": null,\n        \"quantity\": 2.0,\n        \"unitPrice\": 25.50,\n        \"total\": 51.00\n      }\n    ],\n    \"createdAt\": \"2026-11-14T10:00:00.000000Z\",\n    \"updatedAt\": \"2026-11-14T10:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Los datos proporcionados no son v\u00e1lidos.\",\n  \"errors\": {\n    \"items\": [\"El campo items es obligatorio.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Actualizar una cotizaci\u00f3n.",
@@ -609,7 +794,20 @@
                                 },
                                 "description": "Actualiza datos generales y, si se env\u00eda `items`, reemplaza el detalle completo y recalcula los montos."
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"quoteNumber\": \"COT-202611140001\",\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Cliente Ejemplo S.A. de C.V.\",\n      \"tradeName\": \"Cliente Ejemplo\"\n    },\n    \"employee\": {\n      \"id\": 1,\n      \"fullName\": \"Carlos Mendoza\"\n    },\n    \"appliedPlan\": {\n      \"id\": 1,\n      \"planCode\": \"RESIDENCIAL\",\n      \"planName\": \"Plan Residencial\"\n    },\n    \"basePrice\": 60.00,\n    \"discountedSubtotal\": 54.00,\n    \"includesVat\": true,\n    \"loyaltyPointsUsed\": 0,\n    \"loyaltyPointsEarned\": 54,\n    \"total\": 54.00,\n    \"status\": \"pending\",\n    \"items\": [],\n    \"createdAt\": \"2026-11-14T10:00:00.000000Z\",\n    \"updatedAt\": \"2026-11-14T11:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Eliminar una cotizaci\u00f3n (Borrado l\u00f3gico).",
@@ -648,7 +846,26 @@
                                 "body": null,
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n eliminada correctamente.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Cambiar el estado de una cotizaci\u00f3n.",
@@ -684,7 +901,20 @@
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"quoteNumber\": \"COT-202611140001\",\n    \"status\": \"paid\",\n    \"total\": 54.00,\n    \"updatedAt\": \"2026-11-14T12:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cotizaci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         }
                     ]
                 }
@@ -2055,7 +2285,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"user_id\":16,\"employee_id\":16,\"action\":\"restore\",\"affected_table\":\"n\",\"table_name\":\"g\",\"affected_record_id\":66,\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"desde\":\"2026-11-14\",\"hasta\":\"2052-12-07\",\"limit\":22,\"per_page\":7}"
+                                    "raw": "{\"user_id\":16,\"employee_id\":16,\"action\":\"insert\",\"affected_table\":\"n\",\"table_name\":\"g\",\"affected_record_id\":66,\"start_date\":\"2026-11-20\",\"end_date\":\"2052-12-13\",\"desde\":\"2026-11-20\",\"hasta\":\"2052-12-13\",\"limit\":22,\"per_page\":7}"
                                 },
                                 "description": "Obtiene una lista paginada de los registros y movimientos de auditor\u00eda del sistema (creaci\u00f3n, edici\u00f3n, eliminaci\u00f3n y accesos denegados). Requiere autenticaci\u00f3n con Sanctum y est\u00e1 restringido exclusivamente a colaboradores activos con rol de Administrador."
                             },
@@ -2261,6 +2491,308 @@
             ]
         },
         {
+            "name": "Cartera",
+            "description": "\nAPIs para consultar y gestionar la billetera, EcoPuntos y movimientos del cliente.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Consultar movimientos de cartera de todos los clientes.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/portfolio\/movements",
+                                    "query": [
+                                        {
+                                            "key": "type",
+                                            "value": "architecto",
+                                            "description": "Filtrar por origen: all, wallet o loyalty. Default: all.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "page",
+                                            "value": "16",
+                                            "description": "P\u00e1gina solicitada. Default: 1.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "16",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/portfolio\/movements?type=architecto&page=16&limit=16"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"loyalty\",\"page\":16,\"limit\":22}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"customerId\": 1,\n      \"type\": \"wallet\",\n      \"concept\": \"Recarga de saldo\",\n      \"amount\": 100.00,\n      \"createdAt\": \"2026-11-01T10:00:00.000000Z\"\n    }\n  ],\n  \"meta\": {\n    \"currentPage\": 1,\n    \"totalPages\": 1,\n    \"totalItems\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Listar los res\u00famenes b\u00e1sicos de cartera de todos los clientes.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/portfolio",
+                                    "query": [
+                                        {
+                                            "key": "limit",
+                                            "value": "16",
+                                            "description": "Cantidad de resultados por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/portfolio?limit=16"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"limit\":1}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"customerId\": 1,\n      \"customerName\": \"Cliente Ejemplo S.A. de C.V.\",\n      \"wallet\": {\n        \"cashBalance\": 150.00,\n        \"reservedSubscriptionBalance\": 50.00,\n        \"totalAvailable\": 200.00\n      },\n      \"loyaltyPoints\": {\n        \"pointsBalance\": 350\n      }\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Obtener el resumen consolidado de cartera del cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/portfolio",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/portfolio",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Devuelve los datos generales del cliente, plan actual e historial, saldos\nde billetera, EcoPuntos, deuda, suscripciones, citas y actividad reciente."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"customerId\": 15,\n  \"legalName\": \"Comercializadora San Jos\u01f8 S.A. de C.V.\",\n  \"tradeName\": \"San Jos\u01f8\",\n  \"taxId\": \"0614-260290-101-1\",\n  \"nrc\": \"123456-7\",\n  \"economicActivity\": \"Venta de servicios\",\n  \"address\": \"Colonia Centro, San Salvador\",\n  \"department\": \"San Salvador\",\n  \"municipality\": \"San Salvador\",\n  \"phone\": \"+50378901234\",\n  \"email\": \"cliente@example.com\",\n  \"status\": \"active\",\n  \"visitFrequency\": { \"value\": 30, \"unit\": \"days\" },\n  \"memberSince\": \"2026-01-15T10:00:00+00:00\",\n  \"hasPlan\": true,\n  \"currentPlan\": {\n    \"id\": 2,\n    \"planCode\": \"PREMIUM\",\n    \"planName\": \"Plan Premium\",\n    \"frequencyValue\": 30,\n    \"frequencyUnit\": \"days\",\n    \"visitCount\": 2,\n    \"maintenanceType\": \"Mensual\",\n    \"discountPercentage\": 10.00,\n    \"loyaltyPointsMultiplier\": 1.50,\n    \"active\": true,\n    \"startDate\": \"2026-10-01\",\n    \"endDate\": null\n  },\n  \"planHistory\": [\n    {\n      \"id\": 5,\n      \"planId\": 2,\n      \"planCode\": \"PREMIUM\",\n      \"planName\": \"Plan Premium\",\n      \"startDate\": \"2026-10-01\",\n      \"endDate\": null\n    }\n  ],\n  \"wallet\": {\n    \"cashBalance\": 150.00,\n    \"reservedSubscriptionBalance\": 50.00,\n    \"totalAvailable\": 200.00\n  },\n  \"loyalty\": { \"pointsBalance\": 320 },\n  \"totalBalance\": 200.00,\n  \"totalPoints\": 320,\n  \"debt\": {\n    \"pendingQuotesCount\": 1,\n    \"totalPendingAmount\": 85.50,\n    \"quotes\": [\n      {\n        \"id\": 1,\n        \"quoteNumber\": \"COT-2026-0001\",\n        \"total\": 100.00,\n        \"amountPaid\": 14.50,\n        \"pendingAmount\": 85.50,\n        \"createdAt\": \"2026-10-20T09:00:00+00:00\"\n      }\n    ]\n  },\n  \"subscriptions\": {\n    \"activeCount\": 1,\n    \"current\": {\n      \"id\": 1,\n      \"planId\": 2,\n      \"planCode\": \"PREMIUM\",\n      \"planName\": \"Plan Premium\",\n      \"paymentDate\": \"2026-10-01\",\n      \"amountPaid\": 100.00,\n      \"reservedBalance\": 50.00,\n      \"status\": \"active\"\n    }\n  },\n  \"appointments\": {\n    \"upcomingCount\": 1,\n    \"next\": {\n      \"id\": 10,\n      \"appointmentDate\": \"2026-11-10\",\n      \"appointmentTime\": \"09:00\",\n      \"status\": \"confirmed\",\n      \"origin\": \"automatic\",\n      \"serviceId\": 3,\n      \"service\": { \"id\": 3, \"name\": \"Mantenimiento\", \"price\": 25.00 },\n      \"employeeId\": 4,\n      \"employee\": { \"id\": 4, \"fullName\": \"T\u01f8cnico Campo\" }\n    },\n    \"lastCompletedDate\": \"2026-10-10\"\n  },\n  \"recentQuotes\": [\n    {\n      \"id\": 1,\n      \"quoteNumber\": \"COT-2026-0001\",\n      \"total\": 100.00,\n      \"status\": \"pending\",\n      \"loyaltyPointsUsed\": 0,\n      \"loyaltyPointsEarned\": 10,\n      \"createdAt\": \"2026-10-20T09:00:00+00:00\"\n    }\n  ],\n  \"recentPayments\": [\n    {\n      \"id\": 1,\n      \"quoteId\": 1,\n      \"quoteNumber\": \"COT-2026-0001\",\n      \"amountPaid\": 14.50,\n      \"paymentMethod\": \"cash\",\n      \"paymentDate\": \"2026-10-21T11:00:00+00:00\"\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar el historial unificado de movimientos del cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/portfolio\/movements",
+                                    "query": [
+                                        {
+                                            "key": "type",
+                                            "value": "all",
+                                            "description": "Filtro por origen del movimiento: all, wallet o loyalty. Default: all.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "page",
+                                            "value": "1",
+                                            "description": "P\u00e1gina solicitada. Default: 1.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/portfolio\/movements?type=all&page=1&limit=15",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"loyalty\",\"page\":16,\"limit\":22}"
+                                },
+                                "description": "Combina transacciones de dinero y EcoPuntos, ordenadas por fecha descendente."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 102,\n      \"source\": \"loyalty\",\n      \"transactionType\": \"earned_purchase\",\n      \"amount\": null,\n      \"points\": 50,\n      \"description\": \"Puntos ganados por Cotizaci\u00f3n #COT-2026-004\",\n      \"paymentMethod\": null,\n      \"createdAt\": \"2026-03-01T10:15:00+00:00\"\n    }\n  ],\n  \"meta\": {\n    \"currentPage\": 1,\n    \"totalPages\": 1,\n    \"totalItems\": 1\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Escritura",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Registrar una transacci\u00f3n de billetera.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/wallet\/transactions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/wallet\/transactions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"transaction_type\":\"top_up\",\"amount\":\"100.00\",\"payment_method\":\"transfer\",\"is_annual_payment\":false}"
+                                },
+                                "description": "Tipos permitidos: top_up, annual_fee, maintenance_deduction, adjustment,\nreserve_funds y spend_reserved_funds.\n- reserve_funds: mueve saldo de cash a reservado para suscripci\u00f3n.\n- spend_reserved_funds: descuenta del saldo reservado.\nLas transacciones son inmutables; las correcciones se registran como ajustes."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 45,\n    \"transactionType\": \"top_up\",\n    \"amount\": 100.00,\n    \"paymentMethod\": \"transfer\",\n    \"isAnnualPayment\": false,\n    \"cashBalance\": 250.00,\n    \"reservedSubscriptionBalance\": 50.00,\n    \"totalAvailable\": 300.00,\n    \"createdAt\": \"2026-02-28T16:00:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Registrar una transacci\u00f3n de EcoPuntos.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/loyalty-points\/transactions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/loyalty-points\/transactions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"transaction_type\":\"earned_purchase\",\"points\":50,\"description\":\"Puntos ganados por compra\",\"quote_id\":4}"
+                                },
+                                "description": "Tipos permitidos: earned_purchase, redeemed, referral, promotional y special_bonus.\nEl balance de puntos nunca puede quedar en negativo."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 102,\n    \"transactionType\": \"earned_purchase\",\n    \"points\": 50,\n    \"description\": \"Puntos ganados por compra\",\n    \"pointsBalance\": 370,\n    \"createdAt\": \"2026-03-01T10:15:00+00:00\"\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Citas y Agenda",
             "description": "\nEndpoints para la gesti\u00f3n y agendamiento de citas, visitas t\u00e9cnicas e inspecciones operativas.",
             "item": [
@@ -2363,7 +2895,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"date\":\"2026-11-14\",\"status\":\"pending\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"appointment_date\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":false}"
+                                    "raw": "{\"start_date\":\"2026-11-20\",\"end_date\":\"2052-12-13\",\"date\":\"2026-11-20\",\"status\":\"pending\",\"customer_id\":16,\"client_id\":16,\"employee_id\":16,\"service_id\":16,\"sort_by\":\"appointment_time\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7,\"all\":true}"
                                 },
                                 "description": "Obtiene una lista de citas del sistema con soporte para filtros de fecha (vistas mensual, semanal y diaria),\nfiltrado por estado, cliente, t\u00e9cnico asignado y paginaci\u00f3n o listado completo para el calendario.\n\nLos t\u00e9cnicos de campo \u00fanicamente pueden visualizar las citas asignadas a su persona."
                             },
@@ -2632,6 +3164,149 @@
             ]
         },
         {
+            "name": "EcoPuntos",
+            "description": "\nAPIs de consulta de canjes de recompensas de clientes.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar los canjes de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/loyalty-redemptions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/loyalty-redemptions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"customerId\": 15,\n      \"reward\": {\n        \"id\": 2,\n        \"name\": \"Fumigaci\u00f3n de jard\u00edn\",\n        \"pointsCost\": 150\n      },\n      \"pointsRedeemed\": 150,\n      \"status\": \"completed\",\n      \"requestedAt\": \"2026-11-01T10:00:00.000000Z\"\n    }\n  ]\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cliente no encontrado\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Listar recompensas.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/loyalty-rewards",
+                                    "query": [
+                                        {
+                                            "key": "available",
+                                            "value": "1",
+                                            "description": "Mostrar solo recompensas disponibles.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/loyalty-rewards?available=1"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Fertilizaci\u00f3n org\u00e1nica de jard\u00edn\",\n      \"pointsCost\": 100,\n      \"active\": true,\n      \"service\": {\n        \"id\": 2,\n        \"name\": \"Fertilizaci\u00f3n\"\n      }\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Ver una recompensa.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/loyalty-rewards\/:loyalty_reward",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/loyalty-rewards\/:loyalty_reward",
+                                    "variable": [
+                                        {
+                                            "id": "loyalty_reward",
+                                            "key": "loyalty_reward",
+                                            "value": 1,
+                                            "description": "ID de la recompensa."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"id\": 1,\n  \"name\": \"Fertilizaci\u00f3n org\u00e1nica de jard\u00edn\",\n  \"pointsCost\": 100,\n  \"active\": true,\n  \"service\": {\n    \"id\": 2,\n    \"name\": \"Fertilizaci\u00f3n\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Recompensa no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Historial de Transacciones",
             "description": "\nEndpoints para consultar el registro hist\u00f3rico de trabajos de jardiner\u00eda efectuados (pagados)\ny trabajos declinados o cancelados por los clientes, excluyendo trabajos en curso.",
             "item": [
@@ -2722,7 +3397,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"customer_id\":16,\"client_id\":16,\"status_type\":\"all\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"sort_by\":\"total\",\"sort_direction\":\"asc\",\"per_page\":22,\"limit\":7}"
+                                    "raw": "{\"search\":\"b\",\"customer_id\":16,\"client_id\":16,\"status_type\":\"declined\",\"start_date\":\"2026-11-20\",\"end_date\":\"2052-12-13\",\"sort_by\":\"total\",\"sort_direction\":\"desc\",\"per_page\":22,\"limit\":7}"
                                 },
                                 "description": "Devuelve una lista paginada de transacciones hist\u00f3ricas que ya fueron realizadas (pagadas)\no que fueron canceladas\/declinadas porque el cliente no acept\u00f3 la cotizaci\u00f3n.\nExcluye estrictamente los trabajos en curso o cotizaciones abiertas en estado pendiente.\n\nIncluye un buscador principal unificado (por ID de cliente, n\u00famero de referencia\/cotizaci\u00f3n\no nombre del cliente), filtro espec\u00edfico por cliente y la secci\u00f3n \"Resumen por cliente\"."
                             },
@@ -2906,7 +3581,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"movement_type\":\"all\",\"type\":\"ticket\",\"start_date\":\"2026-11-14\",\"end_date\":\"2052-12-07\",\"search\":\"n\",\"entity_name\":\"g\",\"status\":\"all\",\"sort_by\":\"total\",\"sort_direction\":\"desc\",\"per_page\":16,\"limit\":17}"
+                                    "raw": "{\"movement_type\":\"sale\",\"type\":\"sale\",\"start_date\":\"2026-11-20\",\"end_date\":\"2052-12-13\",\"search\":\"n\",\"entity_name\":\"g\",\"status\":\"all\",\"sort_by\":\"document_number\",\"sort_direction\":\"desc\",\"per_page\":16,\"limit\":17}"
                                 },
                                 "description": "Devuelve una lista paginada de todos los movimientos econ\u00f3micos registrados en el sistema,\ncalculando en tiempo real el resumen financiero de ingresos, compras, gastos y utilidad neta."
                             },
@@ -3008,7 +3683,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"name\",\"sort_direction\":\"desc\"}"
+                                    "raw": "{\"search\":\"b\",\"category_type\":\"n\",\"active\":true,\"min_price\":84,\"max_price\":12,\"per_page\":17,\"limit\":15,\"sort_by\":\"created_at\",\"sort_direction\":\"desc\"}"
                                 },
                                 "description": "Obtiene una lista paginada de plantas del cat\u00e1logo con soporte para filtros din\u00e1micos (b\u00fasqueda, categor\u00eda, rango de precio, estado) y ordenamiento."
                             },
@@ -3353,6 +4028,160 @@
             "description": "\nAPIs para la gesti\u00f3n de proveedores, compras y suministros de El Vergel.",
             "item": [
                 {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar y filtrar proveedores.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Vivero",
+                                            "description": "B\u00fasqueda por nombre, nombre comercial, email, tel\u00e9fono, tax_id (NIT\/DUI), NRC o contacto.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "active",
+                                            "description": "Filtrar por estado (`active` o `inactive`).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "economic_activity",
+                                            "value": "Jardiner\u00eda",
+                                            "description": "Filtrar por giro o actividad econ\u00f3mica.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "phone",
+                                            "value": "78901234",
+                                            "description": "Filtrar por n\u00famero de tel\u00e9fono.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "desde",
+                                            "value": "2026-01-01",
+                                            "description": "Filtrar proveedores creados desde una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "hasta",
+                                            "value": "2026-12-31",
+                                            "description": "Filtrar proveedores creados hasta una fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "name",
+                                            "description": "Campo de ordenamiento (`id`, `name`, `trade_name`, `status`, `created_at`). Default: `id`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "asc",
+                                            "description": "Direcci\u00f3n (`asc` o `desc`). Default: `desc`.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "15",
+                                            "description": "Cantidad de registros por p\u00e1gina (1-100). Default: 15.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers?search=Vivero&status=active&economic_activity=Jardiner%C3%ADa&phone=78901234&desde=2026-01-01&hasta=2026-12-31&sort_by=name&sort_direction=asc&limit=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"search\":\"b\",\"status\":\"active\",\"economic_activity\":\"n\",\"phone\":\"gzmiyvdljnikhway\",\"desde\":\"2026-11-20T03:20:40\",\"hasta\":\"2052-12-13\",\"sort_by\":\"status\",\"sort_direction\":\"asc\",\"limit\":22,\"per_page\":7}"
+                                },
+                                "description": "Permite consultar la lista paginada de proveedores con filtros por texto, estado, giro econ\u00f3mico, tel\u00e9fono o rango de fechas."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Distribuidora Verde S.A. de C.V.\",\n      \"tradeName\": \"Vivero El Roble\",\n      \"phone\": \"22223333\",\n      \"email\": \"ventas@elroble.com\",\n      \"status\": \"active\",\n      \"economicActivity\": \"Venta de plantas y abonos\",\n      \"contactName\": \"Carlos Henr\u00edquez\",\n      \"createdAt\": \"2026-11-14T10:00:00.000000Z\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost\/api\/v1\/suppliers?page=1\",\n    \"last\": \"http:\/\/localhost\/api\/v1\/suppliers?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"per_page\": 15,\n    \"to\": 1,\n    \"total\": 1\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Consultar detalle de un proveedor.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/suppliers\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/suppliers\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 1,
+                                            "description": "ID del proveedor."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Distribuidora Verde S.A. de C.V.\",\n    \"tradeName\": \"Vivero El Roble\",\n    \"taxId\": \"0614-010190-101-1\",\n    \"nrc\": \"123456-7\",\n    \"economicActivity\": \"Venta de plantas y abonos\",\n    \"phone\": \"22223333\",\n    \"email\": \"ventas@elroble.com\",\n    \"address\": \"Calle Principal #123, San Salvador\",\n    \"contactName\": \"Carlos Henr\u00edquez\",\n    \"contactPhone\": \"77778888\",\n    \"status\": \"active\",\n    \"notes\": \"Proveedor mayorista de tierra y sustratos\",\n    \"createdAt\": \"2026-11-14T10:00:00.000000Z\",\n    \"updatedAt\": \"2026-11-14T10:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Proveedor no encontrado.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "name": "Escritura",
                     "description": "",
                     "item": [
@@ -3382,7 +4211,26 @@
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Distribuidora Verde S.A. de C.V.\",\n    \"tradeName\": \"Vivero El Roble\",\n    \"taxId\": \"0614-010190-101-1\",\n    \"nrc\": \"123456-7\",\n    \"economicActivity\": \"Venta de plantas y abonos\",\n    \"phone\": \"22223333\",\n    \"email\": \"ventas@elroble.com\",\n    \"address\": \"Calle Principal #123, San Salvador\",\n    \"contactName\": \"Carlos Henr\u00edquez\",\n    \"contactPhone\": \"77778888\",\n    \"status\": \"active\",\n    \"notes\": \"Proveedor mayorista de tierra y sustratos\",\n    \"createdAt\": \"2026-11-14T10:00:00.000000Z\",\n    \"updatedAt\": \"2026-11-14T10:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Los datos proporcionados no son v\u00e1lidos.\",\n  \"errors\": {\n    \"phone\": [\"El campo phone ya ha sido registrado.\"]\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Actualizar informaci\u00f3n de un proveedor.",
@@ -3396,8 +4244,8 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
-                                            "description": "The ID of the supplier."
+                                            "value": 1,
+                                            "description": "ID del proveedor."
                                         }
                                     ]
                                 },
@@ -3414,11 +4262,24 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"b\",\"trade_name\":\"n\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"pscqldzsnrwtujwv\",\"email\":\"jhaag@example.net\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"active\",\"notes\":\"architecto\"}"
+                                    "raw": "{\"name\":\"Distribuidora Verde S.A. de C.V.\",\"trade_name\":\"Vivero El Roble Central\",\"tax_id\":\"gzmiyvdljnikhway\",\"nrc\":\"kcmyuwpwlvqwrsit\",\"economic_activity\":\"c\",\"phone\":\"22223333\",\"email\":\"info@elroble.com\",\"address\":\"l\",\"contact_name\":\"q\",\"contact_phone\":\"ppwqbewtnnoqitpx\",\"status\":\"active\",\"notes\":\"architecto\"}"
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Distribuidora Verde S.A. de C.V.\",\n    \"tradeName\": \"Vivero El Roble Central\",\n    \"phone\": \"22223333\",\n    \"email\": \"info@elroble.com\",\n    \"status\": \"active\",\n    \"updatedAt\": \"2026-11-14T11:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Proveedor no encontrado.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Eliminar proveedor (Borrado l\u00f3gico).",
@@ -3432,8 +4293,8 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
-                                            "description": "The ID of the supplier."
+                                            "value": 1,
+                                            "description": "ID del proveedor."
                                         }
                                     ]
                                 },
@@ -3451,7 +4312,26 @@
                                 "body": null,
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"message\": \"Proveedor eliminado correctamente.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\n  \"message\": \"No tiene permisos para realizar esta acci\u00f3n.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Proveedor no encontrado.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Cambiar estado de un proveedor.",
@@ -3467,6 +4347,12 @@
                                             "key": "supplier",
                                             "value": "architecto",
                                             "description": "The supplier."
+                                        },
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 1,
+                                            "description": "ID del proveedor."
                                         }
                                     ]
                                 },
@@ -3487,7 +4373,170 @@
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Distribuidora Verde S.A. de C.V.\",\n    \"status\": \"inactive\",\n    \"updatedAt\": \"2026-11-14T12:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Proveedor no encontrado.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Suscripciones",
+            "description": "\nAPIs de consulta de las suscripciones de clientes.",
+            "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Consultar la suscripci\u00f3n activa actual del cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/subscriptions\/current",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/subscriptions\/current",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"customerId\": 15,\n    \"plan\": {\n      \"id\": 2,\n      \"planName\": \"Plan Residencial Plus\",\n      \"planCode\": \"RES-PLUS\"\n    },\n    \"status\": \"active\",\n    \"startDate\": \"2026-01-01\",\n    \"endDate\": \"2026-12-31\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cliente no encontrado.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Listar las suscripciones de un cliente.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/customers\/:customer\/subscriptions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/customers\/:customer\/subscriptions",
+                                    "variable": [
+                                        {
+                                            "id": "customer",
+                                            "key": "customer",
+                                            "value": 15,
+                                            "description": "ID del cliente."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"customerId\": 15,\n      \"plan\": {\n        \"id\": 2,\n        \"planName\": \"Plan Residencial Plus\",\n        \"planCode\": \"RES-PLUS\"\n      },\n      \"status\": \"active\",\n      \"startDate\": \"2026-01-01\",\n      \"endDate\": \"2026-12-31\",\n      \"paymentDate\": \"2026-01-01\"\n    }\n  ]\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Cliente no encontrado\",\n  \"codigo\": 404\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Ver el detalle de una suscripci\u00f3n.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/subscriptions\/:subscription",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/subscriptions\/:subscription",
+                                    "variable": [
+                                        {
+                                            "id": "subscription",
+                                            "key": "subscription",
+                                            "value": 1,
+                                            "description": "ID de la suscripci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"id\": 1,\n  \"customerId\": 15,\n  \"plan\": {\n    \"id\": 2,\n    \"planName\": \"Plan Residencial Plus\",\n    \"planCode\": \"RES-PLUS\"\n  },\n  \"status\": \"active\",\n  \"startDate\": \"2026-01-01\",\n  \"endDate\": \"2026-12-31\",\n  \"paymentDate\": \"2026-01-01\",\n  \"payments\": [],\n  \"consumptions\": []\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Suscripci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         }
                     ]
                 }
@@ -3497,6 +4546,148 @@
             "name": "T\u00e9cnico de Campo",
             "description": "\nEndpoints para las inspecciones de campo, relevamiento de requerimientos, servicios sugeridos, dimensiones de terreno y galer\u00eda de im\u00e1genes.",
             "item": [
+                {
+                    "name": "Consultas",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Listar inspecciones de campo.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections",
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "Jard\u00edn frontal",
+                                            "description": "B\u00fasqueda en hallazgos, notas de terreno o nombre del cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "submitted",
+                                            "description": "Filtrar por estado (draft, submitted, reviewed).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "customer_id",
+                                            "value": "1",
+                                            "description": "Filtrar por ID de cliente.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "employee_id",
+                                            "value": "2",
+                                            "description": "Filtrar por t\u00e9cnico\/empleado asignado.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "start_date",
+                                            "value": "2026-11-01",
+                                            "description": "date Filtrar inspecciones desde esta fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2026-11-30",
+                                            "description": "date Filtrar inspecciones hasta esta fecha (YYYY-MM-DD).",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_by",
+                                            "value": "inspection_date",
+                                            "description": "Campo de ordenamiento (id, inspection_date, created_at, status, total_area). Default: id.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "sort_direction",
+                                            "value": "desc",
+                                            "description": "Direcci\u00f3n (asc o desc). Default: desc.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "Registros por p\u00e1gina.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections?search=Jard%C3%ADn%20frontal&status=submitted&customer_id=1&employee_id=2&start_date=2026-11-01&end_date=2026-11-30&sort_by=inspection_date&sort_direction=desc&per_page=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"customer_id\":16,\"employee_id\":16,\"status\":\"reviewed\",\"start_date\":\"2026-11-20T03:20:40\",\"end_date\":\"2052-12-13\",\"search\":\"n\",\"sort_by\":\"id\",\"sort_direction\":\"desc\",\"per_page\":7,\"limit\":16}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"inspectionDate\": \"2026-11-11\",\n      \"findings\": \"Terreno con desnivel pronunciado y maleza alta.\",\n      \"status\": \"submitted\",\n      \"totalArea\": 310.00,\n      \"areaUnit\": \"m2\",\n      \"customer\": {\n        \"id\": 1,\n        \"legalName\": \"Cliente Ejemplo S.A. de C.V.\"\n      },\n      \"employee\": {\n        \"id\": 2,\n        \"fullName\": \"Juan T\u00e9cnico\"\n      },\n      \"createdAt\": \"2026-11-11T14:30:00.000000Z\"\n    }\n  ]\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Ver detalle de inspecci\u00f3n de campo.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/inspections\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/inspections\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 1,
+                                            "description": "ID de la inspecci\u00f3n."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"inspectionDate\": \"2026-11-11\",\n    \"findings\": \"Terreno con desnivel pronunciado y maleza alta.\",\n    \"terrainWidth\": 15.50,\n    \"terrainLength\": 20.00,\n    \"totalArea\": 310.00,\n    \"areaUnit\": \"m2\",\n    \"status\": \"submitted\",\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Cliente Ejemplo S.A. de C.V.\"\n    },\n    \"photos\": []\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Inspecci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
                 {
                     "name": "Escritura",
                     "description": "",
@@ -3628,7 +4819,14 @@
                                 },
                                 "description": "Crea una inspecci\u00f3n realizada por el t\u00e9cnico de campo, registrando dimensiones del terreno, servicios requeridos y fotograf\u00edas de referencia."
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"inspectionDate\": \"2026-11-11\",\n    \"findings\": \"Terreno con desnivel pronunciado y maleza alta. Requiere desmonte y nivelaci\u00f3n.\",\n    \"terrainWidth\": 15.50,\n    \"terrainLength\": 20.00,\n    \"totalArea\": 310.00,\n    \"areaUnit\": \"m2\",\n    \"terrainNotes\": \"Suelo arcilloso, toma de agua a 10 metros.\",\n    \"status\": \"submitted\",\n    \"customer\": {\n      \"id\": 1,\n      \"legalName\": \"Cliente Ejemplo S.A. de C.V.\"\n    },\n    \"employee\": {\n      \"id\": 2,\n      \"fullName\": \"Juan T\u00e9cnico\"\n    },\n    \"services\": [\n      {\n        \"id\": 1,\n        \"name\": \"Poda y Desmonte\",\n        \"suggestedQuantity\": 2,\n        \"notes\": \"Requiere fumigaci\u00f3n previa.\"\n      }\n    ],\n    \"photos\": [],\n    \"createdAt\": \"2026-11-11T14:30:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Actualizar inspecci\u00f3n de campo.",
@@ -3642,8 +4840,8 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
-                                            "description": "The ID of the inspection."
+                                            "value": 1,
+                                            "description": "ID de la inspecci\u00f3n."
                                         }
                                     ]
                                 },
@@ -3681,15 +4879,15 @@
                                         },
                                         {
                                             "key": "inspection_date",
-                                            "value": "2026-11-14T20:21:04",
+                                            "value": "2026-11-20T03:20:40",
                                             "type": "text",
                                             "description": "Must be a valid date."
                                         },
                                         {
                                             "key": "findings",
-                                            "value": "architecto",
+                                            "value": "Terreno nivelado parcialmente.",
                                             "type": "text",
-                                            "description": ""
+                                            "description": "Observaciones actualizadas."
                                         },
                                         {
                                             "key": "terrain_width",
@@ -3723,9 +4921,9 @@
                                         },
                                         {
                                             "key": "status",
-                                            "value": "submitted",
+                                            "value": "reviewed",
                                             "type": "text",
-                                            "description": ""
+                                            "description": "Estado (draft, submitted, reviewed)."
                                         },
                                         {
                                             "key": "services[0][service_id]",
@@ -3770,7 +4968,20 @@
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"findings\": \"Terreno nivelado parcialmente.\",\n    \"status\": \"reviewed\",\n    \"updatedAt\": \"2026-11-11T16:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Inspecci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Eliminar inspecci\u00f3n t\u00e9cnica.",
@@ -3784,8 +4995,8 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
-                                            "description": "The ID of the inspection."
+                                            "value": 1,
+                                            "description": "ID de la inspecci\u00f3n."
                                         }
                                     ]
                                 },
@@ -3803,7 +5014,20 @@
                                 "body": null,
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"message\": \"Inspecci\u00f3n eliminada correctamente.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Inspecci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Cambiar estado de la inspecci\u00f3n.",
@@ -3819,6 +5043,12 @@
                                             "key": "inspection",
                                             "value": "architecto",
                                             "description": "The inspection."
+                                        },
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 1,
+                                            "description": "ID de la inspecci\u00f3n."
                                         }
                                     ]
                                 },
@@ -3839,7 +5069,20 @@
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"status\": \"reviewed\",\n    \"updatedAt\": \"2026-11-11T16:00:00.000000Z\"\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Inspecci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Subir fotos adicionales a la inspecci\u00f3n.",
@@ -3855,6 +5098,12 @@
                                             "key": "inspection",
                                             "value": "architecto",
                                             "description": "The inspection."
+                                        },
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": 1,
+                                            "description": "ID de la inspecci\u00f3n."
                                         }
                                     ]
                                 },
@@ -3892,7 +5141,20 @@
                                 },
                                 "description": "Permite subir m\u00e1s im\u00e1genes de referencia a una inspecci\u00f3n ya creada."
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"photos\": [\n      {\n        \"id\": 5,\n        \"imagePath\": \"inspections\/foto_ejemplo.jpg\",\n        \"caption\": \"Vista panor\u00e1mica lateral\"\n      }\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Inspecci\u00f3n no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Eliminar foto de inspecci\u00f3n.",
@@ -3906,14 +5168,14 @@
                                         {
                                             "id": "inspection",
                                             "key": "inspection",
-                                            "value": "architecto",
-                                            "description": "The inspection."
+                                            "value": 1,
+                                            "description": "ID de la inspecci\u00f3n."
                                         },
                                         {
                                             "id": "photo",
                                             "key": "photo",
-                                            "value": "architecto",
-                                            "description": "The photo."
+                                            "value": 5,
+                                            "description": "ID de la foto."
                                         }
                                     ]
                                 },
@@ -3931,7 +5193,20 @@
                                 "body": null,
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"message\": \"Fotograf\u00eda eliminada correctamente.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"message\": \"Fotograf\u00eda no encontrada.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         }
                     ]
                 }

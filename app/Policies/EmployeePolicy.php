@@ -4,9 +4,12 @@ namespace App\Policies;
 
 use App\Models\Employee;
 use App\Models\User;
+use App\Policies\Concerns\AuthorizesEmployeeRoles;
 
 class EmployeePolicy
 {
+    use AuthorizesEmployeeRoles;
+
     /**
      * Determina si el usuario puede listar empleados.
      */
@@ -69,19 +72,5 @@ class EmployeePolicy
     public function forceDelete(User $user, ?Employee $employee = null): bool
     {
         return $this->isAdmin($user);
-    }
-
-    /**
-     * Verifica si el usuario tiene el rol de Administrador.
-     */
-    private function isAdmin(User $user): bool
-    {
-        if (! $user->employee?->active) {
-            return false;
-        }
-
-        $roleName = $user->employee?->role?->role_name;
-
-        return in_array($roleName, ['Admin', 'Administrador'], true);
     }
 }
