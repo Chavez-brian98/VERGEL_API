@@ -3,7 +3,6 @@
 namespace Tests\Feature\ActividadSeguridad;
 
 use App\Models\AuditLog;
-use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;

@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\AuditLog;
 use App\Models\Supplier;
+use App\Services\Concerns\LogsAudit;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class SupplierService
 {
+    use LogsAudit;
+
     /**
      * Listar y filtrar proveedores con paginación.
      */
@@ -145,27 +147,5 @@ class SupplierService
 
             return $supplier;
         });
-    }
-
-    /**
-     * Registrar en la tabla audit_log con el ID de empleado autenticado.
-     */
-    private function logAudit(string $action, string $tableName, int $recordId, ?array $oldValues, ?array $newValues): void
-    {
-        $employeeId = auth()->user()?->employee_id ?? request()->user()?->employee_id ?? Employee::first()?->id;
-
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $tableName,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => ! empty($oldValues) ? $oldValues : null,
-            'new_data' => ! empty($newValues) ? $newValues : null,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

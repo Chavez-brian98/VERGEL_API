@@ -6,16 +6,13 @@ use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\CountryConfigController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\InspectionController;
 use App\Http\Controllers\Api\V1\LoyaltyRedemptionController;
 use App\Http\Controllers\Api\V1\LoyaltyRewardController;
 use App\Http\Controllers\Api\V1\MovementController;
 use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\PortfolioController;
-use App\Http\Controllers\Api\V1\InspectionController;
-use App\Http\Controllers\Api\V1\MovementController;
-use App\Http\Controllers\Api\V1\PlantController;
 use App\Http\Controllers\Api\V1\QuoteController;
-
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SubscriptionController;
 use App\Http\Controllers\Api\V1\SubscriptionPlanController;

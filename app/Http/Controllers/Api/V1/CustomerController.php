@@ -475,12 +475,10 @@ class CustomerController extends Controller
         Gate::authorize('view', Customer::class);
 
         try {
-            $customer = Customer::findOrFail($id);
+            $history = $this->customerService->getPlanHistory((int) $id);
         } catch (ModelNotFoundException) {
             return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
         }
-
-        $history = $customer->planHistories()->with('plan')->orderBy('start_date', 'desc')->get();
 
         return response()->json(['data' => $history]);
     }

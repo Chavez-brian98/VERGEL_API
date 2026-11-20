@@ -42,4 +42,9 @@ class RewardCatalogService
             ->orderBy('reward_name')
             ->get();
     }
+
+    public function getById(int $id): LoyaltyReward
+    {
+        return LoyaltyReward::with('service')->findOrFail($id);
+    }
 }

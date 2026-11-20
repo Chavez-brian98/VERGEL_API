@@ -14,6 +14,16 @@ class SubscriptionService
     /**
      * @return Collection<int, Subscription>
      */
+    public function forCustomerId(int $customerId): Collection
+    {
+        $customer = Customer::findOrFail($customerId);
+
+        return $this->forCustomer($customer);
+    }
+
+    /**
+     * @return Collection<int, Subscription>
+     */
     public function forCustomer(Customer $customer): Collection
     {
         return $customer->subscriptions()
@@ -21,6 +31,13 @@ class SubscriptionService
             ->orderByDesc('payment_date')
             ->orderByDesc('id')
             ->get();
+    }
+
+    public function currentForCustomerId(int $customerId): ?Subscription
+    {
+        $customer = Customer::findOrFail($customerId);
+
+        return $this->currentForCustomer($customer);
     }
 
     public function currentForCustomer(Customer $customer): ?Subscription
@@ -31,5 +48,10 @@ class SubscriptionService
             ->orderByDesc('payment_date')
             ->orderByDesc('id')
             ->first();
+    }
+
+    public function getById(int $subscriptionId): Subscription
+    {
+        return Subscription::with(['plan', 'payments', 'consumptions'])->findOrFail($subscriptionId);
     }
 }

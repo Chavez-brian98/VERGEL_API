@@ -27,16 +27,35 @@ class LoyaltyRedemptionController extends Controller
      * @subgroup Consultas
      *
      * @urlParam customer integer required ID del cliente. Example: 15
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "customerId": 15,
+     *       "reward": {
+     *         "id": 2,
+     *         "name": "Fumigación de jardín",
+     *         "pointsCost": 150
+     *       },
+     *       "pointsRedeemed": 150,
+     *       "status": "completed",
+     *       "requestedAt": "2026-11-01T10:00:00.000000Z"
+     *     }
+     *   ]
+     * }
+     * @response status=404 {
+     *   "message": "Cliente no encontrado",
+     *   "codigo": 404
+     * }
      */
     public function index(ShowPortfolioRequest $request, int $customer): JsonResponse
     {
         try {
-            $customerModel = Customer::findOrFail($customer);
+            $redemptions = $this->redemptionService->forCustomerId($customer);
         } catch (ModelNotFoundException) {
             return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
         }
-
-        $redemptions = $this->redemptionService->forCustomer($customerModel);
 
         return response()->json([
             'data' => LoyaltyRedemptionResource::collection($redemptions)->resolve(),

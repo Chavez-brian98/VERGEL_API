@@ -2,16 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\AuditLog;
 use App\Models\CountryConfig;
 use App\Models\Quote;
 use App\Models\SubscriptionPlan;
+use App\Services\Concerns\LogsAudit;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class QuoteService
 {
+    use LogsAudit;
+
     /**
      * Listar y filtrar cotizaciones con paginación.
      */
@@ -307,27 +309,5 @@ class QuoteService
         $sequence = $lastNumber ? ((int) substr($lastNumber, -4)) + 1 : 1;
 
         return $prefix.str_pad((string) $sequence, 4, '0', STR_PAD_LEFT);
-    }
-
-    /**
-     * Registrar en la tabla audit_log con el ID de empleado autenticado.
-     */
-    private function logAudit(string $action, string $tableName, int $recordId, ?array $oldValues, ?array $newValues): void
-    {
-        $employeeId = request()->user()?->employee_id ?? auth()->user()?->employee_id;
-
-        if (! $employeeId) {
-            return;
-        }
-
-        AuditLog::create([
-            'employee_id' => $employeeId,
-            'affected_table' => $tableName,
-            'affected_record_id' => $recordId,
-            'action' => $action,
-            'old_data' => ! empty($oldValues) ? $oldValues : null,
-            'new_data' => ! empty($newValues) ? $newValues : null,
-            'ip_address' => request()->ip(),
-        ]);
     }
 }

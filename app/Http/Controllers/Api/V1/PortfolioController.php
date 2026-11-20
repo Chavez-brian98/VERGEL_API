@@ -33,6 +33,23 @@ class PortfolioController extends Controller
      * @subgroup Consultas
      *
      * @queryParam limit integer Cantidad de resultados por página (1-100). Default: 15.
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "customerId": 1,
+     *       "customerName": "Cliente Ejemplo S.A. de C.V.",
+     *       "wallet": {
+     *         "cashBalance": 150.00,
+     *         "reservedSubscriptionBalance": 50.00,
+     *         "totalAvailable": 200.00
+     *       },
+     *       "loyaltyPoints": {
+     *         "pointsBalance": 350
+     *       }
+     *     }
+     *   ]
+     * }
      */
     public function index(IndexPortfolioRequest $request)
     {
@@ -50,6 +67,24 @@ class PortfolioController extends Controller
      * @queryParam type string Filtrar por origen: all, wallet o loyalty. Default: all.
      * @queryParam page integer Página solicitada. Default: 1.
      * @queryParam limit integer Cantidad de registros por página (1-100). Default: 15.
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "customerId": 1,
+     *       "type": "wallet",
+     *       "concept": "Recarga de saldo",
+     *       "amount": 100.00,
+     *       "createdAt": "2026-11-01T10:00:00.000000Z"
+     *     }
+     *   ],
+     *   "meta": {
+     *     "currentPage": 1,
+     *     "totalPages": 1,
+     *     "totalItems": 1
+     *   }
+     * }
      */
     public function allMovements(IndexPortfolioMovementRequest $request): JsonResponse
     {
@@ -271,7 +306,7 @@ class PortfolioController extends Controller
     }
 
     /**
-     * Registrar una transacci��n de billetera.
+     * Registrar una transacción de billetera.
      *
      * Tipos permitidos: top_up, annual_fee, maintenance_deduction, adjustment,
      * reserve_funds y spend_reserved_funds.
@@ -279,13 +314,13 @@ class PortfolioController extends Controller
      * - spend_reserved_funds: descuenta del saldo reservado.
      * Las transacciones son inmutables; las correcciones se registran como ajustes.
      *
-     * @subgroup Gesti��n
+     * @subgroup Escritura
      *
      * @urlParam customer integer required ID del cliente. Example: 15
      *
-     * @bodyParam transaction_type string required Tipo de transacci��n. Example: top_up
-     * @bodyParam amount numeric required Monto de la transacci��n. Para adjustment puede ser negativo. Example: 100.00
-     * @bodyParam payment_method string MǸtodo de pago. Example: transfer
+     * @bodyParam transaction_type string required Tipo de transacción. Example: top_up
+     * @bodyParam amount numeric required Monto de la transacción. Para adjustment puede ser negativo. Example: 100.00
+     * @bodyParam payment_method string Método de pago. Example: transfer
      * @bodyParam is_annual_payment boolean Indica si corresponde a pago anual. Example: false
      *
      * @response status=201 {
@@ -339,7 +374,7 @@ class PortfolioController extends Controller
      * Tipos permitidos: earned_purchase, redeemed, referral, promotional y special_bonus.
      * El balance de puntos nunca puede quedar en negativo.
      *
-     * @subgroup Gestión
+     * @subgroup Escritura
      *
      * @urlParam customer integer required ID del cliente. Example: 15
      *

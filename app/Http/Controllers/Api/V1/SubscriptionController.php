@@ -30,16 +30,36 @@ class SubscriptionController extends Controller
      * @subgroup Consultas
      *
      * @urlParam customer integer required ID del cliente. Example: 15
+     *
+     * @response {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "customerId": 15,
+     *       "plan": {
+     *         "id": 2,
+     *         "planName": "Plan Residencial Plus",
+     *         "planCode": "RES-PLUS"
+     *       },
+     *       "status": "active",
+     *       "startDate": "2026-01-01",
+     *       "endDate": "2026-12-31",
+     *       "paymentDate": "2026-01-01"
+     *     }
+     *   ]
+     * }
+     * @response status=404 {
+     *   "message": "Cliente no encontrado",
+     *   "codigo": 404
+     * }
      */
     public function index(ShowPortfolioRequest $request, int $customer): JsonResponse
     {
         try {
-            $customerModel = Customer::findOrFail($customer);
+            $subscriptions = $this->subscriptionService->forCustomerId($customer);
         } catch (ModelNotFoundException) {
             return response()->json(['message' => 'Cliente no encontrado', 'codigo' => 404], 404);
         }
-
-        $subscriptions = $this->subscriptionService->forCustomer($customerModel);
 
         return response()->json([
             'data' => SubscriptionResource::collection($subscriptions)->resolve(),
@@ -52,12 +72,31 @@ class SubscriptionController extends Controller
      * @subgroup Consultas
      *
      * @urlParam subscription integer required ID de la suscripción. Example: 1
+     *
+     * @response {
+     *   "id": 1,
+     *   "customerId": 15,
+     *   "plan": {
+     *     "id": 2,
+     *     "planName": "Plan Residencial Plus",
+     *     "planCode": "RES-PLUS"
+     *   },
+     *   "status": "active",
+     *   "startDate": "2026-01-01",
+     *   "endDate": "2026-12-31",
+     *   "paymentDate": "2026-01-01",
+     *   "payments": [],
+     *   "consumptions": []
+     * }
+     * @response status=404 {
+     *   "message": "Suscripción no encontrada."
+     * }
      */
     public function show(int $subscription): JsonResponse
     {
         Gate::authorize('viewPortfolio');
 
-        $model = Subscription::with(['plan', 'payments', 'consumptions'])->findOrFail($subscription);
+        $model = $this->subscriptionService->getById($subscription);
 
         return response()->json(new SubscriptionResource($model));
     }
@@ -68,13 +107,30 @@ class SubscriptionController extends Controller
      * @subgroup Consultas
      *
      * @urlParam customer integer required ID del cliente. Example: 15
+     *
+     * @response {
+     *   "data": {
+     *     "id": 1,
+     *     "customerId": 15,
+     *     "plan": {
+     *       "id": 2,
+     *       "planName": "Plan Residencial Plus",
+     *       "planCode": "RES-PLUS"
+     *     },
+     *     "status": "active",
+     *     "startDate": "2026-01-01",
+     *     "endDate": "2026-12-31"
+     *   }
+     * }
+     * @response status=404 {
+     *   "message": "Cliente no encontrado."
+     * }
      */
     public function current(Request $request, int $customer): JsonResponse
     {
         Gate::authorize('viewPortfolio');
 
-        $customerModel = Customer::findOrFail($customer);
-        $subscription = $this->subscriptionService->currentForCustomer($customerModel);
+        $subscription = $this->subscriptionService->currentForCustomerId($customer);
 
         return response()->json([
             'data' => $subscription ? (new SubscriptionResource($subscription))->resolve() : null,

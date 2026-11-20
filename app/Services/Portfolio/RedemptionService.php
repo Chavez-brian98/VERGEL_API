@@ -14,6 +14,16 @@ class RedemptionService
     /**
      * @return Collection<int, LoyaltyRedemption>
      */
+    public function forCustomerId(int $customerId): Collection
+    {
+        $customer = Customer::findOrFail($customerId);
+
+        return $this->forCustomer($customer);
+    }
+
+    /**
+     * @return Collection<int, LoyaltyRedemption>
+     */
     public function forCustomer(Customer $customer): Collection
     {
         return $customer->loyaltyRedemptions()

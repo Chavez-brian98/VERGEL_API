@@ -4,9 +4,12 @@ namespace App\Policies;
 
 use App\Models\Inspection;
 use App\Models\User;
+use App\Policies\Concerns\AuthorizesEmployeeRoles;
 
 class InspectionPolicy
 {
+    use AuthorizesEmployeeRoles;
+
     /**
      * Determina si el usuario puede listar inspecciones.
      */
@@ -54,31 +57,7 @@ class InspectionPolicy
      */
     public function delete(User $user, ?Inspection $inspection = null): bool
     {
-        if (! $this->canView($user)) {
-            return false;
-        }
-
-        $roleName = $user->employee?->role?->role_name;
-
-        return in_array($roleName, ['Admin', 'Administrador'], true);
-    }
-
-    /**
-     * Regla de lectura: cualquier empleado activo con rol asignado.
-     */
-    private function canView(User $user): bool
-    {
-        $employee = $user->employee;
-
-        if (! $employee || ! $employee->role_id) {
-            return false;
-        }
-
-        if (isset($employee->active) && ! $employee->active) {
-            return false;
-        }
-
-        return true;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -86,12 +65,6 @@ class InspectionPolicy
      */
     private function canManage(User $user): bool
     {
-        if (! $this->canView($user)) {
-            return false;
-        }
-
-        $roleName = $user->employee?->role?->role_name;
-
-        return in_array($roleName, ['Admin', 'Administrador', 'Tecnico de campo', 'Técnico de campo', 'Colaborador'], true);
+        return $this->hasAnyRole($user, ['Admin', 'Administrador', 'Tecnico de campo', 'Técnico de campo', 'Colaborador']);
     }
 }
