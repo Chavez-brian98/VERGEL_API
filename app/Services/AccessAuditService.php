@@ -65,7 +65,7 @@ class AccessAuditService
         $action = (string) ($request->route()?->getActionMethod() ?? '');
 
         return match ($action) {
-            'index', 'show', 'planHistory', 'summary', 'movements', 'current', 'payments', 'purchases' => 'view',
+            'index', 'show', 'planHistory', 'summary', 'movements', 'current', 'payments', 'purchases', 'sales', 'customers', 'plants', 'collections', 'quotesStatus', 'profitability', 'subscriptions' => 'view',
             'store', 'storeWalletTransaction', 'storeLoyaltyTransaction' => 'create',
             'update', 'updateStatus', 'updatePlan' => 'update',
             'destroy' => 'delete',
