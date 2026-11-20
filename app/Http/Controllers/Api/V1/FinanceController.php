@@ -40,6 +40,18 @@ class FinanceController extends Controller
      *
      * @queryParam from string Fecha inicial (AAAA-MM-DD). Example: 2026-11-01
      * @queryParam to string Fecha final (AAAA-MM-DD). Example: 2026-11-30
+     *
+     * @response status=200 {
+     *   "data": {
+     *     "totalProduction": 12500.50,
+     *     "totalCollected": 9800.00,
+     *     "totalPending": 2700.50,
+     *     "totalPurchases": 4200.00,
+     *     "partialPaymentsCount": 12,
+     *     "profitability": 8300.50,
+     *     "profitabilityMarginPercentage": 66.40
+     *   }
+     * }
      */
     public function summary(FinanceSummaryRequest $request): FinanceSummaryResource
     {
@@ -88,6 +100,37 @@ class FinanceController extends Controller
      *
      * @urlParam quote integer required ID de la cotización. Example: 1
      *
+     * @response status=200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "quoteId": 1,
+     *       "amount": 80.00,
+     *       "paymentMethod": "transfer",
+     *       "paymentDate": "2026-11-10T14:30:00.000000Z",
+     *       "employee": {
+     *         "id": 2,
+     *         "fullName": "Carlos Mendoza"
+     *       }
+     *     }
+     *   ],
+     *   "meta": {
+     *     "quote": {
+     *       "id": 1,
+     *       "quoteNumber": "COT-2026-0001",
+     *       "customerName": "Juan Pérez",
+     *       "total": 180.00,
+     *       "paidAmount": 80.00,
+     *       "pendingAmount": 100.00,
+     *       "paymentStatus": {
+     *         "key": "partial",
+     *         "label": "Parcial",
+     *         "badge": "warning"
+     *       }
+     *     }
+     *   },
+     *   "message": "Abonos de la cotización obtenidos exitosamente."
+     * }
      * @response status=404 {"message": "No query results for model [App\\Models\\Quote] 99"}
      */
     public function payments(ShowQuotePaymentsRequest $request, int $quote): AnonymousResourceCollection
@@ -204,6 +247,29 @@ class FinanceController extends Controller
      * @queryParam supplier string Filtrar por nombre del proveedor. Example: Vivero
      * @queryParam supplier_tax_id string Filtrar por NIT del proveedor. Example: 0614-150885-102-3
      * @queryParam per_page integer Registros por página (1-100). Example: 15
+     *
+     * @response status=200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "purchaseDate": "2026-11-12T09:00:00.000000Z",
+     *       "supplier": {
+     *         "id": 1,
+     *         "name": "Vivero El Edén S.A. de C.V.",
+     *         "taxId": "0614-150885-102-3"
+     *       },
+     *       "amount": 250.00,
+     *       "vatAmount": 32.50,
+     *       "total": 282.50,
+     *       "invoiceNumber": "CCF-00124",
+     *       "paymentMethod": "transfer",
+     *       "employee": {
+     *         "id": 2,
+     *         "fullName": "Carlos Mendoza"
+     *       }
+     *     }
+     *   ]
+     * }
      */
     public function purchases(IndexFinancePurchasesRequest $request): AnonymousResourceCollection
     {

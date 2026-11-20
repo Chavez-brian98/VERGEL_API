@@ -204,16 +204,18 @@ class CustomerOperationalSeeder extends Seeder
 
         $createdRewards = [];
         foreach ($rewardsData as $idx => $rw) {
-            $createdRewards[] = LoyaltyReward::create([
-                'reward_code' => sprintf('REW-%03d', $idx + 1),
-                'reward_name' => $rw['name'],
-                'description' => $rw['name'],
-                'points_cost' => $rw['cost'],
-                'service_id' => $rw['srv'],
-                'active' => true,
-                'valid_from' => '2026-01-01',
-                'valid_until' => '2026-12-31',
-            ]);
+            $createdRewards[] = LoyaltyReward::firstOrCreate(
+                ['reward_code' => sprintf('REW-%03d', $idx + 1)],
+                [
+                    'reward_name' => $rw['name'],
+                    'description' => $rw['name'],
+                    'points_cost' => $rw['cost'],
+                    'service_id' => $rw['srv'],
+                    'active' => true,
+                    'valid_from' => '2026-01-01',
+                    'valid_until' => '2026-12-31',
+                ]
+            );
         }
 
         // Registrar canjes de recompensa para los primeros 10 clientes

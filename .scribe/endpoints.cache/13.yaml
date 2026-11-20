@@ -217,7 +217,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: pending
+        example: completed
         type: string
         enumValues:
           - pending
@@ -277,7 +277,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: appointment_time
+        example: appointment_date
         type: string
         enumValues:
           - id
@@ -338,12 +338,12 @@ endpoints:
       start_date: '2026-11-20'
       end_date: '2052-12-13'
       date: '2026-11-20'
-      status: pending
+      status: completed
       customer_id: 16
       client_id: 16
       employee_id: 16
       service_id: 16
-      sort_by: appointment_time
+      sort_by: appointment_date
       sort_direction: desc
       per_page: 22
       limit: 7

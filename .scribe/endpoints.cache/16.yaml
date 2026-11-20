@@ -174,7 +174,7 @@ endpoints:
         name: movement_type
         description: ''
         required: false
-        example: sale
+        example: all
         type: string
         enumValues:
           - all
@@ -190,7 +190,7 @@ endpoints:
         name: type
         description: ''
         required: false
-        example: sale
+        example: all
         type: string
         enumValues:
           - all
@@ -250,7 +250,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: all
+        example: completed
         type: string
         enumValues:
           - all
@@ -264,7 +264,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: document_number
+        example: id
         type: string
         enumValues:
           - id
@@ -312,14 +312,14 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      movement_type: sale
-      type: sale
+      movement_type: all
+      type: all
       start_date: '2026-11-20'
       end_date: '2052-12-13'
       search: 'n'
       entity_name: g
-      status: all
-      sort_by: document_number
+      status: completed
+      sort_by: id
       sort_direction: desc
       per_page: 16
       limit: 17
